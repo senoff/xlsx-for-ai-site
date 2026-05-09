@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>xlsx-for-ai — Reliable spreadsheet access for AI agents</title>
+<meta name="description" content="Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free tier with paid plans.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="xlsx-for-ai">
+<meta property="og:description" content="Reliable spreadsheet access for AI agents.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #5a5a5a;
+    --bg: #ffffff;
+    --accent: #107c41;
+    --accent-soft: #e8f5ee;
+    --border: #e6e6e6;
+    --code-bg: #f5f5f5;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, pre {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+  code { background: var(--code-bg); padding: 2px 5px; border-radius: 3px; }
+  pre code { background: none; padding: 0; }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+  }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; }
+  header .logo {
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--fg);
+  }
+  header .logo .x { color: var(--accent); }
+  header nav a {
+    color: var(--muted);
+    margin-left: 22px;
+    font-size: 14px;
+  }
+  header nav a:hover { color: var(--fg); text-decoration: none; }
+
+  .hero {
+    padding: 80px 0 64px;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 44px;
+    line-height: 1.15;
+    margin: 0 0 18px;
+    letter-spacing: -0.02em;
+  }
+  .hero p.lead {
+    font-size: 19px;
+    color: var(--muted);
+    max-width: 620px;
+    margin: 0 auto 32px;
+  }
+  .hero .cta {
+    display: inline-block;
+    background: var(--fg);
+    color: white;
+    padding: 12px 22px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  .hero .cta:hover { text-decoration: none; opacity: 0.92; }
+  .hero .install {
+    display: inline-block;
+    margin-left: 12px;
+    background: var(--code-bg);
+    padding: 12px 18px;
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 14px;
+    color: var(--fg);
+  }
+
+  section { padding: 56px 0; border-top: 1px solid var(--border); }
+  section h2 {
+    font-size: 28px;
+    margin: 0 0 24px;
+    letter-spacing: -0.01em;
+  }
+  section h3 { font-size: 18px; margin: 0 0 8px; }
+  section p { color: var(--fg); }
+  section.alt { background: #fafafa; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+    margin-top: 28px;
+  }
+  .card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    background: white;
+  }
+  .card h3 { margin-top: 0; }
+  .card p { color: var(--muted); margin: 0; font-size: 14px; }
+
+  .pricing {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin-top: 28px;
+  }
+  .tier {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px 20px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+  }
+  .tier.featured {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .tier h3 { font-size: 17px; margin: 0 0 4px; }
+  .tier .price {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 8px 0 4px;
+    letter-spacing: -0.02em;
+  }
+  .tier .price small { font-size: 14px; color: var(--muted); font-weight: 500; }
+  .tier ul { padding-left: 18px; margin: 14px 0 0; color: var(--muted); font-size: 14px; }
+  .tier ul li { margin-bottom: 4px; }
+  .tier .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--accent);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    align-self: flex-start;
+    margin-bottom: 8px;
+  }
+
+  .legal h2 { font-size: 22px; margin-top: 32px; }
+  .legal h3 { font-size: 16px; margin-top: 18px; }
+  .legal p, .legal li { font-size: 14.5px; color: #2c2c2c; }
+  .legal { color: #2c2c2c; }
+  .legal-meta { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+
+  footer {
+    padding: 36px 0;
+    border-top: 1px solid var(--border);
+    background: #fafafa;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 12px; justify-content: space-between; align-items: center; }
+  footer a { color: var(--muted); margin-right: 14px; }
+  footer a:hover { color: var(--fg); }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 32px; }
+    .hero .cta, .hero .install { display: block; margin: 8px auto; max-width: 320px; }
+    header nav a { margin-left: 12px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#docs">Docs</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <h1>Reliable spreadsheets for AI agents.</h1>
+    <p class="lead">
+      A hosted MCP server and npm client that lets LLMs read, write, validate and analyze Excel files
+      without losing structure. Hardened against malformed input. Free to start.
+    </p>
+    <a class="cta" href="#pricing">Get started</a>
+    <span class="install">npm i -g xlsx-for-ai</span>
+  </div>
+</div>
+
+<section id="features">
+  <div class="wrap">
+    <h2>What it does</h2>
+    <p style="color: var(--muted); max-width: 640px;">
+      LLMs choke on real spreadsheets — merged cells get flattened, formulas read as stale cache,
+      named ranges disappear, and pandas can't tell a header row from a data row.
+      xlsx-for-ai exposes a tool surface designed for agents.
+    </p>
+    <div class="grid">
+      <div class="card">
+        <h3>Read &amp; describe</h3>
+        <p>Parse any .xlsx into LLM-friendly text. Per-column type inference with confidence. Pandas-style describe, filter, aggregate.</p>
+      </div>
+      <div class="card">
+        <h3>Structure preserved</h3>
+        <p>Named ranges, merged cells, formulas, data validations, and conditional formatting are first-class — not collapsed by a one-shot pandas read.</p>
+      </div>
+      <div class="card">
+        <h3>Cross-engine validation</h3>
+        <p>Run a workbook through two independent engines and report divergences. Catches the corruption pandas silently masks.</p>
+      </div>
+      <div class="card">
+        <h3>Hardened by default</h3>
+        <p>XXE blocking, zip-bomb caps, buffer limits, entity-expansion limits. Every file is sanitized before parsing.</p>
+      </div>
+      <div class="card">
+        <h3>Privacy-aware</h3>
+        <p>Anonymous UUID registration — no email, no name. Per-request strict mode disables any error capture. <a href="#privacy">Read the policy</a>.</p>
+      </div>
+      <div class="card">
+        <h3>Works with Claude Code, Cursor, Cline</h3>
+        <p>Standard MCP stdio. One install, one tool surface, works in every MCP-compatible host.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="pricing">
+  <div class="wrap">
+    <h2>Pricing</h2>
+    <p style="color: var(--muted);">Free tier covers ~95% of agent use. Paid plans add headroom and advanced features. Cancel any time.</p>
+    <div class="pricing">
+      <div class="tier">
+        <h3>Free</h3>
+        <div class="price">$0<small> / forever</small></div>
+        <p style="color: var(--muted); margin: 2px 0; font-size: 14px;">For trying it out and most agent workflows.</p>
+        <ul>
+          <li>1,000 calls / month</li>
+          <li>10 MB file cap</li>
+          <li>Read, list, schema, diff, write, redact</li>
+          <li>Describe, filter, aggregate, named ranges</li>
+          <li>Anonymous registration</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <h3>Plus</h3>
+        <div class="price">$9<small> / month</small></div>
+        <p style="color: var(--muted); margin: 2px 0; font-size: 14px;">For light commercial use.</p>
+        <ul>
+          <li>10,000 calls / month</li>
+          <li>25 MB file cap</li>
+          <li>Everything in Free</li>
+          <li>Email support</li>
+        </ul>
+      </div>
+      <div class="tier featured">
+        <span class="badge">Recommended</span>
+        <h3>Pro</h3>
+        <div class="price">$29<small> / month</small></div>
+        <p style="color: var(--muted); margin: 2px 0; font-size: 14px;">For production agents and teams.</p>
+        <ul>
+          <li>100,000 calls / month</li>
+          <li>50 MB file cap</li>
+          <li>Cross-engine validation</li>
+          <li>Formula evaluation</li>
+          <li>Per-request audit log access</li>
+          <li>Priority support</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <h3>Ultra</h3>
+        <div class="price">$99<small> / month</small></div>
+        <p style="color: var(--muted); margin: 2px 0; font-size: 14px;">For high-volume and large workbooks.</p>
+        <ul>
+          <li>1,000,000 calls / month</li>
+          <li>200 MB file cap</li>
+          <li>Everything in Pro</li>
+          <li>SLA &amp; private support channel</li>
+        </ul>
+      </div>
+    </div>
+    <p style="color: var(--muted); font-size: 14px; margin-top: 22px;">
+      Paid plans launching shortly. <a href="#contact">Contact us</a> if you want early access.
+    </p>
+  </div>
+</section>
+
+<section id="docs">
+  <div class="wrap">
+    <h2>Quick start</h2>
+    <p style="color: var(--muted);">Install the npm client; it auto-registers an anonymous client_id on first use. No signup form.</p>
+    <pre><code>npm install -g xlsx-for-ai
+xlsx-for-ai path/to/workbook.xlsx</code></pre>
+    <p>Or wire it as an MCP server in your agent config:</p>
+    <pre><code>{
+  "mcpServers": {
+    "xlsx-for-ai": { "command": "xlsx-for-ai", "args": ["--mcp"] }
+  }
+}</code></pre>
+    <p>Full docs and tool reference at the <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub repository</a> and the <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">npm package page</a>.</p>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <h2>Contact</h2>
+    <p>Questions, bug reports, sales, anything else — email <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a>.</p>
+    <p style="color: var(--muted); font-size: 14px;">
+      We answer everything within two business days. For security disclosures, please use the same address with subject line beginning <code>[security]</code>.
+    </p>
+  </div>
+</section>
+
+<!-- ===================== LEGAL ===================== -->
+
+<section id="terms" class="legal">
+  <div class="wrap">
+    <h2>Terms of Service</h2>
+    <p class="legal-meta">Last updated: 2026-05-09</p>
+    <p>By installing the xlsx-for-ai npm package or using the API at <code>api.xlsx-for-ai.dev</code> ("the Service"), you agree to these terms.</p>
+
+    <h3>1. The Service</h3>
+    <p>xlsx-for-ai is software that processes Excel (.xlsx and related) files on behalf of LLM agents. The npm client is open-source. The hosted API is operated by xlsx-for-ai.</p>
+
+    <h3>2. Account &amp; usage</h3>
+    <p>The Service registers an anonymous client_id on first use. You are responsible for any activity originating from your client_id. We may rate-limit, suspend, or revoke access if usage violates these terms or appears abusive.</p>
+
+    <h3>3. Acceptable use</h3>
+    <ul>
+      <li>Do not use the Service to process files you do not have the right to process.</li>
+      <li>Do not attempt to exploit, reverse-engineer, or attack the hardening layer.</li>
+      <li>Do not use the Service to violate any law or regulation in your jurisdiction.</li>
+      <li>Do not resell access to the Service without a written agreement.</li>
+    </ul>
+
+    <h3>4. Paid plans</h3>
+    <p>Paid plans are billed monthly via Stripe. By subscribing, you authorize recurring charges to your payment method until you cancel. Cancellation takes effect at the end of the current billing period; access continues until then. Prices may change with at least 30 days' notice.</p>
+
+    <h3>5. Availability</h3>
+    <p>We aim for high availability but do not guarantee uninterrupted service for free or Plus plans. Pro and Ultra plans include the SLA stated in the plan description.</p>
+
+    <h3>6. Disclaimer</h3>
+    <p>The Service is provided "as is" without warranty of any kind. xlsx-for-ai is not liable for indirect, consequential, or incidental damages arising from your use of the Service. Total liability is limited to the amount you paid in the previous 12 months.</p>
+
+    <h3>7. Termination</h3>
+    <p>You may stop using the Service at any time. We may terminate or suspend access for violations of these terms, with or without notice.</p>
+
+    <h3>8. Changes</h3>
+    <p>We may update these terms. Material changes will be announced on this page with a revised "last updated" date. Continued use after changes constitutes acceptance.</p>
+
+    <h3>9. Governing law</h3>
+    <p>These terms are governed by the laws of the State of Texas, United States, without regard to conflict-of-laws principles. Disputes will be resolved in courts located in Travis County, Texas.</p>
+
+    <h3>10. Contact</h3>
+    <p>Questions about these terms: <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a>.</p>
+  </div>
+</section>
+
+<section id="privacy" class="legal alt">
+  <div class="wrap">
+    <h2>Privacy Policy</h2>
+    <p class="legal-meta">Last updated: 2026-05-09</p>
+    <p>This page describes what data the xlsx-for-ai Service collects, how it is used, and how you can opt out. The full developer-oriented version lives at <a href="https://github.com/senoff/xlsx-for-ai/blob/main/PRIVACY.md" rel="noopener">PRIVACY.md</a> in the GitHub repository.</p>
+
+    <h3>What we collect</h3>
+    <p>For every API call: file bytes (base64-encoded, in memory only — not stored after the request completes), an anonymous client_id (UUID generated locally; not linked to any identifying information), platform and version strings (e.g., <code>darwin-arm64</code>, <code>2.0.0</code>), and the tool name and parameters of the request.</p>
+    <p>We do <em>not</em> collect your email, name, file names, file paths, or any cell content beyond what flows through a single request.</p>
+
+    <h3>How we use it</h3>
+    <p>Data is used to operate the Service: rate-limiting, abuse prevention, and aggregate engineering metrics (call counts, error rates, file size distributions). We do not sell or share your data with third parties.</p>
+
+    <h3>Error capture</h3>
+    <p>When a request results in an error (5xx, hardening rejection, engine exception), we may retain a redacted copy of the workbook for up to 30 days for debugging. "Redacted" means cell values are stripped before storage. Captures auto-delete after 30 days. You can disable this for any request by sending the header <code>X-XFA-Privacy: strict</code> or by setting <code>XFA_PRIVACY=strict</code> in your environment.</p>
+
+    <h3>Subprocessors</h3>
+    <p>We use <a href="https://fly.io" rel="noopener">Fly.io</a> for compute and database hosting, <a href="https://www.cloudflare.com" rel="noopener">Cloudflare R2</a> for redacted error captures, and <a href="https://stripe.com" rel="noopener">Stripe</a> for payment processing on paid plans. Stripe receives only payment-related data when you subscribe.</p>
+
+    <h3>Your rights</h3>
+    <p>To delete your registration, remove <code>~/.xlsx-for-ai/config.json</code> on your machine. The next call generates a new anonymous client_id. To request deletion of any associated audit logs, email us — anonymous IDs make most users untraceable; we'll honor any request we can identify.</p>
+
+    <h3>Children</h3>
+    <p>The Service is not directed to children under 13 and we do not knowingly collect personal data from them.</p>
+
+    <h3>Contact</h3>
+    <p><a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a> for any privacy question.</p>
+  </div>
+</section>
+
+<section id="refunds" class="legal">
+  <div class="wrap">
+    <h2>Refund Policy</h2>
+    <p class="legal-meta">Last updated: 2026-05-09</p>
+
+    <h3>Free tier</h3>
+    <p>The free tier is free. There is nothing to refund.</p>
+
+    <h3>Monthly subscriptions</h3>
+    <p>You can cancel a paid subscription at any time from your <a href="#contact">customer portal</a> or by emailing <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a>. Cancellation takes effect at the end of the current billing period; you keep access until then.</p>
+    <p>For first-time subscribers, we offer a full refund within 14 days of the initial charge if you're unhappy with the Service for any reason — just email us. After 14 days or for renewal charges, refunds are at our discretion.</p>
+
+    <h3>Service incidents</h3>
+    <p>If the Service is unavailable for more than the SLA threshold of your plan in a billing period, contact us and we will issue a prorated credit toward the next billing cycle.</p>
+
+    <h3>Disputes</h3>
+    <p>Please email us before initiating a chargeback. We respond within two business days and will work with you to resolve any billing concern.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 xlsx-for-ai. All rights reserved.</div>
+    <div>
+      <a href="#terms">Terms</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#refunds">Refunds</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+      <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">npm</a>
+      <a href="mailto:support@xlsx-for-ai.dev">Contact</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

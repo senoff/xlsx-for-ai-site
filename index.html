@@ -187,6 +187,44 @@
   footer a { color: var(--muted); margin-right: 14px; }
   footer a:hover { color: var(--fg); }
 
+  /* copy-to-clipboard: code block becomes a button */
+  .copy {
+    position: relative;
+    cursor: pointer;
+    transition: background 0.12s ease;
+  }
+  .copy:hover { background: #ebebeb; }
+  .copy:hover::after {
+    content: 'Click to copy';
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .copy.copied::after {
+    content: 'Copied ✓';
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .install-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .install-meta {
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .install-meta a { color: var(--muted); }
+  .install-meta a:hover { color: var(--fg); }
+
   @media (max-width: 600px) {
     .hero h1 { font-size: 32px; }
     .hero .cta, .hero .install { display: block; margin: 8px auto; max-width: 320px; }
@@ -214,8 +252,15 @@
       A hosted MCP server and npm client that lets LLMs read, write, validate and analyze Excel files
       without losing structure. Hardened against malformed input. Free to start.
     </p>
-    <a class="cta" href="#docs">Get started</a>
-    <span class="install">npm i -g xlsx-for-ai</span>
+    <a class="cta" href="#docs">Get the Library</a>
+    <span class="install copy" data-copy="npm i -g xlsx-for-ai" title="Click to copy">npm i -g xlsx-for-ai</span>
+    <div class="install-row">
+      <span class="install-meta">
+        <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">View on npm →</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub →</a>
+      </span>
+    </div>
   </div>
 </div>
 
@@ -271,14 +316,24 @@
   <div class="wrap">
     <h2>Quick start</h2>
     <p style="color: var(--muted);">Install the npm client; it auto-registers an anonymous client_id on first use. No signup form.</p>
-    <pre><code>npm install -g xlsx-for-ai
+    <pre class="copy" data-copy="npm install -g xlsx-for-ai
+xlsx-for-ai path/to/workbook.xlsx" title="Click to copy"><code>npm install -g xlsx-for-ai
 xlsx-for-ai path/to/workbook.xlsx</code></pre>
-    <p>Or wire it as an MCP server in your agent config:</p>
-    <pre><code>{
+
+    <p>Or wire it as an MCP server in your agent config (Claude Desktop, Cursor, Cline, Claude Code):</p>
+    <pre class="copy" data-copy='{
+  "mcpServers": {
+    "xlsx-for-ai": { "command": "xlsx-for-ai", "args": ["--mcp"] }
+  }
+}' title="Click to copy"><code>{
   "mcpServers": {
     "xlsx-for-ai": { "command": "xlsx-for-ai", "args": ["--mcp"] }
   }
 }</code></pre>
+
+    <p>No install needed for one-off use:</p>
+    <pre class="copy" data-copy="npx xlsx-for-ai path/to/workbook.xlsx" title="Click to copy"><code>npx xlsx-for-ai path/to/workbook.xlsx</code></pre>
+
     <p>Full docs and tool reference at the <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub repository</a> and the <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">npm package page</a>.</p>
   </div>
 </section>
@@ -401,6 +456,38 @@ xlsx-for-ai path/to/workbook.xlsx</code></pre>
     </div>
   </div>
 </footer>
+
+<script>
+  // Click-to-copy for any element with class "copy" + data-copy attribute.
+  // Falls back gracefully if Clipboard API isn't available.
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest('.copy');
+    if (!el) return;
+    var text = el.getAttribute('data-copy') || el.innerText;
+    var done = function () {
+      el.classList.add('copied');
+      setTimeout(function () { el.classList.remove('copied'); }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, function () {
+        // permission denied / not supported — fall through to legacy
+        legacyCopy(text, done);
+      });
+    } else {
+      legacyCopy(text, done);
+    }
+  });
+  function legacyCopy(text, done) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch (_) {}
+    document.body.removeChild(ta);
+  }
+</script>
 
 </body>
 </html>

@@ -8,7 +8,7 @@ Deployed via GitHub Pages from `main`.
 
 - Hero / pitch
 - Features grid
-- Pricing (Free / Plus / Pro / Ultra)
+- Free-to-start CTA (no published pricing yet — early-access via contact email)
 - Quick start
 - Contact
 - Terms of Service

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>xlsx-for-ai — Reliable spreadsheet access for AI agents</title>
-<meta name="description" content="Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free tier with paid plans.">
+<meta name="description" content="Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free — all 50 tools.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="xlsx-for-ai">
 <meta property="og:description" content="Reliable spreadsheet access for AI agents.">
@@ -129,6 +129,30 @@
   .card h3 { margin-top: 0; }
   .card p { color: var(--muted); margin: 0; font-size: 14px; }
 
+  .tool-group {
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent);
+    margin: 34px 0 14px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .tool { margin: 0 0 16px; }
+  .tool .name { margin: 0; font-size: 15px; color: var(--fg); }
+  .tool .name code { font-weight: 600; }
+  .tool .prompt {
+    margin: 4px 0 0;
+    font-size: 13.5px;
+    color: var(--muted);
+    font-style: italic;
+    border-left: 2px solid var(--border);
+    padding-left: 12px;
+  }
+  .demo-steps { margin-top: 24px; }
+  .demo-step { margin: 0 0 8px; }
+  .demo-step .label { font-weight: 600; color: var(--fg); }
+
   .pricing {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -240,7 +264,8 @@
     <div class="logo"><span class="x">x</span>lsx-for-ai</div>
     <nav>
       <a href="#features">Features</a>
-      <a href="#free-to-start">Pricing</a>
+      <a href="#demo">Demo</a>
+      <a href="#tools">Tools</a>
       <a href="#docs">Docs</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -252,9 +277,9 @@
     <h1>Reliable spreadsheets for AI agents.</h1>
     <p class="lead">
       A hosted MCP server and npm client that lets LLMs read, write, validate and analyze Excel files
-      without losing structure. Hardened against malformed input. Free to start.
+      without losing structure. Hardened against malformed input. Free — all 50 tools.
     </p>
-    <a class="cta" href="#docs">Get the Library</a>
+    <a class="cta" href="#demo">Try the demo</a>
     <span class="install copy" data-copy="npm i -g xlsx-for-ai" title="Click to copy">npm i -g xlsx-for-ai</span>
     <div class="install-row">
       <span class="install-meta">
@@ -303,64 +328,115 @@
   </div>
 </section>
 
-<section class="alt" id="pricing">
+<section class="alt" id="demo">
   <div class="wrap">
-    <h2 id="free-to-start">Free to start</h2>
+    <h2>Demo</h2>
     <p style="color: var(--muted); max-width: 640px;">
-      The npm client auto-registers an anonymous client_id on first run. No signup form, no credit card.
-      Paid plans below — annual subscriptions for commercial use and higher volumes.
+      Everything is free — all 50 tools, no signup, no credit card. The npm client registers an
+      anonymous client_id on first run. Install it, drop in two sample workbooks, and start prompting.
     </p>
 
-    <p style="text-align: center; font-size: 17px; color: var(--fg); max-width: 640px; margin: 28px auto 12px;">
-      Start free — <strong>10,000 calls / month, 10 MB file cap, all 37 tools</strong>, anonymous registration. Non-commercial use.
-    </p>
-    <p style="text-align: center; color: var(--muted); font-size: 14px; max-width: 640px; margin: 0 auto 32px;">
-      Commercial use or higher volume? Pick a tier below.
-    </p>
+    <div class="demo-steps">
+      <p class="demo-step"><span class="label">1. Install and register the MCP server</span></p>
+      <pre class="copy" data-copy="npm install -g xlsx-for-ai
+claude mcp add xlsx-for-ai -- xlsx-for-ai-mcp" title="Click to copy"><code>npm install -g xlsx-for-ai
+claude mcp add xlsx-for-ai -- xlsx-for-ai-mcp</code></pre>
 
-    <div class="pricing">
-      <div class="tier">
-        <h3>Bronze</h3>
-        <div class="price">$29<small> / year</small></div>
-        <p style="color: var(--muted); margin: 2px 0; font-size: 14px;">Commercial use, light volume.</p>
-        <ul>
-          <li>20,000 calls / month</li>
-          <li>Commercial-use license</li>
-          <li>Removes attribution</li>
-          <li>Per-request audit log</li>
-          <li>Email support</li>
-        </ul>
-        <p style="margin-top: 14px;"><a class="cta" style="display:inline-block; padding:10px 18px; font-size:14px;" href="https://buy.stripe.com/28E6oG3GxfJn0Vw8F2abK00" rel="noopener">Subscribe →</a></p>
-      </div>
-      <div class="tier featured">
-        <span class="badge">Most popular</span>
-        <h3>Silver</h3>
-        <div class="price">$99<small> / year</small></div>
-        <p style="color: var(--muted); margin: 2px 0; font-size: 14px;">Mid production tier.</p>
-        <ul>
-          <li>40,000 calls / month</li>
-          <li>Everything in Bronze</li>
-          <li>Cross-engine validation priority</li>
-          <li>Priority support</li>
-        </ul>
-        <p style="margin-top: 14px;"><a class="cta" style="display:inline-block; padding:10px 18px; font-size:14px;" href="https://buy.stripe.com/aFa14m5OF1Sxaw65sQabK01" rel="noopener">Subscribe →</a></p>
-      </div>
-      <div class="tier">
-        <h3>Gold</h3>
-        <div class="price">$199<small> / year</small></div>
-        <p style="color: var(--muted); margin: 2px 0; font-size: 14px;">Heavy automation.</p>
-        <ul>
-          <li>100,000 calls / month</li>
-          <li>Everything in Silver</li>
-          <li>SLA &amp; private support channel</li>
-        </ul>
-        <p style="margin-top: 14px;"><a class="cta" style="display:inline-block; padding:10px 18px; font-size:14px;" href="https://buy.stripe.com/bJe9AS3GxgNr33E3kIabK02" rel="noopener">Subscribe →</a></p>
+      <p class="demo-step"><span class="label">2. Drop two demo workbooks in your working directory</span></p>
+      <pre class="copy" data-copy="xlsx-for-ai samples" title="Click to copy"><code>xlsx-for-ai samples</code></pre>
+
+      <p class="demo-step"><span class="label">3. Ask your agent</span> — paste any of these:</p>
+      <div class="tool">
+        <p class="prompt">"Diff reporting-pack-v1.xlsx against reporting-pack-v2.xlsx and tell me what changed."</p>
+        <p class="prompt">"Validate reporting-pack-v2.xlsx across two engines and report any cell divergences."</p>
+        <p class="prompt">"Redact any PII in reporting-pack-v2.xlsx and show me a manifest of what was found."</p>
+        <p class="prompt">"Give me a one-call health report on reporting-pack-v1.xlsx."</p>
       </div>
     </div>
 
     <p style="color: var(--muted); font-size: 14px; margin-top: 22px;">
-      Above 100,000 calls/month? <a href="#contact">Contact us</a> for an enterprise plan.
+      A volume cap (10,000 calls / month) keeps the hosted API healthy — that's the only limit.
     </p>
+  </div>
+</section>
+
+<section id="tools">
+  <div class="wrap">
+    <h2>Tools</h2>
+    <p style="color: var(--muted); max-width: 660px;">
+      All 50 tools, grouped by what you're trying to do. Each one has a paste-ready example prompt
+      that runs against the workbooks from <code>xlsx-for-ai samples</code> above.
+    </p>
+
+    <h3 class="tool-group">Read &amp; explore a workbook</h3>
+    <div class="tool"><p class="name"><code>xlsx_read</code> — Read a workbook and return it as markdown, JSON, or SQL.</p><p class="prompt">"Read reporting-pack-v1.xlsx and show me the Summary sheet."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_list_sheets</code> — List sheet names, sizes, and which are hidden.</p><p class="prompt">"What sheets are in reporting-pack-v1.xlsx and how big is each?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_describe</code> — Per-column summary: count, nulls, unique, min/max/mean.</p><p class="prompt">"Give me a column-by-column summary of the Transactions sheet in reporting-pack-v1.xlsx."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_schema</code> — Infer each column's type, nullability, and a confidence score.</p><p class="prompt">"What are the column types in the Transactions sheet of reporting-pack-v1.xlsx?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_topology</code> — One-call map of the whole workbook: sheets, formulas, names, tables, flags.</p><p class="prompt">"Give me the full topology of reporting-pack-v1.xlsx in one shot."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_doctor</code> — One-call health report, findings ranked HIGH / MEDIUM / LOW.</p><p class="prompt">"Run a health check on reporting-pack-v1.xlsx and tell me what to worry about."</p></div>
+
+    <h3 class="tool-group">Query, reshape &amp; compare</h3>
+    <div class="tool"><p class="name"><code>xlsx_filter</code> — Return only the rows matching your conditions.</p><p class="prompt">"Show me the rows in Transactions where Revenue is over 10,000, from reporting-pack-v1.xlsx."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_sort</code> — Sort rows by one or more columns.</p><p class="prompt">"Sort the Transactions sheet of reporting-pack-v1.xlsx by Revenue, highest first."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_aggregate</code> — Group by a column and sum / average / count.</p><p class="prompt">"Group by department and give me sum and average spend from reporting-pack-v1.xlsx."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_pivot</code> — Build a 2-D pivot (rows × columns × aggregation).</p><p class="prompt">"Build a pivot of revenue by entity and department from reporting-pack-v1.xlsx."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_value_counts</code> — Count how often each value appears in a column.</p><p class="prompt">"What's the distribution of Department in reporting-pack-v1.xlsx?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_eval</code> — Compute live Excel-formula results (not the stale cached value).</p><p class="prompt">"Evaluate =SUM(Transactions!E2:E151) against reporting-pack-v1.xlsx."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_diff</code> — Deterministic cell- and formula-level diff between two workbooks.</p><p class="prompt">"Diff reporting-pack-v1.xlsx against reporting-pack-v2.xlsx — cell and formula level."</p></div>
+
+    <h3 class="tool-group">Formulas &amp; structure</h3>
+    <div class="tool"><p class="name"><code>xlsx_formulas</code> — Extract every formula with its cell and cached result.</p><p class="prompt">"Pull every formula in the Summary sheet of reporting-pack-v1.xlsx."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_named_ranges</code> — List all defined names and what they point at.</p><p class="prompt">"What named ranges are defined in reporting-pack-v1.xlsx?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_tables</code> — List every Excel Table (ListObject) with its range and columns.</p><p class="prompt">"List the Excel tables in reporting-pack-v1.xlsx."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_pivot_tables</code> — Surface pre-built pivot tables and what they compute.</p><p class="prompt">"What pivot tables already exist in reporting-pack-v1.xlsx and what do they aggregate?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_merged_cells</code> — List merged regions with the master-cell value.</p><p class="prompt">"Show me the merged cells in reporting-pack-v1.xlsx and what each one says."</p></div>
+
+    <h3 class="tool-group">Workbook intelligence &amp; audit (things pandas/openpyxl drop)</h3>
+    <div class="tool"><p class="name"><code>xlsx_charts</code> — List every chart with type, title, and the cells it plots.</p><p class="prompt">"What charts are in reporting-pack-v1.xlsx and which cells do they pull from?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_comments</code> — Extract legacy notes AND modern threaded comments, with authors.</p><p class="prompt">"Pull every reviewer comment in reporting-pack-v1.xlsx."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_conditional_formats</code> — List every conditional-formatting rule.</p><p class="prompt">"What conditional formatting rules does reporting-pack-v1.xlsx use?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_data_validations</code> — List dropdowns and input constraints per cell.</p><p class="prompt">"What data-validation rules (dropdowns, bounds) are in reporting-pack-v1.xlsx?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_form_controls</code> — List checkboxes, buttons, dropdowns and their linked cells.</p><p class="prompt">"List the form controls in reporting-pack-v1.xlsx and what cells they're tied to."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_slicers_timelines</code> — List slicers and timelines with their bindings.</p><p class="prompt">"What slicers or timelines does reporting-pack-v1.xlsx have?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_hyperlinks</code> — List every hyperlink, classified (external / internal / mailto).</p><p class="prompt">"List all hyperlinks in reporting-pack-v1.xlsx."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_images</code> — List embedded images with format, size, and anchor cell.</p><p class="prompt">"What images are embedded in reporting-pack-v1.xlsx?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_styles</code> — Surface number formats, fonts, and fills (what a cell looks like).</p><p class="prompt">"What number formats does the Summary sheet of reporting-pack-v1.xlsx use?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_print_settings</code> — Show "what would Excel print" per sheet.</p><p class="prompt">"What would print if I hit Cmd+P on reporting-pack-v1.xlsx?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_workbook_views</code> — Show UI state: active cell, frozen panes, hidden sheets, zoom.</p><p class="prompt">"When someone opens reporting-pack-v1.xlsx, what do they see — active cell, frozen panes, hidden sheets?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_properties</code> — Surface author, timestamps, and custom Info properties.</p><p class="prompt">"Who created reporting-pack-v1.xlsx and what custom properties does it carry?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_protection</code> — Show which sheets/cells are locked and what edits are allowed.</p><p class="prompt">"What's protected in reporting-pack-v1.xlsx and which cells can I still edit?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_macros</code> — Detect VBA macro presence and likely module names (never extracts code).</p><p class="prompt">"Does reporting-pack-v1.xlsx contain macros? Should I trust it?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_external_links</code> — List external workbook references and flag the ones that'll break.</p><p class="prompt">"Find the broken external links in reporting-pack-v1.xlsx and show me the fix."</p></div>
+
+    <h3 class="tool-group">Clean, fix &amp; transform</h3>
+    <div class="tool"><p class="name"><code>xlsx_data_clean</code> — Diagnose or fix the seven common data-grime issues (you approve each fix).</p><p class="prompt">"Clean up reporting-pack-v1.xlsx — fix inconsistent dates, stray whitespace, and numbers stored as text — and tell me what you changed."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_convert</code> — Convert 25+ spreadsheet formats in or out (xls, xlsb, ods, Numbers, csv, json…).</p><p class="prompt">"Convert reporting-pack-v1.xlsx to CSV and JSON for our pipeline."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_write</code> — Create or edit a workbook from a structured spec (server-validated).</p><p class="prompt">"Create a new workbook summary.xlsx with a Totals sheet summing revenue by entity."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_redact</code> — Detect and redact only the PII; everything else is preserved, with a manifest.</p><p class="prompt">"Redact the PII in reporting-pack-v1.xlsx and give me the audit manifest of what was removed."</p></div>
+
+    <h3 class="tool-group">Heal broken external references</h3>
+    <div class="tool"><p class="name"><code>xlsx_healer_diagnose</code> — Structured report of broken / at-risk external references.</p><p class="prompt">"Diagnose the external-reference problems in reporting-pack-v1.xlsx."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_healer_simulate</code> — Predict which references will break when you send the file to someone.</p><p class="prompt">"If I send reporting-pack-v1.xlsx to someone who can't see our network share, what breaks?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_healer_intent</code> — Describe the goal in plain English; Healer plans and applies the fix.</p><p class="prompt">"Make reporting-pack-v1.xlsx fully self-contained so it works for an outside recipient."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_healer_cure</code> — Apply one specific repair operation to a diagnosed workbook.</p><p class="prompt">"Freeze the broken external refs in reporting-pack-v1.xlsx to their last cached values."</p></div>
+
+    <h3 class="tool-group">Validate</h3>
+    <div class="tool"><p class="name"><code>xlsx_validate</code> — Render the workbook through two independent engines and flag disagreements.</p><p class="prompt">"Render reporting-pack-v1.xlsx through two independent engines and flag any cell where they disagree."</p></div>
+
+    <h3 class="tool-group">Provenance &amp; integrity</h3>
+    <div class="tool"><p class="name"><code>xlsx_stamp</code> — Sign a file with the checks it passed; travels with the file.</p><p class="prompt">"Stamp reporting-pack-v1.xlsx so anyone downstream can confirm it wasn't altered."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_verify_stamp</code> — Verify a stamp: signature valid? bytes unchanged? what checks passed?</p><p class="prompt">"Verify the integrity stamp on reporting-pack-v1.xlsx."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_receipt</code> — Attach an AI-generation receipt (who made it, when, from what inputs).</p><p class="prompt">"Attach a generation receipt to reporting-pack-v1.xlsx recording that I produced it."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_verify_receipt</code> — Verify a generation receipt and surface the declared provenance.</p><p class="prompt">"Verify the AI-generation receipt on reporting-pack-v1.xlsx."</p></div>
+
+    <h3 class="tool-group">Deliver where the team works</h3>
+    <div class="tool"><p class="name"><code>xlsx_post_slack</code> — Upload a workbook to a Slack channel.</p><p class="prompt">"Post reporting-pack-v1.xlsx to our #reporting Slack channel."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_post_teams</code> — Upload a workbook to a Microsoft Teams channel.</p><p class="prompt">"Post reporting-pack-v1.xlsx to our finance Teams channel."</p></div>
+
+    <h3 class="tool-group">Sessions &amp; advanced</h3>
+    <div class="tool"><p class="name"><code>xlsx_read_handle</code> — Re-read an already-uploaded workbook by handle, without re-sending bytes.</p><p class="prompt">"Read the workbook I uploaded earlier again, by its handle."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_session_set_validations</code> — Set validation rules the server enforces for the rest of a session.</p><p class="prompt">"For this session, require every row in Transactions to have an Entity and a positive Revenue."</p></div>
   </div>
 </section>
 
@@ -372,14 +448,17 @@
 xlsx-for-ai path/to/workbook.xlsx" title="Click to copy"><code>npm install -g xlsx-for-ai
 xlsx-for-ai path/to/workbook.xlsx</code></pre>
 
-    <p>Or wire it as an MCP server in your agent config (Claude Desktop, Cursor, Cline, Claude Code):</p>
+    <p>Or wire it as an MCP server. In Claude Code:</p>
+    <pre class="copy" data-copy="claude mcp add xlsx-for-ai -- xlsx-for-ai-mcp" title="Click to copy"><code>claude mcp add xlsx-for-ai -- xlsx-for-ai-mcp</code></pre>
+
+    <p>In any other MCP-aware agent (Cursor, Cline, Gemini), add this to its server config:</p>
     <pre class="copy" data-copy='{
   "mcpServers": {
-    "xlsx-for-ai": { "command": "xlsx-for-ai", "args": ["--mcp"] }
+    "xlsx-for-ai": { "command": "xlsx-for-ai-mcp" }
   }
 }' title="Click to copy"><code>{
   "mcpServers": {
-    "xlsx-for-ai": { "command": "xlsx-for-ai", "args": ["--mcp"] }
+    "xlsx-for-ai": { "command": "xlsx-for-ai-mcp" }
   }
 }</code></pre>
 

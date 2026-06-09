@@ -93,16 +93,6 @@
     font-size: 15px;
   }
   .hero .cta:hover { text-decoration: none; opacity: 0.92; }
-  .hero .install {
-    display: inline-block;
-    margin-left: 12px;
-    background: var(--code-bg);
-    padding: 12px 18px;
-    border-radius: 6px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 14px;
-    color: var(--fg);
-  }
 
   section { padding: 56px 0; border-top: 1px solid var(--border); }
   section h2 {
@@ -242,6 +232,75 @@
     color: var(--accent);
     font-weight: 600;
   }
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* command box: a real <button> so it's keyboard- and AT-accessible.
+     Compact "Copy command" by default; reveal full command on hover/focus;
+     always inline on touch / no-hover devices so there's no blind button. */
+  .cmd {
+    display: inline-flex;
+    align-items: stretch;
+    max-width: 100%;
+    margin: 18px auto 0;
+    padding: 0;
+    border: none;
+    border-radius: 6px;
+    background: var(--code-bg);
+    overflow: hidden;
+    text-align: left;
+    vertical-align: middle;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+  }
+  .cmd.copy:hover { background: var(--code-bg); }
+  .cmd.copy::after, .cmd.copy:hover::after { content: none !important; }
+  .cmd .cmd-text {
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 12px 16px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 14px;
+    color: var(--fg);
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
+  }
+  .cmd .cmd-btn {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    transition: background 0.12s ease;
+  }
+  .cmd .cmd-btn::after { content: 'Copy'; }
+  .cmd:hover .cmd-btn { background: #ebebeb; }
+
+  @media (hover: hover) {
+    .cmd .cmd-text { display: none; }
+    .cmd:hover .cmd-text,
+    .cmd:focus .cmd-text,
+    .cmd:focus-visible .cmd-text { display: block; border-right: 1px solid var(--border); }
+    .cmd:not(:hover):not(:focus):not(:focus-visible) .cmd-btn::after { content: 'Copy command'; }
+  }
+  @media (hover: none) {
+    .cmd .cmd-text { display: block; border-right: 1px solid var(--border); }
+  }
+  /* keep last so the copied state always wins the label */
+  .cmd.copy.copied .cmd-btn::after { content: 'Copied!'; }
   .install-row {
     display: flex;
     flex-wrap: wrap;
@@ -259,12 +318,14 @@
 
   @media (max-width: 600px) {
     .hero h1 { font-size: 32px; }
-    .hero .cta, .hero .install { display: block; margin: 8px auto; max-width: 320px; }
+    .hero .cta { display: block; margin: 8px auto; max-width: 320px; }
+    .hero .cmd { display: flex; margin: 12px auto 0; }
     header nav a { margin-left: 12px; font-size: 13px; }
   }
 </style>
 </head>
 <body>
+<span id="copy-status" class="sr-only" aria-live="polite"></span>
 
 <header>
   <div class="wrap">
@@ -288,7 +349,7 @@
       without losing structure. Hardened against malformed input. Free — all 50 tools.
     </p>
     <a class="cta" href="#demo">Try the demo</a>
-    <span class="install copy" data-copy="npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp" title="Click to copy">npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp</span>
+    <button type="button" class="cmd copy" data-copy="npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp" aria-label="Copy install command to clipboard"><code class="cmd-text">npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp</code><span class="cmd-btn" aria-hidden="true"></span></button>
     <div class="install-row">
       <span class="install-meta">
         <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">View on npm →</a>
@@ -346,7 +407,7 @@
 
     <div class="demo-steps">
       <p class="demo-step"><span class="label">Install — one terminal command</span></p>
-      <pre class="copy" data-copy="npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp" title="Click to copy"><code>npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
+      <button type="button" class="cmd copy" data-copy="npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp" aria-label="Copy install command to clipboard"><code class="cmd-text">npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp</code><span class="cmd-btn" aria-hidden="true"></span></button>
 
       <p class="demo-step"><span class="label">Get the sample workbooks</span> — drops <code>reporting-pack-v1.xlsx</code> and <code>reporting-pack-v2.xlsx</code> into the current folder:</p>
       <pre class="copy" data-copy="xfa samples" title="Click to copy"><code>xfa samples</code></pre>

@@ -6,7 +6,13 @@ document.addEventListener('click', function (e) {
   var text = el.getAttribute('data-copy') || el.innerText;
   var done = function () {
     el.classList.add('copied');
-    setTimeout(function () { el.classList.remove('copied'); }, 1600);
+    var status = document.getElementById('copy-status');
+    if (status) { status.textContent = 'Copied to clipboard'; }
+    if (done._t) clearTimeout(done._t);
+    done._t = setTimeout(function () {
+      el.classList.remove('copied');
+      if (status) { status.textContent = ''; }
+    }, 1600);
   };
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(done, function () {

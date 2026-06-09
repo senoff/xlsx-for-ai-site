@@ -611,25 +611,22 @@ xfa path/to/workbook.xlsx</code></pre>
       <li>Do not resell access to the Service without a written agreement.</li>
     </ul>
 
-    <h3>4. Paid plans</h3>
-    <p>Paid plans are billed monthly via Stripe. By subscribing, you authorize recurring charges to your payment method until you cancel. Cancellation takes effect at the end of the current billing period; access continues until then. Prices may change with at least 30 days' notice.</p>
+    <h3>4. Availability</h3>
+    <p>We aim for high availability but do not guarantee uninterrupted service.</p>
 
-    <h3>5. Availability</h3>
-    <p>We aim for high availability but do not guarantee uninterrupted service for free or Plus plans. Pro and Ultra plans include the SLA stated in the plan description.</p>
+    <h3>5. Disclaimer</h3>
+    <p>The Service is provided "as is" without warranty of any kind. xlsx-for-ai is not liable for indirect, consequential, or incidental damages arising from your use of the Service.</p>
 
-    <h3>6. Disclaimer</h3>
-    <p>The Service is provided "as is" without warranty of any kind. xlsx-for-ai is not liable for indirect, consequential, or incidental damages arising from your use of the Service. Total liability is limited to the amount you paid in the previous 12 months.</p>
-
-    <h3>7. Termination</h3>
+    <h3>6. Termination</h3>
     <p>You may stop using the Service at any time. We may terminate or suspend access for violations of these terms, with or without notice.</p>
 
-    <h3>8. Changes</h3>
+    <h3>7. Changes</h3>
     <p>We may update these terms. Material changes will be announced on this page with a revised "last updated" date. Continued use after changes constitutes acceptance.</p>
 
-    <h3>9. Governing law</h3>
+    <h3>8. Governing law</h3>
     <p>These terms are governed by the laws of the State of Texas, United States, without regard to conflict-of-laws principles. Disputes will be resolved in courts located in Travis County, Texas.</p>
 
-    <h3>10. Contact</h3>
+    <h3>9. Contact</h3>
     <p>Questions about these terms: <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a>.</p>
   </div>
 </section>
@@ -651,7 +648,7 @@ xfa path/to/workbook.xlsx</code></pre>
     <p>When a request results in an error (5xx, hardening rejection, engine exception), we may retain a redacted copy of the workbook for up to 30 days for debugging. "Redacted" means cell values are stripped before storage. Captures auto-delete after 30 days. You can disable this for any request by sending the header <code>X-XFA-Privacy: strict</code> or by setting <code>XFA_PRIVACY=strict</code> in your environment.</p>
 
     <h3>Subprocessors</h3>
-    <p>We use <a href="https://fly.io" rel="noopener">Fly.io</a> for compute and database hosting, <a href="https://www.cloudflare.com" rel="noopener">Cloudflare R2</a> for redacted error captures, and <a href="https://stripe.com" rel="noopener">Stripe</a> for payment processing on paid plans. Stripe receives only payment-related data when you subscribe.</p>
+    <p>We use <a href="https://fly.io" rel="noopener">Fly.io</a> for compute and database hosting and <a href="https://www.cloudflare.com" rel="noopener">Cloudflare R2</a> for redacted error captures.</p>
 
     <h3>Your rights</h3>
     <p>To delete your registration, remove <code>~/.xlsx-for-ai/config.json</code> on your machine. The next call generates a new anonymous client_id. To request deletion of any associated audit logs, email us — anonymous IDs make most users untraceable; we'll honor any request we can identify.</p>
@@ -664,33 +661,12 @@ xfa path/to/workbook.xlsx</code></pre>
   </div>
 </section>
 
-<section id="refunds" class="legal">
-  <div class="wrap">
-    <h2>Refund Policy</h2>
-    <p class="legal-meta">Last updated: 2026-05-09</p>
-
-    <h3>Free tier</h3>
-    <p>The free tier is free. There is nothing to refund.</p>
-
-    <h3>Monthly subscriptions</h3>
-    <p>You can cancel a paid subscription at any time from your <a href="#contact">customer portal</a> or by emailing <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a>. Cancellation takes effect at the end of the current billing period; you keep access until then.</p>
-    <p>For first-time subscribers, we offer a full refund within 14 days of the initial charge if you're unhappy with the Service for any reason — just email us. After 14 days or for renewal charges, refunds are at our discretion.</p>
-
-    <h3>Service incidents</h3>
-    <p>If the Service is unavailable for more than the SLA threshold of your plan in a billing period, contact us and we will issue a prorated credit toward the next billing cycle.</p>
-
-    <h3>Disputes</h3>
-    <p>Please email us before initiating a chargeback. We respond within two business days and will work with you to resolve any billing concern.</p>
-  </div>
-</section>
-
 <footer>
   <div class="wrap">
     <div>© 2026 xlsx-for-ai. All rights reserved.</div>
     <div>
       <a href="#terms">Terms</a>
       <a href="/privacy">Privacy</a>
-      <a href="#refunds">Refunds</a>
       <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
       <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">npm</a>
       <a href="mailto:support@xlsx-for-ai.dev">Contact</a>

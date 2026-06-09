@@ -132,6 +132,13 @@
     padding-bottom: 6px;
     border-bottom: 1px solid var(--border);
   }
+  .fn-list { margin: 0 0 8px; line-height: 2; }
+  .fn-list code {
+    display: inline-block;
+    margin: 0 4px 4px 0;
+    font-size: 13px;
+    color: var(--fg);
+  }
   .tool { margin: 0 0 16px; }
   .tool .name { margin: 0; font-size: 15px; color: var(--fg); }
   .tool .name code { font-weight: 600; }
@@ -339,6 +346,7 @@
       <a href="#demo">Demo</a>
       <a href="#setup-slack-teams">Setup</a>
       <a href="#tools">Tools</a>
+      <a href="#functions">Functions</a>
       <a href="#docs">Docs</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -564,6 +572,36 @@
     <h3 class="tool-group">Sessions &amp; advanced</h3>
     <div class="tool"><p class="name"><code>xlsx_read_handle</code> — Re-read an already-uploaded workbook by handle, without re-sending bytes.</p><p class="prompt">"Read the workbook I uploaded earlier again, by its handle, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_session_set_validations</code> — Set validation rules the server enforces for the rest of a session.</p><p class="prompt">"For this session, require every row in Transactions to have an Entity and a positive Revenue, with xfa."</p></div>
+  </div>
+</section>
+
+<section id="functions">
+  <div class="wrap">
+    <h2>Functions</h2>
+    <p style="color: var(--muted); max-width: 660px;">
+      <code>xlsx_eval</code> recalculates formulas with <a href="https://hyperformula.handsontable.com">HyperFormula</a> v3.2.0 —
+      <strong>382 Excel functions</strong>. The engine has no <code>INDIRECT</code>, <code>WEBSERVICE</code>, <code>RTD</code>, <code>DDE</code>:
+      there is no dynamic-reference, network, or external-data function in the set, so a recalc can’t reach off-workbook.
+      The absent functions are the sandbox boundary.
+    </p>
+    <h3 class="tool-group">Math &amp; trig <span style="font-weight:400;opacity:.6">(101)</span></h3>
+    <p class="fn-list"><code>ABS</code> <code>ACOS</code> <code>ACOSH</code> <code>ACOT</code> <code>ACOTH</code> <code>ARABIC</code> <code>ASIN</code> <code>ASINH</code> <code>ATAN</code> <code>ATAN2</code> <code>ATANH</code> <code>AVERAGE</code> <code>AVERAGEA</code> <code>AVERAGEIF</code> <code>CEILING</code> <code>CEILING.MATH</code> <code>CEILING.PRECISE</code> <code>COMBIN</code> <code>COMBINA</code> <code>COS</code> <code>COSH</code> <code>COT</code> <code>COTH</code> <code>COUNT</code> <code>COUNTA</code> <code>COUNTBLANK</code> <code>COUNTIF</code> <code>COUNTIFS</code> <code>COUNTUNIQUE</code> <code>CSC</code> <code>CSCH</code> <code>DEGREES</code> <code>EVEN</code> <code>EXP</code> <code>FACT</code> <code>FACTDOUBLE</code> <code>FLOOR</code> <code>FLOOR.MATH</code> <code>FLOOR.PRECISE</code> <code>GCD</code> <code>INT</code> <code>ISO.CEILING</code> <code>LCM</code> <code>LN</code> <code>LOG</code> <code>LOG10</code> <code>MAX</code> <code>MAXA</code> <code>MAXIFS</code> <code>MIN</code> <code>MINA</code> <code>MINIFS</code> <code>MOD</code> <code>MROUND</code> <code>MULTINOMIAL</code> <code>ODD</code> <code>PI</code> <code>POWER</code> <code>PRODUCT</code> <code>QUOTIENT</code> <code>RADIANS</code> <code>RAND</code> <code>RANDBETWEEN</code> <code>ROMAN</code> <code>ROUND</code> <code>ROUNDDOWN</code> <code>ROUNDUP</code> <code>SEC</code> <code>SECH</code> <code>SERIESSUM</code> <code>SIGN</code> <code>SIN</code> <code>SINH</code> <code>SQRT</code> <code>SQRTPI</code> <code>STDEV</code> <code>STDEV.P</code> <code>STDEV.S</code> <code>STDEVA</code> <code>STDEVP</code> <code>STDEVPA</code> <code>STDEVS</code> <code>SUBTOTAL</code> <code>SUM</code> <code>SUMIF</code> <code>SUMIFS</code> <code>SUMPRODUCT</code> <code>SUMSQ</code> <code>SUMX2MY2</code> <code>SUMX2PY2</code> <code>SUMXMY2</code> <code>TAN</code> <code>TANH</code> <code>TRUNC</code> <code>VAR</code> <code>VAR.P</code> <code>VAR.S</code> <code>VARA</code> <code>VARP</code> <code>VARPA</code> <code>VARS</code></p>
+    <h3 class="tool-group">Statistical <span style="font-weight:400;opacity:.6">(108)</span></h3>
+    <p class="fn-list"><code>AVEDEV</code> <code>BESSELI</code> <code>BESSELJ</code> <code>BESSELK</code> <code>BESSELY</code> <code>BETA.DIST</code> <code>BETA.INV</code> <code>BETADIST</code> <code>BETAINV</code> <code>BINOM.DIST</code> <code>BINOM.INV</code> <code>BINOMDIST</code> <code>CHIDIST</code> <code>CHIDISTRT</code> <code>CHIINV</code> <code>CHIINVRT</code> <code>CHISQ.DIST</code> <code>CHISQ.DIST.RT</code> <code>CHISQ.INV</code> <code>CHISQ.INV.RT</code> <code>CHISQ.TEST</code> <code>CHITEST</code> <code>CONFIDENCE</code> <code>CONFIDENCE.NORM</code> <code>CONFIDENCE.T</code> <code>CORREL</code> <code>COVAR</code> <code>COVARIANCE.P</code> <code>COVARIANCE.S</code> <code>COVARIANCEP</code> <code>COVARIANCES</code> <code>CRITBINOM</code> <code>DEVSQ</code> <code>ERF</code> <code>ERFC</code> <code>EXPON.DIST</code> <code>EXPONDIST</code> <code>F.DIST</code> <code>F.DIST.RT</code> <code>F.INV</code> <code>F.INV.RT</code> <code>F.TEST</code> <code>FDIST</code> <code>FDISTRT</code> <code>FINV</code> <code>FINVRT</code> <code>FISHER</code> <code>FISHERINV</code> <code>FTEST</code> <code>GAMMA</code> <code>GAMMA.DIST</code> <code>GAMMA.INV</code> <code>GAMMADIST</code> <code>GAMMAINV</code> <code>GAMMALN</code> <code>GAMMALN.PRECISE</code> <code>GAUSS</code> <code>GEOMEAN</code> <code>HARMEAN</code> <code>HYPGEOM.DIST</code> <code>HYPGEOMDIST</code> <code>LARGE</code> <code>LOGINV</code> <code>LOGNORM.DIST</code> <code>LOGNORM.INV</code> <code>LOGNORMDIST</code> <code>LOGNORMINV</code> <code>MEDIAN</code> <code>NEGBINOM.DIST</code> <code>NEGBINOMDIST</code> <code>NORM.DIST</code> <code>NORM.INV</code> <code>NORM.S.DIST</code> <code>NORM.S.INV</code> <code>NORMDIST</code> <code>NORMINV</code> <code>NORMSDIST</code> <code>NORMSINV</code> <code>PEARSON</code> <code>PHI</code> <code>POISSON</code> <code>POISSON.DIST</code> <code>POISSONDIST</code> <code>RSQ</code> <code>SKEW</code> <code>SKEW.P</code> <code>SKEWP</code> <code>SLOPE</code> <code>SMALL</code> <code>STANDARDIZE</code> <code>STEYX</code> <code>T.DIST</code> <code>T.DIST.2T</code> <code>T.DIST.RT</code> <code>T.INV</code> <code>T.INV.2T</code> <code>T.TEST</code> <code>TDIST</code> <code>TDIST2T</code> <code>TDISTRT</code> <code>TINV</code> <code>TINV2T</code> <code>TTEST</code> <code>WEIBULL</code> <code>WEIBULL.DIST</code> <code>WEIBULLDIST</code> <code>Z.TEST</code> <code>ZTEST</code></p>
+    <h3 class="tool-group">Financial <span style="font-weight:400;opacity:.6">(28)</span></h3>
+    <p class="fn-list"><code>CUMIPMT</code> <code>CUMPRINC</code> <code>DB</code> <code>DDB</code> <code>DOLLARDE</code> <code>DOLLARFR</code> <code>EFFECT</code> <code>FV</code> <code>FVSCHEDULE</code> <code>IPMT</code> <code>IRR</code> <code>ISPMT</code> <code>MIRR</code> <code>NOMINAL</code> <code>NPER</code> <code>NPV</code> <code>PDURATION</code> <code>PMT</code> <code>PPMT</code> <code>PV</code> <code>RATE</code> <code>RRI</code> <code>SLN</code> <code>SYD</code> <code>TBILLEQ</code> <code>TBILLPRICE</code> <code>TBILLYIELD</code> <code>XNPV</code></p>
+    <h3 class="tool-group">Date &amp; time <span style="font-weight:400;opacity:.6">(27)</span></h3>
+    <p class="fn-list"><code>DATE</code> <code>DATEDIF</code> <code>DATEVALUE</code> <code>DAY</code> <code>DAYS</code> <code>DAYS360</code> <code>EDATE</code> <code>EOMONTH</code> <code>HOUR</code> <code>INTERVAL</code> <code>ISOWEEKNUM</code> <code>MINUTE</code> <code>MONTH</code> <code>NETWORKDAYS</code> <code>NETWORKDAYS.INTL</code> <code>NOW</code> <code>SECOND</code> <code>TEXT</code> <code>TIME</code> <code>TIMEVALUE</code> <code>TODAY</code> <code>WEEKDAY</code> <code>WEEKNUM</code> <code>WORKDAY</code> <code>WORKDAY.INTL</code> <code>YEAR</code> <code>YEARFRAC</code></p>
+    <h3 class="tool-group">Text <span style="font-weight:400;opacity:.6">(26)</span></h3>
+    <p class="fn-list"><code>CHAR</code> <code>CLEAN</code> <code>CODE</code> <code>CONCATENATE</code> <code>EXACT</code> <code>FIND</code> <code>FORMULATEXT</code> <code>HYPERLINK</code> <code>LEFT</code> <code>LEN</code> <code>LOWER</code> <code>MID</code> <code>N</code> <code>PROPER</code> <code>REPLACE</code> <code>REPT</code> <code>RIGHT</code> <code>SEARCH</code> <code>SPLIT</code> <code>SUBSTITUTE</code> <code>T</code> <code>TRIM</code> <code>UNICHAR</code> <code>UNICODE</code> <code>UPPER</code> <code>VALUE</code></p>
+    <h3 class="tool-group">Logical <span style="font-weight:400;opacity:.6">(12)</span></h3>
+    <p class="fn-list"><code>AND</code> <code>CHOOSE</code> <code>FALSE</code> <code>IF</code> <code>IFERROR</code> <code>IFNA</code> <code>IFS</code> <code>NOT</code> <code>OR</code> <code>SWITCH</code> <code>TRUE</code> <code>XOR</code></p>
+    <h3 class="tool-group">Lookup &amp; reference <span style="font-weight:400;opacity:.6">(13)</span></h3>
+    <p class="fn-list"><code>ADDRESS</code> <code>ARRAYFORMULA</code> <code>ARRAY_CONSTRAIN</code> <code>FILTER</code> <code>HLOOKUP</code> <code>MATCH</code> <code>MAXPOOL</code> <code>MEDIANPOOL</code> <code>MMULT</code> <code>OFFSET</code> <code>TRANSPOSE</code> <code>VLOOKUP</code> <code>XLOOKUP</code></p>
+    <h3 class="tool-group">Information <span style="font-weight:400;opacity:.6">(21)</span></h3>
+    <p class="fn-list"><code>COLUMN</code> <code>COLUMNS</code> <code>INDEX</code> <code>ISBINARY</code> <code>ISBLANK</code> <code>ISERR</code> <code>ISERROR</code> <code>ISEVEN</code> <code>ISFORMULA</code> <code>ISLOGICAL</code> <code>ISNA</code> <code>ISNONTEXT</code> <code>ISNUMBER</code> <code>ISODD</code> <code>ISREF</code> <code>ISTEXT</code> <code>NA</code> <code>ROW</code> <code>ROWS</code> <code>SHEET</code> <code>SHEETS</code></p>
+    <h3 class="tool-group">Engineering <span style="font-weight:400;opacity:.6">(46)</span></h3>
+    <p class="fn-list"><code>BASE</code> <code>BIN2DEC</code> <code>BIN2HEX</code> <code>BIN2OCT</code> <code>BITAND</code> <code>BITLSHIFT</code> <code>BITOR</code> <code>BITRSHIFT</code> <code>BITXOR</code> <code>COMPLEX</code> <code>DEC2BIN</code> <code>DEC2HEX</code> <code>DEC2OCT</code> <code>DECIMAL</code> <code>DELTA</code> <code>HEX2BIN</code> <code>HEX2DEC</code> <code>HEX2OCT</code> <code>IMABS</code> <code>IMAGINARY</code> <code>IMARGUMENT</code> <code>IMCONJUGATE</code> <code>IMCOS</code> <code>IMCOSH</code> <code>IMCOT</code> <code>IMCSC</code> <code>IMCSCH</code> <code>IMDIV</code> <code>IMEXP</code> <code>IMLN</code> <code>IMLOG10</code> <code>IMLOG2</code> <code>IMPOWER</code> <code>IMPRODUCT</code> <code>IMREAL</code> <code>IMSEC</code> <code>IMSECH</code> <code>IMSIN</code> <code>IMSINH</code> <code>IMSQRT</code> <code>IMSUB</code> <code>IMSUM</code> <code>IMTAN</code> <code>OCT2BIN</code> <code>OCT2DEC</code> <code>OCT2HEX</code></p>
   </div>
 </section>
 

@@ -348,8 +348,8 @@
     <h1>Reliable spreadsheets for AI agents.</h1>
     <p class="lead">
       A hosted MCP server and npm client that lets LLMs read, write, validate and analyze Excel files
-      without losing structure — and computes live formula results, not the stale cached value openpyxl
-      and exceljs hand back. Hardened against malformed input. Free — all 50 tools.
+      without losing structure. It live-recalculates formulas and hands back the computed value — not
+      the stale value last saved in the file. Hardened against malformed input. Free — all 50 tools.
     </p>
     <a class="cta" href="#demo">Try the demo</a>
     <button type="button" class="cmd copy" data-copy="npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp" aria-label="Copy install command to clipboard"><code class="cmd-text">npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp</code><span class="cmd-btn" aria-hidden="true"></span></button>
@@ -367,26 +367,26 @@
   <div class="wrap">
     <h2>What it does</h2>
     <p style="color: var(--muted); max-width: 640px;">
-      LLMs choke on real spreadsheets — a one-shot pandas read flattens merged cells, drops named
+      LLMs choke on real spreadsheets — a naive one-shot read flattens merged cells, drops named
       ranges, reads formulas as stale cached values, and can't tell a header row from a data row.
       xlsx-for-ai exposes a tool surface designed for agents.
     </p>
     <div class="grid">
       <div class="card">
         <h3>Live formula results</h3>
-        <p>Recompute formulas to their actual values with a portable engine — no Excel or LibreOffice in the loop. openpyxl and exceljs hand back the formula text or a stale cached value and can't recalculate; xlsx-for-ai can.</p>
+        <p>Recompute formulas to their actual values with a portable engine — no Excel or LibreOffice in the loop. It hands back the computed value, not the stale value last saved in the file.</p>
       </div>
       <div class="card">
         <h3>Read &amp; describe</h3>
-        <p>Parse any .xlsx into LLM-friendly text. Per-column type inference with confidence. Pandas-style describe, filter, aggregate.</p>
+        <p>Parse any .xlsx into LLM-friendly text. Per-column type inference with confidence. Describe, filter, and aggregate.</p>
       </div>
       <div class="card">
         <h3>Structure preserved</h3>
-        <p>Named ranges, merged cells, formulas, data validations, and conditional formatting are first-class — not collapsed by a one-shot pandas read.</p>
+        <p>Named ranges, merged cells, formulas, data validations, and conditional formatting are first-class — not collapsed by a naive one-shot read.</p>
       </div>
       <div class="card">
         <h3>Cross-engine validation</h3>
-        <p>Run a workbook through two independent engines and report divergences. Catches the corruption pandas silently masks.</p>
+        <p>Run a workbook through two independent engines and report divergences. Catches corruption a naive read silently masks.</p>
       </div>
       <div class="card">
         <h3>Hardened by default</h3>
@@ -517,7 +517,7 @@
     <div class="tool"><p class="name"><code>xlsx_pivot_tables</code> — Surface pre-built pivot tables and what they compute.</p><p class="prompt">"What pivot tables already exist in reporting-pack-v1.xlsx and what do they aggregate, with xfa?"</p></div>
     <div class="tool"><p class="name"><code>xlsx_merged_cells</code> — List merged regions with the master-cell value.</p><p class="prompt">"Show me the merged cells in reporting-pack-v1.xlsx and what each one says, with xfa."</p></div>
 
-    <h3 class="tool-group">Workbook intelligence &amp; audit (things a pandas read drops)</h3>
+    <h3 class="tool-group">Workbook intelligence &amp; audit (things a naive read drops)</h3>
     <div class="tool"><p class="name"><code>xlsx_charts</code> — List every chart with type, title, and the cells it plots.</p><p class="prompt">"What charts are in reporting-pack-v1.xlsx and which cells do they pull from, with xfa?"</p></div>
     <div class="tool"><p class="name"><code>xlsx_comments</code> — Extract legacy notes AND modern threaded comments, with authors.</p><p class="prompt">"Pull every reviewer comment in reporting-pack-v1.xlsx, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_conditional_formats</code> — List every conditional-formatting rule.</p><p class="prompt">"What conditional formatting rules does reporting-pack-v1.xlsx use, with xfa?"</p></div>

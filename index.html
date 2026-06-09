@@ -88,9 +88,13 @@
     background: var(--fg);
     color: white;
     padding: 12px 22px;
+    border: 1px solid var(--fg);
     border-radius: 6px;
     font-weight: 600;
     font-size: 15px;
+    line-height: 1.4;
+    vertical-align: middle;
+    margin-right: 12px;
   }
   .hero .cta:hover { text-decoration: none; opacity: 0.92; }
 
@@ -244,65 +248,63 @@
     border: 0;
   }
 
-  /* command box: a real <button> so it's keyboard- and AT-accessible.
-     Compact "Copy command" by default; reveal full command on hover/focus;
-     always inline on touch / no-hover devices so there's no blind button. */
+  /* command button: a real <button> so it's keyboard- and AT-accessible.
+     Matches the .cta in size/shape (secondary outline style). The full command
+     is revealed as an absolutely-positioned tooltip with pointer-events:none —
+     it never reflows the button or sits under the cursor, so there's no
+     hover-thrash flicker. Click copies the command to the clipboard. */
   .cmd {
-    display: inline-flex;
-    align-items: stretch;
-    max-width: 100%;
-    margin: 18px auto 0;
-    padding: 0;
-    border: none;
+    position: relative;
+    display: inline-block;
+    margin: 0;
+    padding: 12px 22px;
+    border: 1px solid var(--fg);
     border-radius: 6px;
-    background: var(--code-bg);
-    overflow: hidden;
-    text-align: left;
-    vertical-align: middle;
-    font: inherit;
-    color: inherit;
-    cursor: pointer;
-  }
-  .cmd.copy:hover { background: var(--code-bg); }
-  .cmd.copy::after, .cmd.copy:hover::after, .cmd.copy:focus-visible::after { content: none !important; }
-  .cmd .cmd-text {
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 12px 16px;
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 14px;
+    background: transparent;
     color: var(--fg);
-    touch-action: pan-x;
-    -webkit-overflow-scrolling: touch;
-  }
-  .cmd .cmd-btn {
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    padding: 0 16px;
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 13px;
+    font: inherit;
     font-weight: 600;
-    color: var(--accent);
-    letter-spacing: 0.02em;
-    white-space: nowrap;
+    font-size: 15px;
+    line-height: 1.4;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
     transition: background 0.12s ease;
   }
-  .cmd .cmd-btn::after { content: 'Copy'; }
-  .cmd:hover .cmd-btn { background: #ebebeb; }
+  .cmd:hover { background: rgba(0, 0, 0, 0.05); }
+  .cmd:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  /* suppress the generic .copy "Click to copy" pseudo-label on this button */
+  .cmd.copy::after, .cmd.copy:hover::after, .cmd.copy:focus-visible::after { content: none !important; }
 
-  @media (hover: hover) {
-    .cmd .cmd-text { display: none; }
-    .cmd:hover .cmd-text,
-    .cmd:focus .cmd-text,
-    .cmd:focus-visible .cmd-text { display: block; border-right: 1px solid var(--border); }
-    .cmd:not(:hover):not(:focus):not(:focus-visible) .cmd-btn::after { content: 'Copy command'; }
+  /* visible label */
+  .cmd .cmd-btn::after { content: 'Copy command'; }
+  .cmd.copy.copied .cmd-btn::after { content: 'Copied \2713'; color: var(--accent); }
+
+  /* the command itself: a stable tooltip below the button */
+  .cmd .cmd-text {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    display: block;
+    max-width: 92vw;
+    white-space: nowrap;
+    padding: 8px 12px;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--fg);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.12s ease;
+    z-index: 20;
   }
-  @media (hover: none) {
-    .cmd .cmd-text { display: block; border-right: 1px solid var(--border); }
-  }
-  /* keep last so the copied state always wins the label */
-  .cmd.copy.copied .cmd-btn::after { content: 'Copied!'; }
+  .cmd:hover .cmd-text,
+  .cmd:focus-visible .cmd-text { opacity: 1; visibility: visible; }
   .install-row {
     display: flex;
     flex-wrap: wrap;
@@ -321,7 +323,7 @@
   @media (max-width: 600px) {
     .hero h1 { font-size: 32px; }
     .hero .cta { display: block; margin: 8px auto; max-width: 320px; }
-    .hero .cmd { display: flex; margin: 12px auto 0; }
+    .hero .cmd { display: block; margin: 8px auto; max-width: 320px; }
     header nav a { margin-left: 12px; font-size: 13px; }
   }
 </style>

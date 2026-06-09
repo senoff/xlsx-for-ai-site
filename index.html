@@ -413,59 +413,6 @@
   </div>
 </section>
 
-<section class="alt" id="setup-slack-teams">
-  <div class="wrap">
-    <h2>Setting up Slack &amp; Teams</h2>
-    <p style="color: var(--muted); max-width: 660px;">
-      Posting a workbook into Slack or Teams is the only part of xfa that needs a one-time setup —
-      a token that lets the tool act in your workspace. You only do this once.
-    </p>
-
-    <h3 class="tool-group">Slack</h3>
-    <ol style="color: var(--muted); max-width: 680px; line-height: 1.7;">
-      <li>Go to <a href="https://api.slack.com/apps" rel="noopener">api.slack.com/apps</a> and click <strong>Create New App → From scratch</strong>. Name it (e.g. <code>xfa-poster</code>) and pick your workspace.</li>
-      <li>In the app, open <strong>OAuth &amp; Permissions</strong> (left sidebar). Under <strong>Scopes → Bot Token Scopes</strong>, click <strong>Add an OAuth Scope</strong> and add <code>files:write</code>.</li>
-      <li>Scroll up and click <strong>Install to Workspace → Allow</strong>.</li>
-      <li>Copy the <strong>Bot User OAuth Token</strong> (it starts with <code>xoxb-</code>).</li>
-      <li>In your terminal, make it available to xfa:
-        <pre class="copy" data-copy="export SLACK_BOT_TOKEN=xoxb-your-token-here" title="Click to copy"><code>export SLACK_BOT_TOKEN=xoxb-your-token-here</code></pre>
-        (Add that line to your <code>~/.zshrc</code> or <code>~/.bashrc</code> so it persists across terminals.)</li>
-      <li>Invite the bot to the channel you want to post to — in Slack, type <code>/invite @xfa-poster</code> in that channel.</li>
-      <li>Use the <strong>channel ID</strong> (not the <code>#name</code>) in your prompt. To get it: in Slack, click the channel name → <strong>View channel details</strong> → the ID (starts with <code>C</code> or <code>G</code>) is at the bottom.</li>
-    </ol>
-    <p style="color: var(--muted); max-width: 680px;">
-      Now <em>"Have xfa post &lt;file&gt; to &lt;channel-id&gt; on Slack"</em> works.
-    </p>
-    <p style="color: var(--muted); font-size: 14px;">
-      Reference: <a href="https://api.slack.com/authentication/basics" rel="noopener">Slack — bot tokens &amp; basics</a> ·
-      <a href="https://api.slack.com/scopes/files:write" rel="noopener">the <code>files:write</code> scope</a>.
-    </p>
-
-    <h3 class="tool-group">Microsoft Teams</h3>
-    <ol style="color: var(--muted); max-width: 680px; line-height: 1.7;">
-      <li>Go to <a href="https://entra.microsoft.com" rel="noopener">entra.microsoft.com</a> (Microsoft Entra ID, formerly Azure AD) → <strong>App registrations → New registration</strong>. Name it and register.</li>
-      <li>Open <strong>API permissions → Add a permission → Microsoft Graph</strong> and add <code>Files.ReadWrite.All</code> and <code>ChannelMessage.Send</code>.</li>
-      <li>Click <strong>Grant admin consent</strong> for your organization (an admin may need to do this).</li>
-      <li>Get a <strong>Microsoft Graph access token</strong> for the app (client-credentials flow). See <a href="https://learn.microsoft.com/graph/auth/auth-concepts" rel="noopener">Graph auth</a>.</li>
-      <li>Make it available to xfa:
-        <pre class="copy" data-copy="export TEAMS_GRAPH_TOKEN=your-graph-token-here" title="Click to copy"><code>export TEAMS_GRAPH_TOKEN=your-graph-token-here</code></pre></li>
-      <li>Find the <strong>channel ID</strong> via Graph: <code>GET /teams/{team-id}/channels</code> (<a href="https://learn.microsoft.com/graph/api/channel-list" rel="noopener">docs</a>).</li>
-    </ol>
-    <p style="color: var(--muted); max-width: 680px;">
-      Now <em>"Have xfa post &lt;file&gt; to &lt;channel-id&gt; on Teams"</em> works.
-    </p>
-    <p style="color: var(--muted); font-size: 14px;">
-      Reference: <a href="https://learn.microsoft.com/graph/permissions-reference" rel="noopener">Microsoft Graph permissions</a>.
-    </p>
-
-    <p style="color: var(--muted); font-size: 14px; max-width: 680px; margin-top: 18px;">
-      <strong>Security note:</strong> xfa reads these tokens from your environment so they never appear
-      in your chat history. You can pass a token inline as a tool argument, but then it would show up
-      in the conversation log — the env-var path is recommended.
-    </p>
-  </div>
-</section>
-
 <section id="tools">
   <div class="wrap">
     <h2>Tools</h2>
@@ -547,6 +494,59 @@
     <h3 class="tool-group">Sessions &amp; advanced</h3>
     <div class="tool"><p class="name"><code>xlsx_read_handle</code> — Re-read an already-uploaded workbook by handle, without re-sending bytes.</p><p class="prompt">"Read the workbook I uploaded earlier again, by its handle."</p></div>
     <div class="tool"><p class="name"><code>xlsx_session_set_validations</code> — Set validation rules the server enforces for the rest of a session.</p><p class="prompt">"For this session, require every row in Transactions to have an Entity and a positive Revenue."</p></div>
+  </div>
+</section>
+
+<section class="alt" id="setup-slack-teams">
+  <div class="wrap">
+    <h2>Setting up Slack &amp; Teams</h2>
+    <p style="color: var(--muted); max-width: 660px;">
+      Posting a workbook into Slack or Teams is the only part of xfa that needs a one-time setup —
+      a token that lets the tool act in your workspace. You only do this once.
+    </p>
+
+    <h3 class="tool-group">Slack</h3>
+    <ol style="color: var(--muted); max-width: 680px; line-height: 1.7;">
+      <li>Go to <a href="https://api.slack.com/apps" rel="noopener">api.slack.com/apps</a> and click <strong>Create New App → From scratch</strong>. Name it (e.g. <code>xfa-poster</code>) and pick your workspace.</li>
+      <li>In the app, open <strong>OAuth &amp; Permissions</strong> (left sidebar). Under <strong>Scopes → Bot Token Scopes</strong>, click <strong>Add an OAuth Scope</strong> and add <code>files:write</code>.</li>
+      <li>Scroll up and click <strong>Install to Workspace → Allow</strong>.</li>
+      <li>Copy the <strong>Bot User OAuth Token</strong> (it starts with <code>xoxb-</code>).</li>
+      <li>In your terminal, make it available to xfa:
+        <pre class="copy" data-copy="export SLACK_BOT_TOKEN=xoxb-your-token-here" title="Click to copy"><code>export SLACK_BOT_TOKEN=xoxb-your-token-here</code></pre>
+        (Add that line to your <code>~/.zshrc</code> or <code>~/.bashrc</code> so it persists across terminals.)</li>
+      <li>Invite the bot to the channel you want to post to — in Slack, type <code>/invite @xfa-poster</code> in that channel.</li>
+      <li>Use the <strong>channel ID</strong> (not the <code>#name</code>) in your prompt. To get it: in Slack, click the channel name → <strong>View channel details</strong> → the ID (starts with <code>C</code> or <code>G</code>) is at the bottom.</li>
+    </ol>
+    <p style="color: var(--muted); max-width: 680px;">
+      Now <em>"Have xfa post &lt;file&gt; to &lt;channel-id&gt; on Slack"</em> works.
+    </p>
+    <p style="color: var(--muted); font-size: 14px;">
+      Reference: <a href="https://api.slack.com/authentication/basics" rel="noopener">Slack — bot tokens &amp; basics</a> ·
+      <a href="https://api.slack.com/scopes/files:write" rel="noopener">the <code>files:write</code> scope</a>.
+    </p>
+
+    <h3 class="tool-group">Microsoft Teams</h3>
+    <ol style="color: var(--muted); max-width: 680px; line-height: 1.7;">
+      <li>Go to <a href="https://entra.microsoft.com" rel="noopener">entra.microsoft.com</a> (Microsoft Entra ID, formerly Azure AD) → <strong>App registrations → New registration</strong>. Name it and register.</li>
+      <li>Open <strong>API permissions → Add a permission → Microsoft Graph</strong> and add <code>Files.ReadWrite.All</code> and <code>ChannelMessage.Send</code>.</li>
+      <li>Click <strong>Grant admin consent</strong> for your organization (an admin may need to do this).</li>
+      <li>Get a <strong>Microsoft Graph access token</strong> for the app (client-credentials flow). See <a href="https://learn.microsoft.com/graph/auth/auth-concepts" rel="noopener">Graph auth</a>.</li>
+      <li>Make it available to xfa:
+        <pre class="copy" data-copy="export TEAMS_GRAPH_TOKEN=your-graph-token-here" title="Click to copy"><code>export TEAMS_GRAPH_TOKEN=your-graph-token-here</code></pre></li>
+      <li>Find the <strong>channel ID</strong> via Graph: <code>GET /teams/{team-id}/channels</code> (<a href="https://learn.microsoft.com/graph/api/channel-list" rel="noopener">docs</a>).</li>
+    </ol>
+    <p style="color: var(--muted); max-width: 680px;">
+      Now <em>"Have xfa post &lt;file&gt; to &lt;channel-id&gt; on Teams"</em> works.
+    </p>
+    <p style="color: var(--muted); font-size: 14px;">
+      Reference: <a href="https://learn.microsoft.com/graph/permissions-reference" rel="noopener">Microsoft Graph permissions</a>.
+    </p>
+
+    <p style="color: var(--muted); font-size: 14px; max-width: 680px; margin-top: 18px;">
+      <strong>Security note:</strong> xfa reads these tokens from your environment so they never appear
+      in your chat history. You can pass a token inline as a tool argument, but then it would show up
+      in the conversation log — the env-var path is recommended.
+    </p>
   </div>
 </section>
 

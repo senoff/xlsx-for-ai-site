@@ -348,7 +348,8 @@
     <h1>Reliable spreadsheets for AI agents.</h1>
     <p class="lead">
       A hosted MCP server and npm client that lets LLMs read, write, validate and analyze Excel files
-      without losing structure. Hardened against malformed input. Free — all 50 tools.
+      without losing structure — and computes live formula results, not the stale cached value other
+      libraries return. Hardened against malformed input. Free — all 50 tools.
     </p>
     <a class="cta" href="#demo">Try the demo</a>
     <button type="button" class="cmd copy" data-copy="npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp" aria-label="Copy install command to clipboard"><code class="cmd-text">npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp</code><span class="cmd-btn" aria-hidden="true"></span></button>
@@ -371,6 +372,10 @@
       xlsx-for-ai exposes a tool surface designed for agents.
     </p>
     <div class="grid">
+      <div class="card">
+        <h3>Live formula results</h3>
+        <p>Recompute formulas to their actual values with a portable engine — no Excel or LibreOffice in the loop. openpyxl and exceljs hand back the formula text or a stale cached value and can't recalculate; xlsx-for-ai can.</p>
+      </div>
       <div class="card">
         <h3>Read &amp; describe</h3>
         <p>Parse any .xlsx into LLM-friendly text. Per-column type inference with confidence. Pandas-style describe, filter, aggregate.</p>

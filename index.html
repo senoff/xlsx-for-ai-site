@@ -149,6 +149,13 @@
     border-left: 2px solid var(--border);
     padding-left: 12px;
   }
+  .tool .run {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--muted);
+    padding-left: 12px;
+  }
+  .tool .run strong { color: var(--fg); font-weight: 600; }
   .demo-steps { margin-top: 24px; }
   .demo-step { margin: 0 0 8px; }
   .demo-step .label { font-weight: 600; color: var(--fg); }
@@ -265,6 +272,7 @@
     <nav>
       <a href="#features">Features</a>
       <a href="#demo">Demo</a>
+      <a href="#setup-slack-teams">Setup</a>
       <a href="#tools">Tools</a>
       <a href="#docs">Docs</a>
       <a href="#contact">Contact</a>
@@ -331,31 +339,129 @@
 <section class="alt" id="demo">
   <div class="wrap">
     <h2>Demo</h2>
-    <p style="color: var(--muted); max-width: 640px;">
-      Everything is free — all 50 tools, no signup, no credit card. The npm client registers an
-      anonymous client_id on first run. Install it, drop in two sample workbooks, and start prompting.
+    <p style="color: var(--muted); max-width: 660px;">
+      Below is a simple demo. Just copy/paste the prompts in after each header. We have sample
+      spreadsheets that you'll download, but you can use any Excel file on your desktop, too.
     </p>
 
     <div class="demo-steps">
-      <p class="demo-step"><span class="label">1. Install and register the MCP server</span></p>
-      <pre class="copy" data-copy="npm install -g xlsx-for-ai
-claude mcp add xlsx-for-ai -- xlsx-for-ai-mcp" title="Click to copy"><code>npm install -g xlsx-for-ai
-claude mcp add xlsx-for-ai -- xlsx-for-ai-mcp</code></pre>
+      <p class="demo-step"><span class="label">Install — one terminal command</span></p>
+      <pre class="copy" data-copy="npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp" title="Click to copy"><code>npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 
-      <p class="demo-step"><span class="label">2. Drop two demo workbooks in your working directory</span></p>
+      <p class="demo-step"><span class="label">Get the sample workbooks</span> — drops <code>reporting-pack-v1.xlsx</code> and <code>reporting-pack-v2.xlsx</code> into the current folder:</p>
       <pre class="copy" data-copy="xfa samples" title="Click to copy"><code>xfa samples</code></pre>
 
-      <p class="demo-step"><span class="label">3. Ask your agent</span> — paste any of these:</p>
+      <p class="demo-step"><span class="label">Confirm it's wired</span> — ask Claude:</p>
+      <div class="tool"><p class="prompt">"What xfa tools do you have? (you should see <a href="#tools">~50</a>)"</p></div>
+
+      <p class="demo-step" style="margin-top: 18px;">Then ask Claude — the interesting stuff first, each is one prompt vs. the usual Excel work:</p>
+
+      <p class="demo-step"><span class="label">Clean up messy data</span></p>
+      <div class="tool"><p class="prompt">"Using xfa, clean up reporting-pack-v1.xlsx — fix the inconsistent dates, stray whitespace, and columns where numbers are stored as text — and tell me what you changed."</p></div>
+
+      <p class="demo-step"><span class="label">Find and fix broken links</span></p>
+      <div class="tool"><p class="prompt">"With xfa, find the broken external links in reporting-pack-v1.xlsx and show me the fix."</p></div>
+
+      <p class="demo-step"><span class="label">Compute pivots and aggregates — no Excel open</span></p>
       <div class="tool">
-        <p class="prompt">"Diff reporting-pack-v1.xlsx against reporting-pack-v2.xlsx and tell me what changed."</p>
-        <p class="prompt">"Validate reporting-pack-v2.xlsx across two engines and report any cell divergences."</p>
-        <p class="prompt">"Redact any PII in reporting-pack-v2.xlsx and show me a manifest of what was found."</p>
-        <p class="prompt">"Give me a one-call health report on reporting-pack-v1.xlsx."</p>
+        <p class="prompt">"Using xfa, build a pivot of revenue by entity and department from reporting-pack-v1.xlsx."</p>
+        <p class="prompt">"Group by department and give me sum and average spend from reporting-pack-v1.xlsx, with xfa."</p>
       </div>
+
+      <p class="demo-step"><span class="label">Convert formats</span></p>
+      <div class="tool"><p class="prompt">"Use xfa to convert reporting-pack-v1.xlsx to CSV / JSON for our pipeline."</p></div>
+
+      <p class="demo-step"><span class="label">Cross-engine validate</span></p>
+      <div class="tool"><p class="prompt">"With xfa, render reporting-pack-v1.xlsx through two independent engines and flag any cell where they disagree."</p></div>
+
+      <p class="demo-step"><span class="label">Redact PII before sharing</span></p>
+      <div class="tool"><p class="prompt">"Using xfa, redact the PII in reporting-pack-v1.xlsx and give me the audit manifest of what was removed."</p></div>
+
+      <p class="demo-step"><span class="label">Send it where the team works</span></p>
+      <div class="tool"><p class="prompt">"Have xfa post reporting-pack-v1.xlsx to our #reporting Slack channel."</p></div>
+      <p style="color: var(--muted); font-size: 13px; padding-left: 12px;">
+        Slack and Teams need a one-time token setup — see <a href="#setup-slack-teams">Setting up Slack &amp; Teams</a>.
+      </p>
+
+      <p class="demo-step"><span class="label">Prove your spreadsheet wasn't changed</span></p>
+      <div class="tool"><p class="prompt">"Stamp reporting-pack-v1.xlsx so anyone downstream can confirm it wasn't altered, with xfa."</p></div>
+
+      <p class="demo-step"><span class="label">See what changed between two versions</span></p>
+      <div class="tool"><p class="prompt">"Diff reporting-pack-v1.xlsx against reporting-pack-v2.xlsx — cell and formula level — with xfa."</p></div>
+
+      <p class="demo-step"><span class="label">Dig into a workbook</span></p>
+      <div class="tool"><p class="prompt">"With xfa, pull every formula, named range, table, validation rule, chart, comment, and macro flag from reporting-pack-v1.xlsx, infer the column types, and give me a one-call health report."</p></div>
     </div>
 
-    <p style="color: var(--muted); font-size: 14px; margin-top: 22px;">
-      A volume cap (10,000 calls / month) keeps the hosted API healthy — that's the only limit.
+    <p style="color: var(--muted); max-width: 660px; margin-top: 22px;">
+      Those are some of the headline moves, but they're only part of the surface — there are
+      currently <a href="#tools">50 tools</a> in all. The rest handle the everyday spreadsheet work
+      you'd otherwise do by hand: reading any sheet, range, or single cell as clean text the model
+      can actually parse; dumping a workbook's full structure in one call; inferring each column's
+      type and whether it allows blanks; searching, filtering, and sorting across the file; writing
+      edits back into cells and ranges; aggregating and grouping the numbers; converting between
+      xlsx, JSON, CSV, and plain text; opening the same file two independent ways and confirming the
+      numbers agree; and posting a finished result straight into Slack or Teams (one-time token
+      setup — see <a href="#setup-slack-teams">Setting up Slack &amp; Teams</a>).
+    </p>
+
+    <p style="color: var(--muted); font-size: 14px; margin-top: 18px;">
+      Each one is a single prompt, just like the moves above — nothing to configure (Slack and Teams
+      delivery is the one exception, and it's a one-time setup). A volume cap (10,000 calls / month)
+      keeps the hosted API healthy — that's the only limit.
+    </p>
+  </div>
+</section>
+
+<section class="alt" id="setup-slack-teams">
+  <div class="wrap">
+    <h2>Setting up Slack &amp; Teams</h2>
+    <p style="color: var(--muted); max-width: 660px;">
+      Posting a workbook into Slack or Teams is the only part of xfa that needs a one-time setup —
+      a token that lets the tool act in your workspace. You only do this once.
+    </p>
+
+    <h3 class="tool-group">Slack</h3>
+    <ol style="color: var(--muted); max-width: 680px; line-height: 1.7;">
+      <li>Go to <a href="https://api.slack.com/apps" rel="noopener">api.slack.com/apps</a> and click <strong>Create New App → From scratch</strong>. Name it (e.g. <code>xfa-poster</code>) and pick your workspace.</li>
+      <li>In the app, open <strong>OAuth &amp; Permissions</strong> (left sidebar). Under <strong>Scopes → Bot Token Scopes</strong>, click <strong>Add an OAuth Scope</strong> and add <code>files:write</code>.</li>
+      <li>Scroll up and click <strong>Install to Workspace → Allow</strong>.</li>
+      <li>Copy the <strong>Bot User OAuth Token</strong> (it starts with <code>xoxb-</code>).</li>
+      <li>In your terminal, make it available to xfa:
+        <pre class="copy" data-copy="export SLACK_BOT_TOKEN=xoxb-your-token-here" title="Click to copy"><code>export SLACK_BOT_TOKEN=xoxb-your-token-here</code></pre>
+        (Add that line to your <code>~/.zshrc</code> or <code>~/.bashrc</code> so it persists across terminals.)</li>
+      <li>Invite the bot to the channel you want to post to — in Slack, type <code>/invite @xfa-poster</code> in that channel.</li>
+      <li>Use the <strong>channel ID</strong> (not the <code>#name</code>) in your prompt. To get it: in Slack, click the channel name → <strong>View channel details</strong> → the ID (starts with <code>C</code> or <code>G</code>) is at the bottom.</li>
+    </ol>
+    <p style="color: var(--muted); max-width: 680px;">
+      Now <em>"Have xfa post &lt;file&gt; to &lt;channel-id&gt; on Slack"</em> works.
+    </p>
+    <p style="color: var(--muted); font-size: 14px;">
+      Reference: <a href="https://api.slack.com/authentication/basics" rel="noopener">Slack — bot tokens &amp; basics</a> ·
+      <a href="https://api.slack.com/scopes/files:write" rel="noopener">the <code>files:write</code> scope</a>.
+    </p>
+
+    <h3 class="tool-group">Microsoft Teams</h3>
+    <ol style="color: var(--muted); max-width: 680px; line-height: 1.7;">
+      <li>Go to <a href="https://entra.microsoft.com" rel="noopener">entra.microsoft.com</a> (Microsoft Entra ID, formerly Azure AD) → <strong>App registrations → New registration</strong>. Name it and register.</li>
+      <li>Open <strong>API permissions → Add a permission → Microsoft Graph</strong> and add <code>Files.ReadWrite.All</code> and <code>ChannelMessage.Send</code>.</li>
+      <li>Click <strong>Grant admin consent</strong> for your organization (an admin may need to do this).</li>
+      <li>Get a <strong>Microsoft Graph access token</strong> for the app (client-credentials flow). See <a href="https://learn.microsoft.com/graph/auth/auth-concepts" rel="noopener">Graph auth</a>.</li>
+      <li>Make it available to xfa:
+        <pre class="copy" data-copy="export TEAMS_GRAPH_TOKEN=your-graph-token-here" title="Click to copy"><code>export TEAMS_GRAPH_TOKEN=your-graph-token-here</code></pre></li>
+      <li>Find the <strong>channel ID</strong> via Graph: <code>GET /teams/{team-id}/channels</code> (<a href="https://learn.microsoft.com/graph/api/channel-list" rel="noopener">docs</a>).</li>
+    </ol>
+    <p style="color: var(--muted); max-width: 680px;">
+      Now <em>"Have xfa post &lt;file&gt; to &lt;channel-id&gt; on Teams"</em> works.
+    </p>
+    <p style="color: var(--muted); font-size: 14px;">
+      Reference: <a href="https://learn.microsoft.com/graph/permissions-reference" rel="noopener">Microsoft Graph permissions</a>.
+    </p>
+
+    <p style="color: var(--muted); font-size: 14px; max-width: 680px; margin-top: 18px;">
+      <strong>Security note:</strong> xfa reads these tokens from your environment so they never appear
+      in your chat history. You can pass a token inline as a tool argument, but then it would show up
+      in the conversation log — the env-var path is recommended.
     </p>
   </div>
 </section>
@@ -367,9 +473,13 @@ claude mcp add xlsx-for-ai -- xlsx-for-ai-mcp</code></pre>
       All 50 tools, grouped by what you're trying to do. Each one has a paste-ready example prompt
       that runs against the workbooks from <code>xfa samples</code> above.
     </p>
+    <p style="color: var(--muted); max-width: 660px; font-size: 14px;">
+      Most tools are invoked just by asking Claude in plain English (examples below). A handful also
+      have a direct <code>xfa</code> terminal command — shown as <strong>Or run:</strong> where available.
+    </p>
 
     <h3 class="tool-group">Read &amp; explore a workbook</h3>
-    <div class="tool"><p class="name"><code>xlsx_read</code> — Read a workbook and return it as markdown, JSON, or SQL.</p><p class="prompt">"Read reporting-pack-v1.xlsx and show me the Summary sheet."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_read</code> — Read a workbook and return it as markdown, JSON, or SQL.</p><p class="prompt">"Read reporting-pack-v1.xlsx and show me the Summary sheet."</p><p class="run copy" data-copy="xfa <file.xlsx> [--md|--json] [--sheet <name>] [--evaluate]" title="Click to copy"><strong>Or run:</strong> <code>xfa &lt;file.xlsx&gt; [--md|--json] [--sheet &lt;name&gt;] [--evaluate]</code></p></div>
     <div class="tool"><p class="name"><code>xlsx_list_sheets</code> — List sheet names, sizes, and which are hidden.</p><p class="prompt">"What sheets are in reporting-pack-v1.xlsx and how big is each?"</p></div>
     <div class="tool"><p class="name"><code>xlsx_describe</code> — Per-column summary: count, nulls, unique, min/max/mean.</p><p class="prompt">"Give me a column-by-column summary of the Transactions sheet in reporting-pack-v1.xlsx."</p></div>
     <div class="tool"><p class="name"><code>xlsx_schema</code> — Infer each column's type, nullability, and a confidence score.</p><p class="prompt">"What are the column types in the Transactions sheet of reporting-pack-v1.xlsx?"</p></div>
@@ -410,7 +520,7 @@ claude mcp add xlsx-for-ai -- xlsx-for-ai-mcp</code></pre>
     <div class="tool"><p class="name"><code>xlsx_external_links</code> — List external workbook references and flag the ones that'll break.</p><p class="prompt">"Find the broken external links in reporting-pack-v1.xlsx and show me the fix."</p></div>
 
     <h3 class="tool-group">Clean, fix &amp; transform</h3>
-    <div class="tool"><p class="name"><code>xlsx_data_clean</code> — Diagnose or fix the seven common data-grime issues (you approve each fix).</p><p class="prompt">"Clean up reporting-pack-v1.xlsx — fix inconsistent dates, stray whitespace, and numbers stored as text — and tell me what you changed."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_data_clean</code> — Diagnose or fix the seven common data-grime issues (you approve each fix).</p><p class="prompt">"Clean up reporting-pack-v1.xlsx — fix inconsistent dates, stray whitespace, and numbers stored as text — and tell me what you changed."</p><p class="run copy" data-copy="xfa <file.xlsx> --clean [--execute] [--detectors <list>] [--sheet <name>]" title="Click to copy"><strong>Or run:</strong> <code>xfa &lt;file.xlsx&gt; --clean [--execute] [--detectors &lt;list&gt;] [--sheet &lt;name&gt;]</code></p></div>
     <div class="tool"><p class="name"><code>xlsx_convert</code> — Convert 25+ spreadsheet formats in or out (xls, xlsb, ods, Numbers, csv, json…).</p><p class="prompt">"Convert reporting-pack-v1.xlsx to CSV and JSON for our pipeline."</p></div>
     <div class="tool"><p class="name"><code>xlsx_write</code> — Create or edit a workbook from a structured spec (server-validated).</p><p class="prompt">"Create a new workbook summary.xlsx with a Totals sheet summing revenue by entity."</p></div>
     <div class="tool"><p class="name"><code>xlsx_redact</code> — Detect and redact only the PII; everything else is preserved, with a manifest.</p><p class="prompt">"Redact the PII in reporting-pack-v1.xlsx and give me the audit manifest of what was removed."</p></div>
@@ -419,16 +529,16 @@ claude mcp add xlsx-for-ai -- xlsx-for-ai-mcp</code></pre>
     <div class="tool"><p class="name"><code>xlsx_healer_diagnose</code> — Structured report of broken / at-risk external references.</p><p class="prompt">"Diagnose the external-reference problems in reporting-pack-v1.xlsx."</p></div>
     <div class="tool"><p class="name"><code>xlsx_healer_simulate</code> — Predict which references will break when you send the file to someone.</p><p class="prompt">"If I send reporting-pack-v1.xlsx to someone who can't see our network share, what breaks?"</p></div>
     <div class="tool"><p class="name"><code>xlsx_healer_intent</code> — Describe the goal in plain English; Healer plans and applies the fix.</p><p class="prompt">"Make reporting-pack-v1.xlsx fully self-contained so it works for an outside recipient."</p></div>
-    <div class="tool"><p class="name"><code>xlsx_healer_cure</code> — Apply one specific repair operation to a diagnosed workbook.</p><p class="prompt">"Freeze the broken external refs in reporting-pack-v1.xlsx to their last cached values."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_healer_cure</code> — Apply one specific repair operation to a diagnosed workbook.</p><p class="prompt">"Freeze the broken external refs in reporting-pack-v1.xlsx to their last cached values."</p><p class="run copy" data-copy="xfa heal <path> [--mode as_copy|in_place] [--out <path>] [--format text|json]" title="Click to copy"><strong>Or run:</strong> <code>xfa heal &lt;path&gt; [--mode as_copy|in_place] [--out &lt;path&gt;] [--format text|json]</code></p></div>
 
     <h3 class="tool-group">Validate</h3>
     <div class="tool"><p class="name"><code>xlsx_validate</code> — Render the workbook through two independent engines and flag disagreements.</p><p class="prompt">"Render reporting-pack-v1.xlsx through two independent engines and flag any cell where they disagree."</p></div>
 
     <h3 class="tool-group">Provenance &amp; integrity</h3>
-    <div class="tool"><p class="name"><code>xlsx_stamp</code> — Sign a file with the checks it passed; travels with the file.</p><p class="prompt">"Stamp reporting-pack-v1.xlsx so anyone downstream can confirm it wasn't altered."</p></div>
-    <div class="tool"><p class="name"><code>xlsx_verify_stamp</code> — Verify a stamp: signature valid? bytes unchanged? what checks passed?</p><p class="prompt">"Verify the integrity stamp on reporting-pack-v1.xlsx."</p></div>
-    <div class="tool"><p class="name"><code>xlsx_receipt</code> — Attach an AI-generation receipt (who made it, when, from what inputs).</p><p class="prompt">"Attach a generation receipt to reporting-pack-v1.xlsx recording that I produced it."</p></div>
-    <div class="tool"><p class="name"><code>xlsx_verify_receipt</code> — Verify a generation receipt and surface the declared provenance.</p><p class="prompt">"Verify the AI-generation receipt on reporting-pack-v1.xlsx."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_stamp</code> — Sign a file with the checks it passed; travels with the file.</p><p class="prompt">"Stamp reporting-pack-v1.xlsx so anyone downstream can confirm it wasn't altered."</p><p class="run copy" data-copy="xfa stamp <path> --checks <file.json> [--out <path>] [--exclude <sheet>…]" title="Click to copy"><strong>Or run:</strong> <code>xfa stamp &lt;path&gt; --checks &lt;file.json&gt; [--out &lt;path&gt;] [--exclude &lt;sheet&gt;…]</code></p></div>
+    <div class="tool"><p class="name"><code>xlsx_verify_stamp</code> — Verify a stamp: signature valid? bytes unchanged? what checks passed?</p><p class="prompt">"Verify the integrity stamp on reporting-pack-v1.xlsx."</p><p class="run copy" data-copy="xfa verify-stamp <path>" title="Click to copy"><strong>Or run:</strong> <code>xfa verify-stamp &lt;path&gt;</code></p></div>
+    <div class="tool"><p class="name"><code>xlsx_receipt</code> — Attach an AI-generation receipt (who made it, when, from what inputs).</p><p class="prompt">"Attach a generation receipt to reporting-pack-v1.xlsx recording that I produced it."</p><p class="run copy" data-copy="xfa receipt <path> --agent <name> [--display-name …] [--out <path>] [--mcp-tool …]" title="Click to copy"><strong>Or run:</strong> <code>xfa receipt &lt;path&gt; --agent &lt;name&gt; [--display-name …] [--out &lt;path&gt;] [--mcp-tool …]</code></p></div>
+    <div class="tool"><p class="name"><code>xlsx_verify_receipt</code> — Verify a generation receipt and surface the declared provenance.</p><p class="prompt">"Verify the AI-generation receipt on reporting-pack-v1.xlsx."</p><p class="run copy" data-copy="xfa verify-receipt <path>" title="Click to copy"><strong>Or run:</strong> <code>xfa verify-receipt &lt;path&gt;</code></p></div>
 
     <h3 class="tool-group">Deliver where the team works</h3>
     <div class="tool"><p class="name"><code>xlsx_post_slack</code> — Upload a workbook to a Slack channel.</p><p class="prompt">"Post reporting-pack-v1.xlsx to our #reporting Slack channel."</p></div>
@@ -448,8 +558,8 @@ claude mcp add xlsx-for-ai -- xlsx-for-ai-mcp</code></pre>
 xfa path/to/workbook.xlsx" title="Click to copy"><code>npm install -g xlsx-for-ai
 xfa path/to/workbook.xlsx</code></pre>
 
-    <p>Or wire it as an MCP server. In Claude Code:</p>
-    <pre class="copy" data-copy="claude mcp add xlsx-for-ai -- xlsx-for-ai-mcp" title="Click to copy"><code>claude mcp add xlsx-for-ai -- xlsx-for-ai-mcp</code></pre>
+    <p>Or wire it as an MCP server. In Claude Code (the <code>--ignore-scripts</code> flag keeps you to a single server named <code>xfa</code>):</p>
+    <pre class="copy" data-copy="npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp" title="Click to copy"><code>npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 
     <p>In any other MCP-aware agent (Cursor, Cline, Gemini), add this to its server config:</p>
     <pre class="copy" data-copy='{

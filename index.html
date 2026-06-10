@@ -362,7 +362,7 @@
       the stale value last saved in the file. Hardened against malformed input. Free — all 50 tools.
     </p>
     <a class="cta" href="#demo">Try the demo</a>
-    <button type="button" class="cmd copy" data-copy="npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp" aria-label="Copy install command to clipboard"><code class="cmd-text">npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp</code><span class="cmd-btn" aria-hidden="true"></span></button>
+    <button type="button" class="cmd copy" data-copy="npm install -g xlsx-for-ai" aria-label="Copy install command to clipboard"><code class="cmd-text">npm install -g xlsx-for-ai</code><span class="cmd-btn" aria-hidden="true"></span></button>
     <div class="install-row">
       <span class="install-meta">
         <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">View on npm →</a>
@@ -424,7 +424,7 @@
 
     <div class="demo-steps">
       <p class="demo-step"><span class="label">Install — one terminal command</span></p>
-      <button type="button" class="cmd copy" data-copy="npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp" aria-label="Copy install command to clipboard"><code class="cmd-text">npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp</code><span class="cmd-btn" aria-hidden="true"></span></button>
+      <button type="button" class="cmd copy" data-copy="npm install -g xlsx-for-ai" aria-label="Copy install command to clipboard"><code class="cmd-text">npm install -g xlsx-for-ai</code><span class="cmd-btn" aria-hidden="true"></span></button>
 
       <p class="demo-step"><span class="label">Get the sample workbooks</span> — drops <code>reporting-pack-v1.xlsx</code> and <code>reporting-pack-v2.xlsx</code> into the current folder:</p>
       <pre class="copy" role="button" tabindex="0" data-copy="xfa samples" title="Click to copy"><code>xfa samples</code></pre>
@@ -666,8 +666,11 @@
 xfa path/to/workbook.xlsx" title="Click to copy"><code>npm install -g xlsx-for-ai
 xfa path/to/workbook.xlsx</code></pre>
 
-    <p>Or wire it as an MCP server. In Claude Code (the <code>--ignore-scripts</code> flag keeps you to a single server named <code>xfa</code>):</p>
-    <pre class="copy" role="button" tabindex="0" data-copy="npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp" title="Click to copy"><code>npm install -g xlsx-for-ai --ignore-scripts &amp;&amp; claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
+    <p>Or wire it as an MCP server. In Claude Code, the global install auto-registers a server named <code>xfa</code> — no extra step:</p>
+    <pre class="copy" role="button" tabindex="0" data-copy="npm install -g xlsx-for-ai" title="Click to copy"><code>npm install -g xlsx-for-ai</code></pre>
+
+    <p>If your install skipped scripts (<code>--ignore-scripts</code>, CI, or a sudo install), register it manually:</p>
+    <pre class="copy" role="button" tabindex="0" data-copy="claude mcp add xfa -- xlsx-for-ai-mcp" title="Click to copy"><code>claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 
     <p>In any other MCP-aware agent (Cursor, Cline, Gemini), add this to its server config:</p>
     <pre class="copy" role="button" tabindex="0" data-copy='{

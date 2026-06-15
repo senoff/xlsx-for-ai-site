@@ -129,11 +129,22 @@
 <p>If large files would help you, take 30 seconds &mdash; it tells us whether to build this, and what would make it worth it for you. A short form is going up here shortly.</p>
 
 <!--
-  Tally form embed. To enable: replace TALLY_FORM_ID with the form's id
-  (from its share/embed URL, e.g. https://tally.so/r/wXYZ12 -> wXYZ12)
-  once the 5-field form is created, then uncomment the block below. Plain
-  iframe (no embed.js) keeps the page CSP tight: frame-src https://tally.so
-  is already allowed in the CSP meta tag.
+  Tally form embed. To enable: create the form in Tally (fields below),
+  replace TALLY_FORM_ID with its id (from the share/embed URL, e.g.
+  https://tally.so/r/wXYZ12 -> wXYZ12), then uncomment the block below.
+  Plain iframe (no embed.js) keeps the page CSP tight: frame-src
+  https://tally.so is already allowed in the CSP meta tag.
+
+  Form fields (6, keep minimal):
+    1. Would you use dedicated large-file support?  (yes / maybe / no)
+    2. Would you pay for it?  (yes / no / depends)
+    3. If we offered this, what would you most want?  (single choice:
+       faster/priority turnaround on large files /
+       ability to process bigger files /
+       a dedicated machine for your large jobs)
+    4. What would you pay?  (open text — NO price anchor)
+    5. What size files / use case?  (open text)
+    6. Email (optional)  (open text)
 
 <div class="form-embed">
   <iframe

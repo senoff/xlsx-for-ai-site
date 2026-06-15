@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Large files (over 10 MB) — xlsx-for-ai</title>
+<meta name="description" content="xlsx-for-ai handles files up to 10 MB for free. Larger workbooks need more memory than we provision for a single job. We're weighing dedicated large-file support — tell us whether you'd use it and what it's worth to you. No price set.">
+<meta name="author" content="xlsx-for-ai">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-src https://tally.so; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/large-files">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #5a5a5a;
+    --bg: #ffffff;
+    --accent: #107c41;
+    --border: #e6e6e6;
+    --code-bg: #f5f5f5;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 0.92em;
+    background: var(--code-bg); padding: 2px 5px; border-radius: 3px;
+  }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+  }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; }
+  header .logo { font-weight: 700; font-size: 18px; color: var(--fg); }
+  header .logo .x { color: var(--accent); }
+  header nav a {
+    color: var(--muted);
+    margin-left: 22px;
+    font-size: 14px;
+  }
+  header nav a:hover { color: var(--fg); text-decoration: none; }
+
+  main { padding: 48px 0 96px; }
+  main h1 {
+    font-size: 38px;
+    line-height: 1.2;
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+  }
+  main .lede {
+    font-size: 19px;
+    color: var(--muted);
+    margin: 0 0 32px;
+  }
+  main h2 {
+    font-size: 22px;
+    margin: 36px 0 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    letter-spacing: -0.01em;
+  }
+  main h2:first-of-type { border-top: 0; padding-top: 0; }
+  main ul { padding-left: 22px; }
+  main li { margin: 6px 0; }
+  main strong { font-weight: 600; }
+
+  .form-embed {
+    margin: 24px 0 8px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .form-embed iframe {
+    width: 100%;
+    min-height: 640px;
+    border: 0;
+    display: block;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  footer a { color: var(--muted); margin-left: 0; }
+  footer .links a { margin-left: 16px; }
+  footer a:hover { color: var(--fg); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+<h1>Large files.</h1>
+<p class="lede">xlsx-for-ai reads workbooks up to <strong>10&nbsp;MB</strong> for free, like everything else it does. Files past that need more memory than we provision for a single job &mdash; so right now they're declined rather than run slowly or unreliably.</p>
+
+<h2>Why there's a limit</h2>
+<p>Reading a workbook into memory, evaluating its formulas, and writing a reviewed copy all hold the file &mdash; and intermediate working copies of it &mdash; in RAM at once. For most workbooks that's comfortable. Past about 10&nbsp;MB it stops being comfortable on the memory we run each job with, and we'd rather decline cleanly than give you a slow or flaky result.</p>
+
+<h2>We're weighing dedicated large-file support</h2>
+<p>We're considering running large files on dedicated machines with more memory, so the same review works on bigger workbooks. Before we build it, we want to know if it's actually wanted &mdash; and what it's worth to whoever needs it.</p>
+<p><strong>Everything up to 10&nbsp;MB stays free.</strong> This is about whether a bigger-file option should exist alongside it &mdash; not a change to what's free today, and there's no price set.</p>
+
+<h2>Tell us</h2>
+<p>If large files would help you, take 30 seconds &mdash; it tells us whether to build this, and what would make it worth it for you. A short form is going up here shortly.</p>
+
+<!--
+  Tally form embed. To enable: replace TALLY_FORM_ID with the form's id
+  (from its share/embed URL, e.g. https://tally.so/r/wXYZ12 -> wXYZ12)
+  once the 5-field form is created, then uncomment the block below. Plain
+  iframe (no embed.js) keeps the page CSP tight: frame-src https://tally.so
+  is already allowed in the CSP meta tag.
+
+<div class="form-embed">
+  <iframe
+    src="https://tally.so/embed/TALLY_FORM_ID?alignLeft=1&hideTitle=1&transparentBackground=1"
+    title="Large-file interest — xlsx-for-ai"
+    loading="lazy"></iframe>
+</div>
+-->
+
+<p style="color: var(--muted); font-size: 14px;">Everything up to 10&nbsp;MB stays free, today and after &mdash; this is only about whether a bigger-file option should exist alongside it.</p>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/clean-data">Clean data</a>
+      <a href="/privacy">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+      <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">npm</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

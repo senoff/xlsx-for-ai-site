@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xlsx-for-ai.dev/sitemap.xml

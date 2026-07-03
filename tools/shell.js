@@ -331,18 +331,172 @@
       }
     }
 
+    // ---- params-UI mode (XLS-200) ---------------------------------------
+    // Additive, opt-in via cfg.params. After upload we optionally run
+    // cfg.discover(b64, api) for dynamic data (e.g. column names), then render
+    // a form from cfg.buildForm(discovered) and hand the collected form state
+    // to cfg.process(b64, api, values). Single-file and dual paths untouched.
+    // The primitive is domain-agnostic: it collects every field/repeat row
+    // verbatim; the page decides per-row validity in its process().
+    var params = !!cfg.params;
+
+    function toolApi(name) {
+      return { runTool: runTool, parseTable: parseTable, textOf: textOf, esc: esc, step: stepState, filename: name };
+    }
+    // name is page-authored; still restrict to a DOM-safe id before use as a
+    // selector so a bad config can't smuggle selector/attribute syntax.
+    function safeName(n) { return String(n == null ? "" : n).replace(/[^a-z0-9_]/g, ""); }
+
+    function selectHtml(name, label, options, sub) {
+      var opts = (options || []).map(function (o) {
+        return '<option value="' + esc(o.value) + '">' + esc(o.label != null ? o.label : o.value) + '</option>';
+      }).join("");
+      return '<label class="pf"><span class="pl">' + esc(label || "") + '</span>' +
+        '<select ' + (sub ? "data-xfa-sub" : "data-xfa-field") + '="' + safeName(name) + '">' + opts + '</select></label>';
+    }
+    function textHtml(name, label, placeholder, sub) {
+      return '<label class="pf"><span class="pl">' + esc(label || "") + '</span>' +
+        '<input type="text" ' + (sub ? "data-xfa-sub" : "data-xfa-field") + '="' + safeName(name) +
+        '" placeholder="' + esc(placeholder || "") + '" /></label>';
+    }
+    function subHtml(f) {
+      return f.type === "select" ? selectHtml(f.name, f.label, f.options, true) : textHtml(f.name, f.label, f.placeholder, true);
+    }
+    function rowHtml(field) {
+      return '<div class="prow">' + (field.row || []).map(subHtml).join("") +
+        '<button type="button" class="prow-x" aria-label="Remove">&times;</button></div>';
+    }
+    function fieldHtml(f) {
+      if (f.type === "select") return selectHtml(f.name, f.label, f.options, false);
+      if (f.type === "text") return textHtml(f.name, f.label, f.placeholder, false);
+      if (f.type === "checklist") {
+        var boxes = (f.options || []).map(function (o) {
+          return '<label class="pcheck"><input type="checkbox" data-xfa-check="' + safeName(f.name) +
+            '" value="' + esc(o.value) + '"' + (o.checked ? " checked" : "") + ' /> ' + esc(o.label != null ? o.label : o.value) + '</label>';
+        }).join("");
+        return '<div class="pgroup" data-xfa-checklist="' + safeName(f.name) + '"><div class="pgl">' + esc(f.label || "") + '</div>' + boxes + '</div>';
+      }
+      if (f.type === "repeat") {
+        return '<div class="pgroup prepeat" data-xfa-repeat="' + safeName(f.name) + '">' +
+          '<div class="pgl">' + esc(f.label || "") + '</div>' +
+          '<div class="prows" data-xfa-rows="' + safeName(f.name) + '"></div>' +
+          '<button type="button" class="btn small" data-xfa-add="' + safeName(f.name) + '">' + esc(f.addLabel || "Add") + '</button></div>';
+      }
+      return "";
+    }
+
+    function wireRepeat(field) {
+      var name = safeName(field.name);
+      var rowsEl = panel.querySelector('[data-xfa-rows="' + name + '"]');
+      var addBtn = panel.querySelector('[data-xfa-add="' + name + '"]');
+      if (!rowsEl) return;
+      var min = field.min != null ? field.min : 1;
+      var max = field.max != null ? field.max : 16;
+      function refresh() {
+        var n = rowsEl.children.length;
+        if (addBtn) addBtn.disabled = n >= max;
+        for (var i = 0; i < rowsEl.children.length; i++) {
+          var x = rowsEl.children[i].querySelector(".prow-x");
+          if (x) x.style.visibility = n <= min ? "hidden" : "visible";
+        }
+      }
+      function addRow() {
+        if (rowsEl.children.length >= max) return;
+        var tmp = document.createElement("div");
+        tmp.innerHTML = rowHtml(field);
+        var row = tmp.firstChild;
+        rowsEl.appendChild(row);
+        row.querySelector(".prow-x").addEventListener("click", function () {
+          if (rowsEl.children.length > min) { rowsEl.removeChild(row); refresh(); }
+        });
+        refresh();
+      }
+      if (addBtn) addBtn.addEventListener("click", addRow);
+      for (var k = 0; k < min; k++) addRow();
+    }
+
+    function collectValues(fields) {
+      var out = {};
+      (fields || []).forEach(function (f) {
+        var name = safeName(f.name);
+        if (f.type === "select" || f.type === "text") {
+          var el = panel.querySelector('[data-xfa-field="' + name + '"]');
+          out[f.name] = el ? String(el.value).trim() : "";
+        } else if (f.type === "checklist") {
+          var vals = [], boxes = panel.querySelectorAll('[data-xfa-check="' + name + '"]');
+          for (var i = 0; i < boxes.length; i++) if (boxes[i].checked) vals.push(boxes[i].value);
+          out[f.name] = vals;
+        } else if (f.type === "repeat") {
+          var rows = [], rowEls = panel.querySelectorAll('[data-xfa-rows="' + name + '"] > .prow');
+          for (var r = 0; r < rowEls.length; r++) {
+            var obj = {};
+            (f.row || []).forEach(function (sub) {
+              var sel = rowEls[r].querySelector('[data-xfa-sub="' + safeName(sub.name) + '"]');
+              obj[sub.name] = sel ? String(sel.value).trim() : "";
+            });
+            rows.push(obj);
+          }
+          out[f.name] = rows;
+        }
+      });
+      return out;
+    }
+
+    function renderReading(filename) {
+      panel.innerHTML =
+        '<div class="running">' +
+          '<div class="spinner" role="status" aria-label="Reading"></div>' +
+          '<div class="lead">' + esc(cfg.discoverLabel || "Reading your file…") + '</div>' +
+          '<div class="file">' + esc(filename) + '</div>' +
+        '</div>';
+    }
+
+    function renderParams(fields, b64, name) {
+      panel.innerHTML =
+        '<div class="params">' +
+          '<div class="pfile">' + esc(name) + '</div>' +
+          '<form class="pform" onsubmit="return false">' + (fields || []).map(fieldHtml).join("") + '</form>' +
+          '<div class="reassure">' + esc(cfg.reassure || "Your file is processed in memory and never stored.") + '</div>' +
+          '<div class="actions"><button class="btn primary" id="xfa-run">' + esc(cfg.runLabel || "Run") + '</button>' +
+          '<button class="btn" id="xfa-params-back">Choose another file</button></div>' +
+        '</div>';
+      (fields || []).forEach(function (f) { if (f.type === "repeat") wireRepeat(f); });
+      panel.querySelector("#xfa-params-back").addEventListener("click", renderIdle);
+      panel.querySelector("#xfa-run").addEventListener("click", function () {
+        var values = collectValues(fields);
+        renderRunning(name);
+        Promise.resolve().then(function () {
+          return cfg.process(b64, toolApi(name), values);
+        }).then(function (vm) {
+          renderResult(vm || {});
+        }).catch(function (err) {
+          renderError(err && err.message ? err.message : "Something went wrong. Please try again.");
+        });
+      });
+    }
+
+    // discover → buildForm → form. A rejection in discover OR a throw in
+    // buildForm surfaces the standard error card (never a blank params screen).
+    function startParams(name, b64) {
+      renderReading(name);
+      return Promise.resolve().then(function () {
+        return cfg.discover ? cfg.discover(b64, toolApi(name)) : {};
+      }).then(function (discovered) {
+        var fields = cfg.buildForm ? cfg.buildForm(discovered || {}) : [];
+        renderParams(fields, b64, name);
+      }).catch(function (err) {
+        renderError(err && err.message ? err.message : "Couldn’t read that file. Please try again.");
+      });
+    }
+
     function start(file) {
       var name = file.name || "workbook.xlsx";
       if (!/\.xlsx$/i.test(name)) { renderError("This tool reads Excel .xlsx files. Please choose a .xlsx workbook."); return; }
       if (file.size > (cfg.maxBytes || MAX_BYTES)) { renderError("That file is over the 10 MB limit for the free web tool."); return; }
       renderRunning(name);
       fileToBase64(file).then(function (b64) {
-        return cfg.process(b64, {
-          runTool: runTool, parseTable: parseTable, textOf: textOf, esc: esc,
-          step: stepState, filename: name
-        });
-      }).then(function (vm) {
-        renderResult(vm || {});
+        if (params) return startParams(name, b64);
+        return cfg.process(b64, toolApi(name)).then(function (vm) { renderResult(vm || {}); });
       }).catch(function (err) {
         renderError(err && err.message ? err.message : "Something went wrong. Please try again.");
       });

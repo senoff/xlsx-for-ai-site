@@ -266,7 +266,7 @@
       panel.querySelector("#xfa-again").addEventListener("click", renderIdle);
       if (vm.download) {
         panel.querySelector("#xfa-dl").addEventListener("click", function () {
-          triggerDownload(vm.download.handle, vm.download.filename);
+          startDownload(vm.download);
         });
       }
     }
@@ -291,26 +291,45 @@
     renderIdle();
   }
 
-  // download a cached result workbook (data-changing pages)
-  function triggerDownload(handle, filename) {
+  // Download a result workbook. Two shapes, because the tool routes return
+  // output two ways:
+  //   { file_b64, filename }  — transform routes (convert, clean, redact,
+  //     healer-cure, …) return the output bytes inline in _meta.file_b64.
+  //     No server round-trip: the bytes are already in hand.
+  //   { handle, filename }    — handle-based routes (stamp, receipt, session
+  //     commit) leave bytes in the client-scoped cache; fetch them here.
+  function startDownload(dl) {
+    if (!dl) return Promise.resolve();
+    if (dl.file_b64 != null) {
+      // Inline bytes are already in hand — decode + save directly. Guard the
+      // decode so a malformed payload surfaces the same friendly failure the
+      // handle path gives, instead of an unhandled throw.
+      try { saveBytes(dl.file_b64, dl.filename); }
+      catch (err) { alert("Couldn’t save the file. Please run it again."); }
+      return Promise.resolve();
+    }
     return ensureKey().then(function (key) {
       return xfetch(API + "/api/v1/cache/download", {
         method: "POST",
         headers: { "Content-Type": "application/json", "Authorization": "Bearer " + key },
-        body: JSON.stringify({ handle: handle })
+        body: JSON.stringify({ handle: dl.handle })
       });
     }).then(function (r) {
       if (!r.ok) throw new XfaError("The download link expired. Please run the file again.");
       return r.json();
     }).then(function (j) {
-      var bin = atob(j.file_b64), len = bin.length, bytes = new Uint8Array(len);
-      for (var i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
-      var blob = new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-      var url = URL.createObjectURL(blob), a = document.createElement("a");
-      a.href = url; a.download = filename || "result.xlsx";
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+      saveBytes(j.file_b64, dl.filename);
     }).catch(function (err) { alert(err && err.message ? err.message : "Download failed."); });
+  }
+
+  function saveBytes(b64, filename) {
+    var bin = atob(b64), len = bin.length, bytes = new Uint8Array(len);
+    for (var i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
+    var blob = new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    var url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = filename || "result.xlsx";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
   }
 
   window.XFA = {

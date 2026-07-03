@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fix Excel formula errors — free online checker | xlsx-for-ai</title>
+<meta name="description" content="Upload an Excel file and find every broken formula — #REF!, #DIV/0!, #VALUE!, #NAME?, #SPILL! — explained in plain English, with the exact cell. Free, no signup. Nothing is changed without showing you first.">
+<meta name="author" content="xlsx-for-ai">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-formula-errors/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free formula checker</div>
+    <h1>Fix your Excel formula errors.</h1>
+    <p class="lede">Upload a spreadsheet and we’ll find every formula that’s broken or throwing an error —
+      <code>#REF!</code>, <code>#DIV/0!</code>, <code>#VALUE!</code>, <code>#NAME?</code>, <code>#SPILL!</code> —
+      tell you in plain English what each one means and the likely cause, and flag the ones that still
+      calculate a <em>wrong</em> answer. Nothing is changed without showing you first.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">fix-formula-errors · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>What these errors mean</h2>
+    <p>Excel shows an error token in a cell when a formula can’t return a valid answer. The most common ones:</p>
+    <ul>
+      <li><code>#REF!</code> — the formula points at a cell, row, column, or sheet that was deleted or moved.</li>
+      <li><code>#DIV/0!</code> — it divides by zero, or by a cell that’s empty.</li>
+      <li><code>#VALUE!</code> — a value is the wrong type: text where a number is expected.</li>
+      <li><code>#NAME?</code> — an unrecognized name — a misspelled function or a named range that doesn’t exist.</li>
+      <li><code>#SPILL!</code> — a dynamic-array formula can’t expand because something is already in the cells it needs.</li>
+      <li><code>#N/A</code> — a lookup (<code>VLOOKUP</code>, <code>XLOOKUP</code>, <code>MATCH</code>) found no match.</li>
+      <li><code>#NUM!</code>, <code>#NULL!</code>, <code>#CALC!</code> — invalid numbers, non-intersecting ranges, or a calculation that can’t complete.</li>
+    </ul>
+
+    <h2>The silent-wrong ones</h2>
+    <p>Not every bad formula shows an error token. Some calculate a number that’s simply wrong. We recompute
+      each formula with an independent engine and flag any cell where the two disagree — those are the ones
+      worth a closer look even though Excel shows no error.</p>
+
+    <h2>How it works</h2>
+    <p>The page runs the same functions your AI agent would call through our tools: it locates every formula,
+      confirms each result across two independent engines, and explains what it found. It reads your file in
+      memory and never stores it — this check changes nothing, it only tells you what’s wrong.</p>
+    <p class="muted">Want this inside your AI agent, on your own machine, with no upload at all?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask Claude or
+      Cursor to “find the broken formulas in this workbook.”</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/tools/fix-formula-errors/page.js"></script>
+
+</body>
+</html>

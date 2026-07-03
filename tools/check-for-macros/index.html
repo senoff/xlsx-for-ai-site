@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Does this Excel file have macros? Is it safe? — free online check | xlsx-for-ai</title>
+<meta name="description" content="Upload an Excel file and get a plain-language safety report — does it contain VBA macros, does it pull data from other files. Free, no signup. Your file is read in memory and never stored or changed.">
+<meta name="author" content="xlsx-for-ai">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/check-for-macros/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free macro &amp; safety check</div>
+    <h1>Does this Excel file have macros? Is it safe?</h1>
+    <p class="lede">Upload a spreadsheet and get a plain-language safety report — whether it contains VBA macros
+      and whether it pulls data from other files. Nothing is opened or run;
+      we only read what’s inside and tell you what we found.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">check-for-macros · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>What we check</h2>
+    <p>We look for two things that decide whether a workbook is safe to open. First, <strong>VBA macros</strong> —
+      the small programs that can run when you open the file. We report whether any are present and, when they are,
+      roughly how big the macro project is. Second, <strong>external links</strong> — formulas that pull values from
+      other files or network shares, which can leak file paths or break when the file is moved.</p>
+
+    <h2>We never run the macros</h2>
+    <p>This is a read-only inspection. We do not extract, display, or execute macro code — by design. Reading macro
+      source into a tool is the first step of a chain that ends in code running automatically, so we surface only
+      enough to let you decide whether to trust the file before you open it in Excel.</p>
+
+    <h2>What “has macros” does and doesn’t mean</h2>
+    <p>Plenty of legitimate workbooks contain macros. A “yes” here is not a virus warning — it means the file can run
+      code, so treat it like any other program from someone you don’t fully trust: review it before enabling macros,
+      and prefer a sandboxed machine if you don’t recognize the source. A “no” means Excel won’t prompt you about macros
+      at all.</p>
+    <p class="muted">Want this inside your AI agent, on your own machine, with no upload at all?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask Claude or
+      Cursor to “check this workbook for macros and external links.”</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/tools/check-for-macros/page.js"></script>
+
+</body>
+</html>

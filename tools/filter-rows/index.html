@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Filter &amp; sort spreadsheet rows — free online tool | xlsx-for-ai</title>
+<meta name="description" content="Upload an Excel file, keep only the rows that match your conditions, sort them, and download the result as CSV. Combine conditions with AND, sort by one or more columns. Free, no signup. Your original file is never changed or stored.">
+<meta name="author" content="xlsx-for-ai">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/filter-rows/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free Excel filter &amp; sort tool</div>
+    <h1>Pull out just the rows you need — free.</h1>
+    <p class="lede">Upload a spreadsheet, keep only the rows that match your conditions, sort them if you
+      like, and download the result as a CSV. Conditions combine with <strong>AND</strong> — a row is kept
+      only if it matches every rule you add. Your original workbook is never changed or stored.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">filter-rows · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>How it works</h2>
+    <p>Pick a column, choose a condition (is, is not, greater/less than, contains, is empty…), and type a
+      value. Add as many conditions as you need — they combine with <strong>AND</strong>, so a row is kept
+      only when it matches every one. Leave the value blank for “is empty” / “is not empty”. You can also
+      add one or more sort keys to order the results.</p>
+
+    <h2>Filter, sort, or both</h2>
+    <p>Filter only, and you get exactly the matching rows in their original file order. Sort only, and you
+      get every row reordered by the columns you chose. Do both, and we first keep the matching rows, then
+      <strong>sort those matching rows</strong> for display. The combined sort orders your results — it
+      isn’t identical to the standalone sort tool, since it works from the matched rows as text.</p>
+
+    <h2>Know its limits</h2>
+    <p>Large results are capped at the <strong>first 1000 matching rows, in file order</strong>. When you
+      filter and sort together, the sort runs on that matched subset — not on the whole workbook. Columns
+      are matched by their header name: a column with a <em>blank</em> header can’t be picked, and if two
+      columns share the same name, the <em>first</em> one is used. Output is a CSV of the rows you asked
+      for; your original <code>.xlsx</code> is never touched.</p>
+
+    <h2>Your original file is safe</h2>
+    <p>The page reads your file in memory to filter and sort it, then discards it. Your uploaded
+      <code>.xlsx</code> is never changed and never stored — you download a separate CSV of just the rows
+      you asked for.</p>
+    <p class="muted">Want this inside your AI agent, on your own machine, with no upload at all?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask Claude or
+      Cursor to “filter this spreadsheet to the rows where …”.</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/tools/filter-rows/page.js"></script>
+
+</body>
+</html>

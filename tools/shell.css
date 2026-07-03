@@ -115,6 +115,19 @@ main { padding: 52px 0 40px; }
 .reassure { margin-top: 16px; font-size: 13px; color: var(--accent-ink); text-align: center; font-weight: 600; }
 .reassure::before { content: "\1F512  "; }
 
+/* dual-upload mode (XLS-197): two side-by-side zones feeding one process() */
+.dual { display: flex; gap: 14px; }
+.dual .dz { flex: 1; padding: 34px 20px; position: relative; }
+.dz .dzlabel {
+  font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--faint); margin-bottom: 10px;
+}
+.dropzone.chosen { border-style: solid; border-color: var(--accent); background: var(--accent-soft); }
+.dropzone.chosen .big { color: var(--accent-ink); word-break: break-all; }
+.dropzone.chosen .dzlabel { color: var(--accent-ink); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.primary:disabled:hover { background: var(--ink); }
+
 /* running */
 .running { text-align: center; padding: 48px 24px; }
 .spinner {
@@ -206,4 +219,5 @@ main { padding: 52px 0 40px; }
   .tool .panel { padding: 22px 18px 26px; }
   .summary { flex-wrap: wrap; }
   .summary .cnt { min-width: 44%; }
+  .dual { flex-direction: column; }
 }

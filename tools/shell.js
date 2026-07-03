@@ -173,8 +173,34 @@
     var panel = document.querySelector(selector);
     if (!panel) return;
     var accept = cfg.accept || ".xlsx";
+    var maxB = cfg.maxBytes || MAX_BYTES;
+    // Dual-upload mode (XLS-197): two side-by-side drop zones feeding ONE
+    // process() with both files. Purely additive — a page opts in with
+    // cfg.dual; single-file pages keep the original one-zone path untouched.
+    var dual = !!cfg.dual;
+    var labelA = (cfg.labels && cfg.labels.a) || "Original";
+    var labelB = (cfg.labels && cfg.labels.b) || "Changed";
+    var fileA = null, fileB = null;
+
+    function validXlsx(name) { return /\.xlsx$/i.test(name || ""); }
+
+    // Attach picker + drag/drop wiring to a dropzone element, routing the
+    // chosen file to onFile. Shared by both the single and dual paths.
+    function wireDrop(drop, onFile) {
+      var input = drop.querySelector('input[type=file]');
+      drop.addEventListener("click", function () { input.click(); });
+      drop.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+      drop.addEventListener("dragover", function (e) { e.preventDefault(); drop.classList.add("drag"); });
+      drop.addEventListener("dragleave", function () { drop.classList.remove("drag"); });
+      drop.addEventListener("drop", function (e) {
+        e.preventDefault(); drop.classList.remove("drag");
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) onFile(e.dataTransfer.files[0]);
+      });
+      input.addEventListener("change", function () { if (input.files[0]) onFile(input.files[0]); });
+    }
 
     function renderIdle() {
+      if (dual) { renderIdleDual(); return; }
       panel.innerHTML =
         '<div class="dropzone" id="xfa-drop" role="button" tabindex="0" aria-label="Choose a spreadsheet">' +
           '<div class="icon">↑</div>' +
@@ -183,17 +209,45 @@
           '<input type="file" id="xfa-file" accept="' + esc(accept) + '" />' +
         '</div>' +
         '<div class="reassure">' + esc(cfg.reassure || "Your file is processed in memory and never stored.") + '</div>';
-      var drop = panel.querySelector("#xfa-drop");
-      var input = panel.querySelector("#xfa-file");
-      drop.addEventListener("click", function () { input.click(); });
-      drop.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
-      drop.addEventListener("dragover", function (e) { e.preventDefault(); drop.classList.add("drag"); });
-      drop.addEventListener("dragleave", function () { drop.classList.remove("drag"); });
-      drop.addEventListener("drop", function (e) {
-        e.preventDefault(); drop.classList.remove("drag");
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) start(e.dataTransfer.files[0]);
+      wireDrop(panel.querySelector("#xfa-drop"), start);
+    }
+
+    function dualZone(id, label) {
+      return '<div class="dropzone dz" id="' + id + '" role="button" tabindex="0" aria-label="' + esc(label) + '">' +
+          '<div class="dzlabel">' + esc(label) + '</div>' +
+          '<div class="icon">↑</div>' +
+          '<div class="big">Drop file</div>' +
+          '<div class="small">or <span class="pick">choose a file</span> · .xlsx</div>' +
+          '<input type="file" accept="' + esc(accept) + '" />' +
+        '</div>';
+    }
+
+    function markChosen(drop, file) {
+      drop.classList.add("chosen");
+      var big = drop.querySelector(".big");
+      var small = drop.querySelector(".small");
+      if (big) big.textContent = "✓ " + (file.name || "file.xlsx");
+      if (small) small.textContent = "click to replace";
+    }
+
+    function refreshCompare() {
+      var btn = panel.querySelector("#xfa-compare");
+      if (btn) btn.disabled = !(fileA && fileB);
+    }
+
+    function renderIdleDual() {
+      fileA = null; fileB = null;
+      panel.innerHTML =
+        '<div class="dual">' + dualZone("xfa-drop-a", labelA) + dualZone("xfa-drop-b", labelB) + '</div>' +
+        '<div class="reassure">' + esc(cfg.reassure || "Your files are processed in memory and never stored.") + '</div>' +
+        '<div class="actions"><button class="btn primary" id="xfa-compare" disabled>' + esc(cfg.actionLabel || "Compare") + '</button></div>';
+      var dropA = panel.querySelector("#xfa-drop-a");
+      var dropB = panel.querySelector("#xfa-drop-b");
+      wireDrop(dropA, function (f) { fileA = f; markChosen(dropA, f); refreshCompare(); });
+      wireDrop(dropB, function (f) { fileB = f; markChosen(dropB, f); refreshCompare(); });
+      panel.querySelector("#xfa-compare").addEventListener("click", function () {
+        if (fileA && fileB) startDual(fileA, fileB);
       });
-      input.addEventListener("change", function () { if (input.files[0]) start(input.files[0]); });
     }
 
     function renderRunning(filename) {
@@ -280,6 +334,30 @@
         return cfg.process(b64, {
           runTool: runTool, parseTable: parseTable, textOf: textOf, esc: esc,
           step: stepState, filename: name
+        });
+      }).then(function (vm) {
+        renderResult(vm || {});
+      }).catch(function (err) {
+        renderError(err && err.message ? err.message : "Something went wrong. Please try again.");
+      });
+    }
+
+    // Dual-file variant of start(): validate + size-check both files, then
+    // hand cfg.process a { a, b } base64 map plus both filenames. The page's
+    // process() runs the two-file tool (e.g. xlsx_diff) and returns the same
+    // view model shape single-file pages use.
+    function startDual(a, b) {
+      var pair = [{ f: a, label: labelA }, { f: b, label: labelB }];
+      for (var i = 0; i < pair.length; i++) {
+        var f = pair[i].f, nm = f.name || "workbook.xlsx";
+        if (!validXlsx(nm)) { renderError("Both files must be Excel .xlsx workbooks. “" + nm + "” isn’t one."); return; }
+        if (f.size > maxB) { renderError("“" + nm + "” is over the 10 MB limit for the free web tool."); return; }
+      }
+      renderRunning((a.name || "file A") + "  ↔  " + (b.name || "file B"));
+      Promise.all([fileToBase64(a), fileToBase64(b)]).then(function (b64s) {
+        return cfg.process({ a: b64s[0], b: b64s[1] }, {
+          runTool: runTool, parseTable: parseTable, textOf: textOf, esc: esc,
+          step: stepState, filenameA: a.name, filenameB: b.name
         });
       }).then(function (vm) {
         renderResult(vm || {});

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Remove personal data from Excel — free online redact tool | xlsx-for-ai</title>
+<meta name="description" content="Upload an Excel file and download a safe copy with personal data masked — emails, phone numbers, SSNs, card and bank numbers, and PII hiding in the file's own properties. A plain-language before→after ledger shows what was found and where. Free, no signup. Your original file is never changed, stored, or shown back.">
+<meta name="author" content="xlsx-for-ai">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/remove-personal-data/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free Excel redact tool</div>
+    <h1>Remove personal data before you share.</h1>
+    <p class="lede">Upload a spreadsheet and get a safe copy back with personal data masked — emails,
+      phone numbers, Social Security numbers, card and bank numbers, and personal details hiding in the
+      file’s own properties. You see a plain-language list of what was found and where, then download the
+      clean copy. Your original workbook is never changed, and the masked values are never shown back.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">remove-personal-data · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>What it masks</h2>
+    <p>The scan looks for structured personal data by pattern: email addresses, phone numbers, Social
+      Security numbers, credit-card and bank-account numbers, government and tax IDs, and personal
+      information tucked into the workbook’s document properties. Every match is replaced with a
+      <code>[REDACTED]</code> marker in a fresh copy — every non-personal cell, formula, and the sheet
+      structure are left exactly as they were.</p>
+
+    <h2>The before→after ledger is the point</h2>
+    <p>Nothing happens silently. You get a category-by-category breakdown — <strong>how many</strong> of
+      each kind of personal data were found and <strong>where</strong> (down to the sheet and cell) —
+      before you download. The masked values themselves are never echoed back to the page, so nothing
+      can re-leak through this tool.</p>
+
+    <h2>Know its limits</h2>
+    <p>Detection is pattern-based, so it reliably catches things with a recognizable shape. It does
+      <em>not</em> catch names or free-text personal details written in prose — those have no fixed
+      pattern. The ledger says so plainly: scan the safe copy yourself before you share it. Choosing
+      which categories to mask is coming next.</p>
+
+    <h2>Your original file is safe</h2>
+    <p>The page reads your file in memory, masks a <em>copy</em>, and hands that copy back. Your uploaded
+      <code>.xlsx</code> is never changed and never stored — nothing is ever lost.</p>
+    <p class="muted">Want this inside your AI agent, on your own machine, with no upload at all?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask Claude or
+      Cursor to “remove the personal data from this spreadsheet.”</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/tools/remove-personal-data/page.js"></script>
+
+</body>
+</html>

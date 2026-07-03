@@ -293,18 +293,27 @@
 
   // Download a result workbook. Two shapes, because the tool routes return
   // output two ways:
-  //   { file_b64, filename }  — transform routes (convert, clean, redact,
-  //     healer-cure, …) return the output bytes inline in _meta.file_b64.
-  //     No server round-trip: the bytes are already in hand.
+  //   { text, filename, mime }  — text-format transforms (convert → csv/json/
+  //     md/…) render their output in the body, not as bytes. Save the raw
+  //     string directly with the format's MIME type.
+  //   { file_b64, filename, mime? }  — transform routes (convert to a binary
+  //     format, clean, redact, healer-cure, …) return the output bytes inline
+  //     in _meta.file_b64. No server round-trip: the bytes are already in hand.
+  //     mime defaults to .xlsx.
   //   { handle, filename }    — handle-based routes (stamp, receipt, session
   //     commit) leave bytes in the client-scoped cache; fetch them here.
   function startDownload(dl) {
     if (!dl) return Promise.resolve();
+    if (dl.text != null) {
+      try { saveBlob(new Blob([dl.text], { type: dl.mime || "text/plain" }), dl.filename); }
+      catch (err) { alert("Couldn’t save the file. Please run it again."); }
+      return Promise.resolve();
+    }
     if (dl.file_b64 != null) {
       // Inline bytes are already in hand — decode + save directly. Guard the
       // decode so a malformed payload surfaces the same friendly failure the
       // handle path gives, instead of an unhandled throw.
-      try { saveBytes(dl.file_b64, dl.filename); }
+      try { saveBytes(dl.file_b64, dl.filename, dl.mime); }
       catch (err) { alert("Couldn’t save the file. Please run it again."); }
       return Promise.resolve();
     }
@@ -322,10 +331,16 @@
     }).catch(function (err) { alert(err && err.message ? err.message : "Download failed."); });
   }
 
-  function saveBytes(b64, filename) {
+  function saveBytes(b64, filename, mime) {
     var bin = atob(b64), len = bin.length, bytes = new Uint8Array(len);
     for (var i = 0; i < len; i++) bytes[i] = bin.charCodeAt(i);
-    var blob = new Blob([bytes], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+    var blob = new Blob([bytes], {
+      type: mime || "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    });
+    saveBlob(blob, filename);
+  }
+
+  function saveBlob(blob, filename) {
     var url = URL.createObjectURL(blob), a = document.createElement("a");
     a.href = url; a.download = filename || "result.xlsx";
     document.body.appendChild(a); a.click(); document.body.removeChild(a);

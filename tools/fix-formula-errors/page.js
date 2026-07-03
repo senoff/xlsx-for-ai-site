@@ -157,7 +157,10 @@
             //     this errored cell (some readers drop the token). Framing it
             //     as "looked fine but…" would be a lie on a trust surface, so
             //     report it as a normal error, same as the pass-1 findings.
-            if (got.type === "error" && isErrorToken(got.result)) {
+            // Trust the result token, NOT the Type column: xlsx_eval renders an
+            // error result with Type "string", so gating on type==="error" here
+            // would silently drop every recompute-surfaced error.
+            if (isErrorToken(got.result)) {
               var tok = tokenIn(got.result);
               var cachedBlank = String(f.cached == null ? "" : f.cached).trim() === "";
               findings.push({

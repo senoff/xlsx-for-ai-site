@@ -66,7 +66,7 @@
   function asFiniteNumber(s) {
     if (s == null || s === "") return null;
     var t = String(s).trim().replace(/,/g, "");
-    if (!/^-?\d+(\.\d+)?$/.test(t)) return null;
+    if (!/^[+-]?\d+(\.\d+)?([eE][+-]?\d+)?$/.test(t)) return null;
     var n = Number(t);
     return Number.isFinite(n) ? n : null;
   }
@@ -150,18 +150,27 @@
             var got = byRef[ref(f.sheet, f.cell)];
             if (!got) return;
 
-            // (a) recompute surfaced a real error the cached value hid.
+            // (a) recompute returns an error token. Two sub-cases:
+            //   • cached was a real non-error value → genuinely silent-wrong
+            //     (the stored value hid an error the recompute exposes).
+            //   • cached was blank → the file simply never stored a result for
+            //     this errored cell (some readers drop the token). Framing it
+            //     as "looked fine but…" would be a lie on a trust surface, so
+            //     report it as a normal error, same as the pass-1 findings.
             if (got.type === "error" && isErrorToken(got.result)) {
               var tok = tokenIn(got.result);
+              var cachedBlank = String(f.cached == null ? "" : f.cached).trim() === "";
               findings.push({
                 cell: label(f.sheet, f.cell),
                 token: tok[0],
                 formula: f.formula,
-                why: [
-                  "Excel’s stored value looked fine, but an independent recompute returns ",
-                  { b: tok[0] }, " — " + tok[1],
-                ],
-                silent: true,
+                why: cachedBlank
+                  ? ["This formula returns ", { b: tok[0] }, " — " + tok[1]]
+                  : [
+                      "Excel’s stored value looked fine, but an independent recompute returns ",
+                      { b: tok[0] }, " — " + tok[1],
+                    ],
+                silent: !cachedBlank,
                 attn: true,
               });
               return;
@@ -215,7 +224,7 @@
           did.push(ctx.eligibleCount > EVAL_CAP
             ? ["Recomputed the first ", { b: String(EVAL_CAP) }, " of ", { b: String(ctx.eligibleCount) },
                " formulas with an independent engine to catch answers that are wrong without showing an error."]
-            : "Recomputed the formulas with an independent engine to catch answers that are wrong without showing an error.");
+            : ["Recomputed the formulas with an independent engine to catch answers that are wrong without showing an error."]);
         }
 
         var vm = {

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fix broken links in Excel — freeze external references online | xlsx-for-ai</title>
+<meta name="description" content="Upload an Excel file and fix broken links to other workbooks — we freeze each broken reference to its last saved value and give you a repaired copy. Free, no signup. Your original file is never changed.">
+<meta name="author" content="xlsx-for-ai">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-broken-links/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free broken-link fix</div>
+    <h1>Fix broken links in an Excel file</h1>
+    <p class="lede">When a spreadsheet pulls values from another workbook that’s been moved, renamed, or
+      deleted, those cells get stuck on an old value and stop updating. Upload the file and we’ll find
+      every broken link and freeze it to its last saved value — then hand you a repaired copy.</p>
+    <div class="free-pill">Free · no signup · your original file is never changed</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">fix-broken-links · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>What counts as a broken link</h2>
+    <p>This tool fixes one specific thing: <strong>links to other workbooks</strong>. A formula like
+      <code>='[1]Budget.xlsx'!B4</code> reaches into a second file for its value. The moment that other file
+      is moved, renamed, or deleted, Excel can’t follow the link — the cell keeps showing the last value it
+      cached and quietly never updates again. We find those references and freeze each one to that last saved
+      value, so the number stays put and the file no longer depends on a file you don’t have.</p>
+
+    <h2>Your original file is never changed</h2>
+    <p>The fix is always a <strong>separate copy</strong>. We read your upload in memory, build a repaired
+      workbook, and give it to you as a download — your original is never modified and nothing from it is
+      stored. Freezing a link replaces the broken formula with the value Excel last saved for it, so those
+      cells will no longer try to auto-update from the missing file. We say exactly which cells were frozen.</p>
+
+    <h2>What we won’t guess at</h2>
+    <p>If a broken link points at a large range or a dynamic formula that can’t be reduced to a single saved
+      value safely, we leave it alone rather than risk a wrong number. You’ll see it listed as left as-is.</p>
+    <p class="muted">Want this inside your AI agent, on your own machine, with no upload at all?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask Claude or
+      Cursor to “fix the broken external links in this workbook.”</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/tools/fix-broken-links/page.js"></script>
+
+</body>
+</html>

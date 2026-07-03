@@ -148,7 +148,13 @@
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i].trim();
       if (line.indexOf("|") === -1) continue;
-      var cells = line.replace(/^\|/, "").replace(/\|$/, "").split("|").map(function (c) { return c.trim(); });
+      // A cell holding a literal '|' is rendered by the server as '\|'. Protect
+      // those with a sentinel so they survive the pipe-split, then restore them
+      // per-cell — otherwise a value like "A|B" would split into two columns.
+      var protectedLine = line.replace(/\\\|/g, "\uE000");
+      var cells = protectedLine.replace(/^\|/, "").replace(/\|$/, "").split("|").map(function (c) {
+        return c.trim().replace(/\uE000/g, "|");
+      });
       if (/^-{2,}$/.test(cells.join("").replace(/[:\s|]/g, ""))) continue; // separator
       if (!headers) { headers = cells; continue; }
       var obj = {};

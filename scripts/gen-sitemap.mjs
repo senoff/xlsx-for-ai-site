@@ -17,7 +17,7 @@
  * Usage: node scripts/gen-sitemap.mjs   (run from the repo root; writes ./sitemap.xml)
  * Ship DoD: any change that adds, removes, or renames a page re-runs this.
  */
-import { readdirSync, statSync, writeFileSync } from "node:fs";
+import { readdirSync, statSync, writeFileSync, readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { join, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -26,6 +26,18 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ORIGIN = "https://xlsx-for-ai.dev";
 const SKIP_DIRS = new Set(["node_modules", ".git", "scripts", "logo"]);
 
+// A moved-slug redirect stub (meta-refresh) is a 200 page but not a canonical
+// destination — keep the old URL out of the sitemap so only the new slug is indexed.
+function isRedirectStub(file) {
+  try { return /http-equiv=["']refresh["']/i.test(readFileSync(file, "utf8")); }
+  catch (e) {
+    // Fail open — keep the page in the sitemap rather than crash the whole
+    // generator on one unreadable file — but don't swallow it silently.
+    console.warn(`gen-sitemap: could not read ${file} (${e.message}); treating as non-stub`);
+    return false;
+  }
+}
+
 function findIndexHtml(dir) {
   const out = [];
   for (const name of readdirSync(dir)) {
@@ -33,7 +45,7 @@ function findIndexHtml(dir) {
     const full = join(dir, name);
     const st = statSync(full);
     if (st.isDirectory()) out.push(...findIndexHtml(full));
-    else if (name === "index.html") out.push(full);
+    else if (name === "index.html" && !isRedirectStub(full)) out.push(full);
   }
   return out;
 }

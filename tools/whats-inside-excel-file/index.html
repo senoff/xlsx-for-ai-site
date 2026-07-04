@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>See inside an Excel file — free online viewer | xlsx-for-ai</title>
+<meta name="description" content="Upload an Excel file and get a plain-language overview — how many sheets, what columns each holds, and how full they are. Free, no signup. Your file is read in memory and never stored or changed.">
+<meta name="author" content="xlsx-for-ai">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free overview</div>
+    <h1>What's inside this Excel file? See inside, free.</h1>
+    <p class="lede">Upload a spreadsheet and get a plain-language overview — how many sheets it has,
+      what each column holds, and how full the data is. Nothing is changed; we only read what's
+      inside and describe it back to you.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">see-inside · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>What you get</h2>
+    <p>A quick map of the workbook so you know what you're dealing with before you open it. First, the
+      <strong>sheets</strong> — how many there are, their names, and how big each one is. Then, for the
+      main sheet, a <strong>column profile</strong>: the name of every column, the kind of data it holds
+      (number, date, text), how many values are filled in, how many are blank, and a sample value.</p>
+
+    <h2>Read-only by design</h2>
+    <p>This tool never changes your file. It reads the workbook in memory, describes what it found, and
+      discards it — nothing is saved and nothing is written back. It's the same overview your AI agent
+      would get from our API, just rendered for you to read.</p>
+
+    <p class="muted">Want this inside your AI agent, on your own machine, with no upload at all?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask Claude or
+      Cursor to “tell me what's inside this workbook.”</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/tools/whats-inside-excel-file/page.js"></script>
+
+</body>
+</html>

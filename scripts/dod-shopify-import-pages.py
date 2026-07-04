@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Live DoD for the Shopify import shell pages (XLS-207 collections,
-XLS-208 inventory, XLS-209 redirects) on the real deploy.
+"""Live DoD for the Shopify import shell pages (XLS-206 products,
+XLS-207 collections, XLS-208 inventory, XLS-209 redirects) on the real deploy.
 
 Proves the assembled flow end-to-end, not just the pieces:
   1) deploy landed        — served shopify-import.js is reachable
@@ -28,7 +28,7 @@ CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 # passes, exactly as the real page's fetch() does. Not a product gate.
 UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0 Safari/537.36"
 
-# The three new pages: slug -> (tool, prose keyword, fixture csv, expected data rows)
+# The Shopify import pages: slug -> (tool, prose keyword, fixture csv, expected data rows)
 NEW = {
     "import-shopify-products": (
         "shopify_products_import", "product",

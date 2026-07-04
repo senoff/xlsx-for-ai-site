@@ -71,6 +71,32 @@ footer.site a { color: var(--muted); }
 footer.site .links a { margin-left: 16px; }
 footer.site a:hover { color: var(--ink); }
 
+/* ---- shared MCP-adoption section (XLS-221): the free-tool -> agent funnel ---- */
+.xfa-mcp {
+  border-top: 1px solid var(--line);
+  background: var(--accent-soft);
+  padding: 44px 0;
+}
+.xfa-mcp h2 { margin: 0 0 12px; font-size: 20px; color: var(--accent-ink); }
+.xfa-mcp p { margin: 0 0 14px; color: var(--ink); font-size: 15px; }
+.xfa-mcp .xfa-mcp-cmd {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 14px 16px;
+  overflow-x: auto;
+  margin: 0 0 14px;
+}
+.xfa-mcp .xfa-mcp-cmd code {
+  background: none;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--ink);
+  white-space: pre;
+}
+.xfa-mcp .xfa-mcp-more { margin: 0; font-size: 15px; font-weight: 600; }
+
 /* ---- hero (page-per-need headline) ---- */
 main { padding: 52px 0 40px; }
 .hero { margin-bottom: 30px; }

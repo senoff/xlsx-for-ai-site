@@ -668,4 +668,43 @@
     mount: mount, runTool: runTool, parseTable: parseTable, parseGrid: parseGrid,
     fileToBase64: fileToBase64, textOf: textOf, esc: esc, API: API
   };
+
+  // Shared MCP-adoption section (XLS-221). Every tool page loads this shell, so
+  // injecting the section here renders it once on all of them without editing
+  // each page. The visitor just used a free browser tool; this tells them the
+  // same operations are callable by their own agent over MCP. Inform, not sell:
+  // it's the same product, also free — not an upsell tier. The install commands
+  // are the canonical site copy (homepage #docs / clean-data), shown verbatim.
+  // Static markup only (no user input) so it's XSS- and CSP-safe under
+  // script-src 'self'. Runs at end-of-body, so the footer anchor already exists.
+  function injectMcpSection() {
+    if (document.getElementById("xfa-mcp")) return;          // idempotent
+    var footer = document.querySelector("footer.site");
+    if (!footer) return;                                     // stubs/hubs opt out
+    var sec = document.createElement("section");
+    sec.className = "xfa-mcp";
+    sec.id = "xfa-mcp";
+    sec.setAttribute("aria-labelledby", "xfa-mcp-h");
+    sec.innerHTML =
+      '<div class="wrap">' +
+        '<h2 id="xfa-mcp-h">Use these tools from your own AI agent</h2>' +
+        '<p>These tools run on <strong>xlsx-for-ai</strong>, our open MCP server. ' +
+        'The same ~50 spreadsheet operations — reading, auditing, cleaning, and ' +
+        'writing <code>.xlsx</code> files — are available to any AI agent or ' +
+        'developer directly.</p>' +
+        '<p>If you build with Claude, Cursor, or any MCP-aware agent, you can wire ' +
+        'the same tools into it with one install, so your agent reads, audits, and ' +
+        'edits spreadsheets on its own. It’s free, the same as these tools.</p>' +
+        '<pre class="xfa-mcp-cmd"><code>npm install -g xlsx-for-ai\n' +
+        'claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>' +
+        '<p class="xfa-mcp-more"><a href="/#docs">See the full setup and agent ' +
+        'config →</a></p>' +
+      '</div>';
+    footer.parentNode.insertBefore(sec, footer);
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", injectMcpSection);
+  } else {
+    injectMcpSection();
+  }
 })();

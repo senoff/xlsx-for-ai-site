@@ -210,7 +210,12 @@
     // Accepted upload extensions (lowercase, no dot). Default .xlsx-only; a page
     // can widen it — the Shopify import pages take a .csv or .xlsx source file.
     var exts = (cfg.extensions && cfg.extensions.length) ? cfg.extensions : ["xlsx"];
-    var extRe = new RegExp("\\.(" + exts.join("|") + ")$", "i");
+    var extRe = new RegExp(
+      "\\.(" + exts.map(function (e) {
+        return String(e).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      }).join("|") + ")$",
+      "i"
+    );
     function extLabel() {
       var dotted = exts.map(function (e) { return "." + e; });
       return dotted.length === 1

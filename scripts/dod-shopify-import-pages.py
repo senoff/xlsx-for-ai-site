@@ -30,6 +30,14 @@ UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML,
 
 # The three new pages: slug -> (tool, prose keyword, fixture csv, expected data rows)
 NEW = {
+    "import-shopify-products": (
+        "shopify_products_import", "product",
+        "Title,Description,Price,SKU\n"
+        "Summer Tee,Lightweight cotton tee.,19.99,DOD-TEE-1\n"
+        "Winter Hoodie,Warm fleece hoodie.,49.99,DOD-HOODIE-1\n"
+        "Canvas Tote,Everyday carry-all.,12.50,DOD-TOTE-1\n",
+        3,
+    ),
     "import-shopify-collections": (
         "shopify_collections_import", "collection",
         "name,url-handle,description,visible\n"

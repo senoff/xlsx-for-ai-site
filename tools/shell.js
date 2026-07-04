@@ -339,6 +339,10 @@
     // The primitive is domain-agnostic: it collects every field/repeat row
     // verbatim; the page decides per-row validity in its process().
     var params = !!cfg.params;
+    // Holds the object cfg.discover() resolved to, so a dependent re-render
+    // (XLS-216) can re-invoke cfg.buildForm(discovered, values) without
+    // re-reading the file.
+    var lastDiscovered = {};
 
     function toolApi(name) {
       return { runTool: runTool, parseTable: parseTable, textOf: textOf, esc: esc, step: stepState, filename: name };
@@ -347,12 +351,14 @@
     // selector so a bad config can't smuggle selector/attribute syntax.
     function safeName(n) { return String(n == null ? "" : n).replace(/[^a-z0-9_]/g, ""); }
 
-    function selectHtml(name, label, options, sub) {
+    function selectHtml(name, label, options, sub, selected, reload) {
       var opts = (options || []).map(function (o) {
-        return '<option value="' + esc(o.value) + '">' + esc(o.label != null ? o.label : o.value) + '</option>';
+        var sel = (selected != null && String(o.value) === String(selected)) ? " selected" : "";
+        return '<option value="' + esc(o.value) + '"' + sel + '>' + esc(o.label != null ? o.label : o.value) + '</option>';
       }).join("");
       return '<label class="pf"><span class="pl">' + esc(label || "") + '</span>' +
-        '<select ' + (sub ? "data-xfa-sub" : "data-xfa-field") + '="' + safeName(name) + '">' + opts + '</select></label>';
+        '<select ' + (sub ? "data-xfa-sub" : "data-xfa-field") + '="' + safeName(name) + '"' +
+        (reload ? ' data-xfa-reload="1"' : "") + '>' + opts + '</select></label>';
     }
     function textHtml(name, label, placeholder, sub) {
       return '<label class="pf"><span class="pl">' + esc(label || "") + '</span>' +
@@ -367,7 +373,7 @@
         '<button type="button" class="prow-x" aria-label="Remove">&times;</button></div>';
     }
     function fieldHtml(f) {
-      if (f.type === "select") return selectHtml(f.name, f.label, f.options, false);
+      if (f.type === "select") return selectHtml(f.name, f.label, f.options, false, f.value, f.reload);
       if (f.type === "text") return textHtml(f.name, f.label, f.placeholder, false);
       if (f.type === "checklist") {
         var boxes = (f.options || []).map(function (o) {
@@ -461,6 +467,18 @@
           '<button class="btn" id="xfa-params-back">Choose another file</button></div>' +
         '</div>';
       (fields || []).forEach(function (f) { if (f.type === "repeat") wireRepeat(f); });
+      // Dependent re-render (XLS-216): a field marked reload:true re-invokes
+      // buildForm(discovered, currentValues) and re-renders the form — the
+      // two-stage "pick a tool → render that tool's form" flow. Single-stage
+      // pages declare no reload field and are untouched.
+      var reloaders = panel.querySelectorAll('[data-xfa-reload="1"]');
+      for (var ri = 0; ri < reloaders.length; ri++) {
+        reloaders[ri].addEventListener("change", function () {
+          var vals = collectValues(fields);
+          var next = cfg.buildForm ? cfg.buildForm(lastDiscovered, vals) : [];
+          renderParams(next, b64, name);
+        });
+      }
       panel.querySelector("#xfa-params-back").addEventListener("click", renderIdle);
       panel.querySelector("#xfa-run").addEventListener("click", function () {
         var values = collectValues(fields);
@@ -482,7 +500,8 @@
       return Promise.resolve().then(function () {
         return cfg.discover ? cfg.discover(b64, toolApi(name)) : {};
       }).then(function (discovered) {
-        var fields = cfg.buildForm ? cfg.buildForm(discovered || {}) : [];
+        lastDiscovered = discovered || {};
+        var fields = cfg.buildForm ? cfg.buildForm(lastDiscovered, {}) : [];
         renderParams(fields, b64, name);
       }).catch(function (err) {
         renderError(err && err.message ? err.message : "Couldn’t read that file. Please try again.");

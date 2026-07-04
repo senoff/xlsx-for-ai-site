@@ -31,10 +31,12 @@ const SKIP_DIRS = new Set(["node_modules", ".git", "scripts", "logo"]);
 function isRedirectStub(file) {
   try { return /http-equiv=["']refresh["']/i.test(readFileSync(file, "utf8")); }
   catch (e) {
-    // Fail open — keep the page in the sitemap rather than crash the whole
-    // generator on one unreadable file — but don't swallow it silently.
-    console.warn(`gen-sitemap: could not read ${file} (${e.message}); treating as non-stub`);
-    return false;
+    // Fail closed — if we can't read a file we can't confirm it's a canonical
+    // page, so exclude it rather than risk emitting a redirect stub's old slug
+    // into the sitemap. A dropped real page self-heals on the next run (Google
+    // still crawls it); a stub in the sitemap is a canonical-signal error.
+    console.warn(`gen-sitemap: could not read ${file} (${e.message}); excluding from sitemap`);
+    return true;
   }
 }
 

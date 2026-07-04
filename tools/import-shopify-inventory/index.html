@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Update Shopify inventory from a CSV | xlsx-for-ai</title>
+<meta name="description" content="Turn a CSV or Excel list into a Shopify inventory import file. We map SKUs and quantities, flag decimals and blank rows, and never change your original.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Update Shopify inventory from a CSV | xlsx-for-ai">
+<meta property="og:description" content="Turn a CSV or Excel list into a Shopify inventory import file. We map SKUs and quantities, flag decimals and blank rows, and never change your original.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/import-shopify-inventory/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Update Shopify inventory from a CSV | xlsx-for-ai">
+<meta name="twitter:description" content="Turn a CSV or Excel list into a Shopify inventory import file. We map SKUs and quantities, flag decimals and blank rows, and never change your original.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/import-shopify-inventory/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Update Shopify inventory from a CSV",
+  "description": "Turn a CSV or Excel list into a Shopify inventory import file. We map SKUs and quantities, flag decimals and blank rows, and never change your original.",
+  "url": "https://xlsx-for-ai.dev/tools/import-shopify-inventory/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free Shopify inventory import builder</div>
+    <h1>Update Shopify inventory from a CSV — free.</h1>
+    <p class="lede">Upload your stock counts — a CSV or Excel file with SKUs, locations, and new quantities —
+      and get back a Shopify inventory import file. We match your columns to Shopify's inventory fields
+      and show you, in plain language, exactly which rows will change and which ones we're holding back.
+      Because an inventory import overwrites your on-hand counts, seeing what will change <em>before</em>
+      you import is the whole point. Your original file is never changed.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">import-shopify-inventory · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>What it does</h2>
+    <p>Shopify's inventory import matches each row to a SKU at a location and sets its available quantity.
+      Your source counts rarely arrive in that exact shape. This tool reads your file, maps your SKU,
+      location, and quantity columns to the right inventory fields, and writes a clean import CSV you can
+      review and upload in your Shopify admin.</p>
+
+    <h2>It flags what it won't write</h2>
+    <p>Inventory quantities are whole numbers. A decimal count, a blank quantity, or a row missing its SKU
+      can't be safely written — so instead of guessing, we hold those rows back and list them under
+      <strong>what needs you</strong>, with the reason. Everything we did map shows up under <strong>what
+      we mapped</strong>. You see the full before-you-import picture in one place.</p>
+
+    <h2>Reviewed file, not an automatic write</h2>
+    <p>Because an inventory import overwrites your live counts with no automatic undo, this tool hands you
+      a reviewed file to check and import yourself — it never writes to your store directly. Your uploaded
+      file is read in memory and never stored.</p>
+    <p class="muted">Want this inside your AI agent, on your own machine, with no upload at all?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask
+      Claude or Cursor to “build a Shopify inventory import from these counts.”</p>
+  </div>
+
+</div>
+</main>
+
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent prepare inventory updates safely</h2>
+  <p>This tool turned one stock list into a reviewed Shopify inventory import. When your AI agent reconciles counts from a warehouse system, a supplier feed, or a stocktake, it can build the same import file — mapping SKUs and quantities and flagging the decimals, blanks, and unmatched rows it won't write.</p>
+  <p>Wire <strong>xlsx-for-ai</strong> into your agent and inventory updates get prepared and checked inside its own workflow, so you see exactly what will change before anything touches your on-hand counts.</p>
+</div>
+<footer class="site">
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/tools/shopify-import.js"></script>
+<script src="/tools/import-shopify-inventory/page.js"></script>
+
+</body>
+</html>

@@ -238,6 +238,14 @@ main { padding: 52px 0 40px; }
 .pcheck { display: flex; align-items: center; gap: 8px; font-size: 14.5px; margin: 7px 0; cursor: pointer; }
 .pcheck input { width: 16px; height: 16px; accent-color: var(--accent); }
 
+/* raw tool output (XLS-216 run-any-tool) — verbatim text result */
+.tool-output {
+  margin: 16px 0 0; padding: 16px 18px; background: var(--code-bg);
+  border: 1px solid var(--line); border-radius: 10px;
+  font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--ink); white-space: pre; overflow-x: auto; max-height: 460px;
+}
+
 /* below-the-fold explanatory prose (SEO body) */
 .prose { margin-top: 56px; }
 .prose h2 { font-size: 22px; margin: 36px 0 12px; border-top: 1px solid var(--line); padding-top: 28px; letter-spacing: -.01em; }

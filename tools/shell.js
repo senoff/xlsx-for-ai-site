@@ -305,6 +305,12 @@
       } else if (vm.empty) {
         html += '<div class="notice info">' + rich(vm.empty) + '</div>';
       }
+      // Raw text output (XLS-216): a tool's markdown/text result shown
+      // verbatim in a scrollable monospace block. esc() is the sole DOM
+      // authority — tool output can never inject markup.
+      if (vm.output != null && String(vm.output) !== "") {
+        html += '<pre class="tool-output">' + esc(vm.output) + '</pre>';
+      }
       html += '</div>';
 
       if (vm.ledger) {

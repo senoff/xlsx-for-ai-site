@@ -26,11 +26,20 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const ORIGIN = "https://xlsx-for-ai.dev";
 const SKIP_DIRS = new Set(["node_modules", ".git", "scripts", "logo"]);
 
-// A moved-slug redirect stub (meta-refresh) is a 200 page but not a canonical
-// destination — keep the old URL out of the sitemap so only the new slug is indexed.
-function isRedirectStub(file) {
-  try { return /http-equiv=["']refresh["']/i.test(readFileSync(file, "utf8")); }
-  catch (e) {
+// A page is kept OUT of the sitemap when it is not a canonical, indexable
+// destination:
+//   - a moved-slug redirect stub (meta-refresh) — a 200 page pointing elsewhere
+//   - a `robots: noindex` page (e.g. a parked/held tool live only for a bounded
+//     test window) — listing it in the sitemap would contradict its own meta
+// Keeping these out means the sitemap never signals a URL we're telling crawlers
+// to skip.
+function isExcludedFromSitemap(file) {
+  try {
+    const html = readFileSync(file, "utf8");
+    if (/http-equiv=["']refresh["']/i.test(html)) return true;
+    if (/<meta\s+name=["']robots["'][^>]*\bnoindex\b/i.test(html)) return true;
+    return false;
+  } catch (e) {
     // Fail closed — if we can't read a file we can't confirm it's a canonical
     // page, so exclude it rather than risk emitting a redirect stub's old slug
     // into the sitemap. A dropped real page self-heals on the next run (Google
@@ -47,7 +56,7 @@ function findIndexHtml(dir) {
     const full = join(dir, name);
     const st = statSync(full);
     if (st.isDirectory()) out.push(...findIndexHtml(full));
-    else if (name === "index.html" && !isRedirectStub(full)) out.push(full);
+    else if (name === "index.html" && !isExcludedFromSitemap(full)) out.push(full);
   }
   return out;
 }

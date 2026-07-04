@@ -12,11 +12,15 @@
  *      (_meta.column_count / row_count + a table of column name, type, count,
  *      nulls, unique, sample). This is the "what each column holds" answer.
  *
- * Read-only: we describe, we never change the file. xlsx_schema (a second
- * column-type view keyed by column letter) and a raw cell-grid preview
- * (xlsx_read) are deliberately not surfaced here — describe already carries
- * per-column type + a sample value, and a grid preview needs a shell table
- * primitive that doesn't exist yet. Overview facts trace 1:1 to the two calls.
+ *   3. xlsx_read {sheet, maxRows} — the first rows of the profiled sheet,
+ *      rendered as a read-only preview grid via the shell's parseGrid + grid
+ *      view model (XLS-217). "Here's what each column holds" (describe) plus
+ *      "here's what the actual data looks like" (the grid).
+ *
+ * Read-only: we describe and peek, we never change the file. xlsx_schema (a
+ * second column-type view keyed by column letter) is still not surfaced —
+ * describe already carries per-column type + a sample value. Overview facts
+ * trace 1:1 to the three calls.
  */
 (function () {
   "use strict";
@@ -42,9 +46,11 @@
   }
 
   var MAX_COLS_SHOWN = 50;
+  var PREVIEW_ROWS = 20; // first N data rows shown in the peek grid
 
   function process(fileB64, api) {
     var runTool = api.runTool, parseTable = api.parseTable, textOf = api.textOf, step = api.step;
+    var parseGrid = api.parseGrid;
 
     step(0, "on");
     return runTool("xlsx_list_sheets", { file_b64: fileB64 }).then(function (lsResp) {
@@ -64,7 +70,6 @@
         var colCount = typeof dm.column_count === "number" ? dm.column_count : descRows.length;
         var rowCount = typeof dm.row_count === "number" ? dm.row_count : 0;
         var profiledSheet = dm.sheet || primaryName || "";
-        step(2, "done");
 
         var findings = [];
 
@@ -128,21 +133,42 @@
           ? "Inside “" + profiledSheet + "”"
           : "Here’s what’s inside this workbook";
 
-        return {
-          summary: summary,
-          heading: heading,
-          findings: findings,
-          ledger: {
-            did: [
-              ["Listed every sheet, then profiled the columns of ", { b: profiledSheet || "the main sheet" },
-               " — the type, how full each column is, and a sample value."],
-            ],
-            kept: [
-              "Didn’t change your file — this is a read-only overview.",
-              "Didn’t store anything from your file; it was read in memory and discarded.",
-            ],
-          },
-        };
+        // Peek the first rows of the profiled sheet as a read-only grid, so the
+        // overview shows what the actual data looks like — not just its shape.
+        // Read the SAME sheet describe profiled (profiledSheet), not just the
+        // picked primary — dm.sheet is what the column table above describes, so
+        // the grid must match it or the preview would show a different tab.
+        var readSheet = profiledSheet || primaryName;
+        var readBody = { file_b64: fileB64, options: { maxRows: PREVIEW_ROWS } };
+        if (readSheet) readBody.options.sheet = readSheet;
+
+        return runTool("xlsx_read", readBody).then(function (readResp) {
+          step(2, "done");
+          var grid = parseGrid ? parseGrid(textOf(readResp)) : { headers: [], rows: [] };
+
+          var vm = {
+            summary: summary,
+            heading: heading,
+            findings: findings,
+            ledger: {
+              did: [
+                ["Listed every sheet, profiled the columns of ", { b: profiledSheet || "the main sheet" },
+                 ", and previewed its first rows — the type, how full each column is, a sample value, and the actual data."],
+              ],
+              kept: [
+                "Didn’t change your file — this is a read-only overview.",
+                "Didn’t store anything from your file; it was read in memory and discarded.",
+              ],
+            },
+          };
+          if (grid.headers.length) {
+            vm.grid = grid;
+            vm.gridNote = "First " + grid.rows.length +
+              (grid.rows.length === 1 ? " row of “" : " rows of “") +
+              (profiledSheet || primaryName || "the sheet") + "”.";
+          }
+          return vm;
+        });
       });
     });
   }

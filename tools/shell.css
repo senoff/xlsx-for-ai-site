@@ -72,6 +72,9 @@ footer.site .links a { margin-left: 16px; }
 footer.site a:hover { color: var(--ink); }
 
 /* ---- shared MCP-adoption section (XLS-221): the free-tool -> agent funnel ---- */
+/* Per-page unique pitch prose ships as a hidden .xfa-mcp-copy block; shell.js
+   relocates it into .xfa-mcp and drops the source. Keep it hidden pre-JS. */
+.xfa-mcp-copy { display: none; }
 .xfa-mcp {
   border-top: 1px solid var(--line);
   background: var(--accent-soft);

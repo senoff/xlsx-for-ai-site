@@ -207,6 +207,16 @@
     if (!panel) return;
     var accept = cfg.accept || ".xlsx";
     var maxB = cfg.maxBytes || MAX_BYTES;
+    // Accepted upload extensions (lowercase, no dot). Default .xlsx-only; a page
+    // can widen it — the Shopify import pages take a .csv or .xlsx source file.
+    var exts = (cfg.extensions && cfg.extensions.length) ? cfg.extensions : ["xlsx"];
+    var extRe = new RegExp("\\.(" + exts.join("|") + ")$", "i");
+    function extLabel() {
+      var dotted = exts.map(function (e) { return "." + e; });
+      return dotted.length === 1
+        ? dotted[0]
+        : dotted.slice(0, -1).join(", ") + " or " + dotted[dotted.length - 1];
+    }
     // Dual-upload mode (XLS-197): two side-by-side drop zones feeding ONE
     // process() with both files. Purely additive — a page opts in with
     // cfg.dual; single-file pages keep the original one-zone path untouched.
@@ -215,7 +225,7 @@
     var labelB = (cfg.labels && cfg.labels.b) || "Changed";
     var fileA = null, fileB = null;
 
-    function validXlsx(name) { return /\.xlsx$/i.test(name || ""); }
+    function validXlsx(name) { return extRe.test(name || ""); }
 
     // Attach picker + drag/drop wiring to a dropzone element, routing the
     // chosen file to onFile. Shared by both the single and dual paths.
@@ -570,7 +580,7 @@
 
     function start(file) {
       var name = file.name || "workbook.xlsx";
-      if (!/\.xlsx$/i.test(name)) { renderError("This tool reads Excel .xlsx files. Please choose a .xlsx workbook."); return; }
+      if (!extRe.test(name)) { renderError("This tool reads " + extLabel() + " files. Please choose a " + extLabel() + " file."); return; }
       if (file.size > (cfg.maxBytes || MAX_BYTES)) { renderError("That file is over the 10 MB limit for the free web tool."); return; }
       renderRunning(name);
       fileToBase64(file).then(function (b64) {

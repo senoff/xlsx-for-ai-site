@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get a spreadsheet ready to send safely — free | xlsx-for-ai</title>
+<meta name="description" content="Before you send an Excel file outside your company, upload it here and we scan six leak vectors — personal data, file metadata, internal notes, hidden sheets, external links and macros. We clean what's safe to clean, flag what's your call, and hand back a copy. Free, no signup. Your original is never changed, stored, or shown back.">
+<meta name="author" content="xlsx-for-ai">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/get-ready-safely/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free pre-send safety check</div>
+    <h1>Get this ready to send safely — free.</h1>
+    <p class="lede">Before you send a spreadsheet outside your company — to a client, a partner, or the
+      public — it can leak personal data, hidden rows and sheets, internal file paths, your name and
+      company buried in the file’s history, or private notes. Upload it once: we scan all six, clean the
+      ones that are safe to clean, and show you the rest so <strong>you decide before you download</strong>.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">get-ready-safely · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>The six leak vectors</h2>
+    <p>Sending a workbook can expose more than the numbers you meant to share. This check looks at all
+      six at once: <strong>personal data</strong> (emails, phone numbers, IDs, card and bank numbers),
+      the file’s own <strong>document properties</strong> (author, company, revision history),
+      <strong>internal notes</strong> left in cell comments, <strong>hidden sheets</strong> a recipient
+      can simply unhide, <strong>external links and file paths</strong> that point at your network shares
+      or local drives, and <strong>macros</strong> that a recipient’s security may flag.</p>
+
+    <h2>What we clean, and what’s your call</h2>
+    <p>Four of the six are safe to clean automatically, so we do — in a fresh copy: personal data is
+      masked, identifying document properties are cleared, internal cell comments are removed, and any
+      <strong>VBA macros are stripped</strong>. Macros get removed because a macro-enabled file is
+      routinely blocked by the recipient’s security — and we tell you plainly that we did it: your
+      original still has them, so if the recipient genuinely needs the macros, send them the original
+      instead. The other two are <em>yours to decide</em>: hidden sheets and external links can be
+      legitimate, so we never delete them silently. We report exactly what’s there, in plain language,
+      and you choose whether to remove them in Excel before sending.</p>
+
+    <h2>The before→after ledger is the point</h2>
+    <p>Nothing happens quietly. You get a category-by-category breakdown — what was found, how much of it,
+      and where — split into “we handled this for you” and “you should look at this.” The masked personal
+      values are never echoed back to the page, so nothing can re-leak through this tool.</p>
+
+    <h2>Know its limits</h2>
+    <p>Personal-data detection is pattern-based: it reliably catches things with a recognizable shape, but
+      <em>not</em> names or free-text personal details written in prose. Hidden <em>rows and columns</em>
+      inside a sheet aren’t auto-flagged either. The ledger says so plainly — open the safe copy and scan
+      it yourself before you share it.</p>
+
+    <h2>Your original file is safe</h2>
+    <p>The page reads your file in memory, cleans a <em>copy</em>, and hands that copy back. Your uploaded
+      <code>.xlsx</code> is never changed and never stored — nothing is ever lost.</p>
+
+    <h2>Enforce this on every file, automatically</h2>
+    <p>You just safety-checked one file by hand. If files leave your store, pipeline, or team on a regular
+      basis, your AI agent can run this exact same pre-send check on every one of them before it goes out —
+      no upload, no browser, right where the file is generated. Install
+      <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and connect it over
+      MCP, then ask Claude or Cursor to “make this workbook safe to send.” The agent calls the same
+      <code>xlsx_redact</code> that powers this page and gets the full JSON manifest back, so a pre-send
+      safety gate becomes one step in your own workflow instead of a thing someone has to remember to do.</p>
+    <pre><code>npm install -g xlsx-for-ai</code></pre>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/tools/get-ready-safely/page.js"></script>
+
+</body>
+</html>

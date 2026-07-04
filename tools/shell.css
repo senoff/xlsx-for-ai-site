@@ -246,6 +246,26 @@ main { padding: 52px 0 40px; }
   color: var(--ink); white-space: pre; overflow-x: auto; max-height: 460px;
 }
 
+/* read-only preview grid (XLS-217): first N rows of a sheet as a plain table.
+   Horizontal scroll for wide sheets; sticky distinguished header; no inputs. */
+.grid-wrap {
+  margin: 16px 0 0; border: 1px solid var(--line); border-radius: 10px;
+  overflow: auto; max-height: 460px;
+}
+.preview-grid { border-collapse: collapse; width: 100%; font-size: 13px; }
+.preview-grid th, .preview-grid td {
+  padding: 7px 11px; text-align: left; white-space: nowrap;
+  border-bottom: 1px solid var(--line); border-right: 1px solid var(--line);
+}
+.preview-grid th:last-child, .preview-grid td:last-child { border-right: 0; }
+.preview-grid tbody tr:last-child td { border-bottom: 0; }
+.preview-grid thead th {
+  position: sticky; top: 0; z-index: 1; background: #fbfbf9;
+  font-weight: 700; color: var(--ink); border-bottom: 2px solid var(--line);
+}
+.preview-grid tbody td { color: var(--muted); }
+.grid-note { margin: 8px 2px 0; font-size: 12.5px; color: var(--faint); }
+
 /* below-the-fold explanatory prose (SEO body) */
 .prose { margin-top: 56px; }
 .prose h2 { font-size: 22px; margin: 36px 0 12px; border-top: 1px solid var(--line); padding-top: 28px; letter-spacing: -.01em; }

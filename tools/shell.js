@@ -21,6 +21,7 @@
   var KEY_STORE = "xfa_web_key";
   var MAX_BYTES = 10 * 1024 * 1024; // FREE_TIER_MAX_FILE_BYTES on the server
   var TIMEOUT_MS = 90000;           // formula eval on a big workbook can be slow
+  var MAX_GRID_ROWS = 500;          // preview-grid DOM ceiling (XLS-217)
 
   function XfaError(message) { this.name = "XfaError"; this.message = message; }
   XfaError.prototype = Object.create(Error.prototype);
@@ -164,6 +165,32 @@
     return rows;
   }
 
+  // Positional variant of parseTable for the preview-grid primitive (XLS-217):
+  // returns { headers:[...], rows:[[...],...] } preserving column order so a
+  // sheet renders as a faithful cell grid. Same markdown pipe-table input
+  // (xlsx_read's output); the separator row is skipped. xlsx_read does not
+  // escape literal pipes, so no un-escaping step is needed here. Keyed
+  // parseTable is lossy for a grid — it drops position and collides duplicate
+  // header names, both of which a raw cell preview must preserve.
+  function parseGrid(text) {
+    var lines = String(text || "").split("\n");
+    var headers = null, rows = [];
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (line.indexOf("|") === -1) continue;
+      var cells = line.replace(/^\|/, "").replace(/\|$/, "").split("|").map(function (c) {
+        return c.trim();
+      });
+      // Markdown header-separator row: EVERY cell is dashes (with optional
+      // alignment colons). Tested per-cell, not on the concatenation, so a real
+      // data row that happens to hold "----" in one column isn't dropped.
+      if (cells.every(function (c) { return /^:?-{2,}:?$/.test(c); })) continue;
+      if (!headers) { headers = cells; continue; }
+      rows.push(cells);
+    }
+    return { headers: headers || [], rows: rows };
+  }
+
   function textOf(resp) {
     try { return resp.content[0].text || ""; } catch (_) { return ""; }
   }
@@ -305,6 +332,33 @@
       } else if (vm.empty) {
         html += '<div class="notice info">' + rich(vm.empty) + '</div>';
       }
+      // Read-only preview grid (XLS-217): a { headers:[...], rows:[[...]] }
+      // view model (typically from api.parseGrid on an xlsx_read result) shown
+      // as a plain table with a distinguished header. Cells are esc()'d and
+      // bounded to the header width so a stray split can't skew the columns.
+      // No inputs, no download — a peek, never an edit.
+      if (vm.grid && vm.grid.headers && vm.grid.headers.length) {
+        var g = vm.grid;
+        var allRows = g.rows || [];
+        // DOM-safety ceiling: a preview is bounded by the caller (xlsx_read
+        // maxRows), but as a reusable primitive we never trust that — a
+        // pathological grid must not freeze the tab. Cap here and say so.
+        var shownRows = allRows.slice(0, MAX_GRID_ROWS);
+        var thead = '<thead><tr>' + g.headers.map(function (h) {
+          return '<th scope="col">' + esc(h) + '</th>';
+        }).join("") + '</tr></thead>';
+        var tbody = '<tbody>' + shownRows.map(function (r) {
+          return '<tr>' + g.headers.map(function (_h, ci) {
+            return '<td>' + esc(r[ci] != null ? r[ci] : "") + '</td>';
+          }).join("") + '</tr>';
+        }).join("") + '</tbody>';
+        html += '<div class="grid-wrap"><table class="preview-grid">' + thead + tbody + '</table></div>';
+        if (allRows.length > shownRows.length) {
+          html += '<div class="grid-note">Showing the first ' + shownRows.length + ' rows.</div>';
+        } else if (vm.gridNote) {
+          html += '<div class="grid-note">' + rich(vm.gridNote) + '</div>';
+        }
+      }
       // Raw text output (XLS-216): a tool's markdown/text result shown
       // verbatim in a scrollable monospace block. esc() is the sole DOM
       // authority — tool output can never inject markup.
@@ -351,7 +405,7 @@
     var lastDiscovered = {};
 
     function toolApi(name) {
-      return { runTool: runTool, parseTable: parseTable, textOf: textOf, esc: esc, step: stepState, filename: name };
+      return { runTool: runTool, parseTable: parseTable, parseGrid: parseGrid, textOf: textOf, esc: esc, step: stepState, filename: name };
     }
     // name is page-authored; still restrict to a DOM-safe id before use as a
     // selector so a bad config can't smuggle selector/attribute syntax.
@@ -541,7 +595,7 @@
       renderRunning((a.name || "file A") + "  ↔  " + (b.name || "file B"));
       Promise.all([fileToBase64(a), fileToBase64(b)]).then(function (b64s) {
         return cfg.process({ a: b64s[0], b: b64s[1] }, {
-          runTool: runTool, parseTable: parseTable, textOf: textOf, esc: esc,
+          runTool: runTool, parseTable: parseTable, parseGrid: parseGrid, textOf: textOf, esc: esc,
           step: stepState, filenameA: a.name, filenameB: b.name
         });
       }).then(function (vm) {
@@ -611,7 +665,7 @@
   }
 
   window.XFA = {
-    mount: mount, runTool: runTool, parseTable: parseTable,
+    mount: mount, runTool: runTool, parseTable: parseTable, parseGrid: parseGrid,
     fileToBase64: fileToBase64, textOf: textOf, esc: esc, API: API
   };
 })();

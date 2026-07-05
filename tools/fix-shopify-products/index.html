@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Fix a broken Shopify products export CSV | xlsx-for-ai</title>
+<meta name="description" content="Repair a broken Shopify products export so it imports cleanly — stray BOM/encoding, mismatched headers, price formatting, and duplicate handles fixed. Your original is never changed.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Fix a broken Shopify products export CSV | xlsx-for-ai">
+<meta property="og:description" content="Repair a broken Shopify products export so it imports cleanly — stray BOM/encoding, mismatched headers, price formatting, and duplicate handles fixed. Your original is never changed.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-shopify-products/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fix a broken Shopify products export CSV | xlsx-for-ai">
+<meta name="twitter:description" content="Repair a broken Shopify products export so it imports cleanly — stray BOM/encoding, mismatched headers, price formatting, and duplicate handles fixed. Your original is never changed.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-shopify-products/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Fix a broken Shopify products export CSV",
+  "description": "Repair a broken Shopify products export so it imports cleanly — stray BOM/encoding, mismatched headers, price formatting, and duplicate handles fixed. Your original is never changed.",
+  "url": "https://xlsx-for-ai.dev/tools/fix-shopify-products/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free Shopify products import repair</div>
+    <h1>Fix a broken Shopify products export — free.</h1>
+    <p class="lede">Already have a Shopify-shaped products file that won’t import cleanly? Upload it and get
+      back a repaired products import CSV. We fix the mechanical breakage — a stray byte-order mark or
+      Windows line endings, headers that drifted from Shopify’s names, prices written as <code>$19.99</code>,
+      and duplicate handles — and flag anything that needs your judgment, with a plain-language list of
+      exactly what we changed. Your original file is never changed.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">fix-shopify-products · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>What it does</h2>
+    <p>This is for a file that’s <em>already</em> in Shopify’s products shape but won’t import — a real
+      export that picked up damage along the way. It repairs the mechanical problems deterministically:
+      it strips a stray byte-order mark, normalizes line endings, maps drifted headers back to Shopify’s
+      canonical names (<strong>Handle</strong>, <strong>Title</strong>, <strong>Variant SKU</strong>,
+      <strong>Variant Price</strong>, and the rest), cleans price formatting, and surfaces duplicate
+      handles. There’s no AI guessing here — the same broken file always produces the same repaired file.</p>
+
+    <h2>Fixed vs. flagged — nothing changes silently</h2>
+    <p>Every defect shows up one of two ways. Anything we can safely repair appears under
+      <strong>fixed</strong>, with the before → after so you can see exactly what changed. Anything that
+      needs a human decision — like two rows sharing one handle but disagreeing on the title — appears
+      under <strong>needs you</strong>, with the reason. Formula-style values (a cell starting with
+      <code>=</code>) are kept as-is and flagged, never altered.</p>
+
+    <h2>Repaired file, not an automatic write</h2>
+    <p>This hands you a repaired import file to check and upload yourself — it never writes to your store
+      directly. Row count in equals row count out; we repair fields, we don’t add or drop products. Your
+      uploaded file is read in memory and never stored.</p>
+
+    <p class="muted">Need to build a Shopify import from a spreadsheet that <em>isn’t</em> already
+      Shopify-shaped? Use <a href="/tools/import-shopify-products/">Convert a product spreadsheet to a
+      Shopify import CSV</a> instead — it maps arbitrary columns to Shopify’s fields.</p>
+
+    <p class="muted">Want this inside your AI agent, on your own machine, with no upload at all?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask
+      Claude or Cursor to “repair this broken Shopify products export.”</p>
+  </div>
+
+</div>
+</main>
+
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent repair broken product imports for you</h2>
+  <p>This tool repaired one broken Shopify products export. When your AI agent is preparing a catalog — cleaning up a file a supplier or an older tool mangled — it can run the same deterministic repair directly, with the same fixed / needs-you ledger, before the file ever reaches your Shopify admin.</p>
+  <p>Wire <strong>xlsx-for-ai</strong> into your agent and broken product exports get repaired inside its own workflow — encoding cleaned, headers restored, prices normalized, duplicates surfaced — every change shown, nothing altered silently.</p>
+</div>
+<footer class="site">
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/tools/fix-shopify-products/page.js"></script>
+
+</body>
+</html>

@@ -2,74 +2,94 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://xlsx-for-ai.dev/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/clean-data/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/large-files/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/privacy/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/check-for-macros/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/clean-export/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/compare/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/convert-excel-to-csv/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/filter-rows/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/fix-broken-links/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/fix-formula-errors/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/fix-shopify-products/</loc>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/get-ready-safely/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/import-shopify-collections/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/import-shopify-inventory/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/import-shopify-products/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/import-shopify-redirects/</loc>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/remove-duplicates/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/remove-personal-data/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/run-any-tool/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/summarize/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/whats-inside-excel-file/</loc>
-    <lastmod>2026-07-04</lastmod>
+    <lastmod>2026-07-06</lastmod>
   </url>
 </urlset>

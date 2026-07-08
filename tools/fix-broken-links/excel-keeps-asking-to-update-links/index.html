@@ -63,11 +63,23 @@
     <p class="lede">Every time you open the file, Excel asks whether you want to update or not update links. You click a button, get into your spreadsheet, and then the exact same thing happens tomorrow. This isn't a bug — it means your file still contains at least one external link, and the only way to stop the prompt is to find and remove what's causing it.</p>
   </div>
 
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">fix-broken-links · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
   <div class="prose">
 
-    <h2>Why the prompt keeps coming back</h2>
-    <p>The "Update / Don't Update" dialog appears because your workbook has a formula — or a named range, chart, or data validation rule — that references a cell in a different Excel file. Every time you open the workbook, Excel checks to see whether that other file is available and asks what you want to do with it. Clicking "Don't Update" doesn't remove the link. It just defers the question until next time.</p>
-    <p>Suppressing the popup through settings (File &gt; Options &gt; Advanced) is a workaround, not a fix. The external reference is still sitting in your file, potentially showing a stale number. The actual fix is removing the link itself.</p>
+    <h2>The two ways to remove the link</h2>
+    <p>The prompt stops for good only when you remove the external link itself — not by clicking "Don't Update," and not by suppressing the popup in File &gt; Options &gt; Advanced (that leaves the reference in place, potentially showing a stale number). Once you've found the link, you have a choice:</p>
+    <ol>
+      <li><strong>Break the link</strong> — go to Data &gt; Edit Links and click "Break Link." Excel replaces the formula with its current value as a plain number. The live connection disappears and the prompt stops. This is the right move when you don't need the data to refresh from the other file anymore.</li>
+      <li><strong>Update the source</strong> — if the other file still exists but moved to a new location, use "Change Source" in the Edit Links dialog to point Excel at the new path. The link stays live and the values will refresh correctly going forward.</li>
+    </ol>
+    <p>If "Break Link" is greyed out, a sheet is protected. Go to Review &gt; Unprotect Sheet first, then try again.</p>
 
     <h2>Where links hide — it's not always a formula</h2>
     <p>Most people go straight to the formula bar and search for <code>[</code> (the character that marks an external reference like <code>=[OtherFile.xlsx]Sheet1!A1</code>). That finds a lot of them, but links can also live in places that don't show up in a normal formula search:</p>
@@ -79,16 +91,11 @@
     </ul>
     <p>This is why people sometimes delete every formula they can find, break every link in the Edit Links dialog, and the popup still comes back. The link survived somewhere they didn't think to look.</p>
 
-    <h2>The two ways to remove the link</h2>
-    <p>Once you've found the link, you have a choice:</p>
-    <ol>
-      <li><strong>Break the link</strong> — go to Data &gt; Edit Links and click "Break Link." Excel replaces the formula with its current value as a plain number. The live connection disappears and the prompt stops. This is the right move when you don't need the data to refresh from the other file anymore.</li>
-      <li><strong>Update the source</strong> — if the other file still exists but moved to a new location, use "Change Source" in the Edit Links dialog to point Excel at the new path. The link stays live and the values will refresh correctly going forward.</li>
-    </ol>
-    <p>If "Break Link" is greyed out, a sheet is protected. Go to Review &gt; Unprotect Sheet first, then try again.</p>
+    <h2>Why the prompt keeps coming back</h2>
+    <p>The "Update / Don't Update" dialog appears because your workbook has a formula — or a named range, chart, or data validation rule — that references a cell in a different Excel file. Every time you open the workbook, Excel checks to see whether that other file is available and asks what you want to do with it. Clicking "Don't Update" doesn't remove the link — it just defers the question until next time. That's why the actual fix is removing the link itself.</p>
 
     <h2>Find every external link in your file — including the hidden ones</h2>
-    <p>If you've already searched formulas and broken the links you could find but the prompt keeps coming back, there's likely a link buried in a named range, chart, or formatting rule. Upload your file below and the tool will find every external reference — in formulas, names, charts, and validation rules — and give you a plain list of each one with its location.</p>
+    <p>If you've already searched formulas and broken the links you could find but the prompt keeps coming back, there's likely a link buried in a named range, chart, or formatting rule. Upload your file to the tool at the top of this page and it will find every external reference — in formulas, names, charts, and validation rules — and give you a plain list of each one with its location.</p>
 
     <p><a href="/tools/fix-broken-links/" class="cta-link">Find all external links in my file — free</a></p>
 
@@ -119,6 +126,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/fix-broken-links/page.js"></script>
 
 </body>
 </html>

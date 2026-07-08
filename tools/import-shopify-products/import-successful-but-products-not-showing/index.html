@@ -81,10 +81,23 @@
     <div class="eyebrow">Shopify silent import failure</div>
     <h1>Shopify said "Import Successful" — but your products never showed up</h1>
     <p class="lede">You uploaded your CSV, Shopify flashed a green success message, and then you went to your products page and found nothing there. Your product count is exactly the same as before. This is one of the most disorienting Shopify import behaviors because the platform is technically telling you the truth — the process completed — while hiding the fact that it rejected everything.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">import-shopify-products · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
+
+    <h2>How to check your file and get it working</h2>
+    <p>The quickest way to find the problem without manually auditing the Comma-Separated Values (CSV) file is to upload your file to the <a href="/tools/import-shopify-products/">free Shopify product import converter</a>. It checks the Handle column, the column names, the delimiter, and the required fields for every row. Instead of a silent rejection, you get a plain-language report: which rows have blank Handles, which column names it recognized and which it didn't, and what it fixed automatically. The converter hands you back a file you can upload straight to Shopify.</p>
+
+    <p>If you want to check it yourself first: open the raw file in a plain text editor and look at the first row. You should see column names separated by commas, and "Handle" should be one of them. If the separator isn't a comma, or "Handle" isn't there, you've found the problem.</p>
 
     <h2>First: confirm this is what actually happened</h2>
     <p>Before troubleshooting, make sure you're looking in the right place. In Shopify admin, go to <strong>Products</strong> and note the total count. If it's the same as before your import, your products weren't added. It's also worth checking <strong>Products → Drafts</strong> — sometimes products are added but hidden from customers because of how the Published column was set. If they're in Drafts, that's a different problem (see: <a href="/tools/import-shopify-products/products-imported-as-drafts-hidden/">products imported as drafts</a>).</p>
@@ -99,11 +112,6 @@
     <p><strong>2. The column names are wrong.</strong> Shopify matches columns by their exact name, including capitalization. If your spreadsheet calls a column <code>product name</code> instead of <code>Title</code>, Shopify doesn't map it — it treats the Title as blank and then rejects the row because Title can't be blank. The same goes for any required column. Your data might all be there, just under the wrong heading.</p>
 
     <p><strong>3. The file isn't formatted as Shopify expects.</strong> If you exported from a tool that uses tabs or semicolons to separate columns, Shopify reads each row as a single blob of text with no columns at all — and rejects it. The success message still fires.</p>
-
-    <h2>How to check your file and get it working</h2>
-    <p>The quickest way to find the problem without manually auditing the CSV is to upload your file to the <a href="/tools/import-shopify-products/">free Shopify product import converter</a>. It checks the Handle column, the column names, the delimiter, and the required fields for every row. Instead of a silent rejection, you get a plain-language report: which rows have blank Handles, which column names it recognized and which it didn't, and what it fixed automatically. The converter hands you back a file you can upload straight to Shopify.</p>
-
-    <p>If you want to check it yourself first: open the raw file in a plain text editor and look at the first row. You should see column names separated by commas, and "Handle" should be one of them. If the separator isn't a comma, or "Handle" isn't there, you've found the problem.</p>
 
     <p class="muted">Did Shopify add some products but not others?
     Check <a href="/tools/import-shopify-products/variants-or-sizes-missing-after-import/">variants or sizes missing after import</a> — partial drops often come from variant row issues rather than the file format.</p>
@@ -137,6 +145,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/import-shopify-products/page.js"></script>
 
 </body>
 </html>

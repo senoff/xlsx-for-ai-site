@@ -81,7 +81,7 @@
       just need to see what's inside — or get the data somewhere you can use it. Upload the file here and
       we'll convert it to a plain CSV you can open in Google Sheets, Numbers, LibreOffice, or any text
       editor. Nothing to install, no account to create.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
   </div>
 
   <div class="tool">
@@ -94,6 +94,14 @@
 
   <div class="prose">
 
+    <h2>What the converter does</h2>
+    <p>Upload your <code>.xlsx</code> and we read it entirely in your browser — the data never leaves
+      your computer. You pick which sheet to export (if there's more than one), and we hand you back a
+      properly encoded UTF-8 (Unicode) CSV (comma-separated values) file. That means names with
+      accents, prices, phone numbers, and dates all come through as-is — not scrambled into garbage
+      characters the way Excel sometimes does when it saves a CSV on a Windows machine with regional
+      settings. You can open a CSV in Google Sheets, Numbers, LibreOffice, or any text editor.</p>
+
     <h2>Why this happens — and what you actually need</h2>
     <p>Excel's <code>.xlsx</code> format is a ZIP archive containing XML files, so you can't just rename
       it and open it in Notepad. Without Office (or a Google Drive account), most people are stuck.
@@ -101,13 +109,6 @@
     <p>What you usually want isn't the full Excel experience — you just need the <em>data</em>: the rows,
       the columns, the numbers and names inside. A CSV gives you exactly that in a format literally
       every app on the planet can open.</p>
-
-    <h2>What the converter does</h2>
-    <p>Upload your <code>.xlsx</code> and we read it entirely in your browser — the data never leaves
-      your computer. You pick which sheet to export (if there's more than one), and we hand you back a
-      properly encoded UTF-8 CSV. That means names with accents, prices, phone numbers, and dates all
-      come through as-is — not scrambled into garbage characters the way Excel sometimes does when it
-      saves a CSV on a Windows machine with regional settings.</p>
 
     <h2>What won't transfer — and why that's fine</h2>
     <p>A CSV is text only, so formulas get replaced with their last calculated value, and visual
@@ -159,6 +160,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/convert-excel-to-csv/page.js"></script>
 
 </body>
 </html>

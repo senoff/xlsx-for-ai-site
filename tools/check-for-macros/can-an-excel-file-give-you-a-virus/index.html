@@ -93,6 +93,12 @@
 
   <div class="prose">
 
+    <h2>The short answer</h2>
+    <p>Yes — but only through macros, and only if you enable them. A spreadsheet that contains only data and formulas cannot infect your computer by being opened; the data in a file doesn't run. The risk comes entirely from VBA (Visual Basic for Applications) macros — small programs embedded in the file — and even then, modern Excel blocks them until you take a deliberate action to allow them. So if you're worried about a specific file, the useful move is to find out whether it contains macros at all before you do anything else.</p>
+
+    <h2>Check the file before you decide</h2>
+    <p>Drop your file in the box at the top of this page. It reads the file's internal structure — the same way you can list files inside a ZIP without running them — and tells you whether macros are present and what kind. Nothing in the file executes during the check. If no macros are found, the file is a standard spreadsheet and there's nothing there that can run.</p>
+
     <h2>Spreadsheet data is not the threat</h2>
     <p>Numbers, text, even complex formulas — none of that can do anything to your computer just by being opened. A spreadsheet of prices or a roster of employee names is completely inert. The file is data; it doesn't run.</p>
     <p>This is different from executable files (.exe, .bat, .ps1) where opening the file IS running a program. A standard .xlsx spreadsheet isn't a program.</p>
@@ -112,9 +118,6 @@
     <h2>Can you get infected just by opening the file?</h2>
     <p>In the normal case, no. Protected View keeps you safe as long as you don't click past the warnings. There have been extremely rare exploits that compromised older, unpatched versions of Excel without user interaction, but those are patched quickly and require running an outdated version of the software. For a fully updated, modern version of Excel, you have to actively approve macro execution for anything to run.</p>
     <p>The attack vector that actually works is social engineering: the attacker convinces you the file needs macros enabled to display correctly, or that the warning is a bug, or that this is a trusted document from your bank.</p>
-
-    <h2>Check any file before you decide</h2>
-    <p>You don't have to read any of this to get an answer. Drop your file in the box at the top of this page and it reads the file's internal structure — the same way you can list files inside a ZIP without running them — and tells you whether macros are present and what kind. Nothing in the file executes during the check.</p>
 
   </div>
 

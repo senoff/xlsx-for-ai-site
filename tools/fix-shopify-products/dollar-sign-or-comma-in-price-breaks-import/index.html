@@ -63,15 +63,23 @@
       comma for thousands — and now Shopify either rejects the file or imports every product with a $0 price.
       This isn't a bug. Shopify is very specific about price format, and both of those characters are
       treated as errors.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">fix-shopify-products · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
 
-    <h2>The format Shopify actually requires</h2>
-    <p>The <strong>Variant Price</strong> column in a Shopify CSV must contain a plain number and nothing
-      else. No dollar sign. No currency symbol of any kind. No comma as a thousands separator. Just digits
-      and, if needed, a decimal point:</p>
+    <h2>The fix: strip the symbol and the comma</h2>
+    <p>Remove the dollar sign and the thousands-comma from every price. The <strong>Variant Price</strong>
+      column in a Shopify Comma-Separated Values (CSV) file must contain a plain number and nothing else —
+      just digits and, if needed, a decimal point:</p>
     <ul>
       <li><strong>Correct:</strong> <code>29.99</code></li>
       <li><strong>Correct:</strong> <code>1299.00</code></li>
@@ -81,6 +89,14 @@
     </ul>
     <p>The currency is set at the store level — it's not part of the CSV row. So there's never a correct
       reason to put a currency symbol in that column.</p>
+    <p>If you only have a handful of rows, you can remove the dollar signs and commas by hand.
+      For a larger file, upload it to the
+      <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a>. It finds every
+      <strong>Variant Price</strong> and <strong>Variant Compare At Price</strong> cell that has
+      formatting characters, strips them, and gives you back a clean file with a plain-language list of
+      every price it touched — so you can confirm the numbers look right before uploading to Shopify.
+      Nothing in your file is changed silently: every price correction shows up in the "what I changed"
+      ledger, with the before and after value, so you're not flying blind.</p>
 
     <h2>What actually happens when the format is wrong</h2>
     <p>The outcome depends on which character is present and how Shopify's import pipeline handles it at
@@ -107,16 +123,6 @@
     <p>In all of these cases the prices themselves are correct — the numbers are right — it's just the
       formatting around the number that needs to go.</p>
 
-    <h2>Fixing a file with hundreds of prices</h2>
-    <p>If you only have a handful of rows, you can find and remove the dollar signs and commas by hand.
-      For a larger file, upload it to the
-      <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a>. It finds every
-      <strong>Variant Price</strong> and <strong>Variant Compare At Price</strong> cell that has
-      formatting characters, strips them, and gives you back a clean file with a plain-language list of
-      every price it touched — so you can confirm the numbers look right before uploading to Shopify.</p>
-    <p>Nothing in your file is changed silently. Every price correction shows up in the "what I changed"
-      ledger, with the before and after value, so you're not flying blind.</p>
-
   </div>
 
 </div>
@@ -142,6 +148,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/fix-shopify-products/page.js"></script>
 
 </body>
 </html>

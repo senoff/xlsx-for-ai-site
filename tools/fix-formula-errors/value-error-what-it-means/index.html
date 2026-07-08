@@ -60,13 +60,21 @@
     <div class="eyebrow">Excel formula errors — fix-formula-errors</div>
     <h1>#VALUE! error — what it means and how to fix it</h1>
     <p class="lede"><code>#VALUE!</code> is Excel's broadest error. It fires whenever a formula receives something it can't work with — the wrong kind of input for that operation. The fix is different depending on what triggered it, so the first job is figuring out which situation you're in.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">fix-formula-errors · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
 
-    <h2>The three most common triggers</h2>
-    <p>Before you can fix a <code>#VALUE!</code> error, you need to identify which of these situations caused it. Click on the cell showing the error, then look at the formula bar to see the formula and which cells it uses. Then check those input cells.</p>
+    <h2>Start here: find which situation you're in</h2>
+    <p>Click on the cell showing the error and look at the formula bar to see the formula and which cells it uses. Then check those input cells against the three situations below — each one has its own fix, and matching yours tells you exactly what to do.</p>
 
     <hr>
 
@@ -126,6 +134,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/fix-formula-errors/page.js"></script>
 
 </body>
 </html>

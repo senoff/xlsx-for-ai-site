@@ -63,10 +63,30 @@
     <p class="lede">This error shows up in Shopify's import confirmation email next to specific rows in your
       CSV. The message is written in Shopify's internal code language, not plain English. Here is what it
       actually means and the two-column fix that clears it.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">import-shopify-inventory · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
+
+    <h2>The fix: pair the two columns</h2>
+    <p>Set <code>Variant Fulfillment Service</code> to <code>manual</code> on every row where
+      <code>Variant Inventory Tracker</code> is <code>shopify</code>. The value <code>manual</code>
+      means your own store fulfills the order — no third-party warehouse, no dropshipper. That is
+      the default for the vast majority of Shopify merchants, and it clears the error.</p>
+    <p>Look for these two column headers in your comma-separated values (CSV) spreadsheet:</p>
+    <ul>
+      <li><code>Variant Inventory Tracker</code> — the field you've set to <code>shopify</code></li>
+      <li><code>Variant Fulfillment Service</code> — the field that is blank (or missing entirely) on
+        the rows that errored</li>
+    </ul>
 
     <h2>Translating the error into plain English</h2>
     <p>The phrase "is 1" is Shopify's internal shorthand for a boolean true — meaning "is set" or
@@ -81,19 +101,6 @@
     <p>The two fields are linked. Shopify needs to know not just <em>whether</em> to count stock,
       but <em>who</em> is responsible for fulfilling orders from that stock. If you leave the second
       field blank while the first is set, the row is rejected.</p>
-
-    <h2>Which columns are involved</h2>
-    <p>Look for these two column headers in your spreadsheet:</p>
-    <ul>
-      <li><code>Variant Inventory Tracker</code> — the field you've set to <code>shopify</code></li>
-      <li><code>Variant Fulfillment Service</code> — the field that is blank (or missing entirely) on
-        the rows that errored</li>
-    </ul>
-    <p>The fix for most stores is straightforward: set <code>Variant Fulfillment Service</code> to
-      <code>manual</code> on every row where <code>Variant Inventory Tracker</code> is
-      <code>shopify</code>. The value <code>manual</code> means your own store fulfills the order —
-      no third-party warehouse, no dropshipper. That is the default for the vast majority of Shopify
-      merchants.</p>
 
     <h2>Why does this happen in the first place?</h2>
     <p>Shopify's product export includes both columns, and if your products were already set up
@@ -147,6 +154,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/import-shopify-inventory/page.js"></script>
 
 </body>
 </html>

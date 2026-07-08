@@ -61,10 +61,26 @@
     <div class="eyebrow">Shopify CSV import error</div>
     <h1>Shopify says "Line is invalid" or "Line 1 is invalid (No details)" — and gives you nothing else</h1>
     <p class="lede">You uploaded your product CSV and Shopify flagged a line as invalid — but the error message stops there. No field name, no hint about what's wrong. This is one of the most frustrating Shopify import errors because the message is technically accurate but practically useless.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">import-shopify-products · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
+
+    <h2>How to track down the problem</h2>
+    <p>If you can open the raw file as plain text (not in Excel — use Notepad or TextEdit in plain-text mode), search for the line number Shopify named and look at it directly. For Line 1 issues, look at the very beginning of the file for any odd characters before "Handle." For other lines, look for curly quotation marks or an unusual number of commas in that row.</p>
+
+    <p>If that's too involved, the faster path is to upload your file to the <a href="/tools/import-shopify-products/">free Shopify product converter</a>. It scans for all of these issues mechanically — invisible characters, wrong column names, mismatched quotes, column count mismatches — and tells you in plain language what it found and what it fixed. You get a repaired file back, ready to import.</p>
+
+    <h2>One thing to rule out first</h2>
+    <p>Before doing anything else: make sure you're uploading an actual Comma-Separated Values (CSV) file, not an Excel file. Excel files end in <code>.xlsx</code> or <code>.xls</code>. Shopify only accepts <code>.csv</code>. If you have an Excel spreadsheet, you need to export it to CSV first — in Excel, that's File → Save As → CSV (Comma Delimited). Our tool accepts both formats and does this conversion for you automatically.</p>
 
     <h2>Why "Line 1 is invalid" is almost always about your header row</h2>
     <p>When the error says <strong>Line 1</strong>, that's Shopify counting your very first row — the one with column names like Handle, Title, and Variant Price. Line 1 being invalid almost always means something is wrong with that header row, not with any of your actual product data.</p>
@@ -77,14 +93,6 @@
     <p>If the error names a line further down — say, "Line 47 is invalid" — the problem is usually a stray quotation mark or a curly quote in that row. CSV files use straight double-quote characters (<code>"</code>) to wrap cells that contain commas. If a product description or title has a curly quote (the typographic kind that Word and some spreadsheet apps add automatically, like <code>&ldquo;</code> or <code>&rdquo;</code>), the CSV parser gets confused about where the cell ends. Shopify calls the line invalid but doesn't explain what the quote issue is.</p>
 
     <p>Another cause at non-header lines: a row with a completely different number of columns than the rest of the file. If a cell in that row contained a comma and wasn't quoted properly, it looks like an extra column was added. Shopify expected 28 columns; this row looks like it has 29 — line invalid.</p>
-
-    <h2>How to track down the problem</h2>
-    <p>If you can open the raw file as plain text (not in Excel — use Notepad or TextEdit in plain-text mode), search for the line number Shopify named and look at it directly. For Line 1 issues, look at the very beginning of the file for any odd characters before "Handle." For other lines, look for curly quotation marks or an unusual number of commas in that row.</p>
-
-    <p>If that's too involved, the faster path is to upload your file to the <a href="/tools/import-shopify-products/">free Shopify product converter</a>. It scans for all of these issues mechanically — invisible characters, wrong column names, mismatched quotes, column count mismatches — and tells you in plain language what it found and what it fixed. You get a repaired file back, ready to import.</p>
-
-    <h2>One thing to rule out first</h2>
-    <p>Before doing anything else: make sure you're uploading an actual CSV file, not an Excel file. Excel files end in <code>.xlsx</code> or <code>.xls</code>. Shopify only accepts <code>.csv</code>. If you have an Excel spreadsheet, you need to export it to CSV first — in Excel, that's File → Save As → CSV (Comma Delimited). Our tool accepts both formats and does this conversion for you automatically.</p>
 
     <p class="muted">Getting a completely different error?
     Try <a href="/tools/import-shopify-products/there-was-an-error-importing-your-csv-file/">"There was an error importing your CSV file"</a> or
@@ -119,6 +127,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/import-shopify-products/page.js"></script>
 
 </body>
 </html>

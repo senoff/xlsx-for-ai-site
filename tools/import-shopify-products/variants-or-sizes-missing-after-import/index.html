@@ -61,13 +61,32 @@
     <div class="eyebrow">Shopify silent import failure</div>
     <h1>Variants, sizes, or colors didn't come through after import — or they each became a separate product</h1>
     <p class="lede">You sell a t-shirt in Small, Medium, and Large. You imported your CSV and now Shopify has three separate products — one for each size — instead of one product with three size options. Or maybe even worse: only Small showed up and Medium and Large are just gone. Both problems come from the same place.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">import-shopify-products · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
 
+    <h2>What your file needs to look like</h2>
+    <p>For a product with three sizes, you need three rows, and every one of those rows needs the <strong>same Handle</strong> — that's what groups them into one product. The first row also needs the Title, the description, and the name of the option (like "Size"). The second and third rows only need the Handle (matching the first row), the option value (like "Medium" and "Large"), and variant-specific things like the price and Stock Keeping Unit (SKU) for that size. The Title and description only go on the first row.</p>
+
+    <p>If your spreadsheet has product information written out on every row — name and description on every size — that's the normal way to organize a product catalog, but it's not the shape Shopify wants. The conversion step restructures it.</p>
+
+    <h2>The option columns — where sizes and colors actually go</h2>
+    <p>The specific option values (the words "Small," "Medium," "Large," or "Blue," "Red," "Green") go in columns called <strong>Option1 Value</strong>, <strong>Option2 Value</strong>, and so on. The name of the option type (the word "Size" or "Color") goes in <strong>Option1 Name</strong> on the first row of the product. If your spreadsheet has size and color in separate columns with your own column names, those need to be mapped to the right Shopify columns — otherwise the options don't register.</p>
+
+    <h2>Getting your file into the right shape</h2>
+    <p>If your spreadsheet has one row per variant with natural column names like "Size" and "Color," the <a href="/tools/import-shopify-products/">free Shopify product import converter</a> handles the restructuring for you. It groups rows by product, figures out which columns are your option values, moves them into Option1/Option2 position, and makes sure the Handle repeats on every variant row of the same product. The plain-language report it generates shows you how many products it found, how many variants each one has, and which rows it couldn't confidently group — so you can check those specific cases yourself before importing.</p>
+
     <h2>How Shopify groups variants — what the Handle column actually does</h2>
-    <p>In Shopify's CSV format, a product with multiple variants (sizes, colors, materials — any options) is represented by <em>multiple rows</em>. The first row has the product name, description, images, and the first variant. Each additional row below it has the next variant — the next size, the next color. No name, no description on these extra rows. They're just variant data.</p>
+    <p>In Shopify's Comma-Separated Values (CSV) format, a product with multiple variants (sizes, colors, materials — any options) is represented by <em>multiple rows</em>. The first row has the product name, description, images, and the first variant. Each additional row below it has the next variant — the next size, the next color. No name, no description on these extra rows. They're just variant data.</p>
 
     <p>The thing that tells Shopify "these rows all belong to the same product" is the <strong>Handle</strong> column. Every row that belongs to the same product must have the same Handle value. If three rows all say <code>blue-canvas-tote</code> in the Handle column, Shopify groups them as one product with three variants. The first row becomes the product; the other rows become additional options on that product.</p>
 
@@ -77,17 +96,6 @@
     <p><strong>Scenario A: Each row has a unique Handle (or each row has its own product name in that column).</strong> This happens when someone builds their spreadsheet with one row per size — naturally, the way you'd think about it — and each row has its own product name or SKU in what they put in the Handle column. When Shopify sees five rows all with different Handles, it creates five separate products. Each one probably has its size baked into the name, like "T-Shirt Small" and "T-Shirt Medium," and each one only has a single variant.</p>
 
     <p><strong>Scenario B: Variant rows have a blank Handle.</strong> The first row has a Handle, but the rows for the additional sizes below it don't. Shopify can't attach a blank-Handle row to anything, so it either drops those rows silently or tries to create a new product with a blank handle (which also fails silently). Result: only the first variant appears, and the rest are just gone.</p>
-
-    <h2>What your file needs to look like</h2>
-    <p>For a product with three sizes, you need three rows. Every one of those rows needs the same Handle. The first row also needs the Title, the description, and the name of the option (like "Size"). The second and third rows only need the Handle (matching the first row), the option value (like "Medium" and "Large"), and variant-specific things like the price and SKU for that size. The Title and description only go on the first row.</p>
-
-    <p>If your spreadsheet has product information written out on every row — name and description on every size — that's the normal way to organize a product catalog, but it's not the shape Shopify wants. The conversion step restructures it.</p>
-
-    <h2>The option columns — where sizes and colors actually go</h2>
-    <p>The specific option values (the words "Small," "Medium," "Large," or "Blue," "Red," "Green") go in columns called <strong>Option1 Value</strong>, <strong>Option2 Value</strong>, and so on. The name of the option type (the word "Size" or "Color") goes in <strong>Option1 Name</strong> on the first row of the product. If your spreadsheet has size and color in separate columns with your own column names, those need to be mapped to the right Shopify columns — otherwise the options don't register.</p>
-
-    <h2>Getting your file into the right shape</h2>
-    <p>If your spreadsheet has one row per variant with natural column names like "Size" and "Color," the <a href="/tools/import-shopify-products/">free Shopify product import converter</a> handles the restructuring for you. It groups rows by product, figures out which columns are your option values, moves them into Option1/Option2 position, and makes sure the Handle repeats on every variant row of the same product. The plain-language report it generates shows you how many products it found, how many variants each one has, and which rows it couldn't confidently group — so you can check those specific cases yourself before importing.</p>
 
     <p class="muted">If your sizes came through but they're each showing as "out of stock,"
     the fix is different — that's an inventory column issue:
@@ -123,6 +131,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/import-shopify-products/page.js"></script>
 
 </body>
 </html>

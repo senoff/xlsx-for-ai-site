@@ -64,7 +64,15 @@
       the collection — or a customer visits it — either nothing appears or the page says
       "This collection is empty." No error was thrown. No import email flagged a problem.
       Here is how to find out which of the two causes you have and how to resolve it.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">import-shopify-collections · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
@@ -76,6 +84,16 @@
       — not the storefront preview. If you see the products listed there but they're not showing on
       the storefront, give it 10–15 minutes and refresh. If the admin also shows zero products, the
       collection was never populated and you have one of the two causes below.</p>
+
+    <h2>How to check which cause you have</h2>
+    <p>In your Shopify admin, open the empty collection and look at the top of the page.
+      If you see a list of conditions (like "Tag is equal to..."), it's an automated collection —
+      go to Cause 2. If you see just an empty products list with an "Add products" button, it's a
+      manual collection — go to Cause 1. Each points to a different fix.</p>
+
+    <p>For the product–collection assignment step — getting your products into the right
+      collections from a spreadsheet — the free tool below accepts your mapping and produces
+      a ready-to-import file with a plain-language ledger of what it will change.</p>
 
     <h2>Cause 1: manual collection with no products assigned</h2>
     <p>A manual collection requires explicit assignment — you have to tell Shopify which products
@@ -109,16 +127,6 @@
         your tags exactly match the rule.</li>
     </ul>
 
-    <h2>How to check which cause you have</h2>
-    <p>In your Shopify admin, open the empty collection and look at the top of the page.
-      If you see a list of conditions (like "Tag is equal to..."), it's an automated collection.
-      If you see just an empty products list with an "Add products" button, it's a manual
-      collection. Each points to a different fix.</p>
-
-    <p>For the product–collection assignment step — getting your products into the right
-      collections from a spreadsheet — the free tool below accepts your mapping and produces
-      a ready-to-import file with a plain-language ledger of what it will change.</p>
-
   </div>
 
   <div style="margin: 2rem 0;">
@@ -151,6 +159,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/import-shopify-collections/page.js"></script>
 
 </body>
 </html>

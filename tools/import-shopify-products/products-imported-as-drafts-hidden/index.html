@@ -61,25 +61,34 @@
     <div class="eyebrow">Shopify silent import failure</div>
     <h1>Your products imported — but they're invisible to customers because they all landed as drafts</h1>
     <p class="lede">The import looked like it worked. Your products are in Shopify admin. But when you go to your live store, none of them are there. Customers can't see them, can't buy them, can't find them. They're all sitting in Draft status — published to you, hidden from everyone else.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">import-shopify-products · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
 
-    <h2>How to confirm this is what happened</h2>
-    <p>In your Shopify admin, go to <strong>Products</strong>. At the top of the list you'll see filter tabs: All, Active, Draft, Archived. Click <strong>Draft</strong>. If all your newly imported products are sitting there, that's the problem. The import succeeded — the products exist — but they were never made active on your storefront.</p>
-
-    <h2>The one column that controls this</h2>
-    <p>Every row in a Shopify product CSV has a column called <strong>Published</strong>. This column decides whether a product is live on your store (<code>TRUE</code>) or hidden in drafts (<code>FALSE</code>). When the column is blank — not set to anything at all — Shopify treats it as <code>FALSE</code> and creates the product as a draft.</p>
-
-    <p>If you built your product spreadsheet without including a Published column, or if the column was there but left empty, every product came in as a draft. No warning, no error — Shopify just quietly put them all in the hidden pile.</p>
-
-    <p>This also happens when someone exports a Shopify CSV where the products were already drafts, and then re-imports it. The <code>FALSE</code> values travel along with the data and make everything a draft again.</p>
-
-    <h2>Fixing the products you already imported</h2>
+    <h2>The fix: set the Published column to TRUE</h2>
+    <p>Every row in a Shopify product Comma-Separated Values (CSV) file has a column called
+      <strong>Published</strong>. Set it to <code>TRUE</code> on every row to make products live on your
+      storefront; <code>FALSE</code> (or blank) keeps them hidden in drafts.</p>
     <p>If you only have a handful of products, the fastest fix is to go to Products in your admin, click into each draft product, and click <strong>Publish</strong>. You can also select multiple products from the product list and use the bulk action to set them as active.</p>
 
     <p>If you imported a large catalog, bulk-publishing from the admin can be slow. The cleaner fix is to go back to your original spreadsheet, add a <strong>Published</strong> column (or find the existing one), set every row to <code>TRUE</code>, and re-import. Shopify will match the rows by their Handle values and update the status without creating duplicates. Before you do this, make sure the Handle values in your file exactly match the handles of the products that were imported — otherwise Shopify will create new products instead of updating the existing ones.</p>
+
+    <h2>How to confirm this is what happened</h2>
+    <p>In your Shopify admin, go to <strong>Products</strong>. At the top of the list you'll see filter tabs: All, Active, Draft, Archived. Click <strong>Draft</strong>. If all your newly imported products are sitting there, that's the problem. The import succeeded — the products exist — but they were never made active on your storefront.</p>
+
+    <h2>Why they landed as drafts</h2>
+    <p>When the Published column is blank — not set to anything at all — Shopify treats it as <code>FALSE</code> and creates the product as a draft. If you built your product spreadsheet without including a Published column, or if the column was there but left empty, every product came in as a draft. No warning, no error — Shopify just quietly put them all in the hidden pile.</p>
+
+    <p>This also happens when someone exports a Shopify CSV where the products were already drafts, and then re-imports it. The <code>FALSE</code> values travel along with the data and make everything a draft again.</p>
 
     <h2>How to prevent this next time</h2>
     <p>When you use the <a href="/tools/import-shopify-products/">free Shopify product import converter</a> to prepare your file, it checks the Published column and flags blank or missing values before you import. You can choose whether you want products to go live immediately or stay as drafts — and the converter makes sure the column reflects your choice in every row. The report it generates tells you exactly what was set so you're not guessing after the fact.</p>
@@ -118,6 +127,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/import-shopify-products/page.js"></script>
 
 </body>
 </html>

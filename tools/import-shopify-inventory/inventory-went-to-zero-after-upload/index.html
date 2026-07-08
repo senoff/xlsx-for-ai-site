@@ -76,10 +76,31 @@
     <p class="lede">Your upload finished without errors. Shopify told you it succeeded.
       Then you looked at your products and every single quantity read 0. No alert.
       No explanation. Here is exactly what happened and how to make sure it never happens again.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">import-shopify-inventory · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
+
+    <h2>What to do right now</h2>
+    <p>Do not upload anything again until you have verified the file. Stock isn't lost — it was
+      overwritten with zero, and you fix it by uploading a corrected file with the right numbers
+      (that is a second upload, not an undo). If you still have the original quantities somewhere —
+      in a backup export you ran before, in a warehouse system, in a spreadsheet you maintain
+      manually — you can restore them.</p>
+
+    <p>To check your corrected file before uploading, use the free tool below.
+      Upload your spreadsheet and it will show you every row where the tracker is set but
+      the quantity is blank or zero, alongside a plain-English summary of what the import
+      would write to your store. Nothing reaches Shopify until you choose to download the
+      fixed file and upload it yourself.</p>
 
     <h2>How to tell this happened to you</h2>
     <p>Open any product in your Shopify admin and look at the <strong>Inventory</strong> section.
@@ -118,18 +139,6 @@
         existing ones.</li>
     </ul>
 
-    <h2>What to do right now</h2>
-    <p>First, do not upload anything again until you have verified the file. If you still
-      have the original quantities somewhere — in a backup export you ran before, in a
-      warehouse system, in a spreadsheet you maintain manually — you can restore them by
-      uploading a corrected file with the right numbers. That is a second upload, not an undo.</p>
-
-    <p>To check your corrected file before uploading, use the free tool below.
-      Upload your spreadsheet and it will show you every row where the tracker is set but
-      the quantity is blank or zero, alongside a plain-English summary of what the import
-      would write to your store. Nothing reaches Shopify until you choose to download the
-      fixed file and upload it yourself.</p>
-
   </div>
 
   <div style="margin: 2rem 0;">
@@ -162,6 +171,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/import-shopify-inventory/page.js"></script>
 
 </body>
 </html>

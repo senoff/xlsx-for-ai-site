@@ -63,30 +63,31 @@
     <p class="lede">This red bar is different from the old yellow "Macros have been disabled" message. Starting in 2022, Microsoft changed how Office handles files downloaded from the internet or received as email attachments — and there's no simple "Enable Content" button to click anymore.</p>
   </div>
 
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">check-for-macros · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
   <div class="prose">
 
-    <h2>Why the message changed</h2>
-    <p>For years, Excel showed a yellow warning bar with an "Enable Content" button whenever a file contained macros. Attackers figured out that enough people would click that button, so macro-based malware became one of the most common ways to infect a computer through a spreadsheet. In response, Microsoft pushed a significant change in 2022: files downloaded from the internet or email now carry an invisible tag called the "Mark of the Web." When Excel sees that tag, it shows the red bar and <strong>blocks macros entirely</strong> — no Enable Content button.</p>
-
-    <h2>What the red bar is telling you</h2>
-    <p>The message means two things at once:</p>
-    <ol>
-      <li>The file contains VBA macros (code that can run automatically and interact with your computer).</li>
-      <li>Excel detected that the file came from an untrusted source — most commonly, it was downloaded from the internet or arrived as an email attachment.</li>
-    </ol>
-    <p>The combination of "has macros" and "came from outside" is what triggers the hard block. A macro-enabled file you created yourself on your own machine usually doesn't get this treatment.</p>
-
-    <h2>Should you be worried?</h2>
-    <p>Not automatically — but you should know what's in the file before you do anything to unblock it. Most macro-enabled spreadsheets are completely legitimate: accounting tools, automated reports, forms that calculate things for you. The block doesn't mean the file is malicious. It means Excel doesn't know where the file came from and is being conservative.</p>
-    <p>The files you should be most cautious about are ones you weren't expecting — an invoice from an unknown sender, a spreadsheet attached to a job offer you didn't apply for, a "payment confirmation" from a company you've never heard of. Attackers use exactly those scenarios because the urgency makes people want to click through warnings.</p>
-
-    <h2>How to check what's actually in the file</h2>
-    <p>The safest approach before deciding what to do with a blocked file is to find out whether the macros inside it look like a standard automation tool or something suspicious. Our free tool inspects the file without opening it in Excel and without running any code. It tells you whether macros are present, what kind they are, and whether it finds anything else worth knowing — so you can make an informed call before you unblock anything.</p>
+    <h2>What the red bar means and what to do</h2>
+    <p>The message means two things at once: the file contains VBA (Visual Basic for Applications) macros — code that can run automatically and interact with your computer — and Excel detected that the file came from an untrusted source (most commonly, it was downloaded from the internet or arrived as an email attachment). The combination of "has macros" and "came from outside" is what triggers the hard block. A macro-enabled file you created yourself on your own machine usually doesn't get this treatment.</p>
+    <p>Before you do anything to unblock it, check what's actually inside. Our free tool inspects the file without opening it in Excel and without running any code — it tells you whether macros are present, what kind they are, and whether it finds anything else worth knowing, so you can make an informed call before you unblock anything.</p>
 
     <p><a href="/tools/check-for-macros/" class="cta-link">Check what's inside this file — free</a></p>
 
     <h2>If you decide the file is trustworthy</h2>
     <p>If you know the sender and are confident the file is safe, the way to unblock it in newer Excel versions is to right-click the file in Windows Explorer, choose Properties, and check the "Unblock" checkbox at the bottom of the General tab. That removes the Mark of the Web tag, and Excel will open the file normally on the next launch.</p>
+
+    <h2>Should you be worried?</h2>
+    <p>Not automatically. Most macro-enabled spreadsheets are completely legitimate: accounting tools, automated reports, forms that calculate things for you. The block doesn't mean the file is malicious. It means Excel doesn't know where the file came from and is being conservative.</p>
+    <p>The files you should be most cautious about are ones you weren't expecting — an invoice from an unknown sender, a spreadsheet attached to a job offer you didn't apply for, a "payment confirmation" from a company you've never heard of. Attackers use exactly those scenarios because the urgency makes people want to click through warnings.</p>
+
+    <h2>Why the message changed</h2>
+    <p>For years, Excel showed a yellow warning bar with an "Enable Content" button whenever a file contained macros. Attackers figured out that enough people would click that button, so macro-based malware became one of the most common ways to infect a computer through a spreadsheet. In response, Microsoft pushed a significant change in 2022: files downloaded from the internet or email now carry an invisible tag called the "Mark of the Web." When Excel sees that tag, it shows the red bar and <strong>blocks macros entirely</strong> — no Enable Content button.</p>
 
     <p class="muted">Our tool reads the file without running its macros and without storing the file. You get a plain-language report of what's inside.</p>
 
@@ -115,6 +116,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/check-for-macros/page.js"></script>
 
 </body>
 </html>

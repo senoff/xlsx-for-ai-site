@@ -76,10 +76,30 @@
     <p class="lede">Shopify threw this error and now your whole import is blocked. The message sounds technical
       but the cause is almost always one thing: a stray quote character in a product description or title that
       wasn't handled correctly when the file was saved. Here's exactly what happened and how to clear it.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">fix-shopify-products · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
+
+    <h2>The fix</h2>
+    <p>Every double-quote (<code>"</code>) that appears <em>inside</em> a field value needs to be written as
+      <code>""</code>. And the field itself needs to be wrapped in outer quotes too. A description that
+      says <code>Fits a 10" frame</code> needs to appear in the Comma-Separated Values (CSV) file as
+      <code>"Fits a 10"" frame"</code> — two double-quotes in the middle, one pair on the outside.</p>
+    <p>Finding and repairing every instance across hundreds of rows by hand is error-prone. Upload your
+      file to the repair tool above and it handles the escaping for every affected field automatically,
+      then shows you a list of the exact cells it touched before returning a clean file. Once your file is
+      quoting-clean, the full <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a>
+      catches any other issues — price formatting, duplicate handles, header mismatches — before you
+      upload to Shopify.</p>
 
     <h2>What Shopify actually means by this</h2>
     <p>CSV files use double-quote characters (<code>"</code>) to wrap fields that contain commas. When a
@@ -108,19 +128,6 @@
       recover — every subsequent row is ambiguous. That's why Shopify rejects the entire file rather than
       skipping the problem row.</p>
 
-    <h2>The fix</h2>
-    <p>Every <code>"</code> that appears <em>inside</em> a field value needs to be written as
-      <code>""</code>. And the field itself needs to be wrapped in outer quotes too. A description that
-      says <code>Fits a 10" frame</code> needs to appear in the CSV as
-      <code>"Fits a 10"" frame"</code> — two double-quotes in the middle, one pair on the outside.</p>
-    <p>Finding and repairing every instance across hundreds of rows by hand is error-prone. Upload your
-      file to the repair tool below and it handles the escaping for every affected field automatically,
-      then shows you a list of the exact cells it touched before returning a clean file.</p>
-
-    <p class="muted">Once your file is quoting-clean, use the full
-      <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a> to catch any other
-      issues — price formatting, duplicate handles, header mismatches — before you upload to Shopify.</p>
-
   </div>
 
 </div>
@@ -146,6 +153,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/fix-shopify-products/page.js"></script>
 
 </body>
 </html>

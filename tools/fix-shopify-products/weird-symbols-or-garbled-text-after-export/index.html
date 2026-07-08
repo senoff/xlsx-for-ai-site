@@ -63,10 +63,30 @@
       strange garbage characters where the accents and apostrophes used to be. Shopify didn't warn you. The
       import said it worked. But your product names and descriptions look scrambled to every customer who
       visits your store.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">fix-shopify-products · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
+
+    <h2>Fixing it</h2>
+    <p>The repair is to re-read the file interpreting the characters correctly, then save it back in the
+      right format. Upload your file to the
+      <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a> and it will detect the
+      character problem, convert the affected cells back to the correct text, and give you a repaired file
+      in the format Shopify expects. The ledger will show you which fields were changed and what the text
+      looks like after repair — so you can confirm your accented characters are back before you upload.</p>
+    <p class="muted">Going forward: if you need to edit your Shopify export in a spreadsheet, use
+      Google Sheets (paste the CSV content there) or open the file in Excel using the Data → From Text/CSV
+      import wizard and explicitly choose 8-bit Unicode Transformation Format (UTF-8). That prevents the
+      character problem from happening in the first place.</p>
 
     <h2>How to tell this happened to you</h2>
     <p>This is a silent failure — Shopify won't show an error during the import. You'll only spot it by
@@ -80,13 +100,13 @@
       <li>Any letter with an accent replaced by a two- or three-character mess starting with <code>Ã</code>
         or <code>â€</code></li>
     </ul>
-    <p>If those patterns appear in your product titles or descriptions, keep reading.</p>
 
     <h2>What went wrong — in plain language</h2>
-    <p>Your Shopify export file is saved in a format called UTF-8, which can represent every character in
-      every language. The problem happens when you open that file in Excel on Windows. Excel often opens
-      CSV files in a different format — one that was designed for older, English-only software — and when
-      you save it back to CSV, the accent characters get translated into the wrong thing.</p>
+    <p>Your Shopify export file is saved in a format called 8-bit Unicode Transformation Format (UTF-8),
+      which can represent every character in every language. The problem happens when you open that file in
+      Excel on Windows. Excel often opens CSV files in a different format — one that was designed for older,
+      English-only software — and when you save it back to CSV, the accent characters get translated into
+      the wrong thing.</p>
     <p>The characters aren't lost. They're still in the file. But they've been scrambled by the translation
       process. When Shopify reads them back in, it puts the scrambled version into your store.</p>
     <p>Your original product data probably had perfectly correct characters. The file just passed through
@@ -106,18 +126,6 @@
       write it — so the characters look fine to you. The damage only becomes visible when something reads
       the file correctly, the way Shopify does. That's why the file looks okay in your spreadsheet but
       looks broken on the storefront.</p>
-
-    <h2>Fixing it</h2>
-    <p>The repair is to re-read the file interpreting the characters correctly, then save it back in the
-      right format. Upload your file to the
-      <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a> and it will detect the
-      character problem, convert the affected cells back to the correct text, and give you a repaired file
-      in the format Shopify expects. The ledger will show you which fields were changed and what the text
-      looks like after repair — so you can confirm your accented characters are back before you upload.</p>
-    <p class="muted">Going forward: if you need to edit your Shopify export in a spreadsheet, use
-      Google Sheets (paste the CSV content there) or open the file in Excel using the Data → From Text/CSV
-      import wizard and explicitly choose UTF-8. That prevents the character problem from happening in
-      the first place.</p>
 
   </div>
 
@@ -144,6 +152,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/fix-shopify-products/page.js"></script>
 
 </body>
 </html>

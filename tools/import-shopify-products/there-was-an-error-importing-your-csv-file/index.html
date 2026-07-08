@@ -72,11 +72,29 @@
   <div class="hero">
     <div class="eyebrow">Shopify CSV import error</div>
     <h1>"There was an error importing your CSV file" — here's what's actually wrong</h1>
-    <p class="lede">Shopify shows this message when it can't even open your file — it never got as far as reading your products. The frustrating part is that Shopify doesn't tell you why. This page explains the real causes and how to get your import through.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="lede">Shopify shows this message when it can't even open your file — it never got as far as reading your products. The frustrating part is that Shopify doesn't tell you why.</p>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">import-shopify-products · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
+
+    <h2>How our tool fixes this automatically</h2>
+    <p>Rather than hunting through the file yourself, upload it to our <a href="/tools/import-shopify-products/">free Shopify product converter</a>. It checks every one of the common causes mechanically — the invisible byte-order mark at the start, the delimiter (comma vs. semicolon vs. tab), the encoding, and whether your column names match Shopify's required header names. Anything it can fix safely, it fixes and lists in plain language so you can see exactly what changed. Anything that needs your attention — like a column name it doesn't recognize — it flags separately so you know what to look at.</p>
+
+    <p>You get back a clean file that's ready to upload to Shopify. Your original is never touched.</p>
+
+    <h2>The fastest way to find which problem you have yourself</h2>
+    <p>If you built your file in Excel or Google Sheets, start by opening the raw file in a plain text editor (Notepad on Windows, TextEdit on Mac in plain-text mode). Look at the very first line. You should see clean column names separated by commas, starting with <code>Handle</code>. If you see semicolons, strange symbols at the beginning, or column names that look slightly off — you've found the problem.</p>
+
+    <p>If the file looks fine in a text editor, the next thing to check is whether your column names match Shopify's template exactly. Shopify publishes a sample template in its admin. Download a fresh copy and compare your first row to it, character by character.</p>
 
     <h2>Why Shopify stops before reading a single product</h2>
     <p>When Shopify says "There was an error importing your CSV file," it's hitting a problem before it can parse anything — the file itself is unreadable as far as Shopify is concerned. The three most common culprits:</p>
@@ -86,16 +104,6 @@
     <p><strong>There's an invisible character at the start of the file.</strong> Excel sometimes adds something called a byte-order mark — a special invisible code — at the very beginning of the file when it saves. You can't see it, it doesn't show up in any column, and it silently breaks the import. Shopify sees garbage instead of your first column header.</p>
 
     <p><strong>The column headers don't match what Shopify expects.</strong> Shopify's import is case-sensitive and exact. If the first row of your file says <code>title</code> instead of <code>Title</code>, or <code>variant price</code> instead of <code>Variant Price</code>, Shopify may refuse the file entirely rather than trying to figure it out.</p>
-
-    <h2>The fastest way to find which problem you have</h2>
-    <p>If you built your file in Excel or Google Sheets, start by opening the raw file in a plain text editor (Notepad on Windows, TextEdit on Mac in plain-text mode). Look at the very first line. You should see clean column names separated by commas, starting with <code>Handle</code>. If you see semicolons, strange symbols at the beginning, or column names that look slightly off — you've found the problem.</p>
-
-    <p>If the file looks fine in a text editor, the next thing to check is whether your column names match Shopify's template exactly. Shopify publishes a sample template in its admin. Download a fresh copy and compare your first row to it, character by character.</p>
-
-    <h2>How our tool fixes this automatically</h2>
-    <p>Rather than hunting through the file yourself, you can upload it to our <a href="/tools/import-shopify-products/">free Shopify product converter</a>. It checks every one of these issues mechanically — the invisible byte-order mark at the start, the delimiter (comma vs. semicolon vs. tab), the encoding, and whether your column names match Shopify's required header names. Anything it can fix safely, it fixes and lists in plain language so you can see exactly what changed. Anything that needs your attention — like a column name it doesn't recognize — it flags separately so you know what to look at.</p>
-
-    <p>You get back a clean file that's ready to upload to Shopify. Your original is never touched.</p>
 
     <h2>What if fixing the format doesn't work?</h2>
     <p>A small number of "error importing" cases come from the file being too large (Shopify has a 15 MB limit), or from the file not being a CSV at all — for example, if you uploaded an actual <code>.xlsx</code> file directly instead of exporting it to CSV first. In either case, Shopify gives the same unhelpful error message. Our tool accepts both <code>.xlsx</code> and <code>.csv</code> formats and converts to a clean Shopify-ready CSV either way.</p>
@@ -133,6 +141,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/import-shopify-products/page.js"></script>
 
 </body>
 </html>

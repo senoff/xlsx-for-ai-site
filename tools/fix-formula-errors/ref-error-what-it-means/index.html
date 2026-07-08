@@ -75,15 +75,22 @@
   <div class="hero">
     <div class="eyebrow">Excel formula errors — fix-formula-errors</div>
     <h1>#REF! error — what it means and how to fix it</h1>
-    <p class="lede">You deleted a row or column, moved something, or pasted over cells — and now a whole section of your spreadsheet shows <code>#REF!</code>. This page explains what happened and walks you through finding every broken formula and repairing it.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="lede">You deleted a row or column, moved something, or pasted over cells — and now a whole section of your spreadsheet shows <code>#REF!</code>.</p>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">fix-formula-errors · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
 
-    <h2>What #REF! is telling you</h2>
-    <p><code>#REF!</code> stands for "invalid reference." A formula contains a cell address — like <code>B3</code> or <code>Sheet2!D7</code> — and that address no longer points to anything real. The row was deleted. The column was removed. The sheet was renamed or deleted. Whatever the formula was counting on is gone, so Excel replaces the broken address with <code>#REF!</code> to mark the damage.</p>
-    <p>It's worth knowing that <code>#REF!</code> cascades: if cell A10 gets a <code>#REF!</code>, and cell B10 has a formula that uses A10, B10 will also show <code>#REF!</code> — even though B10's own references are fine. One root breakage can ripple through many dependent cells.</p>
+    <h2>The fastest fix: undo</h2>
+    <p>If you just deleted a row, column, or sheet and haven't saved yet, press <strong>Ctrl+Z</strong> immediately. It undoes the deletion and the <code>#REF!</code> errors disappear. If undo isn't an option anymore — you saved, closed, or the deletion was several steps back — work through the steps below to find and repair each broken cell.</p>
 
     <h2>Step 1 — figure out what triggered it</h2>
     <p>Think about what you did just before the error appeared. The trigger is almost always one of these:</p>
@@ -93,7 +100,6 @@
       <li>Moving a formula using cut-and-paste into a position where its relative references now point outside the sheet's boundaries</li>
       <li>Copying a formula that uses relative references into a cell where the shifted addresses would land outside the grid</li>
     </ul>
-    <p>If you just deleted something and haven't saved yet, pressing <strong>Ctrl+Z</strong> immediately is the fastest fix — it undoes the deletion and the errors disappear.</p>
 
     <h2>Step 2 — find every broken cell</h2>
     <p>For a large file, hunting <code>#REF!</code> cells one by one wastes time. Here's a faster approach:</p>
@@ -111,6 +117,10 @@
     <h2>Step 4 — repair or rebuild</h2>
     <p>If you know what the formula should have pointed to, click the cell, go to the formula bar, and replace the <code>#REF!</code> part with the correct cell address. If the formula has multiple <code>#REF!</code> pieces, fix each one.</p>
     <p>If the data that was deleted is truly gone and can't be recovered, you'll need to decide whether to rebuild the formula against new data, simplify it to remove the dependency, or leave the cell blank. There's no automatic recovery — Excel can't invent data that no longer exists.</p>
+
+    <h2>What #REF! is telling you</h2>
+    <p><code>#REF!</code> stands for "invalid reference." A formula contains a cell address — like <code>B3</code> or <code>Sheet2!D7</code> — and that address no longer points to anything real. The row was deleted. The column was removed. The sheet was renamed or deleted. Whatever the formula was counting on is gone, so Excel replaces the broken address with <code>#REF!</code> to mark the damage.</p>
+    <p>It's worth knowing that <code>#REF!</code> cascades: if cell A10 gets a <code>#REF!</code>, and cell B10 has a formula that uses A10, B10 will also show <code>#REF!</code> — even though B10's own references are fine. One root breakage can ripple through many dependent cells.</p>
 
     <h2>Preventing it going forward</h2>
     <p>The most reliable defense is to delete rows and columns by right-clicking and choosing <strong>Delete</strong> from within the spreadsheet — rather than selecting the row header and pressing the Delete key (which clears the content but leaves the row). Also, when a row contains data that formulas depend on, consider hiding it instead of deleting it if you're not certain it's safe to remove.</p>
@@ -147,6 +157,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/fix-formula-errors/page.js"></script>
 
 </body>
 </html>

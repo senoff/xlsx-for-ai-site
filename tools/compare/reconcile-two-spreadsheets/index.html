@@ -84,7 +84,7 @@
       and after a data update, your records and your vendor's records — and you need to know where
       they don't agree. Which rows changed? Which are in one file but not the other? What amounts
       are different? Upload both files and get a clear reconciliation report, no formulas required.</p>
-    <div class="free-pill">Free · no signup · your files are never stored</div>
+    <p class="muted pill-note">Free · no signup · your files are never stored</p>
   </div>
 
   <div class="tool">
@@ -97,19 +97,8 @@
 
   <div class="prose">
 
-    <h2>Why bookkeepers and ops people say "reconcile" instead of "compare"</h2>
-    <p>In general conversation you might say "compare two files." In bookkeeping and accounting,
-      the word is <strong>reconcile</strong> — because the goal isn't just to spot differences,
-      it's to confirm that two records that <em>should</em> match actually do match, and to
-      document every place they don't. Reconciling your bank statement against your ledger,
-      reconciling an invoice against a purchase order, reconciling this quarter's inventory
-      count against last quarter's — same idea, different data.</p>
-    <p>This page exists because if you searched "reconcile two spreadsheets," you probably
-      weren't looking for a tutorial on VLOOKUP. You were looking for something that just
-      does the work.</p>
-
     <h2>What the reconciliation report shows you</h2>
-    <p>Three categories of differences, clearly separated:</p>
+    <p>Upload both files and you get three categories of differences, clearly separated:</p>
     <ul>
       <li><strong>Rows that changed</strong> — present in both files but with different values. You see the before and after for each field that changed, so you know exactly what moved.</li>
       <li><strong>Rows that were removed</strong> — in the first file but gone from the second. Common in inventory (items discontinued), customer lists (accounts closed), or order data (orders cancelled).</li>
@@ -124,7 +113,15 @@
       customer ID, SKU, account number) so we can match rows across the two files even if
       they're in a different order. That's it.</p>
     <p>You don't need the files to be sorted the same way. You don't need to add any helper
-      columns. You don't need to know what "VLOOKUP" means.</p>
+      columns. You don't need to know what "VLOOKUP" (Excel's vertical-lookup formula) means.</p>
+
+    <h2>Why bookkeepers and ops people say "reconcile" instead of "compare"</h2>
+    <p>In general conversation you might say "compare two files." In bookkeeping and accounting,
+      the word is <strong>reconcile</strong> — because the goal isn't just to spot differences,
+      it's to confirm that two records that <em>should</em> match actually do match, and to
+      document every place they don't. Reconciling your bank statement against your ledger,
+      reconciling an invoice against a purchase order, reconciling this quarter's inventory
+      count against last quarter's — same idea, different data.</p>
 
     <h2>Common uses</h2>
     <p>Monthly close: your records vs the bank export. Inventory audit: what the system says
@@ -173,6 +170,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/compare/page.js"></script>
 
 </body>
 </html>

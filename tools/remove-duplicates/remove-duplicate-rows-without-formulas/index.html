@@ -72,7 +72,7 @@
       shouldn't have to learn <code>COUNTIF</code> or <code>UNIQUE()</code> to do that. Upload
       the file, tell us which column to check for repeats, and download a deduplicated version
       with a plain count of how many rows were removed.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
   </div>
 
   <div class="tool">
@@ -85,14 +85,18 @@
 
   <div class="prose">
 
+    <h2>How to do it</h2>
+    <p>Upload the file, tell us which column to check for repeats (an email column, a SKU column,
+      or the whole row), and download a deduplicated version. You get a plain-English summary first:
+      how many rows were in your original file, how many were removed as duplicates, and how many
+      unique rows remain — no formulas to copy, no helper columns to delete afterward. The tool shows
+      you what it's going to remove before it removes it, and your original file is never touched.</p>
+
     <h2>Why "no formulas" matters</h2>
     <p>Excel's built-in Remove Duplicates button is on the Data tab, and most people don't find it
       on their first try. When they do find it and click it, there's no preview — it just deletes
       rows immediately, and if you had the wrong column selected, you might lose data you didn't mean
       to touch. The only recovery is Ctrl+Z, which only works if you haven't saved.</p>
-    <p>This tool shows you what it's going to remove before it removes it. You see how many
-      duplicate rows were found, which values appeared more than once, and what the cleaned
-      file looks like — then you download it. Your original file is never touched.</p>
 
     <h2>Check one column or the whole row</h2>
     <p>Most real-world duplicate problems are "same email address appearing twice" or "same SKU
@@ -109,12 +113,6 @@
       <code>"john smith"</code> to human eyes, but Excel treats them as different values and
       doesn't remove either. This tool trims whitespace before comparing, so those invisible
       differences don't cause duplicates to slip through.</p>
-
-    <h2>What you get back</h2>
-    <p>A plain-English summary: how many rows were in your original file, how many were removed
-      as duplicates, and how many unique rows remain. Plus the deduplicated file, ready to
-      download. No formulas to copy, no helper columns to delete afterward, no "Ctrl+Z didn't
-      work" panic.</p>
 
     <p class="muted">Need to find duplicates across two <em>separate</em> files — like matching
       your master list against a new import to see what overlaps?
@@ -155,6 +153,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/remove-duplicates/page.js"></script>
 
 </body>
 </html>

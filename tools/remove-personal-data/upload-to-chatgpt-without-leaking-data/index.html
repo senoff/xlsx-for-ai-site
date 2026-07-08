@@ -84,7 +84,7 @@
       help you make sense of a report — but the file has real names, email addresses, phone numbers, or
       other private info you can't just hand over to an AI service. Clean it here first. We blank out
       the private columns and give you back a version that's safe to upload anywhere.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
   </div>
 
   <div class="tool">
@@ -96,6 +96,18 @@
   </div>
 
   <div class="prose">
+
+    <h2>How to clean the file before you upload</h2>
+    <p>Upload your file here, pick which columns hold private information — emails, phone numbers,
+      names, Social Security Numbers (SSNs), addresses, bank account numbers, whatever you want gone —
+      and we blank out those cell values. Everything else stays intact so the file is still useful for
+      your analysis question. Then download the scrubbed version and upload <em>that</em> to ChatGPT
+      (or whichever AI tool you're using). The AI sees the structure, the numbers, the dates, and the
+      patterns — but it never sees the real people those rows represent. Ask your question, get your
+      answer.</p>
+    <p>Common scenarios where this matters: sharing a customer list with a freelancer, preparing a
+      file to post as an example on a forum, sending payroll data to an accountant who only needs
+      the totals, or using AI to analyze a file your company policy says you can't share externally.</p>
 
     <h2>The problem nobody warns you about</h2>
     <p>When you upload a file to ChatGPT, Claude, Gemini, or any other AI tool, every value in every
@@ -110,19 +122,7 @@
     <p>If you searched "remove personal information from Excel" and found Microsoft's Document
       Inspector — that removes hidden <em>file properties</em> like who authored the document.
       It does <strong>not</strong> touch the data in your cells. The names and numbers in your
-      spreadsheet are completely untouched by that tool.</p>
-    <p>This tool removes the actual cell values. You pick which columns hold private information —
-      emails, phone numbers, names, Social Security Numbers, addresses, bank account numbers,
-      whatever you want gone — and we blank them out. Everything else stays intact so the file
-      is still useful for your analysis question.</p>
-
-    <h2>What you do with the cleaned file</h2>
-    <p>Download the scrubbed version, then upload that to ChatGPT (or whichever AI tool you're
-      using). The AI sees the structure, the numbers, the dates, and the patterns — but it never
-      sees the real people those rows represent. Ask your question, get your answer.</p>
-    <p>Common scenarios where this matters: sharing a customer list with a freelancer, preparing a
-      file to post as an example on a forum, sending payroll data to an accountant who only needs
-      the totals, or using AI to analyze a file your company policy says you can't share externally.</p>
+      spreadsheet are completely untouched by that tool. This tool removes the actual cell values.</p>
 
     <h2>What gets removed — your call entirely</h2>
     <p>We don't auto-detect what counts as "personal." You know your file; you tell us which columns
@@ -169,6 +169,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/remove-personal-data/page.js"></script>
 
 </body>
 </html>

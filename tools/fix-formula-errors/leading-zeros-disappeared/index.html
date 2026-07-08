@@ -75,19 +75,19 @@
   <div class="hero">
     <div class="eyebrow">Excel silent data corruption — fix-formula-errors</div>
     <h1>Leading zeros disappeared — ZIP codes, SKUs, and phone numbers turned into shorter numbers</h1>
-    <p class="lede">No error message, no red cell. Excel just quietly dropped the zero at the front of your data. A ZIP code like <code>01234</code> became <code>1234</code>. A product code like <code>007-45</code> became something unrecognizable. This page explains why it happens and how to get your data right again.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="lede">No error message, no red cell. Excel just quietly dropped the zero at the front of your data. A ZIP code like <code>01234</code> became <code>1234</code>. A product code like <code>007-45</code> became something unrecognizable.</p>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">fix-formula-errors · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
-
-    <h2>Why Excel thinks it's helping</h2>
-    <p>Imagine you wrote the number 007 on a calculator. The calculator would display 7 — the leading zeros are meaningless to a calculator because they don't change the value. Excel thinks the same way. When it sees <code>01234</code>, it treats it like a math number, decides the zero at the front doesn't mean anything, and strips it. The result is <code>1234</code> — four digits instead of five.</p>
-    <p>The trouble is that ZIP codes, phone numbers, product SKUs, employee IDs, and social security numbers aren't math numbers. They're identification codes where every character is part of the meaning, and a missing leading zero turns them into the wrong code entirely. ZIP code <code>01234</code> (in western Massachusetts) is a completely different place from <code>1234</code> (which isn't a valid ZIP at all). Excel's helpfulness is actively wrong here.</p>
-
-    <h2>Why you might not have noticed right away</h2>
-    <p>Excel shows no error for this. The cell doesn't turn red. There's no warning dialog. The value just silently becomes shorter. If you're not comparing against a known-correct source, the problem can sit undetected for a long time — until addresses fail to match, shipments go to the wrong ZIP, or a product lookup breaks because the SKU no longer matches the warehouse system.</p>
-    <p>If you imported data from a CSV file, the stripping happens the moment Excel opens the file. By the time you're looking at the spreadsheet, the zeros are already gone.</p>
 
     <h2>Restoring zeros that Excel already removed</h2>
     <p>If you know the correct length of the values in a column, you can pad them back. In a helper column next to your data, use the TEXT function. For five-digit ZIP codes:</p>
@@ -103,6 +103,14 @@
     <p><strong>If you're opening a CSV file:</strong> Don't double-click the file to open it. Instead, open Excel first, then go to Data &gt; Get Data &gt; From Text/CSV (or the equivalent Import Wizard in older versions). This gives you the option to tell Excel what type each column is. Mark the ZIP code or SKU column as Text during the import step, and the zeros will be preserved.</p>
 
     <p><strong>If the data is being pasted from somewhere:</strong> Format the destination column as Text first, then paste. If you paste into a General-formatted column, Excel may still auto-convert before the formatting kicks in. Set Text format first, paste second.</p>
+
+    <h2>Why Excel does this in the first place</h2>
+    <p>Imagine you wrote the number 007 on a calculator. The calculator would display 7 — the leading zeros are meaningless to a calculator because they don't change the value. Excel thinks the same way. When it sees <code>01234</code>, it treats it like a math number, decides the zero at the front doesn't mean anything, and strips it. The result is <code>1234</code> — four digits instead of five.</p>
+    <p>The trouble is that ZIP codes, phone numbers, product SKUs, employee IDs, and social security numbers aren't math numbers. They're identification codes where every character is part of the meaning, and a missing leading zero turns them into the wrong code entirely. ZIP code <code>01234</code> (in western Massachusetts) is a completely different place from <code>1234</code> (which isn't a valid ZIP at all). Excel's helpfulness is actively wrong here.</p>
+
+    <h2>Why you might not have noticed right away</h2>
+    <p>Excel shows no error for this. The cell doesn't turn red. There's no warning dialog. The value just silently becomes shorter. If you're not comparing against a known-correct source, the problem can sit undetected for a long time — until addresses fail to match, shipments go to the wrong ZIP, or a product lookup breaks because the SKU no longer matches the warehouse system.</p>
+    <p>If you imported data from a CSV file, the stripping happens the moment Excel opens the file. By the time you're looking at the spreadsheet, the zeros are already gone.</p>
 
     <h2>What if the column has a mix of values — some needing zeros, some not?</h2>
     <p>This comes up with international addresses (some countries have numeric postal codes without leading zeros; others always require them) or with product catalogs where some SKUs are all-numeric and some have letters. In this case, the safest approach is to store the entire column as Text from the start. Text columns preserve whatever you put in them exactly. The trade-off is that you can't do arithmetic on text cells — but ZIP codes and SKUs aren't things you'd add up anyway.</p>
@@ -139,6 +147,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/fix-formula-errors/page.js"></script>
 
 </body>
 </html>

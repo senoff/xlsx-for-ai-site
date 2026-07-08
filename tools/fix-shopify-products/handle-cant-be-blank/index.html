@@ -77,20 +77,47 @@
       some errors that block the whole import, this one usually lets most products through and rejects only
       the affected rows. But those rejected rows can be real products you need in your store. Here's what
       the Handle is, why rows end up missing one, and how to repair the file.</p>
-    <div class="free-pill">Free · no signup · your file is never stored</div>
+    <p class="muted pill-note">Free · no signup · your file is never stored</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">fix-shopify-products · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
   </div>
 
   <div class="prose">
+
+    <h2>The repair</h2>
+    <p>For variant rows that are orphaned from their parent: either find the parent row and move it above
+      them, or add the parent product's Handle to those rows explicitly so Shopify can connect them.</p>
+    <p>For rows that simply weren't given a Handle when the file was built from scratch: write a Handle.
+      Use all lowercase, replace spaces with hyphens, drop any punctuation. "Men's Running Shoe" becomes
+      <code>mens-running-shoe</code>.</p>
+    <p>For larger files, upload to the
+      <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a>. It surfaces every
+      blank-Handle row and its context — what's above and below it — so you can see at a glance whether
+      it's a misplaced variant row or a product row that just needs a Handle written in.</p>
+
+    <h2>How to identify which rows are the problem</h2>
+    <p>Open the file and look at the Handle column. Every row that is the <em>first</em> row of a product
+      must have a Handle. Rows that are the second, third, fourth row for the same product can have a blank
+      Handle — but only if the row directly above them belongs to the same product.</p>
+    <p>Look for blank Handle cells where the row above is also a different product's row, or a header row,
+      or where you've clearly got a standalone product row with no siblings. Those are the ones Shopify
+      will reject.</p>
 
     <h2>What the Handle column actually is</h2>
     <p>Every Shopify product has a URL. The last part of that URL — the part after
       <code>/products/</code> — is called the Handle. For a product named "Blue Widget Pro," the handle
       might be <code>blue-widget-pro</code>. It has to be unique across your store and can only contain
       lowercase letters, numbers, and hyphens.</p>
-    <p>In the CSV, the Handle column plays double duty. For the first row of a product, it identifies
-      which product this is. For additional rows belonging to the same product (extra variants, additional
-      images), the Handle is left <em>blank</em> intentionally — blank means "this row belongs to the
-      product directly above."</p>
+    <p>In the Comma-Separated Values (CSV) file, the Handle column plays double duty. For the first row of
+      a product, it identifies which product this is. For additional rows belonging to the same product
+      (extra variants, additional images), the Handle is left <em>blank</em> intentionally — blank means
+      "this row belongs to the product directly above."</p>
 
     <h2>Why the error shows up — the row ordering trap</h2>
     <p>The "Handle can't be blank" error almost always happens because the rows are no longer in the right
@@ -108,25 +135,6 @@
       <li><strong>Building the file from scratch.</strong> If the file wasn't exported from Shopify to
         begin with, any variant row that's missing a Handle simply wasn't filled in.</li>
     </ul>
-
-    <h2>How to identify which rows are the problem</h2>
-    <p>Open the file and look at the Handle column. Every row that is the <em>first</em> row of a product
-      must have a Handle. Rows that are the second, third, fourth row for the same product can have a blank
-      Handle — but only if the row directly above them belongs to the same product.</p>
-    <p>Look for blank Handle cells where the row above is also a different product's row, or a header row,
-      or where you've clearly got a standalone product row with no siblings. Those are the ones Shopify
-      will reject.</p>
-
-    <h2>The repair</h2>
-    <p>For variant rows that are orphaned from their parent: either find the parent row and move it above
-      them, or add the parent product's Handle to those rows explicitly so Shopify can connect them.</p>
-    <p>For rows that simply weren't given a Handle when the file was built from scratch: write a Handle.
-      Use all lowercase, replace spaces with hyphens, drop any punctuation. "Men's Running Shoe" becomes
-      <code>mens-running-shoe</code>.</p>
-    <p>For larger files, upload to the
-      <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a>. It surfaces every
-      blank-Handle row and its context — what's above and below it — so you can see at a glance whether
-      it's a misplaced variant row or a product row that just needs a Handle written in.</p>
 
   </div>
 
@@ -153,6 +161,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/fix-shopify-products/page.js"></script>
 
 </body>
 </html>

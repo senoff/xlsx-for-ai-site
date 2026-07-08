@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>I got a spreadsheet from someone I don&#x27;t know — is it safe? | xlsx-for-ai</title>
+<meta name="description" content="Short version: you&#x27;re probably fine, and you can check in seconds. If you&#x27;ve got a specific file you&#x27;re worried about, drop it in below — nothing">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="I got a spreadsheet from someone I don&#x27;t know — is it safe? | xlsx-for-ai">
+<meta property="og:description" content="Short version: you&#x27;re probably fine, and you can check in seconds. If you&#x27;ve got a specific file you&#x27;re worried about, drop it in below — nothing">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/check-for-macros/i-got-a-spreadsheet-from-someone-i-don-t-know-is-it-safe/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="I got a spreadsheet from someone I don&#x27;t know — is it safe? | xlsx-for-ai">
+<meta name="twitter:description" content="Short version: you&#x27;re probably fine, and you can check in seconds. If you&#x27;ve got a specific file you&#x27;re worried about, drop it in below — nothing">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/check-for-macros/i-got-a-spreadsheet-from-someone-i-don-t-know-is-it-safe/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "I got a spreadsheet from someone I don't know \u2014 is it safe?",
+      "acceptedAnswer": { "@type": "Answer", "text": "The honest answer is usually reassuring once you know how these files actually work \u2014 the danger is narrow and specific, and it's something you can check for directly rather than guess at." }
+    }
+  ],
+  "url": "https://xlsx-for-ai.dev/tools/check-for-macros/i-got-a-spreadsheet-from-someone-i-don-t-know-is-it-safe/",
+  "isPartOf": { "@type": "WebSite", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">The real answer — no scaremongering</div>
+    <h1>I got a spreadsheet from someone I don&#x27;t know — is it safe?</h1>
+    <p class="lede">Short version: you&#x27;re probably fine, and you can check in seconds. If you&#x27;ve got a specific file you&#x27;re worried about, drop it in below — nothing runs, nothing opens.</p>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">check-for-macros · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+
+    <h2>The short answer</h2>
+    <p>The honest answer is usually reassuring once you know how these files actually work — the danger is narrow and specific, and it's something you can check for directly rather than guess at.</p>
+    <h2>Check before you decide</h2>
+    <p>Drop your file in the box above. It reads the file's internal structure without opening it and without running anything, and tells you exactly what's inside.</p>
+
+  </div>
+
+</div>
+</main>
+
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent screen files for macros automatically</h2>
+  <p>If files arrive through an inbox, a shared drive, or an upload form, your agent can screen every one for macros and embedded links before a human ever opens it — flagging the risky ones and passing the clean ones through, no manual check required.</p>
+  <div class="xfa-mcp-fn">
+
+    <p class="xfa-mcp-fn-label">The tools this page runs</p>
+    <p>Your agent calls <code>xlsx_macros</code> — it reports whether a VBA macro project is present, its size, and the likely module names, and by policy never extracts or runs the macro code. Pair it with <code>xlsx_external_links</code> to list any embedded links to other workbooks.</p>
+    <ul>
+      <li>Both take just the file — there are no options to set.</li>
+      <li><code>xlsx_macros</code> returns presence, project size, and module-name candidates; <code>xlsx_external_links</code> returns each target path and whether it's absolute, a network share, or relative.</li>
+    </ul>
+    <p class="xfa-mcp-eg-label">Ask your agent</p>
+    <pre class="xfa-mcp-eg"><code>Use xfa to check book.xlsx for macros and external links before I open it.</code></pre>
+  </div>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/tools/check-for-macros/page.js"></script>
+
+</body>
+</html>

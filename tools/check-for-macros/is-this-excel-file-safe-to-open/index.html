@@ -79,8 +79,17 @@
   <div class="hero">
     <div class="eyebrow">Check before you click anything</div>
     <h1>Is this Excel file safe to open?</h1>
-    <p class="lede">Someone sent you a spreadsheet and something feels off. Maybe you weren't expecting it. Maybe the sender doesn't look quite right. Maybe Excel is already showing a warning. Stop — don't click Enable Content, don't unblock anything yet. Check what's actually inside the file first.</p>
+    <p class="lede">This tool tells you whether macros and embedded code are present — drop your file in below and get the answer, no reading required. Don't click Enable Content or unblock anything until you know what's inside.</p>
   </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">check-for-macros · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+  <p class="muted">Free · no signup · your file is read in memory for analysis only and never stored. Nothing inside the file is executed.</p>
 
   <div class="prose">
 
@@ -102,11 +111,7 @@
     <p><strong>Macros found:</strong> The file contains code that will run if you allow it. That's not automatically bad — many legitimate business tools are macro-enabled. But now you know. You can ask the sender to confirm what the macros do before you enable them, or you can open the file in Protected View (which keeps macros blocked) just to look at the data.</p>
 
     <h2>What this tool does not do</h2>
-    <p>This tool tells you whether macros and embedded code are present — it doesn't tell you whether a specific macro is malicious. We report what's there; we don't execute it or run virus signatures against it. For a deeper analysis, a dedicated antivirus tool that can scan Office files is the right next step. But knowing whether macros exist at all is the first question, and you can answer it here without opening the file.</p>
-
-    <p><a href="/tools/check-for-macros/" class="cta-link">Check this file for macros — free</a></p>
-
-    <p class="muted">Your file is read in memory for analysis only. It is never stored on our servers.</p>
+    <p>This tool tells you whether macros and embedded code are present — it doesn't tell you whether a specific macro is malicious. We report what's there; we don't execute it or run virus signatures against it. For a deeper analysis, a dedicated antivirus tool that can scan Office files is the right next step. But knowing whether macros exist at all is the first question, and you can answer it with the box at the top of this page without opening the file.</p>
 
   </div>
 
@@ -133,6 +138,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/check-for-macros/page.js"></script>
 
 </body>
 </html>

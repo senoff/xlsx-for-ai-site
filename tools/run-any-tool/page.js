@@ -242,7 +242,7 @@
     runLabel: "Run it",
     steps: ["Running the tool on your file", "Preparing the result"],
     reassure:
-      "Your file is read in memory to run the tool you pick, then discarded. Nothing is stored, and your original workbook is never changed.",
+      "Free · no signup. Your file is read in memory to run the tool you pick, then discarded. Nothing is stored, and your original workbook is never changed.",
     discover: discover,
     buildForm: buildForm,
     process: process,

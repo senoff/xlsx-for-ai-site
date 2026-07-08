@@ -246,7 +246,7 @@
   window.XFA.mount("#xfa-panel", {
     accept: ".xlsx",
     reassure:
-      "Your file is read in memory to clean a copy and scan for leaks, then discarded. Nothing is stored, your original workbook is never changed, and cleaned values are never shown back.",
+      "Free · no signup. Your file is read in memory to clean a copy and scan for leaks, then discarded. Nothing is stored, your original workbook is never changed, and cleaned values are never shown back.",
     runningLabel: "Getting your file ready to send…",
     steps: [
       "Cleaning personal data, metadata and comments",

@@ -340,7 +340,7 @@
   window.XFA.mount("#xfa-panel", {
     accept: ".xlsx",
     reassure:
-      "Your file is read in memory to scan, clean, and re-check it, then discarded. Nothing is stored, and your original workbook is never changed — you download a separate clean copy.",
+      "Free · no signup. Your file is read in memory to scan, clean, and re-check it, then discarded. Nothing is stored, and your original workbook is never changed — you download a separate clean copy.",
     runningLabel: "Cleaning up your export…",
     steps: [
       "Scanning for problems",

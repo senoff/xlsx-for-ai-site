@@ -15,7 +15,7 @@
     noneHeading: "We couldn’t map your product columns automatically",
     runningLabel: "Building your Shopify products import…",
     reassure:
-      "Your file is read in memory to map its columns to Shopify’s product fields, then discarded. Nothing is stored, and your original file is never changed — you download a separate import CSV.",
+      "Free · no signup. Your file is read in memory to map its columns to Shopify’s product fields, then discarded. Nothing is stored, and your original file is never changed — you download a separate import CSV.",
     steps: ["Mapping your columns to Shopify’s product fields"],
   });
 })();

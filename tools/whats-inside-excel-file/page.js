@@ -176,7 +176,7 @@
   window.XFA.mount("#xfa-panel", {
     accept: ".xlsx",
     reassure:
-      "Your file is read in memory to describe what's inside, then discarded. We never change your file, and nothing from it is stored.",
+      "Free · no signup. Your file is read in memory to describe what's inside, then discarded. We never change your file, and nothing from it is stored.",
     runningLabel: "Looking inside your file…",
     steps: [
       "Reading the workbook",

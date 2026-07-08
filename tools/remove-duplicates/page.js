@@ -106,7 +106,7 @@
   window.XFA.mount("#xfa-panel", {
     accept: ".xlsx",
     reassure:
-      "Your file is read in memory to find and remove duplicate rows, then discarded. Nothing is stored, and your original workbook is never changed.",
+      "Free · no signup. Your file is read in memory to find and remove duplicate rows, then discarded. Nothing is stored, and your original workbook is never changed.",
     runningLabel: "Removing duplicate rows…",
     steps: [
       "Reading your workbook",

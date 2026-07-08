@@ -189,7 +189,7 @@
   window.XFA.mount("#xfa-panel", {
     accept: ".xlsx",
     reassure:
-      "Your file is read in memory to find broken links to other workbooks, then discarded. We never change your original file — the repaired copy is a separate download, and nothing from your file is stored.",
+      "Free · no signup. Your file is read in memory to find broken links to other workbooks, then discarded. We never change your original file — the repaired copy is a separate download, and nothing from your file is stored.",
     runningLabel: "Checking your workbook for broken links…",
     steps: [
       "Reading your workbook",

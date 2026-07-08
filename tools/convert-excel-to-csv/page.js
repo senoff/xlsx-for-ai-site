@@ -104,7 +104,7 @@
 
   window.XFA.mount("#xfa-panel", {
     accept: ".xlsx",
-    reassure: "Your file is read in memory to build the CSV, then discarded. Nothing is stored, and your original workbook is never changed.",
+    reassure: "Free · no signup. Your file is read in memory to build the CSV, then discarded. Nothing is stored, and your original workbook is never changed.",
     runningLabel: "Converting your spreadsheet…",
     steps: [
       "Reading your workbook",

@@ -15,7 +15,7 @@
     noneHeading: "We couldn’t map your redirect columns automatically",
     runningLabel: "Building your Shopify redirects import…",
     reassure:
-      "Your file is read in memory to map your old and new paths to Shopify’s redirect fields, then discarded. Nothing is stored, and your original file is never changed — you download a separate import CSV.",
+      "Free · no signup. Your file is read in memory to map your old and new paths to Shopify’s redirect fields, then discarded. Nothing is stored, and your original file is never changed — you download a separate import CSV.",
     steps: ["Mapping your old and new paths to Shopify’s redirect fields"],
   });
 })();

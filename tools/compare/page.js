@@ -133,7 +133,7 @@
     labels: { a: "Original", b: "Changed" },
     actionLabel: "Compare the two files",
     reassure:
-      "Both files are read in memory to compare them, then discarded. We never change either file, and nothing from them is stored.",
+      "Free · no signup. Both files are read in memory to compare them, then discarded. We never change either file, and nothing from them is stored.",
     runningLabel: "Comparing your two files…",
     steps: [
       "Reading both files",

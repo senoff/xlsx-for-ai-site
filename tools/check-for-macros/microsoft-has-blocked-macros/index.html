@@ -77,7 +77,6 @@
     <p>The message means two things at once: the file contains VBA (Visual Basic for Applications) macros — code that can run automatically and interact with your computer — and Excel detected that the file came from an untrusted source (most commonly, it was downloaded from the internet or arrived as an email attachment). The combination of "has macros" and "came from outside" is what triggers the hard block. A macro-enabled file you created yourself on your own machine usually doesn't get this treatment.</p>
     <p>Before you do anything to unblock it, check what's actually inside. Our free tool inspects the file without opening it in Excel and without running any code — it tells you whether macros are present, what kind they are, and whether it finds anything else worth knowing, so you can make an informed call before you unblock anything.</p>
 
-    <p><a href="/tools/check-for-macros/" class="cta-link">Check what's inside this file — free</a></p>
 
     <h2>If you decide the file is trustworthy</h2>
     <p>If you know the sender and are confident the file is safe, the way to unblock it in newer Excel versions is to right-click the file in Windows Explorer, choose Properties, and check the "Unblock" checkbox at the bottom of the General tab. That removes the Mark of the Web tag, and Excel will open the file normally on the next launch.</p>
@@ -89,7 +88,6 @@
     <h2>Why the message changed</h2>
     <p>For years, Excel showed a yellow warning bar with an "Enable Content" button whenever a file contained macros. Attackers figured out that enough people would click that button, so macro-based malware became one of the most common ways to infect a computer through a spreadsheet. In response, Microsoft pushed a significant change in 2022: files downloaded from the internet or email now carry an invisible tag called the "Mark of the Web." When Excel sees that tag, it shows the red bar and <strong>blocks macros entirely</strong> — no Enable Content button.</p>
 
-    <p class="muted">Our tool reads the file without running its macros and without storing the file. You get a plain-language report of what's inside.</p>
 
   </div>
 

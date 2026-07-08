@@ -289,7 +289,7 @@
     runLabel: "Get my rows",
     steps: ["Applying your rules", "Building your CSV"],
     reassure:
-      "Your file is read in memory to filter and sort it, then discarded. Nothing is stored, and your original workbook is never changed — you download a new CSV of just the rows you asked for.",
+      "Free · no signup. Your file is read in memory to filter and sort it, then discarded. Nothing is stored, and your original workbook is never changed — you download a new CSV of just the rows you asked for.",
     discover: discover,
     buildForm: buildForm,
     process: process,

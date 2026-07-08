@@ -150,7 +150,7 @@
     accept: ".csv,.xlsx",
     extensions: ["csv", "xlsx"],
     reassure:
-      "Your file is read in memory to check it against Shopify’s products import format, then discarded. " +
+      "Free · no signup. Your file is read in memory to check it against Shopify’s products import format, then discarded. " +
       "Nothing is stored, and your original file is never changed — you download a separate, repaired CSV.",
     runningLabel: "Checking and repairing your Shopify products export…",
     steps: ["Checking your export against Shopify’s products import format"],

@@ -257,7 +257,7 @@
 
   window.XFA.mount("#xfa-panel", {
     accept: ".xlsx",
-    reassure: "Your file is read in memory to check the formulas, then discarded. Nothing is stored, nothing is changed.",
+    reassure: "Free · no signup. Your file is read in memory to check the formulas, then discarded. Nothing is stored, nothing is changed.",
     runningLabel: "Checking your formulas…",
     steps: [
       "Reading every formula in the workbook",

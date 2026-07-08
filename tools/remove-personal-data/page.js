@@ -258,7 +258,7 @@
   window.XFA.mount("#xfa-panel", {
     accept: ".xlsx",
     reassure:
-      "Your file is read in memory to find and mask personal data, then discarded. Nothing is stored, and your original workbook is never changed — you download a separate, safe copy.",
+      "Free · no signup. Your file is read in memory to find and mask personal data, then discarded. Nothing is stored, and your original workbook is never changed — you download a separate, safe copy.",
     runningLabel: "Removing personal data…",
     steps: ["Scanning for personal data", "Masking and writing a safe copy"],
     process: process,

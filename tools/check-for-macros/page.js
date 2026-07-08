@@ -128,7 +128,7 @@
   window.XFA.mount("#xfa-panel", {
     accept: ".xlsx",
     reassure:
-      "Your file is read in memory to check for macros and external links, then discarded. We never open, run, or extract macro code, and your file is never stored or changed.",
+      "Free · no signup. Read in memory to check for macros, then discarded — never opened, run, or stored. It reports whether macros are present, not whether they're malicious; an antivirus scanner is the tool for a full verdict.",
     runningLabel: "Checking your file…",
     steps: [
       "Reading your workbook",

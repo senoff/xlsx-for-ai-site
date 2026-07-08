@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Products imported to Shopify as drafts — hidden from customers | xlsx-for-ai</title>
+<meta name="description" content="You imported products but they're invisible on your storefront — they landed in Drafts instead of being active. Here's the one column that controls this and how to fix it before your next import.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Products imported to Shopify as drafts — hidden from customers | xlsx-for-ai">
+<meta property="og:description" content="You imported products but they're invisible on your storefront — they landed in Drafts instead of being active. Here's the one column that controls this and how to fix it before your next import.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/import-shopify-products/products-imported-as-drafts-hidden/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Products imported to Shopify as drafts — hidden from customers | xlsx-for-ai">
+<meta name="twitter:description" content="You imported products but they're invisible on your storefront — they landed in Drafts instead of being active. Here's the one column that controls this and how to fix it before your next import.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/import-shopify-products/products-imported-as-drafts-hidden/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Products imported to Shopify as drafts — hidden from customers",
+  "description": "Why imported Shopify products land in Draft status and are invisible on the storefront, and how to fix the Published column in your CSV before importing.",
+  "url": "https://xlsx-for-ai.dev/tools/import-shopify-products/products-imported-as-drafts-hidden/",
+  "author": {
+    "@type": "Organization",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify silent import failure</div>
+    <h1>Your products imported — but they're invisible to customers because they all landed as drafts</h1>
+    <p class="lede">The import looked like it worked. Your products are in Shopify admin. But when you go to your live store, none of them are there. Customers can't see them, can't buy them, can't find them. They're all sitting in Draft status — published to you, hidden from everyone else.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>How to confirm this is what happened</h2>
+    <p>In your Shopify admin, go to <strong>Products</strong>. At the top of the list you'll see filter tabs: All, Active, Draft, Archived. Click <strong>Draft</strong>. If all your newly imported products are sitting there, that's the problem. The import succeeded — the products exist — but they were never made active on your storefront.</p>
+
+    <h2>The one column that controls this</h2>
+    <p>Every row in a Shopify product CSV has a column called <strong>Published</strong>. This column decides whether a product is live on your store (<code>TRUE</code>) or hidden in drafts (<code>FALSE</code>). When the column is blank — not set to anything at all — Shopify treats it as <code>FALSE</code> and creates the product as a draft.</p>
+
+    <p>If you built your product spreadsheet without including a Published column, or if the column was there but left empty, every product came in as a draft. No warning, no error — Shopify just quietly put them all in the hidden pile.</p>
+
+    <p>This also happens when someone exports a Shopify CSV where the products were already drafts, and then re-imports it. The <code>FALSE</code> values travel along with the data and make everything a draft again.</p>
+
+    <h2>Fixing the products you already imported</h2>
+    <p>If you only have a handful of products, the fastest fix is to go to Products in your admin, click into each draft product, and click <strong>Publish</strong>. You can also select multiple products from the product list and use the bulk action to set them as active.</p>
+
+    <p>If you imported a large catalog, bulk-publishing from the admin can be slow. The cleaner fix is to go back to your original spreadsheet, add a <strong>Published</strong> column (or find the existing one), set every row to <code>TRUE</code>, and re-import. Shopify will match the rows by their Handle values and update the status without creating duplicates. Before you do this, make sure the Handle values in your file exactly match the handles of the products that were imported — otherwise Shopify will create new products instead of updating the existing ones.</p>
+
+    <h2>How to prevent this next time</h2>
+    <p>When you use the <a href="/tools/import-shopify-products/">free Shopify product import converter</a> to prepare your file, it checks the Published column and flags blank or missing values before you import. You can choose whether you want products to go live immediately or stay as drafts — and the converter makes sure the column reflects your choice in every row. The report it generates tells you exactly what was set so you're not guessing after the fact.</p>
+
+    <p>The converter also catches the other common reasons products end up invisible after import — like being imported with no collections assigned, or with inventory set to 0. You get one plain-language summary of everything that would affect your customers before you ever hit the Shopify import button.</p>
+
+    <p class="muted">Didn't see any products at all — not even in Drafts?
+    That's a different problem: <a href="/tools/import-shopify-products/import-successful-but-products-not-showing/">import said successful but products aren't showing up</a>.</p>
+
+    <div style="margin-top:2rem; padding: 1.25rem 1.5rem; background: #f0faf4; border-radius: 8px; border-left: 4px solid #107c41;">
+      <strong>Fix this free →</strong> Upload your spreadsheet to the <a href="/tools/import-shopify-products/">Shopify product import converter</a>. It sets the Published column correctly and shows you a plain summary of what every product's status will be before you import.
+    </div>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

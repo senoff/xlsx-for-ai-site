@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Price with $ or comma breaks Shopify product import — how to fix it | xlsx-for-ai</title>
+<meta name="description" content="Put $29.99 or 1,299.00 in your Shopify product CSV and the import either fails or zeroes out the price. Here's why Shopify is strict about price format and how to clean it up fast.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Price with $ or comma breaks Shopify product import — how to fix it | xlsx-for-ai">
+<meta property="og:description" content="Put $29.99 or 1,299.00 in your Shopify product CSV and the import either fails or zeroes out the price. Here's why Shopify is strict about price format and how to clean it up fast.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-shopify-products/dollar-sign-or-comma-in-price-breaks-import/">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Price with $ or comma breaks Shopify product import — how to fix it | xlsx-for-ai">
+<meta name="twitter:description" content="Put $29.99 or 1,299.00 in your Shopify product CSV and the import either fails or zeroes out the price. Here's why Shopify is strict about price format and how to clean it up fast.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-shopify-products/dollar-sign-or-comma-in-price-breaks-import/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Price with dollar sign or comma breaks Shopify product import",
+  "description": "Shopify's Variant Price column requires a plain number with no currency symbol and no comma thousands-separator. This article explains the exact format required and how to fix a file where prices were entered in a human-readable format.",
+  "url": "https://xlsx-for-ai.dev/tools/fix-shopify-products/dollar-sign-or-comma-in-price-breaks-import/",
+  "author": {
+    "@type": "Organization",
+    "name": "xlsx-for-ai"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify price formatting problem</div>
+    <h1>$29.99 or 1,299.00 in your price column is breaking the import</h1>
+    <p class="lede">You typed the prices exactly as you'd write them on a price tag — dollar sign in front,
+      comma for thousands — and now Shopify either rejects the file or imports every product with a $0 price.
+      This isn't a bug. Shopify is very specific about price format, and both of those characters are
+      treated as errors.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>The format Shopify actually requires</h2>
+    <p>The <strong>Variant Price</strong> column in a Shopify CSV must contain a plain number and nothing
+      else. No dollar sign. No currency symbol of any kind. No comma as a thousands separator. Just digits
+      and, if needed, a decimal point:</p>
+    <ul>
+      <li><strong>Correct:</strong> <code>29.99</code></li>
+      <li><strong>Correct:</strong> <code>1299.00</code></li>
+      <li><strong>Breaks import:</strong> <code>$29.99</code></li>
+      <li><strong>Breaks import:</strong> <code>1,299.00</code></li>
+      <li><strong>Breaks import:</strong> <code>USD 29.99</code></li>
+    </ul>
+    <p>The currency is set at the store level — it's not part of the CSV row. So there's never a correct
+      reason to put a currency symbol in that column.</p>
+
+    <h2>What actually happens when the format is wrong</h2>
+    <p>The outcome depends on which character is present and how Shopify's import pipeline handles it at
+      that moment:</p>
+    <ul>
+      <li><strong>Dollar sign (<code>$29.99</code>):</strong> Shopify usually can't parse this as a number
+        and sets the variant price to <code>0.00</code>. Your products import but every single price shows
+        as free. Shopify may not even flag it as an error — the import shows "success."</li>
+      <li><strong>Comma as thousands separator (<code>1,299.00</code>):</strong> Shopify may reject the
+        row with "Variant price can't be blank" or silently truncate the value to <code>1</code> (treating
+        the comma as the end of the number).</li>
+    </ul>
+    <p>Both cases are quiet failures — Shopify doesn't always show a big red error. You may only notice
+      when you check your storefront and every price reads $0.</p>
+
+    <h2>Where this usually comes from</h2>
+    <p>Most stores that hit this got their product data from one of a few places:</p>
+    <ul>
+      <li>A supplier spreadsheet that formatted prices as currency for human reading</li>
+      <li>A Shopify export viewed in Excel, where Excel may have added currency formatting on top of the
+        raw number</li>
+      <li>A price list copy-pasted from a PDF or website, which naturally includes the dollar sign</li>
+    </ul>
+    <p>In all of these cases the prices themselves are correct — the numbers are right — it's just the
+      formatting around the number that needs to go.</p>
+
+    <h2>Fixing a file with hundreds of prices</h2>
+    <p>If you only have a handful of rows, you can find and remove the dollar signs and commas by hand.
+      For a larger file, upload it to the
+      <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a>. It finds every
+      <strong>Variant Price</strong> and <strong>Variant Compare At Price</strong> cell that has
+      formatting characters, strips them, and gives you back a clean file with a plain-language list of
+      every price it touched — so you can confirm the numbers look right before uploading to Shopify.</p>
+    <p>Nothing in your file is changed silently. Every price correction shows up in the "what I changed"
+      ledger, with the before and after value, so you're not flying blind.</p>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

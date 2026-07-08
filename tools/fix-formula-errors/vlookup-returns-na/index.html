@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>VLOOKUP returns #N/A — but the value is right there | xlsx-for-ai</title>
+<meta name="description" content="VLOOKUP says N/A but you can see the value in the other column? Here's why it happens and how to find the exact mismatch in your file.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="VLOOKUP returns #N/A — but the value is right there | xlsx-for-ai">
+<meta property="og:description" content="VLOOKUP says N/A but you can see the value in the other column? Here's why it happens and how to find the exact mismatch in your file.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-formula-errors/vlookup-returns-na/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="VLOOKUP returns #N/A — but the value is right there | xlsx-for-ai">
+<meta name="twitter:description" content="VLOOKUP says N/A but you can see the value in the other column? Here's why it happens and how to find the exact mismatch in your file.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-formula-errors/vlookup-returns-na/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": "VLOOKUP returns #N/A — but the value is right there",
+  "url": "https://xlsx-for-ai.dev/tools/fix-formula-errors/vlookup-returns-na/",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why does VLOOKUP return #N/A when I can see the value in the other column?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "VLOOKUP compares characters exactly, not visually. The two most common reasons it fails silently: one column holds a number and the other holds that same number stored as text (so '42' the number does not match '42' the word), or one value has invisible trailing spaces that you can't see on screen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I tell if my numbers are actually stored as text?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Click one of the cells in question. If it shows a small green triangle in the top-left corner, Excel itself suspects the value is text. You can also check the formula bar: a true number aligns right in the cell by default; text aligns left."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I fix VLOOKUP returning N/A?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The fix depends on the root cause. If one side is text and the other is a number, you can either convert the text column to numbers (select the column, Data > Text to Columns, Finish) or wrap your lookup value in VALUE() to force it to a number before comparing. If the problem is trailing spaces, TRIM() removes them."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Excel formula errors — fix-formula-errors</div>
+    <h1>VLOOKUP returns #N/A — but the value is right there</h1>
+    <p class="lede">This is one of the most maddening things Excel does. You can see the value in the lookup column with your own eyes. VLOOKUP says it's not there. Here's what's actually happening — and how to pinpoint it in your specific file.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>Why does this happen at all?</h2>
+    <p>VLOOKUP doesn't compare values the way your eyes do. When you look at a column and see <code>12345</code>, your brain reads it as the number twelve-thousand-three-hundred-forty-five. Excel might be storing that cell as the <em>word</em> "12345" — characters that happen to look like digits, not an actual number it can do math with. To VLOOKUP, the number 12345 and the word "12345" are completely different things that will never match each other, even though they look identical on screen.</p>
+
+    <p>This mismatch almost always enters a spreadsheet when data comes from outside Excel — an export from another program, a copy-paste from a website, a downloaded report. The other system doesn't encode numbers the way Excel expects, and Excel quietly stores them as text without telling you.</p>
+
+    <h2>The other silent culprit: invisible spaces</h2>
+    <p>The second most common reason is trailing spaces — blank characters at the end of a value that you can't see. If one column has <code>Widget A</code> and the other has <code>Widget A&nbsp;&nbsp;</code> (with two spaces after it), they look identical in the cell but VLOOKUP sees them as different strings. This also sneaks in through copy-paste or exports.</p>
+
+    <h2>Q: How do I tell if my column has text-formatted numbers?</h2>
+    <p>Click a cell you suspect. Look at the top-left corner of the cell — if there's a small green triangle, Excel itself is flagging the value as a number stored as text. You can also watch which side of the cell the value leans toward: real numbers lean right by default, text leans left. If your "numbers" are all left-aligned, that's the sign.</p>
+
+    <h2>Q: Why does VLOOKUP work on some rows but not others?</h2>
+    <p>When only certain rows return #N/A, the two columns were built from different sources. Some rows were typed in directly (producing real numbers), while others came from an import or paste (producing text). The rows that matched are the typed ones; the rows that failed are the imported ones. The inconsistency is in the data, not the formula.</p>
+
+    <h2>Q: How do I actually fix it?</h2>
+    <p>Once you know which side has the problem, you have a few options:</p>
+    <ul>
+      <li><strong>Convert text to numbers:</strong> Select the column with the text-formatted numbers. Go to Data &gt; Text to Columns, click through to Finish without changing anything. Excel re-reads the column and converts the values to real numbers.</li>
+      <li><strong>Use VALUE() in the formula:</strong> Wrap your lookup value in <code>VALUE()</code>, like <code>=VLOOKUP(VALUE(A2), ...)</code>. This converts the text to a number at lookup time without changing the underlying data.</li>
+      <li><strong>Strip trailing spaces with TRIM():</strong> If spaces are the issue, wrap the lookup value: <code>=VLOOKUP(TRIM(A2), ...)</code>. You can also paste a TRIM formula alongside the lookup column, copy-paste-as-values, then delete the original column.</li>
+    </ul>
+
+    <h2>Q: Can I find out what's causing it in my file without checking every cell manually?</h2>
+    <p>Yes — upload your file to our <a href="/tools/fix-formula-errors/">fix formula errors tool</a>. It scans your spreadsheet and flags cells where numbers are stored as text, where values have leading or trailing spaces, and where a column has mixed types that would cause lookup failures. You get a plain-language report of exactly which cells are the problem, so you don't have to click through hundreds of rows yourself.</p>
+
+    <p class="muted">XLOOKUP and INDEX/MATCH hit the same root causes — text vs. number mismatches and trailing spaces affect all lookup formulas the same way.</p>
+
+  </div>
+
+  <div class="cta-block">
+    <p>Want to find the mismatch in your file automatically? The <a href="/tools/fix-formula-errors/">fix formula errors tool</a> scans your spreadsheet and tells you exactly which cells have the type or spacing problem that's breaking your lookup.</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Formula error pages">
+      <a href="/tools/fix-formula-errors/">Fix formula errors — hub</a>
+      <a href="/tools/fix-formula-errors/vlookup-returns-na/">VLOOKUP #N/A</a>
+      <a href="/tools/fix-formula-errors/sum-returns-zero/">SUM returns zero</a>
+      <a href="/tools/fix-formula-errors/ref-error-what-it-means/">#REF! error</a>
+      <a href="/tools/fix-formula-errors/value-error-what-it-means/">#VALUE! error</a>
+      <a href="/tools/fix-formula-errors/leading-zeros-disappeared/">Leading zeros disappeared</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

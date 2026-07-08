@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Can an Excel file give you a virus? | xlsx-for-ai</title>
+<meta name="description" content="Yes, Excel files can carry malware — but only through macros, and only if you enable them. Here's how it actually works, what protects you, and how to check any file before opening it.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Can an Excel file give you a virus? | xlsx-for-ai">
+<meta property="og:description" content="Yes, Excel files can carry malware — but only through macros, and only if you enable them. Here's how it actually works, what protects you, and how to check any file before opening it.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/check-for-macros/can-an-excel-file-give-you-a-virus/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Can an Excel file give you a virus? | xlsx-for-ai">
+<meta name="twitter:description" content="Yes, Excel files can carry malware — but only through macros, and only if you enable them. Here's how it actually works, what protects you, and how to check any file before opening it.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/check-for-macros/can-an-excel-file-give-you-a-virus/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can an Excel file give you a virus?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, but only through macros. A spreadsheet that contains only data and formulas cannot infect your computer by being opened. The risk comes from VBA macros — small programs embedded in the file — which can download and run malicious software if you click 'Enable Content' when prompted."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I get infected just by opening an Excel file?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In most cases, no. Modern Excel opens files from untrusted sources in Protected View, which blocks macros from running automatically. You have to actively choose to enable content before any macro code can execute. The exception is very rare exploits that target unpatched versions of Excel itself."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I know if an Excel file has macros before I open it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Upload the file to our free check tool. It reads the file's internal structure without opening Excel and without running any code — and tells you whether macros are present, what type they are, and what else is embedded."
+      }
+    }
+  ],
+  "url": "https://xlsx-for-ai.dev/tools/check-for-macros/can-an-excel-file-give-you-a-virus/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">The real answer — no scaremongering</div>
+    <h1>Can an Excel file give you a virus?</h1>
+    <p class="lede">Short answer: yes — but not the way most people assume. The data in a spreadsheet can't hurt you. The risk is something different, and understanding it takes about two minutes. If you have a specific file you're worried about right now, skip to the bottom.</p>
+  </div>
+
+  <div class="prose">
+
+    <h2>Spreadsheet data is not the threat</h2>
+    <p>Numbers, text, even complex formulas — none of that can do anything to your computer just by being opened. A spreadsheet of prices or a roster of employee names is completely inert. The file is data; it doesn't run.</p>
+    <p>This is different from executable files (.exe, .bat, .ps1) where opening the file IS running a program. A standard .xlsx spreadsheet isn't a program.</p>
+
+    <h2>Where the actual risk comes from: macros</h2>
+    <p>Excel has a built-in programming language called VBA that lets people write code — called macros — directly into a spreadsheet. These macros run inside Excel and can automate almost anything: calculating, formatting, generating reports. They can also interact with the rest of your computer: create files, download data from the internet, run programs.</p>
+    <p>That last capability is what makes macro-enabled spreadsheets a delivery mechanism for malware. A malicious macro, once allowed to run, can silently download and install software, steal files, or make changes to your system. For about a decade, macro-based attacks were one of the most common ways attackers delivered ransomware and credential stealers through email.</p>
+
+    <h2>What stops a macro from running automatically</h2>
+    <p>Excel doesn't just let macros run on their own from an unknown file. There are two layers of protection:</p>
+    <ul>
+      <li><strong>Protected View</strong> — files that came from the internet or email open in a sandboxed mode where macros can't execute and you can't edit anything. You'll see a yellow bar saying "Be careful — files from the Internet can contain viruses."</li>
+      <li><strong>Macro block (newer Excel)</strong> — since 2022, files from the internet show a red bar: "Microsoft has blocked macros from running because the source of this file is untrusted." There is no Enable Content button. You have to take a deliberate extra step to unblock the file.</li>
+    </ul>
+    <p>Both protections exist specifically because macros are the vector. Getting around them takes a conscious action from you — which is why phishing emails go out of their way to create urgency ("you must enable macros to see your invoice").</p>
+
+    <h2>Can you get infected just by opening the file?</h2>
+    <p>In the normal case, no. Protected View keeps you safe as long as you don't click past the warnings. There have been extremely rare exploits that compromised older, unpatched versions of Excel without user interaction, but those are patched quickly and require running an outdated version of the software. For a fully updated, modern version of Excel, you have to actively approve macro execution for anything to run.</p>
+    <p>The attack vector that actually works is social engineering: the attacker convinces you the file needs macros enabled to display correctly, or that the warning is a bug, or that this is a trusted document from your bank.</p>
+
+    <h2>Check any file before you decide</h2>
+    <p>If you have a file and you're not sure whether it has macros, you can find out without opening Excel at all. Upload it here and the tool reads its internal structure — the same way you can list files inside a ZIP without running them — and tells you whether macros are present and what kind. Nothing in the file executes during the check.</p>
+
+    <p><a href="/tools/check-for-macros/" class="cta-link">Check this file for macros — free</a></p>
+
+    <p class="muted">The tool reports presence — macros found or no macros found. It doesn't run any code and doesn't determine intent. If you need a full malware verdict, an antivirus scanner is the right next step.</p>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify "Line is invalid" or "Line 1 is invalid (No details)" — what causes it | xlsx-for-ai</title>
+<meta name="description" content="Shopify says a line in your CSV is invalid but gives no details. Here's why it happens and how to find which row is broken — even when Shopify won't tell you.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Shopify &ldquo;Line is invalid&rdquo; or &ldquo;No details&rdquo; — what causes it | xlsx-for-ai">
+<meta property="og:description" content="Shopify says a line in your CSV is invalid but gives no details. Here's why it happens and how to find which row is broken — even when Shopify won't tell you.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/import-shopify-products/line-is-invalid-no-details/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shopify &ldquo;Line is invalid&rdquo; or &ldquo;No details&rdquo; — what causes it | xlsx-for-ai">
+<meta name="twitter:description" content="Shopify says a line in your CSV is invalid but gives no details. Here's why it happens and how to find which row is broken — even when Shopify won't tell you.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/import-shopify-products/line-is-invalid-no-details/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Shopify \"Line is invalid\" or \"Line 1 is invalid (No details)\" — causes and fixes",
+  "description": "Why Shopify reports a line as invalid with no explanation, and how to locate and fix the broken row in your CSV.",
+  "url": "https://xlsx-for-ai.dev/tools/import-shopify-products/line-is-invalid-no-details/",
+  "author": {
+    "@type": "Organization",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify CSV import error</div>
+    <h1>Shopify says "Line is invalid" or "Line 1 is invalid (No details)" — and gives you nothing else</h1>
+    <p class="lede">You uploaded your product CSV and Shopify flagged a line as invalid — but the error message stops there. No field name, no hint about what's wrong. This is one of the most frustrating Shopify import errors because the message is technically accurate but practically useless.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>Why "Line 1 is invalid" is almost always about your header row</h2>
+    <p>When the error says <strong>Line 1</strong>, that's Shopify counting your very first row — the one with column names like Handle, Title, and Variant Price. Line 1 being invalid almost always means something is wrong with that header row, not with any of your actual product data.</p>
+
+    <p>The most common reason: a tiny invisible character got inserted at the very start of the file. If you saved your spreadsheet using Excel, it sometimes adds a hidden marker (called a byte-order mark) before the first letter of "Handle." Shopify reads the column name as something else, can't match it to what it expects, and calls the line invalid. You won't see anything wrong if you look at the spreadsheet — it only shows up when you look at the raw file in a plain text editor.</p>
+
+    <p>The second common reason: one or more of your column names is off. Shopify's column names are exact and case-sensitive. <code>handle</code> is not the same as <code>Handle</code>. <code>Variant price</code> is not the same as <code>Variant Price</code>. One wrong letter and Shopify rejects the line.</p>
+
+    <h2>When it's not Line 1 — finding the broken row</h2>
+    <p>If the error names a line further down — say, "Line 47 is invalid" — the problem is usually a stray quotation mark or a curly quote in that row. CSV files use straight double-quote characters (<code>"</code>) to wrap cells that contain commas. If a product description or title has a curly quote (the typographic kind that Word and some spreadsheet apps add automatically, like <code>&ldquo;</code> or <code>&rdquo;</code>), the CSV parser gets confused about where the cell ends. Shopify calls the line invalid but doesn't explain what the quote issue is.</p>
+
+    <p>Another cause at non-header lines: a row with a completely different number of columns than the rest of the file. If a cell in that row contained a comma and wasn't quoted properly, it looks like an extra column was added. Shopify expected 28 columns; this row looks like it has 29 — line invalid.</p>
+
+    <h2>How to track down the problem</h2>
+    <p>If you can open the raw file as plain text (not in Excel — use Notepad or TextEdit in plain-text mode), search for the line number Shopify named and look at it directly. For Line 1 issues, look at the very beginning of the file for any odd characters before "Handle." For other lines, look for curly quotation marks or an unusual number of commas in that row.</p>
+
+    <p>If that's too involved, the faster path is to upload your file to the <a href="/tools/import-shopify-products/">free Shopify product converter</a>. It scans for all of these issues mechanically — invisible characters, wrong column names, mismatched quotes, column count mismatches — and tells you in plain language what it found and what it fixed. You get a repaired file back, ready to import.</p>
+
+    <h2>One thing to rule out first</h2>
+    <p>Before doing anything else: make sure you're uploading an actual CSV file, not an Excel file. Excel files end in <code>.xlsx</code> or <code>.xls</code>. Shopify only accepts <code>.csv</code>. If you have an Excel spreadsheet, you need to export it to CSV first — in Excel, that's File → Save As → CSV (Comma Delimited). Our tool accepts both formats and does this conversion for you automatically.</p>
+
+    <p class="muted">Getting a completely different error?
+    Try <a href="/tools/import-shopify-products/there-was-an-error-importing-your-csv-file/">"There was an error importing your CSV file"</a> or
+    head to the <a href="/tools/import-shopify-products/">main import converter</a> for the full fix.</p>
+
+    <div style="margin-top:2rem; padding: 1.25rem 1.5rem; background: #f0faf4; border-radius: 8px; border-left: 4px solid #107c41;">
+      <strong>Fix this free →</strong> Upload your CSV or spreadsheet to the <a href="/tools/import-shopify-products/">Shopify product import converter</a>. It finds the bad line, explains what's wrong in plain English, and hands you back a clean file.
+    </div>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

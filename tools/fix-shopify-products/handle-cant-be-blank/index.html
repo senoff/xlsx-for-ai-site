@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>"Handle can't be blank" Shopify import error — why it happens and how to fix it | xlsx-for-ai</title>
+<meta name="description" content="Shopify's &quot;Handle can't be blank&quot; error means a product row is missing its URL slug. Here's why blank Handle rows appear in a valid-looking file, and how to fix them.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="&quot;Handle can't be blank&quot; Shopify import error — why it happens and how to fix it | xlsx-for-ai">
+<meta property="og:description" content="Shopify's "Handle can't be blank" error means a product row is missing its URL slug. Here's why blank Handle rows appear in a valid-looking file, and how to fix them.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-shopify-products/handle-cant-be-blank/">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="&quot;Handle can't be blank&quot; Shopify import error — why it happens and how to fix it | xlsx-for-ai">
+<meta name="twitter:description" content="Shopify's "Handle can't be blank" error means a product row is missing its URL slug. Here's why blank Handle rows appear in a valid-looking file, and how to fix them.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-shopify-products/handle-cant-be-blank/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a Handle in a Shopify product CSV?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The Handle is the URL-safe identifier for a product — the slug that appears in the product's web address, like your-store.myshopify.com/products/blue-widget. It must be unique per product and can only contain lowercase letters, numbers, and hyphens. Every product row and every variant row for that product must either have a Handle or leave it blank (for variant rows only, where blank means 'same product as the row above')."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does Shopify say Handle can't be blank if my file looks fine?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The most common cause is sorting or filtering. Shopify's CSV format uses blank Handle cells on variant rows (rows 2+ for a multi-variant product) to mean 'same product.' If you sort, filter, or copy-paste rows in Excel, those blank-Handle variant rows can end up positioned after the wrong product row or at the top of the file where Shopify expects a product-defining row. Shopify then sees a blank Handle where it expected one, and throws the error."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I add Handles myself, or does Shopify generate them?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You can write them yourself. The format is lowercase letters, numbers, and hyphens only — no spaces, no special characters. 'Blue Widget Pro' becomes 'blue-widget-pro'. Every first row for a product needs one; variant rows below it can leave the Handle blank."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify per-row import error</div>
+    <h1>"Handle can't be blank" — why some rows get rejected and how to fix them</h1>
+    <p class="lede">Shopify flagged one or more rows in your product file with "Handle can't be blank." Unlike
+      some errors that block the whole import, this one usually lets most products through and rejects only
+      the affected rows. But those rejected rows can be real products you need in your store. Here's what
+      the Handle is, why rows end up missing one, and how to repair the file.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>What the Handle column actually is</h2>
+    <p>Every Shopify product has a URL. The last part of that URL — the part after
+      <code>/products/</code> — is called the Handle. For a product named "Blue Widget Pro," the handle
+      might be <code>blue-widget-pro</code>. It has to be unique across your store and can only contain
+      lowercase letters, numbers, and hyphens.</p>
+    <p>In the CSV, the Handle column plays double duty. For the first row of a product, it identifies
+      which product this is. For additional rows belonging to the same product (extra variants, additional
+      images), the Handle is left <em>blank</em> intentionally — blank means "this row belongs to the
+      product directly above."</p>
+
+    <h2>Why the error shows up — the row ordering trap</h2>
+    <p>The "Handle can't be blank" error almost always happens because the rows are no longer in the right
+      order. Shopify's format is position-dependent: a blank-Handle row is only valid immediately below
+      a row that defines the product. If the ordering breaks, Shopify sees a blank-Handle row at the wrong
+      position and doesn't know what product it belongs to.</p>
+    <p>Row ordering breaks in a few common ways:</p>
+    <ul>
+      <li><strong>Sorting in Excel.</strong> If you sorted your products alphabetically or by price, the
+        blank-Handle variant rows got shuffled away from their parent row.</li>
+      <li><strong>Copy-pasting rows from another file.</strong> Pasting product rows without their variant
+        rows, or pasting variant rows without their parent, creates orphan blank-Handle rows.</li>
+      <li><strong>Filtering and deleting rows.</strong> Removing a product's first (Handle-bearing) row
+        while leaving its variant rows behind produces blank-Handle rows with no parent.</li>
+      <li><strong>Building the file from scratch.</strong> If the file wasn't exported from Shopify to
+        begin with, any variant row that's missing a Handle simply wasn't filled in.</li>
+    </ul>
+
+    <h2>How to identify which rows are the problem</h2>
+    <p>Open the file and look at the Handle column. Every row that is the <em>first</em> row of a product
+      must have a Handle. Rows that are the second, third, fourth row for the same product can have a blank
+      Handle — but only if the row directly above them belongs to the same product.</p>
+    <p>Look for blank Handle cells where the row above is also a different product's row, or a header row,
+      or where you've clearly got a standalone product row with no siblings. Those are the ones Shopify
+      will reject.</p>
+
+    <h2>The repair</h2>
+    <p>For variant rows that are orphaned from their parent: either find the parent row and move it above
+      them, or add the parent product's Handle to those rows explicitly so Shopify can connect them.</p>
+    <p>For rows that simply weren't given a Handle when the file was built from scratch: write a Handle.
+      Use all lowercase, replace spaces with hyphens, drop any punctuation. "Men's Running Shoe" becomes
+      <code>mens-running-shoe</code>.</p>
+    <p>For larger files, upload to the
+      <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a>. It surfaces every
+      blank-Handle row and its context — what's above and below it — so you can see at a glance whether
+      it's a misplaced variant row or a product row that just needs a Handle written in.</p>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

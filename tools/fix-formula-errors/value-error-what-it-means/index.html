@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>#VALUE! error in Excel — what it means and how to fix it | xlsx-for-ai</title>
+<meta name="description" content="Excel shows #VALUE! when a formula gets the wrong kind of input — text where it expected a number, or a date stored as words. Here's how to diagnose which situation you're in.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="#VALUE! error in Excel — what it means and how to fix it | xlsx-for-ai">
+<meta property="og:description" content="Excel shows #VALUE! when a formula gets the wrong kind of input — text where it expected a number, or a date stored as words. Here's how to diagnose which situation you're in.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-formula-errors/value-error-what-it-means/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="#VALUE! error in Excel — what it means and how to fix it | xlsx-for-ai">
+<meta name="twitter:description" content="Excel shows #VALUE! when a formula gets the wrong kind of input — text where it expected a number, or a date stored as words. Here's how to diagnose which situation you're in.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-formula-errors/value-error-what-it-means/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "#VALUE! error in Excel — what it means and how to fix it",
+  "description": "The #VALUE! error fires when a formula receives the wrong kind of input — most often text where a number is expected. Because it has several distinct triggers, the fix depends on which situation applies. This page walks through diagnosis and repair for each scenario.",
+  "url": "https://xlsx-for-ai.dev/tools/fix-formula-errors/value-error-what-it-means/",
+  "author": {
+    "@type": "Organization",
+    "name": "xlsx-for-ai"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Excel formula errors — fix-formula-errors</div>
+    <h1>#VALUE! error — what it means and how to fix it</h1>
+    <p class="lede"><code>#VALUE!</code> is Excel's broadest error. It fires whenever a formula receives something it can't work with — the wrong kind of input for that operation. The fix is different depending on what triggered it, so the first job is figuring out which situation you're in.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>The three most common triggers</h2>
+    <p>Before you can fix a <code>#VALUE!</code> error, you need to identify which of these situations caused it. Click on the cell showing the error, then look at the formula bar to see the formula and which cells it uses. Then check those input cells.</p>
+
+    <hr>
+
+    <h3>Situation 1: A cell contains text, but the formula is doing math</h3>
+    <p>This is the most frequent cause. Formulas like <code>=A2+B2</code> or <code>=A2*1.1</code> only work when both cells contain real numbers. If one of them contains text — even something that looks like a number, like the word "150" — Excel can't add them and shows <code>#VALUE!</code>.</p>
+    <p><strong>How to confirm it:</strong> Click the cell the formula is reading from. If it has a small green triangle in the corner, it's flagged as text. You can also type <code>=ISNUMBER(A2)</code> in an empty cell — if it returns FALSE, that cell holds text, not a number.</p>
+    <p><strong>How to fix it:</strong> Select the column with the text-formatted numbers. Go to <strong>Data &gt; Text to Columns</strong> and click Finish without changing any settings. Excel converts the text back to real numbers, and your formula should update immediately.</p>
+
+    <hr>
+
+    <h3>Situation 2: The data was pasted from a website or another program</h3>
+    <p>Copy-pasting from a browser, a PDF, or another application often brings along hidden characters — spaces that aren't normal spaces, special line-break characters, or other invisible content that looks like nothing but breaks formulas. Your cell visually looks fine but contains extra stuff the formula can't handle.</p>
+    <p><strong>How to confirm it:</strong> Click into the formula bar for the problem cell and use the arrow keys to move through it character by character. If the cursor stops in places that look empty, there are hidden characters there. Alternatively, check whether <code>=LEN(A2)</code> returns a higher number than you'd expect for the content.</p>
+    <p><strong>How to fix it:</strong> Wrap the cell in <code>=TRIM(CLEAN(A2))</code>. <code>TRIM</code> removes extra spaces; <code>CLEAN</code> removes hidden non-printable characters. Do this in a helper column, then paste those results as values back over the original column.</p>
+
+    <hr>
+
+    <h3>Situation 3: Dates are stored as words instead of real dates</h3>
+    <p>This is a subtler version of the same problem. When Excel stores a proper date, it's actually a number behind the scenes (January 1, 1900 was day 1; every day after is one higher). Formulas that subtract dates or calculate durations work because of this. But if a date was imported as text — "July 4, 2025" typed as words, or "04/07/2025" in a format Excel didn't recognize — it's stored as text and date math breaks with <code>#VALUE!</code>.</p>
+    <p><strong>How to confirm it:</strong> Dates stored as real dates will show a number if you format the cell as a plain number (for example, 2026 would show as something in the 46000 range). Dates stored as text will just show the text string. You can also check with <code>=ISNUMBER(A2)</code>.</p>
+    <p><strong>How to fix it:</strong> Use <code>=DATEVALUE(A2)</code> to convert a text date into a real date number, then format the result cell as a date. Or select the date column and use Text to Columns — at step 3 of the wizard, choose Date and select the format your dates are in (MDY, DMY, YMD) before clicking Finish.</p>
+
+    <hr>
+
+    <h2>When none of these match</h2>
+    <p><code>#VALUE!</code> can also fire in more specific formulas — an array formula with mismatched range sizes, a text function receiving a number it can't parse, or a function used in a version of Excel that doesn't support it fully. If the three situations above don't describe your case, click the cell with the error and look at the specific function in the formula. The Microsoft support page for that function will list which inputs cause <code>#VALUE!</code> for it specifically.</p>
+
+    <p class="muted">The <a href="/tools/fix-formula-errors/">fix formula errors tool</a> can scan your spreadsheet for columns with mixed types — cells that have a mix of real numbers and text-formatted numbers in the same column — and report exactly which rows have the problem, so you know where to focus.</p>
+
+  </div>
+
+  <div class="cta-block">
+    <p>Not sure which cells are triggering the error? Upload your file to the <a href="/tools/fix-formula-errors/">fix formula errors tool</a> and get a plain-language report of where Excel sees the wrong input types.</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Formula error pages">
+      <a href="/tools/fix-formula-errors/">Fix formula errors — hub</a>
+      <a href="/tools/fix-formula-errors/vlookup-returns-na/">VLOOKUP #N/A</a>
+      <a href="/tools/fix-formula-errors/sum-returns-zero/">SUM returns zero</a>
+      <a href="/tools/fix-formula-errors/ref-error-what-it-means/">#REF! error</a>
+      <a href="/tools/fix-formula-errors/value-error-what-it-means/">#VALUE! error</a>
+      <a href="/tools/fix-formula-errors/leading-zeros-disappeared/">Leading zeros disappeared</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

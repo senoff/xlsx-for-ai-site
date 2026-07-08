@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify inventory went to zero after uploading a spreadsheet | xlsx-for-ai</title>
+<meta name="description" content="Stock zeroed out silently after a Shopify inventory CSV upload? Here's exactly why it happens and how to fix it before you upload again. Free checker tool included.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Shopify inventory went to zero after uploading a spreadsheet | xlsx-for-ai">
+<meta property="og:description" content="Stock zeroed out silently after a Shopify inventory CSV upload? Here's exactly why it happens and how to fix it before you upload again. Free checker tool included.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/import-shopify-inventory/inventory-went-to-zero-after-upload/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shopify inventory went to zero after uploading a spreadsheet | xlsx-for-ai">
+<meta name="twitter:description" content="Stock zeroed out silently after a Shopify inventory CSV upload? Here's exactly why it happens and how to fix it before you upload again.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/import-shopify-inventory/inventory-went-to-zero-after-upload/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why did all my Shopify stock go to zero after I uploaded my spreadsheet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The most common cause: your spreadsheet had the Variant Inventory Tracker column set to 'shopify' (which tells Shopify to start tracking that product), but the quantity column was blank or zero. Shopify treats a blank quantity as zero and writes it. It does not warn you — the import completes successfully and your stock silently becomes 0."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Did Shopify give me any error when inventory went to zero?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. This is a silent failure. Shopify sends you a success message. You only discover the problem when you check your products and see 0 across the board, or when a customer tries to buy something that shows as out of stock."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I check my spreadsheet before uploading it again?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Use the free inventory import checker at xlsx-for-ai.dev/tools/import-shopify-inventory/. It reads your spreadsheet, flags any row where the tracker column is set but the quantity column is blank or zero, and shows you a plain-language list of what will change before anything reaches your store."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify inventory import — silent zero-out</div>
+    <h1>Shopify set all my stock to zero after I uploaded my spreadsheet</h1>
+    <p class="lede">Your upload finished without errors. Shopify told you it succeeded.
+      Then you looked at your products and every single quantity read 0. No alert.
+      No explanation. Here is exactly what happened and how to make sure it never happens again.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>How to tell this happened to you</h2>
+    <p>Open any product in your Shopify admin and look at the <strong>Inventory</strong> section.
+      If quantities you know should be non-zero are all showing <code>0</code> — and your
+      import email said "Completed successfully" — you've hit this exact problem.
+      It is not a partial failure. The import ran correctly; it just wrote the wrong number.</p>
+
+    <h2>The root cause (plain language)</h2>
+    <p>Shopify's inventory CSV has two key columns that work together. The first,
+      <strong>Variant Inventory Tracker</strong>, controls whether Shopify tracks stock for a
+      variant at all. When it contains <code>shopify</code>, Shopify watches that variant's
+      quantity and stops sales when stock hits zero.</p>
+
+    <p>The second column — which goes by different names depending on how you got the file —
+      holds the actual <strong>quantity number</strong>. In Shopify's native inventory export
+      it's labeled <code>On hand (new)</code>. In older exports and third-party templates it's
+      often called <code>Variant Inventory Qty</code>.</p>
+
+    <p>Here is the trap: if <strong>Tracker is set to <code>shopify</code> but the quantity
+      cell is blank</strong>, Shopify reads that blank as the number zero and writes it.
+      Every row where this combination exists gets zeroed out during the import — silently,
+      with no row-level warning in the import email.</p>
+
+    <h2>Three ways this ends up in your file</h2>
+    <ul>
+      <li><strong>You exported from Shopify and then sorted or filtered in Excel.</strong>
+        Sorting can move rows so the quantity column no longer lines up with the right
+        tracker row. The tracker says "shopify"; the quantity that landed next to it belongs
+        to a different product and is blank.</li>
+      <li><strong>You built the file from scratch and forgot to fill in quantities.</strong>
+        It's easy to add every SKU with proper tracker values and then realize you haven't
+        filled the numbers column yet — but upload it anyway by mistake.</li>
+      <li><strong>You copied the file into Excel and it dropped leading zeros or converted
+        numbers to scientific notation in the SKU column.</strong> Now no rows match existing
+        products by SKU. Shopify creates new tracked variants at zero rather than updating
+        existing ones.</li>
+    </ul>
+
+    <h2>What to do right now</h2>
+    <p>First, do not upload anything again until you have verified the file. If you still
+      have the original quantities somewhere — in a backup export you ran before, in a
+      warehouse system, in a spreadsheet you maintain manually — you can restore them by
+      uploading a corrected file with the right numbers. That is a second upload, not an undo.</p>
+
+    <p>To check your corrected file before uploading, use the free tool below.
+      Upload your spreadsheet and it will show you every row where the tracker is set but
+      the quantity is blank or zero, alongside a plain-English summary of what the import
+      would write to your store. Nothing reaches Shopify until you choose to download the
+      fixed file and upload it yourself.</p>
+
+  </div>
+
+  <div style="margin: 2rem 0;">
+    <a href="/tools/import-shopify-inventory/" class="cta-button"
+       style="display:inline-block;background:#107c41;color:#fff;padding:.75rem 1.5rem;border-radius:6px;text-decoration:none;font-weight:600;">
+      Check my inventory spreadsheet →
+    </a>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

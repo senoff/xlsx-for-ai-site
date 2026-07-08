@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>"Inventory management is 1, so fulfillment service must also be 1" — Shopify CSV error explained | xlsx-for-ai</title>
+<meta name="description" content="Getting the Shopify import error 'Inventory management is 1, so fulfillment service must also be 1'? Here's what it actually means and the two-column fix in plain language.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="'Inventory management is 1, so fulfillment service must also be 1' — Shopify error explained | xlsx-for-ai">
+<meta property="og:description" content="This Shopify inventory import error message leaks internal code. Here's what it means in plain English and the exact column fix.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/import-shopify-inventory/inventory-management-must-also-be-fulfillment/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="'Inventory management is 1, so fulfillment service must also be 1' — Shopify error explained | xlsx-for-ai">
+<meta name="twitter:description" content="This cryptic Shopify inventory error is a two-column pairing problem. Here's the plain-language fix.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/import-shopify-inventory/inventory-management-must-also-be-fulfillment/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Shopify CSV error: Inventory management is 1, so fulfillment service must also be 1",
+  "description": "Plain-language explanation of this Shopify inventory import error and the exact column combination that causes it, with a fix.",
+  "url": "https://xlsx-for-ai.dev/tools/import-shopify-inventory/inventory-management-must-also-be-fulfillment/",
+  "author": {
+    "@type": "Organization",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify inventory import — explicit error</div>
+    <h1>"Inventory management is 1, so fulfillment service must also be 1" — what this means</h1>
+    <p class="lede">This error shows up in Shopify's import confirmation email next to specific rows in your
+      CSV. The message is written in Shopify's internal code language, not plain English. Here is what it
+      actually means and the two-column fix that clears it.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>Translating the error into plain English</h2>
+    <p>The phrase "is 1" is Shopify's internal shorthand for a boolean true — meaning "is set" or
+      "is turned on." So the error is really saying:</p>
+
+    <blockquote style="border-left:3px solid #107c41;padding-left:1rem;margin:1rem 0;color:#444;">
+      <em>"You told Shopify to track inventory for this variant (<strong>Variant Inventory Tracker</strong>
+      is set to <code>shopify</code>), but you left <strong>Variant Fulfillment Service</strong> blank.
+      When tracking is on, a fulfillment service must also be specified."</em>
+    </blockquote>
+
+    <p>The two fields are linked. Shopify needs to know not just <em>whether</em> to count stock,
+      but <em>who</em> is responsible for fulfilling orders from that stock. If you leave the second
+      field blank while the first is set, the row is rejected.</p>
+
+    <h2>Which columns are involved</h2>
+    <p>Look for these two column headers in your spreadsheet:</p>
+    <ul>
+      <li><code>Variant Inventory Tracker</code> — the field you've set to <code>shopify</code></li>
+      <li><code>Variant Fulfillment Service</code> — the field that is blank (or missing entirely) on
+        the rows that errored</li>
+    </ul>
+    <p>The fix for most stores is straightforward: set <code>Variant Fulfillment Service</code> to
+      <code>manual</code> on every row where <code>Variant Inventory Tracker</code> is
+      <code>shopify</code>. The value <code>manual</code> means your own store fulfills the order —
+      no third-party warehouse, no dropshipper. That is the default for the vast majority of Shopify
+      merchants.</p>
+
+    <h2>Why does this happen in the first place?</h2>
+    <p>Shopify's product export includes both columns, and if your products were already set up
+      correctly in the store, both columns will be populated in the export. The problem usually
+      appears when a file was built from scratch, copied from a template, or came from a supplier
+      who did not include the fulfillment service column. It can also appear if you added new rows
+      to an existing export and only filled in the tracker column, forgetting the fulfillment service
+      column that lives a few positions to the right.</p>
+
+    <h2>A note on the import email</h2>
+    <p>Shopify sends this error in a post-import email, not in a live UI alert. If you missed the
+      email, check your inbox for a message with subject line containing "Import" from
+      <code>noreply@shopify.com</code>. The email lists each rejected row by number so you can find
+      them in your spreadsheet.</p>
+
+    <h2>Fix it before you re-upload</h2>
+    <p>After correcting the <code>Variant Fulfillment Service</code> column, use the free tool below
+      to run a pre-upload check on the corrected file. It will flag any remaining rows where the
+      tracker and fulfillment service columns are mismatched, so you can catch every problem before
+      anything touches your store — not after Shopify sends you another error email.</p>
+
+  </div>
+
+  <div style="margin: 2rem 0;">
+    <a href="/tools/import-shopify-inventory/" class="cta-button"
+       style="display:inline-block;background:#107c41;color:#fff;padding:.75rem 1.5rem;border-radius:6px;text-decoration:none;font-weight:600;">
+      Check my inventory file before uploading →
+    </a>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

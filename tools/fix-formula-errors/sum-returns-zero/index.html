@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Why is my SUM showing 0? Numbers that Excel ignores | xlsx-for-ai</title>
+<meta name="description" content="SUM adds up to zero even though the cells contain numbers? Excel is silently treating those values as text. Here's how to spot it and fix it.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Why is my SUM showing 0? Numbers that Excel ignores | xlsx-for-ai">
+<meta property="og:description" content="SUM adds up to zero even though the cells contain numbers? Excel is silently treating those values as text. Here's how to spot it and fix it.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-formula-errors/sum-returns-zero/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Why is my SUM showing 0? Numbers that Excel ignores | xlsx-for-ai">
+<meta name="twitter:description" content="SUM adds up to zero even though the cells contain numbers? Excel is silently treating those values as text. Here's how to spot it and fix it.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-formula-errors/sum-returns-zero/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Why is my SUM showing 0? Numbers that Excel ignores",
+  "description": "SUM returns zero when the cells it covers contain numbers formatted as text — characters that look like digits but aren't treated as values. This page explains what you see, why it happens, and how to convert the cells so SUM adds them correctly.",
+  "url": "https://xlsx-for-ai.dev/tools/fix-formula-errors/sum-returns-zero/",
+  "author": {
+    "@type": "Organization",
+    "name": "xlsx-for-ai"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Excel silent errors — fix-formula-errors</div>
+    <h1>SUM returns 0 — even though the cells have numbers in them</h1>
+    <p class="lede">No error message, no red cell, no warning. Your SUM formula just quietly adds up to zero (or a much lower number than it should). This is one of the sneakiest problems in Excel because nothing <em>looks</em> wrong — until you check the total.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>What you see</h2>
+    <p>A column full of values — prices, quantities, scores, whatever — and a SUM at the bottom that reads zero or a suspiciously small number. You double-check the formula range. It's correct. You can see numbers right there in the cells. But the total is still wrong.</p>
+    <p>Excel gives you no error indicator. The cells don't show <code>#VALUE!</code> or any other code. The SUM cell itself looks perfectly normal. From the outside, everything appears fine.</p>
+
+    <h2>Why it happens</h2>
+    <p>Excel draws a hard line between <em>numbers</em> and <em>text that looks like numbers</em>. When a cell stores a number, Excel can add it up. When a cell stores the word "150" — characters that happen to look like a number but are actually treated like letters — Excel skips it silently. SUM doesn't add text; it just moves on. The result is zero, or whatever real numbers were mixed in.</p>
+
+    <p>This happens most often when data enters Excel from somewhere else. A download from accounting software, an export from a database, a copy-paste from a web page — these external sources frequently encode numbers in a way that Excel reads as text. The values look identical on screen, but the storage underneath is different.</p>
+
+    <h2>How to tell if this is your problem</h2>
+    <p>There are two quick checks:</p>
+
+    <p><strong>The alignment test.</strong> Select the column of values and look at which side of the cell they sit on. Real numbers lean to the right by default. Text leans to the left. If a column of "numbers" is all left-aligned, they're probably stored as text.</p>
+
+    <p><strong>The green triangle test.</strong> Click one of the suspicious cells. If you see a tiny green triangle in the top-left corner of the cell, Excel is already warning you — it thinks the value is a number stored as text. Click the yellow diamond that appears next to the cell to see the message.</p>
+
+    <p>You can also run a quick check: in an empty cell nearby, type <code>=ISNUMBER(A2)</code> (replacing A2 with one of your cells). If it says FALSE, that cell is text, not a number.</p>
+
+    <h2>How to fix it</h2>
+    <p>The goal is to convert the text-formatted cells back into real numbers. There are a few ways:</p>
+
+    <p><strong>Text to Columns (fastest for a whole column).</strong> Select the column. Go to Data &gt; Text to Columns. Click Finish immediately without changing any settings. Excel re-processes the column and converts text-numbers to real numbers. This is the most reliable approach for a large block of cells.</p>
+
+    <p><strong>Paste Special — Multiply by 1.</strong> Type the number 1 in an empty cell and copy it. Select the problem column. Right-click &gt; Paste Special &gt; Multiply. Click OK. Multiplying by 1 forces Excel to treat each cell as a number, which converts the text in the process. Delete the helper cell afterward.</p>
+
+    <p><strong>VALUE() formula.</strong> In a helper column, use <code>=VALUE(A2)</code> to convert one cell at a time. Fill down the column, then copy and paste the helper column as values over the original, and delete the helper.</p>
+
+    <h2>After the fix</h2>
+    <p>Once the cells hold real numbers, your SUM will update immediately — no need to re-enter the formula. The total should jump to the correct value as soon as the conversion is complete.</p>
+
+    <p>If the total still looks wrong after converting, check whether the SUM range is capturing all the rows you intend. A range that was set when the column was short won't automatically expand if you added rows later.</p>
+
+    <p class="muted">This same text-vs-number problem causes VLOOKUP to return #N/A, causes AVERAGE to report a wrong average, and causes sorting to put numbers in the wrong order. Fixing the column storage fixes all of them at once.</p>
+
+  </div>
+
+  <div class="cta-block">
+    <p>Not sure how many cells in your file have this problem? The <a href="/tools/fix-formula-errors/">fix formula errors tool</a> scans your spreadsheet and tells you exactly which cells are storing numbers as text — column by column, with a count.</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Formula error pages">
+      <a href="/tools/fix-formula-errors/">Fix formula errors — hub</a>
+      <a href="/tools/fix-formula-errors/vlookup-returns-na/">VLOOKUP #N/A</a>
+      <a href="/tools/fix-formula-errors/sum-returns-zero/">SUM returns zero</a>
+      <a href="/tools/fix-formula-errors/ref-error-what-it-means/">#REF! error</a>
+      <a href="/tools/fix-formula-errors/value-error-what-it-means/">#VALUE! error</a>
+      <a href="/tools/fix-formula-errors/leading-zeros-disappeared/">Leading zeros disappeared</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

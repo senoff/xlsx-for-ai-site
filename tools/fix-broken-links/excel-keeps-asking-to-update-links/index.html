@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Excel keeps asking to update links every time you open it — how to stop the popup | xlsx-for-ai</title>
+<meta name="description" content="Excel's 'Update' / 'Don't Update' popup appears at startup when the file has external links. Here's how to find those links and remove them so the prompt never comes back.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Excel keeps asking to update links every time you open it — how to stop the popup | xlsx-for-ai">
+<meta property="og:description" content="Excel's 'Update' / 'Don't Update' popup appears at startup when the file has external links. Here's how to find those links and remove them so the prompt never comes back.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-broken-links/excel-keeps-asking-to-update-links/">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Excel keeps asking to update links every time you open it — how to stop the popup | xlsx-for-ai">
+<meta name="twitter:description" content="Excel's 'Update' / 'Don't Update' popup appears at startup when the file has external links. Here's how to find those links and remove them so the prompt never comes back.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-broken-links/excel-keeps-asking-to-update-links/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Excel keeps asking to update links every time you open it — how to stop the popup",
+  "description": "Excel's 'Update' / 'Don't Update' popup appears at startup when the file has external links. Here's how to find those links and remove them so the prompt never comes back.",
+  "url": "https://xlsx-for-ai.dev/tools/fix-broken-links/excel-keeps-asking-to-update-links/",
+  "author": {
+    "@type": "Organization",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">That recurring "Update links" dialog</div>
+    <h1>Excel keeps asking to update links — how to stop the popup for good</h1>
+    <p class="lede">Every time you open the file, Excel asks whether you want to update or not update links. You click a button, get into your spreadsheet, and then the exact same thing happens tomorrow. This isn't a bug — it means your file still contains at least one external link, and the only way to stop the prompt is to find and remove what's causing it.</p>
+  </div>
+
+  <div class="prose">
+
+    <h2>Why the prompt keeps coming back</h2>
+    <p>The "Update / Don't Update" dialog appears because your workbook has a formula — or a named range, chart, or data validation rule — that references a cell in a different Excel file. Every time you open the workbook, Excel checks to see whether that other file is available and asks what you want to do with it. Clicking "Don't Update" doesn't remove the link. It just defers the question until next time.</p>
+    <p>Suppressing the popup through settings (File &gt; Options &gt; Advanced) is a workaround, not a fix. The external reference is still sitting in your file, potentially showing a stale number. The actual fix is removing the link itself.</p>
+
+    <h2>Where links hide — it's not always a formula</h2>
+    <p>Most people go straight to the formula bar and search for <code>[</code> (the character that marks an external reference like <code>=[OtherFile.xlsx]Sheet1!A1</code>). That finds a lot of them, but links can also live in places that don't show up in a normal formula search:</p>
+    <ul>
+      <li><strong>Named ranges</strong> — go to Formulas &gt; Name Manager and look for any name whose "Refers to" column contains a file path in brackets.</li>
+      <li><strong>Charts</strong> — chart data series and axis labels can reference cells in external workbooks. You have to click into the chart and check the formula bar for each series.</li>
+      <li><strong>Conditional formatting rules</strong> — a formatting rule's condition can reference a cell in another file. Go to Home &gt; Conditional Formatting &gt; Manage Rules, and look at what each rule's formula points to.</li>
+      <li><strong>Data validation dropdowns</strong> — if a dropdown's list source points to a named range in another workbook, that's an external link too.</li>
+    </ul>
+    <p>This is why people sometimes delete every formula they can find, break every link in the Edit Links dialog, and the popup still comes back. The link survived somewhere they didn't think to look.</p>
+
+    <h2>The two ways to remove the link</h2>
+    <p>Once you've found the link, you have a choice:</p>
+    <ol>
+      <li><strong>Break the link</strong> — go to Data &gt; Edit Links and click "Break Link." Excel replaces the formula with its current value as a plain number. The live connection disappears and the prompt stops. This is the right move when you don't need the data to refresh from the other file anymore.</li>
+      <li><strong>Update the source</strong> — if the other file still exists but moved to a new location, use "Change Source" in the Edit Links dialog to point Excel at the new path. The link stays live and the values will refresh correctly going forward.</li>
+    </ol>
+    <p>If "Break Link" is greyed out, a sheet is protected. Go to Review &gt; Unprotect Sheet first, then try again.</p>
+
+    <h2>Find every external link in your file — including the hidden ones</h2>
+    <p>If you've already searched formulas and broken the links you could find but the prompt keeps coming back, there's likely a link buried in a named range, chart, or formatting rule. Upload your file below and the tool will find every external reference — in formulas, names, charts, and validation rules — and give you a plain list of each one with its location.</p>
+
+    <p><a href="/tools/fix-broken-links/" class="cta-link">Find all external links in my file — free</a></p>
+
+    <p class="muted">The tool reads your file in memory. It doesn't change anything and doesn't store your file.</p>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

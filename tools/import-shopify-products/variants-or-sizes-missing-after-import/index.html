@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Variants, sizes, or colors missing after Shopify import — all came in as separate products | xlsx-for-ai</title>
+<meta name="description" content="Your products imported but variants didn't — either only one size came through, or each size landed as its own separate product. This is a Handle column problem. Here's how to fix it.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Variants, sizes, or colors missing after Shopify import | xlsx-for-ai">
+<meta property="og:description" content="Your products imported but variants didn't — either only one size came through, or each size landed as its own separate product. This is a Handle column problem. Here's how to fix it.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/import-shopify-products/variants-or-sizes-missing-after-import/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Variants, sizes, or colors missing after Shopify import | xlsx-for-ai">
+<meta name="twitter:description" content="Your products imported but variants didn't — either only one size came through, or each size landed as its own separate product. This is a Handle column problem. Here's how to fix it.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/import-shopify-products/variants-or-sizes-missing-after-import/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Variants, sizes, or colors missing after Shopify CSV import",
+  "description": "Why Shopify product variants — sizes, colors, or other options — don't appear after a CSV import, and how the Handle column structure controls variant grouping.",
+  "url": "https://xlsx-for-ai.dev/tools/import-shopify-products/variants-or-sizes-missing-after-import/",
+  "author": {
+    "@type": "Organization",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify silent import failure</div>
+    <h1>Variants, sizes, or colors didn't come through after import — or they each became a separate product</h1>
+    <p class="lede">You sell a t-shirt in Small, Medium, and Large. You imported your CSV and now Shopify has three separate products — one for each size — instead of one product with three size options. Or maybe even worse: only Small showed up and Medium and Large are just gone. Both problems come from the same place.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>How Shopify groups variants — what the Handle column actually does</h2>
+    <p>In Shopify's CSV format, a product with multiple variants (sizes, colors, materials — any options) is represented by <em>multiple rows</em>. The first row has the product name, description, images, and the first variant. Each additional row below it has the next variant — the next size, the next color. No name, no description on these extra rows. They're just variant data.</p>
+
+    <p>The thing that tells Shopify "these rows all belong to the same product" is the <strong>Handle</strong> column. Every row that belongs to the same product must have the same Handle value. If three rows all say <code>blue-canvas-tote</code> in the Handle column, Shopify groups them as one product with three variants. The first row becomes the product; the other rows become additional options on that product.</p>
+
+    <h2>What went wrong in your file</h2>
+    <p>The variant-grouping problem almost always comes from one of two things going wrong with the Handle column.</p>
+
+    <p><strong>Scenario A: Each row has a unique Handle (or each row has its own product name in that column).</strong> This happens when someone builds their spreadsheet with one row per size — naturally, the way you'd think about it — and each row has its own product name or SKU in what they put in the Handle column. When Shopify sees five rows all with different Handles, it creates five separate products. Each one probably has its size baked into the name, like "T-Shirt Small" and "T-Shirt Medium," and each one only has a single variant.</p>
+
+    <p><strong>Scenario B: Variant rows have a blank Handle.</strong> The first row has a Handle, but the rows for the additional sizes below it don't. Shopify can't attach a blank-Handle row to anything, so it either drops those rows silently or tries to create a new product with a blank handle (which also fails silently). Result: only the first variant appears, and the rest are just gone.</p>
+
+    <h2>What your file needs to look like</h2>
+    <p>For a product with three sizes, you need three rows. Every one of those rows needs the same Handle. The first row also needs the Title, the description, and the name of the option (like "Size"). The second and third rows only need the Handle (matching the first row), the option value (like "Medium" and "Large"), and variant-specific things like the price and SKU for that size. The Title and description only go on the first row.</p>
+
+    <p>If your spreadsheet has product information written out on every row — name and description on every size — that's the normal way to organize a product catalog, but it's not the shape Shopify wants. The conversion step restructures it.</p>
+
+    <h2>The option columns — where sizes and colors actually go</h2>
+    <p>The specific option values (the words "Small," "Medium," "Large," or "Blue," "Red," "Green") go in columns called <strong>Option1 Value</strong>, <strong>Option2 Value</strong>, and so on. The name of the option type (the word "Size" or "Color") goes in <strong>Option1 Name</strong> on the first row of the product. If your spreadsheet has size and color in separate columns with your own column names, those need to be mapped to the right Shopify columns — otherwise the options don't register.</p>
+
+    <h2>Getting your file into the right shape</h2>
+    <p>If your spreadsheet has one row per variant with natural column names like "Size" and "Color," the <a href="/tools/import-shopify-products/">free Shopify product import converter</a> handles the restructuring for you. It groups rows by product, figures out which columns are your option values, moves them into Option1/Option2 position, and makes sure the Handle repeats on every variant row of the same product. The plain-language report it generates shows you how many products it found, how many variants each one has, and which rows it couldn't confidently group — so you can check those specific cases yourself before importing.</p>
+
+    <p class="muted">If your sizes came through but they're each showing as "out of stock,"
+    the fix is different — that's an inventory column issue:
+    see <a href="/tools/import-shopify-products/import-successful-but-products-not-showing/">import said successful but products aren't showing</a>
+    for related troubleshooting.</p>
+
+    <div style="margin-top:2rem; padding: 1.25rem 1.5rem; background: #f0faf4; border-radius: 8px; border-left: 4px solid #107c41;">
+      <strong>Fix this free →</strong> Upload your spreadsheet to the <a href="/tools/import-shopify-products/">Shopify product import converter</a>. It detects your variant columns, groups rows by product with the correct Handle structure, and gives you a Shopify-ready CSV where sizes and colors appear as options — not as separate products.
+    </div>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

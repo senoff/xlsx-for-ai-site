@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Upload a spreadsheet to ChatGPT without leaking personal data | xlsx-for-ai</title>
+<meta name="description" content="Strip customer names, emails, phone numbers, and SSNs from your spreadsheet before uploading to ChatGPT or any AI tool. Free, no signup, nothing stored.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Upload a spreadsheet to ChatGPT without leaking personal data | xlsx-for-ai">
+<meta property="og:description" content="Strip customer names, emails, phone numbers, and SSNs from your spreadsheet before uploading to ChatGPT or any AI tool. Free, no signup, nothing stored.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/remove-personal-data/upload-to-chatgpt-without-leaking-data/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Upload a spreadsheet to ChatGPT without leaking personal data | xlsx-for-ai">
+<meta name="twitter:description" content="Strip customer names, emails, phone numbers, and SSNs from your spreadsheet before uploading to ChatGPT or any AI tool. Free, no signup, nothing stored.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/remove-personal-data/upload-to-chatgpt-without-leaking-data/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": "Upload a spreadsheet to ChatGPT without leaking personal data",
+  "url": "https://xlsx-for-ai.dev/tools/remove-personal-data/upload-to-chatgpt-without-leaking-data/",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Is it safe to upload a spreadsheet with customer data to ChatGPT?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not without removing the personal data first. Names, emails, phone numbers, and other identifiers in your cells get sent to the AI provider's servers. Clean the file here first — we blank out the private columns and give you back a safe-to-upload version."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does 'Remove Personal Data from Excel' remove cell data or just file properties?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most guides (and Microsoft's own Document Inspector) only remove hidden file metadata like the author's name. They do NOT touch your cell data. This tool removes the actual values in your cells — emails, phone numbers, SSNs — the data that would be exposed if you uploaded the file."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which columns get removed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You choose. Upload your file, tell us which columns contain private information, and we blank or replace them. The rest of your data stays intact so the file is still useful for analysis."
+      }
+    }
+  ],
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Safe AI uploads — personal data stays off ChatGPT's servers</div>
+    <h1>Use AI on your spreadsheet without leaking customer data.</h1>
+    <p class="lede">You want ChatGPT to analyze your sales data, spot trends in your customer list, or
+      help you make sense of a report — but the file has real names, email addresses, phone numbers, or
+      other private info you can't just hand over to an AI service. Clean it here first. We blank out
+      the private columns and give you back a version that's safe to upload anywhere.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">remove-personal-data · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+
+    <h2>The problem nobody warns you about</h2>
+    <p>When you upload a file to ChatGPT, Claude, Gemini, or any other AI tool, every value in every
+      cell goes to that company's servers. That includes the things buried in columns you might not
+      think about: a <strong>customer name</strong> column three sheets over, the
+      <strong>email address</strong> column your export always includes, the
+      <strong>Social Security Numbers</strong> in an HR report you're trying to analyze for headcount
+      trends. The AI doesn't need any of that to answer your question about totals or patterns —
+      but it gets sent anyway.</p>
+
+    <h2>What this tool actually does (vs. what Microsoft's tool does)</h2>
+    <p>If you searched "remove personal information from Excel" and found Microsoft's Document
+      Inspector — that removes hidden <em>file properties</em> like who authored the document.
+      It does <strong>not</strong> touch the data in your cells. The names and numbers in your
+      spreadsheet are completely untouched by that tool.</p>
+    <p>This tool removes the actual cell values. You pick which columns hold private information —
+      emails, phone numbers, names, Social Security Numbers, addresses, bank account numbers,
+      whatever you want gone — and we blank them out. Everything else stays intact so the file
+      is still useful for your analysis question.</p>
+
+    <h2>What you do with the cleaned file</h2>
+    <p>Download the scrubbed version, then upload that to ChatGPT (or whichever AI tool you're
+      using). The AI sees the structure, the numbers, the dates, and the patterns — but it never
+      sees the real people those rows represent. Ask your question, get your answer.</p>
+    <p>Common scenarios where this matters: sharing a customer list with a freelancer, preparing a
+      file to post as an example on a forum, sending payroll data to an accountant who only needs
+      the totals, or using AI to analyze a file your company policy says you can't share externally.</p>
+
+    <h2>What gets removed — your call entirely</h2>
+    <p>We don't auto-detect what counts as "personal." You know your file; you tell us which columns
+      to clear. We blank them, not delete them — the column headers stay in place and the rows
+      stay the same count, so the structure the AI will analyze is faithful to the real file.
+      Nothing is changed silently; you see the before and after before you download.</p>
+
+    <p class="muted">Want to see what personal-data columns might be hiding in your file before
+      you decide what to remove? <a href="/tools/whats-inside-excel-file/">What's inside this Excel
+      file</a> gives you a plain-language breakdown of every tab, column, and data type.</p>
+
+    <p class="muted">Need this without a browser upload — wired into an AI agent that processes
+      files automatically? Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a>
+      and use the <code>xlsx_redact</code> tool to scrub columns headlessly before they reach
+      any external service.</p>
+
+  </div>
+
+</div>
+</main>
+
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent scrub files before sending them to AI services</h2>
+  <p>When an agent pipeline processes user-uploaded spreadsheets before passing them to an LLM, it can run the same column-level redaction automatically — no user upload step, no browser. Wire xlsx-for-ai into your agent and sensitive columns get blanked before any external API call. The same before/after ledger is available programmatically so your pipeline can log exactly what was removed.</p>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Remove personal data tools">
+      <a href="/tools/remove-personal-data/">Remove personal data</a>
+      <a href="/tools/whats-inside-excel-file/">What's inside an Excel file</a>
+      <a href="/tools/convert-excel-to-csv/">Convert Excel to CSV</a>
+      <a href="/tools/remove-duplicates/">Remove duplicate rows</a>
+      <a href="/tools/compare/">Compare two spreadsheets</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

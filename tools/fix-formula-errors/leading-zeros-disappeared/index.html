@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Leading zeros disappeared in Excel — ZIP codes, SKUs, phone numbers | xlsx-for-ai</title>
+<meta name="description" content="Excel dropped the leading zero from your ZIP code, product SKU, or phone number? Here's why it happens and how to get those zeros back before the data is wrong everywhere.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Leading zeros disappeared in Excel — ZIP codes, SKUs, phone numbers | xlsx-for-ai">
+<meta property="og:description" content="Excel dropped the leading zero from your ZIP code, product SKU, or phone number? Here's why it happens and how to get those zeros back before the data is wrong everywhere.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-formula-errors/leading-zeros-disappeared/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Leading zeros disappeared in Excel — ZIP codes, SKUs, phone numbers | xlsx-for-ai">
+<meta name="twitter:description" content="Excel dropped the leading zero from your ZIP code, product SKU, or phone number? Here's why it happens and how to get those zeros back before the data is wrong everywhere.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-formula-errors/leading-zeros-disappeared/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": "Leading zeros disappeared in Excel — ZIP codes, SKUs, phone numbers",
+  "url": "https://xlsx-for-ai.dev/tools/fix-formula-errors/leading-zeros-disappeared/",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why did Excel remove the leading zero from my ZIP code?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Excel automatically converts anything that looks like a number into an actual number. The number 01234 and the number 1234 are the same mathematically — the leading zero adds no value — so Excel strips it. The problem is that ZIP codes, SKUs, and employee IDs aren't really numbers; they're codes where every character matters, including leading zeros."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I stop Excel from removing leading zeros when I type or import data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Format the column as Text before entering data: right-click the column, Format Cells, choose Text, click OK. Then type or paste your values. Excel will store them as-is. For CSV imports, use the import wizard and mark the affected column as Text during the import step."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I restore leading zeros that Excel already removed?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "If you know how many digits the value should be — ZIP codes are always 5 digits, for example — use the TEXT function to pad it back: =TEXT(A2,\"00000\") produces a 5-digit value with leading zeros restored. Then copy and paste the result column as values over the original."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Excel silent data corruption — fix-formula-errors</div>
+    <h1>Leading zeros disappeared — ZIP codes, SKUs, and phone numbers turned into shorter numbers</h1>
+    <p class="lede">No error message, no red cell. Excel just quietly dropped the zero at the front of your data. A ZIP code like <code>01234</code> became <code>1234</code>. A product code like <code>007-45</code> became something unrecognizable. This page explains why it happens and how to get your data right again.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>Why Excel thinks it's helping</h2>
+    <p>Imagine you wrote the number 007 on a calculator. The calculator would display 7 — the leading zeros are meaningless to a calculator because they don't change the value. Excel thinks the same way. When it sees <code>01234</code>, it treats it like a math number, decides the zero at the front doesn't mean anything, and strips it. The result is <code>1234</code> — four digits instead of five.</p>
+    <p>The trouble is that ZIP codes, phone numbers, product SKUs, employee IDs, and social security numbers aren't math numbers. They're identification codes where every character is part of the meaning, and a missing leading zero turns them into the wrong code entirely. ZIP code <code>01234</code> (in western Massachusetts) is a completely different place from <code>1234</code> (which isn't a valid ZIP at all). Excel's helpfulness is actively wrong here.</p>
+
+    <h2>Why you might not have noticed right away</h2>
+    <p>Excel shows no error for this. The cell doesn't turn red. There's no warning dialog. The value just silently becomes shorter. If you're not comparing against a known-correct source, the problem can sit undetected for a long time — until addresses fail to match, shipments go to the wrong ZIP, or a product lookup breaks because the SKU no longer matches the warehouse system.</p>
+    <p>If you imported data from a CSV file, the stripping happens the moment Excel opens the file. By the time you're looking at the spreadsheet, the zeros are already gone.</p>
+
+    <h2>Restoring zeros that Excel already removed</h2>
+    <p>If you know the correct length of the values in a column, you can pad them back. In a helper column next to your data, use the TEXT function. For five-digit ZIP codes:</p>
+    <p><code>=TEXT(A2,"00000")</code></p>
+    <p>The string of zeros inside the quotes tells Excel how many total digits the result should have — it adds leading zeros to reach that length. <code>1234</code> becomes <code>01234</code>; <code>12345</code> stays <code>12345</code>. For a 10-digit phone number with no separators, you'd use <code>"0000000000"</code>. For a fixed-length product code of 8 characters, <code>"00000000"</code>.</p>
+    <p>Once the helper column looks right, copy the entire column, then right-click the original column and choose <strong>Paste Special &gt; Values</strong> to replace the old data with the corrected values. Delete the helper column.</p>
+
+    <h2>Preventing this from happening again</h2>
+    <p>The fix depends on how the data is getting into Excel.</p>
+
+    <p><strong>If you're typing the values yourself:</strong> Format the column as Text before you start. Right-click the column header, choose Format Cells, select Text from the category list, and click OK. Now Excel will store whatever you type exactly as typed — zeros included.</p>
+
+    <p><strong>If you're opening a CSV file:</strong> Don't double-click the file to open it. Instead, open Excel first, then go to Data &gt; Get Data &gt; From Text/CSV (or the equivalent Import Wizard in older versions). This gives you the option to tell Excel what type each column is. Mark the ZIP code or SKU column as Text during the import step, and the zeros will be preserved.</p>
+
+    <p><strong>If the data is being pasted from somewhere:</strong> Format the destination column as Text first, then paste. If you paste into a General-formatted column, Excel may still auto-convert before the formatting kicks in. Set Text format first, paste second.</p>
+
+    <h2>What if the column has a mix of values — some needing zeros, some not?</h2>
+    <p>This comes up with international addresses (some countries have numeric postal codes without leading zeros; others always require them) or with product catalogs where some SKUs are all-numeric and some have letters. In this case, the safest approach is to store the entire column as Text from the start. Text columns preserve whatever you put in them exactly. The trade-off is that you can't do arithmetic on text cells — but ZIP codes and SKUs aren't things you'd add up anyway.</p>
+
+    <p class="muted">If you have a large file and aren't sure which columns have lost leading zeros, the <a href="/tools/fix-formula-errors/">fix formula errors tool</a> can inspect your spreadsheet and flag columns where values appear to be shorter than a consistent expected length — a common sign of stripped leading zeros in code-type fields.</p>
+
+  </div>
+
+  <div class="cta-block">
+    <p>Need to find which columns in your file have this problem? The <a href="/tools/fix-formula-errors/">fix formula errors tool</a> scans your spreadsheet and reports on fields where leading-zero loss is likely, so you know exactly where to focus the repair.</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Formula error pages">
+      <a href="/tools/fix-formula-errors/">Fix formula errors — hub</a>
+      <a href="/tools/fix-formula-errors/vlookup-returns-na/">VLOOKUP #N/A</a>
+      <a href="/tools/fix-formula-errors/sum-returns-zero/">SUM returns zero</a>
+      <a href="/tools/fix-formula-errors/ref-error-what-it-means/">#REF! error</a>
+      <a href="/tools/fix-formula-errors/value-error-what-it-means/">#VALUE! error</a>
+      <a href="/tools/fix-formula-errors/leading-zeros-disappeared/">Leading zeros disappeared</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

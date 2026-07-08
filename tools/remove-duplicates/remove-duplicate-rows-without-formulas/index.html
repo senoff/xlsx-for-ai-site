@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Remove duplicate rows without Excel formulas — paste your file, get a clean list | xlsx-for-ai</title>
+<meta name="description" content="Deduplicate your spreadsheet without learning COUNTIF, UNIQUE(), or any Excel formula. Upload your file, choose which column to check, download the clean result.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Remove duplicate rows without Excel formulas — paste your file, get a clean list | xlsx-for-ai">
+<meta property="og:description" content="Deduplicate your spreadsheet without learning COUNTIF, UNIQUE(), or any Excel formula. Upload your file, choose which column to check, download the clean result.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/remove-duplicates/remove-duplicate-rows-without-formulas/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Remove duplicate rows without Excel formulas — paste your file, get a clean list | xlsx-for-ai">
+<meta name="twitter:description" content="Deduplicate your spreadsheet without learning COUNTIF, UNIQUE(), or any Excel formula. Upload your file, choose which column to check, download the clean result.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/remove-duplicates/remove-duplicate-rows-without-formulas/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2020/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Remove duplicate rows without Excel formulas",
+  "description": "How to deduplicate a spreadsheet without using COUNTIF, UNIQUE(), or any Excel formula — upload the file, pick the column to check, download a clean list.",
+  "url": "https://xlsx-for-ai.dev/tools/remove-duplicates/remove-duplicate-rows-without-formulas/",
+  "about": {
+    "@type": "SoftwareApplication",
+    "name": "xlsx-for-ai remove-duplicates",
+    "url": "https://xlsx-for-ai.dev/tools/remove-duplicates/",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">No formulas, no ribbon-diving, no data-loss panic</div>
+    <h1>Remove duplicate rows without any Excel formulas.</h1>
+    <p class="lede">You have a list with repeated entries — same customer appearing twice, duplicate
+      orders, names that got added more than once — and you want one clean copy of each. You
+      shouldn't have to learn <code>COUNTIF</code> or <code>UNIQUE()</code> to do that. Upload
+      the file, tell us which column to check for repeats, and download a deduplicated version
+      with a plain count of how many rows were removed.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">remove-duplicates · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+
+    <h2>Why "no formulas" matters</h2>
+    <p>Excel's built-in Remove Duplicates button is on the Data tab, and most people don't find it
+      on their first try. When they do find it and click it, there's no preview — it just deletes
+      rows immediately, and if you had the wrong column selected, you might lose data you didn't mean
+      to touch. The only recovery is Ctrl+Z, which only works if you haven't saved.</p>
+    <p>This tool shows you what it's going to remove before it removes it. You see how many
+      duplicate rows were found, which values appeared more than once, and what the cleaned
+      file looks like — then you download it. Your original file is never touched.</p>
+
+    <h2>Check one column or the whole row</h2>
+    <p>Most real-world duplicate problems are "same email address appearing twice" or "same SKU
+      on two rows," not "every single cell in the row is identical." You can tell us to check
+      a specific column — like the email column or the customer ID column — and keep only the
+      first row with each unique value in that column. The other data on the row (name, date,
+      amount) comes along with it.</p>
+    <p>If you want to match on every column — so a row only gets removed if it's completely
+      identical to another row — that's an option too.</p>
+
+    <h2>The extra-spaces problem (and why Excel sometimes misses duplicates)</h2>
+    <p>A common reason "Excel says no duplicates but I can see them" is trailing spaces.
+      <code>"john smith "</code> with a space at the end looks the same as
+      <code>"john smith"</code> to human eyes, but Excel treats them as different values and
+      doesn't remove either. This tool trims whitespace before comparing, so those invisible
+      differences don't cause duplicates to slip through.</p>
+
+    <h2>What you get back</h2>
+    <p>A plain-English summary: how many rows were in your original file, how many were removed
+      as duplicates, and how many unique rows remain. Plus the deduplicated file, ready to
+      download. No formulas to copy, no helper columns to delete afterward, no "Ctrl+Z didn't
+      work" panic.</p>
+
+    <p class="muted">Need to find duplicates across two <em>separate</em> files — like matching
+      your master list against a new import to see what overlaps?
+      <a href="/tools/compare/">Compare two spreadsheets</a> handles the cross-file case.</p>
+
+    <p class="muted">Want to run deduplication automatically inside an AI agent or a script?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a>
+      and use the <code>xlsx_value_counts</code> tool to identify duplicates headlessly before
+      your pipeline processes the file.</p>
+
+  </div>
+
+</div>
+</main>
+
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent clean duplicate rows before processing</h2>
+  <p>When an agent pipeline receives a spreadsheet that may have repeated entries — a CRM export, a combined order log, a vendor list merged from two sources — it can run the same deduplication step automatically, with the same whitespace-aware comparison and the same before/after row count, before the data reaches any downstream system.</p>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Remove duplicates tools">
+      <a href="/tools/remove-duplicates/">Remove duplicate rows</a>
+      <a href="/tools/compare/">Compare two spreadsheets</a>
+      <a href="/tools/remove-personal-data/">Remove personal data</a>
+      <a href="/tools/convert-excel-to-csv/">Convert Excel to CSV</a>
+      <a href="/tools/whats-inside-excel-file/">What's inside an Excel file</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

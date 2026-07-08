@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>"We can't update some of the links in your workbook right now" — what it means and how to fix it | xlsx-for-ai</title>
+<meta name="description" content="Excel showing 'We can't update some of the links in your workbook right now'? This means Excel found a reference to another file it can't reach. Here's what causes it and how to fix or remove the broken link.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="&quot;We can't update some of the links in your workbook right now&quot; — what it means | xlsx-for-ai">
+<meta property="og:description" content="Excel showing 'We can't update some of the links in your workbook right now'? This means Excel found a reference to another file it can't reach. Here's what causes it and how to fix or remove the broken link.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-broken-links/cant-update-some-links-right-now/">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="&quot;We can't update some of the links in your workbook right now&quot; — what it means | xlsx-for-ai">
+<meta name="twitter:description" content="Excel showing 'We can't update some of the links in your workbook right now'? This means Excel found a reference to another file it can't reach. Here's what causes it and how to fix or remove the broken link.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-broken-links/cant-update-some-links-right-now/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "\"We can't update some of the links in your workbook right now\" — what it means and how to fix it",
+  "description": "Excel showing 'We can't update some of the links in your workbook right now'? This means Excel found a reference to another file it can't reach. Here's what causes it and how to fix or remove the broken link.",
+  "url": "https://xlsx-for-ai.dev/tools/fix-broken-links/cant-update-some-links-right-now/",
+  "author": {
+    "@type": "Organization",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Excel external link error — explained</div>
+    <h1>"We can't update some of the links in your workbook right now"</h1>
+    <p class="lede">This error means your spreadsheet has a formula pulling data from a second file — and Excel just tried to reach that file and couldn't. The source file is either gone, moved, renamed, or on a network drive Excel can't currently access.</p>
+  </div>
+
+  <div class="prose">
+
+    <h2>What exactly is happening</h2>
+    <p>Excel workbooks can contain formulas that reference cells in a completely different file. Something like <code>=[Budget2023.xlsx]Sheet1!B4</code>. When you open the file, Excel automatically tries to load the latest values from that other file. If it can't find it — because the file was deleted, moved to a new folder, renamed, or lives on a network share that's currently unreachable — you get this message.</p>
+    <p>The error is specific. It's not saying your file is corrupt, and it's not a security warning. It's just telling you that at least one external reference came back with nothing, so the linked cells may be showing you an old cached number instead of a live one.</p>
+
+    <h2>Why "some" and not all?</h2>
+    <p>A single workbook can link to multiple external files. The word "some" means that at least one link failed, but others may have updated fine. Excel continues loading your file regardless — it just can't guarantee those particular cells have fresh values.</p>
+
+    <h2>Three reasons this usually happens</h2>
+    <ul>
+      <li><strong>The source file was deleted or renamed.</strong> Someone cleaned up a shared drive and removed or renamed the file your spreadsheet was pulling from. The formula still has the old path baked in.</li>
+      <li><strong>The file moved to a new location.</strong> If your company migrated files to SharePoint, a new server, or even a different folder on the same machine, the path Excel has stored no longer leads anywhere.</li>
+      <li><strong>You received this file from someone else.</strong> The link points to a file that lives on their machine, not yours. You have no way to access it, and you never did.</li>
+    </ul>
+
+    <h2>What you should do</h2>
+    <p>First, use <strong>Data &gt; Edit Links</strong> in Excel to see exactly which external files are referenced and what their current status is. Each row shows the file path and whether the link is OK or broken. From there you have two real options:</p>
+    <ol>
+      <li><strong>Change source</strong> — if the file moved, point Excel to the new location. Excel will update all the formulas that referenced the old path.</li>
+      <li><strong>Break the link</strong> — if the source file is gone for good, or if you received this file from someone else and you just want it to stop asking, breaking the link replaces the formula with the last value that was cached. The number stays; the connection to the other file goes away.</li>
+    </ol>
+    <p>If "Break Link" is greyed out, the sheet is likely protected. You'll need to unprotect it first under <strong>Review &gt; Unprotect Sheet</strong>.</p>
+
+    <h2>Find and list all external links in your file</h2>
+    <p>Not sure where the link is hiding, or want to see every external reference before you start making changes? Upload your file to the free tool below — it reads the file without opening Excel, finds every external link (including ones buried in named ranges, charts, and conditional formatting rules that the formula search often misses), and gives you a plain list of exactly what's linked and where.</p>
+
+    <p><a href="/tools/fix-broken-links/" class="cta-link">Find external links in my Excel file — free</a></p>
+
+    <p class="muted">Your file is read in memory and never stored. Nothing is changed; you get a report of what the tool found.</p>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

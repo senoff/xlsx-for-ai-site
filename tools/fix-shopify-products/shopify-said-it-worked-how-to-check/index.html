@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify said the import worked — how to check it actually did | xlsx-for-ai</title>
+<meta name="description" content="Shopify's import success message doesn't mean everything landed correctly. Products can import as drafts, with wrong prices, or silently overwrite existing ones. Here's how to verify the import actually worked.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Shopify said the import worked — how to check it actually did | xlsx-for-ai">
+<meta property="og:description" content="Shopify's import success message doesn't mean everything landed correctly. Products can import as drafts, with wrong prices, or silently overwrite existing ones. Here's how to verify the import actually worked.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-shopify-products/shopify-said-it-worked-how-to-check/">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shopify said the import worked — how to check it actually did | xlsx-for-ai">
+<meta name="twitter:description" content="Shopify's import success message doesn't mean everything landed correctly. Here's a short checklist to run after every product import.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-shopify-products/shopify-said-it-worked-how-to-check/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Shopify products CSV repair — verify before you upload",
+  "description": "Upload a Shopify products CSV and get back a repaired file with a plain-language ledger of what was wrong, before Shopify silently accepts a broken import.",
+  "url": "https://xlsx-for-ai.dev/tools/fix-shopify-products/shopify-said-it-worked-how-to-check/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Silent failure — Shopify reports success but the result is wrong</div>
+    <h1>Shopify said the import worked. How to check if it actually did.</h1>
+    <p class="lede">The import finished. Shopify showed a green confirmation. But your store doesn't look
+      right — products aren't showing up, prices are $0, or the product count didn't change. Shopify's
+      success message is not a verification. Here's what to actually check after every product import, and
+      what each problem means about your source file.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>Why Shopify's "success" can still mean something went wrong</h2>
+    <p>Shopify's import pipeline is built to be forgiving. Rather than blocking an entire import for
+      recoverable issues, it often accepts the file, records what it can, and quietly skips or mishandles
+      the parts it couldn't parse. The "import successful" message means the file was processed — not that
+      every row landed the way you intended.</p>
+    <p>Several common problems produce a success message alongside a broken result. Knowing which one you
+      hit tells you what to fix in the file before you import again.</p>
+
+    <h2>Check 1 — are the product counts right?</h2>
+    <p>After the import, go to <strong>Products</strong> in your Shopify admin and look at the total
+      product count (bottom of the list or visible in the pagination). Compare it to the number of
+      products in your file.</p>
+    <ul>
+      <li><strong>Count went up by the right number:</strong> new products were created correctly.</li>
+      <li><strong>Count didn't change at all:</strong> your file contained Handles that already exist in
+        your store, so Shopify updated the existing products rather than creating new ones — or the rows
+        were skipped for another reason.</li>
+      <li><strong>Count went up by fewer than expected:</strong> some rows were silently skipped. This
+        often means variant rows were dropped (Shopify has a 100-variant-per-product limit) or image rows
+        were skipped because the URL wasn't reachable.</li>
+    </ul>
+
+    <h2>Check 2 — are the products visible to customers?</h2>
+    <p>Products in Shopify can exist in your admin but be invisible on the storefront if they imported as
+      drafts. Open a product you just imported and look at the <strong>Status</strong> field in the top
+      right. If it says <strong>Draft</strong> instead of <strong>Active</strong>, customers can't see or
+      buy it.</p>
+    <p>This happens when your CSV's <strong>Published</strong> column was blank, contained
+      <code>FALSE</code>, or was missing entirely. A blank Published column is not treated as "yes, publish
+      it" — it's treated as "no." You need an explicit <code>TRUE</code> in that cell for a product to go
+      live on import.</p>
+
+    <h2>Check 3 — are the prices correct?</h2>
+    <p>Find a product with a known price and open it. Look at the price for each variant. If prices show
+      as <strong>$0.00</strong> or <strong>blank</strong>, your CSV had a price formatting problem —
+      dollar signs, commas, or currency codes in the Variant Price column. Shopify accepted the rows but
+      couldn't parse the numbers, so it stored zero.</p>
+
+    <h2>Check 4 — do the product names and descriptions look right?</h2>
+    <p>Click into one product and check the title and description for strange characters. If you see
+      <code>Ã©</code> instead of <code>é</code>, or <code>â€™</code> instead of an apostrophe, your file
+      had a character problem that Shopify accepted without complaint. The text in your store is now
+      garbled for every customer who visits those product pages.</p>
+
+    <h2>Check 5 — did the import overwrite products you didn't intend to change?</h2>
+    <p>Look for products whose content or prices changed unexpectedly. Shopify matches on Handle — if your
+      import file contained a Handle that already existed in your store, that product was updated, not
+      created. If someone else's products share handles with yours (possible with certain supplier
+      templates), their data may have been silently overwritten.</p>
+
+    <h2>Fix the file before the next import</h2>
+    <p>Catching these issues after the import is the hard path. The easier path is to run your file through
+      the <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a> before you upload
+      it. It checks for price formatting, blank Published values, character problems, and duplicate Handles,
+      and gives you a plain-language list of what's wrong before anything touches your live store. A
+      repaired file, not a re-import guess.</p>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

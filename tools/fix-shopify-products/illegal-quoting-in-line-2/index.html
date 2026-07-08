@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>"Illegal quoting in line 2" Shopify import error — what it means and how to fix it | xlsx-for-ai</title>
+<meta name="description" content="Shopify's "Illegal quoting in line 2" error almost always means a quote mark is in the wrong place in your CSV. Here's what broke and how to fix it without rewriting every row by hand.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="&quot;Illegal quoting in line 2&quot; Shopify import error — what it means and how to fix it | xlsx-for-ai">
+<meta property="og:description" content="Shopify's "Illegal quoting in line 2" error almost always means a quote mark is in the wrong place in your CSV. Here's what broke and how to fix it without rewriting every row by hand.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-shopify-products/illegal-quoting-in-line-2/">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="&quot;Illegal quoting in line 2&quot; Shopify import error — what it means and how to fix it | xlsx-for-ai">
+<meta name="twitter:description" content="Shopify's "Illegal quoting in line 2" error almost always means a quote mark is in the wrong place in your CSV. Here's what broke and how to fix it without rewriting every row by hand.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-shopify-products/illegal-quoting-in-line-2/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does \"Illegal quoting in line 2\" mean in Shopify?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It means Shopify's CSV parser hit a quotation mark it didn't expect in your second data row. The most common cause is a product description that contains a literal double-quote character — like 8\" screen — that wasn't escaped properly when the file was saved."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does this happen after editing in Excel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Excel sometimes writes quote characters around fields inconsistently when you save as CSV. If a description already had quotes inside it, re-saving from Excel can produce a file where those inner quotes aren't doubled-up the way CSV rules require, which is exactly what Shopify calls \"illegal quoting.\""
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I have to fix every row by hand?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Upload your file to the fix-shopify-products tool and it will find and repair quoting problems across every row, then tell you exactly what it changed before handing you back a clean file."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify import error explained</div>
+    <h1>"Illegal quoting in line 2" — what broke and how to fix it</h1>
+    <p class="lede">Shopify threw this error and now your whole import is blocked. The message sounds technical
+      but the cause is almost always one thing: a stray quote character in a product description or title that
+      wasn't handled correctly when the file was saved. Here's exactly what happened and how to clear it.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>What Shopify actually means by this</h2>
+    <p>CSV files use double-quote characters (<code>"</code>) to wrap fields that contain commas. When a
+      field also contains a literal double-quote — like a product title that says <em>8" LED Panel</em> or
+      a description quoting a measurement — CSV rules say that inner quote has to be written twice
+      (<code>""</code>) so the parser knows it's part of the data, not the end of the field.</p>
+    <p>If that doubling didn't happen — which is common after editing in Excel, Google Sheets, or any tool
+      that applies its own quoting logic on save — Shopify's parser sees an unexpected <code>"</code> in
+      the middle of a field and immediately rejects the entire file with "Illegal quoting in line 2." It
+      says "line 2" because line 1 is the header row; the parser fails on the very first product row.</p>
+
+    <h2>Three things that cause it</h2>
+    <ul>
+      <li><strong>A product description with inch marks or quoted words.</strong> Any <code>"</code> in a
+        body field that wasn't doubled-up becomes an escape problem when the file is saved.</li>
+      <li><strong>Excel re-saved the file.</strong> When you open a Shopify CSV in Excel and save it back
+        as CSV, Excel applies its own quoting rules. If the description already had quotes, Excel can produce
+        a malformed result where those quotes are no longer correctly escaped.</li>
+      <li><strong>The file was concatenated or edited in a text editor.</strong> Manually joining two CSV
+        files or fixing things in Notepad can introduce a raw <code>"</code> that breaks the format.</li>
+    </ul>
+
+    <h2>Why it blocks the whole import</h2>
+    <p>Unlike per-row errors that let the rest of the file through, bad quoting breaks the CSV parser's
+      ability to know where one field ends and the next begins. Once it hits the bad quote, it can't
+      recover — every subsequent row is ambiguous. That's why Shopify rejects the entire file rather than
+      skipping the problem row.</p>
+
+    <h2>The fix</h2>
+    <p>Every <code>"</code> that appears <em>inside</em> a field value needs to be written as
+      <code>""</code>. And the field itself needs to be wrapped in outer quotes too. A description that
+      says <code>Fits a 10" frame</code> needs to appear in the CSV as
+      <code>"Fits a 10"" frame"</code> — two double-quotes in the middle, one pair on the outside.</p>
+    <p>Finding and repairing every instance across hundreds of rows by hand is error-prone. Upload your
+      file to the repair tool below and it handles the escaping for every affected field automatically,
+      then shows you a list of the exact cells it touched before returning a clean file.</p>
+
+    <p class="muted">Once your file is quoting-clean, use the full
+      <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a> to catch any other
+      issues — price formatting, duplicate handles, header mismatches — before you upload to Shopify.</p>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

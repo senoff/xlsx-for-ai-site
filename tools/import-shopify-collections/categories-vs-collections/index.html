@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify "categories" vs. collections — what they're called and how to import them | xlsx-for-ai</title>
+<meta name="description" content="Coming from WooCommerce, Etsy, or Amazon? Shopify calls them 'collections,' not 'categories.' Here's what that means for your store setup and how to import them in bulk.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Shopify 'categories' vs. collections — what they're called and how to import them | xlsx-for-ai">
+<meta property="og:description" content="WooCommerce, Etsy, and Amazon use 'categories.' Shopify uses 'collections.' Here's what actually changes — and what stays the same — when you make the switch.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/import-shopify-collections/categories-vs-collections/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shopify 'categories' vs. collections — what they're called and how to import them | xlsx-for-ai">
+<meta name="twitter:description" content="WooCommerce, Etsy, and Amazon use 'categories.' Shopify uses 'collections.' Here's what changes and how to bulk-import them from a spreadsheet.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/import-shopify-collections/categories-vs-collections/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does Shopify have categories?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not by that name. What every other platform calls 'categories' Shopify calls 'collections.' The concept is the same — a named group of products customers can browse — but the Shopify admin, URLs, and CSV column headers all use the word 'collection.' If you're searching for 'Shopify categories,' you want the Collections section of your admin."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I import categories from WooCommerce into Shopify?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, but you're importing them as Shopify collections, not as a 'category' field. A WooCommerce category export gives you names and slugs. You can use that data to create Shopify collections in bulk — each category becomes a collection with a title and handle. Shopify has no native collections CSV importer, so a spreadsheet tool that produces the correct import format fills that gap."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I have sub-categories (nested collections) in Shopify?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Shopify does not support nested collections natively. You can't create a 'Clothing > Men's > Jackets' hierarchy the way WooCommerce does with parent/child categories. The standard Shopify approach is to use overlapping manual or automated collections (a product appears in both 'Men's' and 'Jackets') and build visual hierarchy through your navigation menu, not through collection nesting."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify collections — terminology guide for store migrants</div>
+    <h1>Shopify doesn't have "categories" — it has collections</h1>
+    <p class="lede">If you're moving from WooCommerce, Etsy, Amazon, or almost any other platform,
+      you're used to organizing products into <em>categories</em>. Shopify uses a different word for
+      the same concept. Here's what that actually means for your store — and how to get your
+      categories into Shopify in bulk without clicking through every one.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>Why the word matters</h2>
+    <p>When you search for "how to add categories in Shopify" or "Shopify category import," you
+      often get results that don't quite match what you see in your admin. That's because Shopify's
+      admin, help docs, and CSV headers all use the word <strong>collection</strong> where every
+      other major platform uses <strong>category</strong>. The underlying idea is identical — a
+      named group of products that customers can browse — but the terminology mismatch causes real
+      confusion when you're trying to follow a tutorial or fill out a spreadsheet.</p>
+
+    <p>Quick translation table:</p>
+    <table style="width:100%;border-collapse:collapse;margin:1rem 0;">
+      <thead>
+        <tr style="background:#f5f5f5;">
+          <th style="text-align:left;padding:.5rem .75rem;border:1px solid #ddd;">Your old platform</th>
+          <th style="text-align:left;padding:.5rem .75rem;border:1px solid #ddd;">Their word</th>
+          <th style="text-align:left;padding:.5rem .75rem;border:1px solid #ddd;">Shopify word</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">WooCommerce</td>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Product category</td>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Collection</td>
+        </tr>
+        <tr style="background:#fafafa;">
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Etsy</td>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Section</td>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Collection</td>
+        </tr>
+        <tr>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Amazon Seller Central</td>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Browse node / Category</td>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Collection</td>
+        </tr>
+        <tr style="background:#fafafa;">
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">BigCommerce</td>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Category</td>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Collection</td>
+        </tr>
+        <tr>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Squarespace</td>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Category / Tag</td>
+          <td style="padding:.5rem .75rem;border:1px solid #ddd;">Collection</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>What's different, not just the name</h2>
+    <p>Beyond terminology, Shopify collections work slightly differently from most category systems.
+      The two most important differences for someone migrating from another platform:</p>
+
+    <p><strong>No nesting.</strong> WooCommerce lets you create parent and child categories —
+      "Clothing &gt; Women's &gt; Dresses." Shopify does not support nested collections. Instead,
+      you create multiple overlapping collections (a dress appears in "Women's" and in "Dresses")
+      and organize them visually in your navigation menu. Your category hierarchy becomes a menu
+      structure, not a collection structure.</p>
+
+    <p><strong>Two collection types.</strong> Every Shopify collection is either manual
+      (you hand-pick which products belong) or automated (Shopify adds products automatically
+      when they match a rule you set, like a specific tag). Most other platforms have only the
+      manual equivalent. Automated collections are Shopify's way of doing what you might have
+      done with category assignment rules in another tool.</p>
+
+    <h2>Getting your categories into Shopify in bulk</h2>
+    <p>Unlike products, Shopify has no native collections CSV import. You cannot export your
+      WooCommerce categories to a spreadsheet and upload them directly. The path is:
+      create the collections, then assign products to them.</p>
+
+    <p>If you have a spreadsheet listing your category names and the products that belong in each,
+      the free tool below converts it to the format Shopify accepts — one collection per row with
+      the right handle and title, plus a plain-language summary of what it will create. You download
+      the ready-to-import file and upload it yourself. Nothing reaches your store directly.</p>
+
+  </div>
+
+  <div style="margin: 2rem 0;">
+    <a href="/tools/import-shopify-collections/" class="cta-button"
+       style="display:inline-block;background:#107c41;color:#fff;padding:.75rem 1.5rem;border-radius:6px;text-decoration:none;font-weight:600;">
+      Convert my category spreadsheet to Shopify collections →
+    </a>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

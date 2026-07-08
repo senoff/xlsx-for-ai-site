@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Weird symbols or garbled text in Shopify product names after export — how to fix it | xlsx-for-ai</title>
+<meta name="description" content="Your Shopify export looks fine in the spreadsheet but after import product names and descriptions show garbled symbols — é became Ã©, apostrophes turned into â€™. Here's what happened and how to fix it.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Weird symbols or garbled text in Shopify product names after export | xlsx-for-ai">
+<meta property="og:description" content="Your Shopify export looks fine in the spreadsheet but after import product names and descriptions show garbled symbols — é became Ã©, apostrophes turned into â€™. Here's what happened and how to fix it.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-shopify-products/weird-symbols-or-garbled-text-after-export/">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Weird symbols or garbled text in Shopify product names after export | xlsx-for-ai">
+<meta name="twitter:description" content="Your Shopify export looks fine in the spreadsheet but after import product names and descriptions show garbled symbols. Here's what happened and how to fix it.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-shopify-products/weird-symbols-or-garbled-text-after-export/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Weird symbols or garbled text in Shopify product names after export",
+  "description": "Explains why opening a Shopify CSV export in Excel and re-saving causes accent characters and special symbols to appear garbled on the storefront, and how to repair the file.",
+  "url": "https://xlsx-for-ai.dev/tools/fix-shopify-products/weird-symbols-or-garbled-text-after-export/",
+  "author": {
+    "@type": "Organization",
+    "name": "xlsx-for-ai"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Silent failure — no error shown, wrong result on storefront</div>
+    <h1>Product names show weird symbols after export — é turned into Ã©, apostrophes look wrong</h1>
+    <p class="lede">You exported your products, made some changes, re-imported — and now your storefront has
+      strange garbage characters where the accents and apostrophes used to be. Shopify didn't warn you. The
+      import said it worked. But your product names and descriptions look scrambled to every customer who
+      visits your store.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>How to tell this happened to you</h2>
+    <p>This is a silent failure — Shopify won't show an error during the import. You'll only spot it by
+      looking at the storefront after the upload. Check a product that had an accent character (like
+      a French, Spanish, or German word, or a product name with an apostrophe or em dash). If you see
+      any of these, you have the problem:</p>
+    <ul>
+      <li><code>é</code> showing as <code>Ã©</code></li>
+      <li><code>'</code> (curly apostrophe) showing as <code>â€™</code></li>
+      <li><code>–</code> (dash) showing as <code>â€"</code></li>
+      <li>Any letter with an accent replaced by a two- or three-character mess starting with <code>Ã</code>
+        or <code>â€</code></li>
+    </ul>
+    <p>If those patterns appear in your product titles or descriptions, keep reading.</p>
+
+    <h2>What went wrong — in plain language</h2>
+    <p>Your Shopify export file is saved in a format called UTF-8, which can represent every character in
+      every language. The problem happens when you open that file in Excel on Windows. Excel often opens
+      CSV files in a different format — one that was designed for older, English-only software — and when
+      you save it back to CSV, the accent characters get translated into the wrong thing.</p>
+    <p>The characters aren't lost. They're still in the file. But they've been scrambled by the translation
+      process. When Shopify reads them back in, it puts the scrambled version into your store.</p>
+    <p>Your original product data probably had perfectly correct characters. The file just passed through
+      a step that didn't handle them properly.</p>
+
+    <h2>This is especially common with</h2>
+    <ul>
+      <li>Products whose names include French, Spanish, German, Portuguese, or Scandinavian words</li>
+      <li>Product descriptions that used curly quotes or apostrophes (the "smart" kind that word processors
+        add automatically)</li>
+      <li>Any product body text that was written in a rich text editor or copied from a website</li>
+      <li>Files that were opened and re-saved in Excel more than once (each round-trip can make it worse)</li>
+    </ul>
+
+    <h2>Why it doesn't always show up in the spreadsheet</h2>
+    <p>When you open the damaged file back in Excel, Excel reads it using the same wrong format it used to
+      write it — so the characters look fine to you. The damage only becomes visible when something reads
+      the file correctly, the way Shopify does. That's why the file looks okay in your spreadsheet but
+      looks broken on the storefront.</p>
+
+    <h2>Fixing it</h2>
+    <p>The repair is to re-read the file interpreting the characters correctly, then save it back in the
+      right format. Upload your file to the
+      <a href="/tools/fix-shopify-products/">Shopify products CSV repair tool</a> and it will detect the
+      character problem, convert the affected cells back to the correct text, and give you a repaired file
+      in the format Shopify expects. The ledger will show you which fields were changed and what the text
+      looks like after repair — so you can confirm your accented characters are back before you upload.</p>
+    <p class="muted">Going forward: if you need to edit your Shopify export in a spreadsheet, use
+      Google Sheets (paste the CSV content there) or open the file in Excel using the Data → From Text/CSV
+      import wizard and explicitly choose UTF-8. That prevents the character problem from happening in
+      the first place.</p>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

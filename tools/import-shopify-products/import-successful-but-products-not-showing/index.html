@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify says "Import Successful" but no products are showing up | xlsx-for-ai</title>
+<meta name="description" content="Shopify told you the import worked, but your products aren't there. This is a known silent failure — the success message fires even when every row was rejected. Here's why and how to fix it.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Shopify says &ldquo;Import Successful&rdquo; but no products are showing up | xlsx-for-ai">
+<meta property="og:description" content="Shopify told you the import worked, but your products aren't there. This is a known silent failure — the success message fires even when every row was rejected. Here's why and how to fix it.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/import-shopify-products/import-successful-but-products-not-showing/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shopify says &ldquo;Import Successful&rdquo; but no products are showing up | xlsx-for-ai">
+<meta name="twitter:description" content="Shopify told you the import worked, but your products aren't there. This is a known silent failure — the success message fires even when every row was rejected. Here's why and how to fix it.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/import-shopify-products/import-successful-but-products-not-showing/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": "Shopify import says successful but no products appear",
+  "url": "https://xlsx-for-ai.dev/tools/import-shopify-products/import-successful-but-products-not-showing/",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why does Shopify say import was successful but my products didn't show up?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Shopify shows a success message when it finishes processing the file, even if every single row was rejected. The success toast means the import process completed, not that your products were created. This is a known Shopify behavior. To see whether rows were actually imported, check your Products page — if the count didn't change, the rows were all rejected silently."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I check what actually happened to my rows?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In your Shopify admin, go to Products and check the total product count before and after the import. If the count didn't increase, nothing was imported. In newer Shopify admin versions, there's sometimes an import activity log under Settings → Import — check there for row-level detail about which rows were accepted or rejected."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What makes Shopify silently reject all my rows?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The most common reasons are: the Handle column is blank or missing on every row, the Title column is blank on rows that should create new products, required columns are present but named incorrectly (Shopify checks column names exactly), or the file uses a delimiter that isn't commas. Uploading your file to xlsx-for-ai.dev/tools/import-shopify-products/ checks all of these and tells you in plain language what's wrong."
+      }
+    }
+  ],
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify silent import failure</div>
+    <h1>Shopify said "Import Successful" — but your products never showed up</h1>
+    <p class="lede">You uploaded your CSV, Shopify flashed a green success message, and then you went to your products page and found nothing there. Your product count is exactly the same as before. This is one of the most disorienting Shopify import behaviors because the platform is technically telling you the truth — the process completed — while hiding the fact that it rejected everything.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>First: confirm this is what actually happened</h2>
+    <p>Before troubleshooting, make sure you're looking in the right place. In Shopify admin, go to <strong>Products</strong> and note the total count. If it's the same as before your import, your products weren't added. It's also worth checking <strong>Products → Drafts</strong> — sometimes products are added but hidden from customers because of how the Published column was set. If they're in Drafts, that's a different problem (see: <a href="/tools/import-shopify-products/products-imported-as-drafts-hidden/">products imported as drafts</a>).</p>
+
+    <p>If the count didn't move at all and there's nothing in Drafts either, then yes — Shopify processed the file and silently discarded every row.</p>
+
+    <h2>Why this happens: what Shopify actually checks</h2>
+    <p>Shopify's import reads each row and tries to match it to a product. For a row to result in a product being created, it needs to pass several checks. When one fails, the row is silently dropped — no error, no count — and the success message fires at the end anyway. Here are the most common reasons every row gets dropped:</p>
+
+    <p><strong>1. The Handle column is blank.</strong> The Handle is Shopify's internal ID for a product — a short slug like <code>blue-canvas-tote</code>. If the Handle is blank, Shopify doesn't know where to put the row, so it skips it. This happens a lot when someone copies their product data into a blank spreadsheet without realizing the Handle column needs to be filled in, not just the visible product information.</p>
+
+    <p><strong>2. The column names are wrong.</strong> Shopify matches columns by their exact name, including capitalization. If your spreadsheet calls a column <code>product name</code> instead of <code>Title</code>, Shopify doesn't map it — it treats the Title as blank and then rejects the row because Title can't be blank. The same goes for any required column. Your data might all be there, just under the wrong heading.</p>
+
+    <p><strong>3. The file isn't formatted as Shopify expects.</strong> If you exported from a tool that uses tabs or semicolons to separate columns, Shopify reads each row as a single blob of text with no columns at all — and rejects it. The success message still fires.</p>
+
+    <h2>How to check your file and get it working</h2>
+    <p>The quickest way to find the problem without manually auditing the CSV is to upload your file to the <a href="/tools/import-shopify-products/">free Shopify product import converter</a>. It checks the Handle column, the column names, the delimiter, and the required fields for every row. Instead of a silent rejection, you get a plain-language report: which rows have blank Handles, which column names it recognized and which it didn't, and what it fixed automatically. The converter hands you back a file you can upload straight to Shopify.</p>
+
+    <p>If you want to check it yourself first: open the raw file in a plain text editor and look at the first row. You should see column names separated by commas, and "Handle" should be one of them. If the separator isn't a comma, or "Handle" isn't there, you've found the problem.</p>
+
+    <p class="muted">Did Shopify add some products but not others?
+    Check <a href="/tools/import-shopify-products/variants-or-sizes-missing-after-import/">variants or sizes missing after import</a> — partial drops often come from variant row issues rather than the file format.</p>
+
+    <div style="margin-top:2rem; padding: 1.25rem 1.5rem; background: #f0faf4; border-radius: 8px; border-left: 4px solid #107c41;">
+      <strong>Fix this free →</strong> Upload your spreadsheet to the <a href="/tools/import-shopify-products/">Shopify product import converter</a>. It checks every required field and tells you exactly why your rows are being rejected — then gives you a corrected file to upload.
+    </div>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Reconcile two spreadsheets — find what changed, what's missing, what was added | xlsx-for-ai</title>
+<meta name="description" content="Upload two versions of a spreadsheet and get a plain-English reconciliation report: which rows changed, which were added, which were removed. No formulas needed.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Reconcile two spreadsheets — find what changed, what's missing, what was added | xlsx-for-ai">
+<meta property="og:description" content="Upload two versions of a spreadsheet and get a plain-English reconciliation report: which rows changed, which were added, which were removed. No formulas needed.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/compare/reconcile-two-spreadsheets/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reconcile two spreadsheets — find what changed, what's missing, what was added | xlsx-for-ai">
+<meta name="twitter:description" content="Upload two versions of a spreadsheet and get a plain-English reconciliation report: which rows changed, which were added, which were removed. No formulas needed.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/compare/reconcile-two-spreadsheets/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "name": "Reconcile two spreadsheets",
+  "url": "https://xlsx-for-ai.dev/tools/compare/reconcile-two-spreadsheets/",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What does it mean to reconcile two spreadsheets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Reconciling two spreadsheets means checking them against each other to find rows that don't match — amounts that changed, records that appear in one file but not the other, or entries that were added or removed. It's commonly used in bookkeeping, inventory management, and any situation where two files are supposed to represent the same data at different points in time."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need VLOOKUP or formulas to reconcile two spreadsheets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Upload both files here and we'll produce a reconciliation report in plain English — which rows match, which changed, which are missing from one side, and which are new. No formula knowledge needed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What's the difference between 'reconcile' and 'compare' in Excel?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They mean the same thing in this context. 'Compare' is the generic technical term; 'reconcile' is the word that bookkeepers, accountants, and operations people tend to use. Both describe checking two files against each other to surface the differences."
+      }
+    }
+  ],
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Bookkeeping, inventory, reporting — without VLOOKUP</div>
+    <h1>Reconcile two spreadsheets — find every difference in plain English.</h1>
+    <p class="lede">You have two versions of the same spreadsheet — this month and last month, before
+      and after a data update, your records and your vendor's records — and you need to know where
+      they don't agree. Which rows changed? Which are in one file but not the other? What amounts
+      are different? Upload both files and get a clear reconciliation report, no formulas required.</p>
+    <div class="free-pill">Free · no signup · your files are never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">compare · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+
+    <h2>Why bookkeepers and ops people say "reconcile" instead of "compare"</h2>
+    <p>In general conversation you might say "compare two files." In bookkeeping and accounting,
+      the word is <strong>reconcile</strong> — because the goal isn't just to spot differences,
+      it's to confirm that two records that <em>should</em> match actually do match, and to
+      document every place they don't. Reconciling your bank statement against your ledger,
+      reconciling an invoice against a purchase order, reconciling this quarter's inventory
+      count against last quarter's — same idea, different data.</p>
+    <p>This page exists because if you searched "reconcile two spreadsheets," you probably
+      weren't looking for a tutorial on VLOOKUP. You were looking for something that just
+      does the work.</p>
+
+    <h2>What the reconciliation report shows you</h2>
+    <p>Three categories of differences, clearly separated:</p>
+    <ul>
+      <li><strong>Rows that changed</strong> — present in both files but with different values. You see the before and after for each field that changed, so you know exactly what moved.</li>
+      <li><strong>Rows that were removed</strong> — in the first file but gone from the second. Common in inventory (items discontinued), customer lists (accounts closed), or order data (orders cancelled).</li>
+      <li><strong>Rows that were added</strong> — not in the first file, newly appeared in the second. New orders, new customers, new line items added after the first file was created.</li>
+    </ul>
+    <p>Rows that are identical in both files don't need to be reported — they're the ones
+      that reconcile clean. You only see what needs attention.</p>
+
+    <h2>What you need to bring</h2>
+    <p>Two Excel files that use the same structure — same column names, data representing the
+      same kind of records. You tell us which column is the unique identifier (order number,
+      customer ID, SKU, account number) so we can match rows across the two files even if
+      they're in a different order. That's it.</p>
+    <p>You don't need the files to be sorted the same way. You don't need to add any helper
+      columns. You don't need to know what "VLOOKUP" means.</p>
+
+    <h2>Common uses</h2>
+    <p>Monthly close: your records vs the bank export. Inventory audit: what the system says
+      vs what was physically counted. Vendor reconciliation: your purchase orders vs the
+      vendor's invoice list. HR roster: who's in the system vs who should be in the system.
+      Any situation where two files are supposed to agree — and you need to prove they do,
+      or find where they don't.</p>
+
+    <p class="muted">If you're trying to find rows that appear in both files (rather than
+      rows that differ), or you want to deduplicate a single file rather than compare two,
+      <a href="/tools/remove-duplicates/">Remove duplicate rows</a> covers that case.</p>
+
+    <p class="muted">Need to run reconciliations automatically — as part of a monthly report
+      generation script or an AI agent that processes incoming data files?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a>
+      and call <code>xlsx_diff</code> to get the same structured reconciliation output
+      programmatically.</p>
+
+  </div>
+
+</div>
+</main>
+
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent reconcile files as part of an automated workflow</h2>
+  <p>When a reporting pipeline needs to verify that a newly received data file agrees with last period's file before processing it, it can run the same reconciliation automatically — rows changed, rows added, rows removed — and surface only the discrepancies that need human review. Wire xlsx-for-ai into your agent and reconciliation becomes a gate in the pipeline, not a manual step before it.</p>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Compare and reconcile spreadsheet tools">
+      <a href="/tools/compare/">Compare two spreadsheets</a>
+      <a href="/tools/remove-duplicates/">Remove duplicate rows</a>
+      <a href="/tools/whats-inside-excel-file/">What's inside an Excel file</a>
+      <a href="/tools/convert-excel-to-csv/">Convert Excel to CSV</a>
+      <a href="/tools/remove-personal-data/">Remove personal data</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

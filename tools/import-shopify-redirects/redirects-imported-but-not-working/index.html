@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify redirects imported but URLs aren't actually redirecting — silent failure | xlsx-for-ai</title>
+<meta name="description" content="Uploaded your Shopify redirect CSV and the file was accepted — but the old URLs still 404 instead of redirecting? Three silent causes explained with fixes.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Shopify redirects imported but not working — silent failure causes | xlsx-for-ai">
+<meta property="og:description" content="The redirect CSV uploaded fine, the rows appear in your admin, but visiting the old URL still returns a 404. Here's why and how to fix it.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/import-shopify-redirects/redirects-imported-but-not-working/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shopify redirects imported but not working — silent failure causes | xlsx-for-ai">
+<meta name="twitter:description" content="Redirect CSV accepted, rows show in admin, but old URLs still 404. Three silent causes and how to test for each.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/import-shopify-redirects/redirects-imported-but-not-working/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "My Shopify redirect CSV was accepted but the URLs still don't redirect — why?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The most common cause: the source page still exists in Shopify. Shopify only activates a redirect when the source URL returns a 404. If the page, product, or collection at that path is still live, Shopify serves the real page and the redirect rule is silently ignored — even though the redirect is correctly listed in your admin."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How can I tell if the source URL is still live?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Visit the exact 'Redirect from' URL in your browser while logged out of Shopify (or in an incognito window). If you land on a working page instead of a 404, the source is live and the redirect won't fire. You need to delete or unpublish that page/product/collection for the redirect to activate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "I use the full URL (https://mystore.com/old-path) in my redirect spreadsheet — is that wrong?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For the 'Redirect from' field, Shopify wants just the path, starting with a slash — for example '/old-path', not 'https://mystore.com/old-path'. Shopify will silently convert an absolute URL to a relative path during import, but it strips the domain without warning. If something goes wrong in that conversion, your redirect may point to the wrong place. Use paths only in the 'Redirect from' column."
+      }
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify redirects — silent non-firing after import</div>
+    <h1>Redirects uploaded successfully — but old URLs still return "page not found"</h1>
+    <p class="lede">The CSV file uploaded. The rows appear in your Shopify admin under
+      <strong>Online Store &gt; Navigation &gt; URL Redirects</strong>. But when you visit one of
+      the old URLs, it still returns a 404 instead of going where you expect. No error was thrown.
+      Shopify reported no failures. Here are the three reasons this happens and how to check for
+      each one.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>Reason 1 — the source page is still live (the most common cause)</h2>
+    <p>Shopify's redirect system only kicks in when the source URL produces a 404 — a page-not-found
+      response. If the path in your "Redirect from" column still points to a real, active page,
+      product, or collection in your store, Shopify serves that live content and the redirect rule
+      is never used. It sits in your admin doing nothing.</p>
+
+    <p><strong>How to check:</strong> Open an incognito browser window (so you're not logged into
+      Shopify) and visit the exact URL that should be redirecting. If you land on a working page
+      instead of a 404, the source is still live. To make the redirect work, you need to delete or
+      unpublish the content at that path. Once Shopify starts returning a 404 for that URL, the
+      redirect activates automatically — no re-upload required.</p>
+
+    <h2>Reason 2 — absolute URLs in the "Redirect from" column</h2>
+    <p>The "Redirect from" field expects a <em>path</em> — just the portion of the URL that comes
+      after your domain, starting with a forward slash. For example: <code>/old-product-name</code>
+      or <code>/collections/summer-2025</code>.</p>
+
+    <p>If your spreadsheet had full URLs in that column — starting with <code>https://</code> or
+      <code>http://</code> — Shopify strips the domain during import and attempts to save just the
+      path. Sometimes this conversion works cleanly. Other times it produces a mangled path that
+      doesn't match anything, so the redirect silently does nothing. To check: open one of your
+      redirect rows in the Shopify admin and look at the "Redirect from" value. If it starts with
+      anything other than a forward slash, that redirect won't fire.</p>
+
+    <h2>Reason 3 — chained redirects dropped without warning</h2>
+    <p>If your spreadsheet has a row where the destination URL of one redirect is also the source
+      URL of another redirect — a chain — Shopify identifies those rows and silently drops them
+      from the import. The import email may mention it, but the UI gives no clear signal and the
+      row just disappears. The practical symptom: a redirect you're confident was in the file
+      simply doesn't appear in your admin after the upload.</p>
+
+    <p><strong>How to check:</strong> Search for the "Redirect from" path in your admin redirects
+      list. If the row isn't there at all, it was a chained redirect that got dropped. Fix by
+      collapsing the chain in your spreadsheet — if A redirects to B and B redirects to C, replace
+      both with a single row redirecting A directly to C — then re-upload just those rows.</p>
+
+    <h2>How to verify a redirect is actually working</h2>
+    <p>After checking and fixing any of the above, confirm a redirect is live by using
+      <code>curl -I</code> in a terminal or a browser developer tools Network panel. A working
+      redirect returns a <code>301</code> status code with a <code>Location</code> header pointing
+      to the destination. A redirect that's listed in your admin but not firing will return a
+      <code>404</code> — or in rare cases a <code>200</code> if the source is still live.</p>
+
+    <p>To avoid building a redirect file with chains or absolute-URL formatting problems in the
+      first place, use the free tool below. It reads your spreadsheet, flags any rows with chain
+      patterns or absolute-URL columns, and gives you a plain-language change ledger before
+      producing the import file.</p>
+
+  </div>
+
+  <div style="margin: 2rem 0;">
+    <a href="/tools/import-shopify-redirects/" class="cta-button"
+       style="display:inline-block;background:#107c41;color:#fff;padding:.75rem 1.5rem;border-radius:6px;text-decoration:none;font-weight:600;">
+      Check my redirects spreadsheet →
+    </a>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

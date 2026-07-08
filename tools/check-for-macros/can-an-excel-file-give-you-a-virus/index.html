@@ -79,8 +79,17 @@
   <div class="hero">
     <div class="eyebrow">The real answer — no scaremongering</div>
     <h1>Can an Excel file give you a virus?</h1>
-    <p class="lede">Short answer: yes — but not the way most people assume. The data in a spreadsheet can't hurt you. If you have a specific file you're worried about right now, skip to the bottom.</p>
+    <p class="lede">Short answer: yes — but not the way most people assume. The data in a spreadsheet can't hurt you. If you have a specific file you're worried about right now, drop it in below — no reading required.</p>
   </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">check-for-macros · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+  <p class="muted">Free · no signup · your file is never stored. The check reports whether macros are present — it doesn't run any code and doesn't determine intent. If you need a full malware verdict, an antivirus scanner is the right next step.</p>
 
   <div class="prose">
 
@@ -105,11 +114,7 @@
     <p>The attack vector that actually works is social engineering: the attacker convinces you the file needs macros enabled to display correctly, or that the warning is a bug, or that this is a trusted document from your bank.</p>
 
     <h2>Check any file before you decide</h2>
-    <p>If you have a file and you're not sure whether it has macros, you can find out without opening Excel at all. Upload it here and the tool reads its internal structure — the same way you can list files inside a ZIP without running them — and tells you whether macros are present and what kind. Nothing in the file executes during the check.</p>
-
-    <p><a href="/tools/check-for-macros/" class="cta-link">Check this file for macros — free</a></p>
-
-    <p class="muted">The tool reports presence — macros found or no macros found. It doesn't run any code and doesn't determine intent. If you need a full malware verdict, an antivirus scanner is the right next step.</p>
+    <p>You don't have to read any of this to get an answer. Drop your file in the box at the top of this page and it reads the file's internal structure — the same way you can list files inside a ZIP without running them — and tells you whether macros are present and what kind. Nothing in the file executes during the check.</p>
 
   </div>
 
@@ -136,6 +141,7 @@
 </footer>
 
 <script src="/tools/shell.js"></script>
+<script src="/tools/check-for-macros/page.js"></script>
 
 </body>
 </html>

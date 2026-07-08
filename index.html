@@ -377,7 +377,7 @@
       <a href="#tools">Tools</a>
       <a href="#functions">Functions</a>
       <a href="#docs">Docs</a>
-      <a href="#contact">Contact</a>
+      <a href="mailto:support@xlsx-for-ai.dev">Contact</a>
     </nav>
   </div>
 </header>
@@ -433,7 +433,7 @@
       </div>
       <div class="card">
         <h3>Privacy-aware</h3>
-        <p>Anonymous UUID registration — no email, no name. Per-request strict mode disables any error capture. <a href="#privacy">Read the policy</a>.</p>
+        <p>Anonymous UUID registration — no email, no name. Per-request strict mode disables any error capture. <a href="/privacy/">Read the policy</a>.</p>
       </div>
       <div class="card">
         <h3>Works with Claude Code, Cursor, Gemini, ChatGPT, Grok, Cline</h3>
@@ -719,88 +719,6 @@ xfa path/to/workbook.xlsx</code></pre>
   </div>
 </section>
 
-<section id="contact">
-  <div class="wrap">
-    <h2>Contact</h2>
-    <p>Questions, bug reports, sales, anything else — email <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a>.</p>
-    <p style="color: var(--muted); font-size: 14px;">
-      We answer everything within two business days. For security disclosures, please use the same address with subject line beginning <code>[security]</code>.
-    </p>
-  </div>
-</section>
-
-<!-- ===================== LEGAL ===================== -->
-
-<section id="terms" class="legal">
-  <div class="wrap">
-    <h2>Terms of Service</h2>
-    <p class="legal-meta">Last updated: 2026-05-09</p>
-    <p>By installing the xlsx-for-ai npm package or using the API at <code>api.xlsx-for-ai.dev</code> ("the Service"), you agree to these terms.</p>
-
-    <h3>1. The Service</h3>
-    <p>xlsx-for-ai is software that processes Excel (.xlsx and related) files on behalf of LLM agents. The npm client is open-source. The hosted API is operated by xlsx-for-ai.</p>
-
-    <h3>2. Account &amp; usage</h3>
-    <p>The Service registers an anonymous client_id on first use. You are responsible for any activity originating from your client_id. We may rate-limit, suspend, or revoke access if usage violates these terms or appears abusive.</p>
-
-    <h3>3. Acceptable use</h3>
-    <ul>
-      <li>Do not use the Service to process files you do not have the right to process.</li>
-      <li>Do not attempt to exploit, reverse-engineer, or attack the hardening layer.</li>
-      <li>Do not use the Service to violate any law or regulation in your jurisdiction.</li>
-      <li>Do not resell access to the Service without a written agreement.</li>
-    </ul>
-
-    <h3>4. Availability</h3>
-    <p>We aim for high availability but do not guarantee uninterrupted service.</p>
-
-    <h3>5. Disclaimer</h3>
-    <p>The Service is provided "as is" without warranty of any kind. xlsx-for-ai is not liable for indirect, consequential, or incidental damages arising from your use of the Service.</p>
-
-    <h3>6. Termination</h3>
-    <p>You may stop using the Service at any time. We may terminate or suspend access for violations of these terms, with or without notice.</p>
-
-    <h3>7. Changes</h3>
-    <p>We may update these terms. Material changes will be announced on this page with a revised "last updated" date. Continued use after changes constitutes acceptance.</p>
-
-    <h3>8. Governing law</h3>
-    <p>These terms are governed by the laws of the State of Texas, United States, without regard to conflict-of-laws principles. Disputes will be resolved in courts located in Travis County, Texas.</p>
-
-    <h3>9. Contact</h3>
-    <p>Questions about these terms: <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a>.</p>
-  </div>
-</section>
-
-<section id="privacy" class="legal alt">
-  <div class="wrap">
-    <h2>Privacy Policy</h2>
-    <p class="legal-meta">Last updated: 2026-05-09</p>
-    <p>This page describes what data the xlsx-for-ai Service collects, how it is used, and how you can opt out. The full developer-oriented version lives at <a href="https://github.com/senoff/xlsx-for-ai/blob/main/PRIVACY.md" rel="noopener">PRIVACY.md</a> in the GitHub repository.</p>
-
-    <h3>What we collect</h3>
-    <p>For every API call: file bytes (base64-encoded, in memory only — not stored after the request completes), an anonymous client_id (UUID generated locally; not linked to any identifying information), platform and version strings (e.g., <code>darwin-arm64</code>, <code>2.0.0</code>), and the tool name and parameters of the request.</p>
-    <p>We do <em>not</em> collect your email, name, file names, file paths, or any cell content beyond what flows through a single request.</p>
-
-    <h3>How we use it</h3>
-    <p>Data is used to operate the Service: rate-limiting, abuse prevention, and aggregate engineering metrics (call counts, error rates, file size distributions). We do not sell or share your data with third parties.</p>
-
-    <h3>Error capture</h3>
-    <p>When a request results in an error (5xx, hardening rejection, engine exception), we may retain a redacted copy of the workbook for up to 30 days for debugging. "Redacted" means cell values are stripped before storage. Captures auto-delete after 30 days. You can disable this for any request by sending the header <code>X-XFA-Privacy: strict</code> or by setting <code>XFA_PRIVACY=strict</code> in your environment.</p>
-
-    <h3>Subprocessors</h3>
-    <p>We use <a href="https://fly.io" rel="noopener">Fly.io</a> for compute and database hosting and <a href="https://www.cloudflare.com" rel="noopener">Cloudflare R2</a> for redacted error captures.</p>
-
-    <h3>Your rights</h3>
-    <p>To delete your registration, remove <code>~/.xlsx-for-ai/config.json</code> on your machine. The next call generates a new anonymous client_id. To request deletion of any associated audit logs, email us — anonymous IDs make most users untraceable; we'll honor any request we can identify.</p>
-
-    <h3>Children</h3>
-    <p>The Service is not directed to children under 13 and we do not knowingly collect personal data from them.</p>
-
-    <h3>Contact</h3>
-    <p><a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a> for any privacy question.</p>
-  </div>
-</section>
-
 <footer>
   <div class="wrap">
     <nav class="links" aria-label="Shopify import tools">
@@ -812,7 +730,7 @@ xfa path/to/workbook.xlsx</code></pre>
     </nav>
     <div>© 2026 xlsx-for-ai. All rights reserved.</div>
     <div>
-      <a href="#terms">Terms</a>
+      <a href="/terms/">Terms</a>
       <a href="/privacy/">Privacy</a>
       <a href="/clean-data/">Clean data</a>
       <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>

@@ -110,7 +110,24 @@ footer.site a:hover { color: var(--ink); }
 }
 .xfa-mcp .xfa-mcp-fn ul { margin: 8px 0 0; padding-left: 20px; }
 .xfa-mcp .xfa-mcp-fn li { color: var(--ink); font-size: 14px; margin: 0 0 5px; }
-.xfa-mcp .xfa-mcp-more { margin: 0; font-size: 15px; font-weight: 600; }
+.xfa-mcp .xfa-mcp-eg-label {
+  font-size: 12.5px; font-weight: 650; text-transform: uppercase;
+  letter-spacing: .04em; color: var(--muted); margin: 14px 0 6px;
+}
+.xfa-mcp .xfa-mcp-eg {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 11px 14px;
+  overflow-x: auto;
+  margin: 0 0 6px;
+}
+.xfa-mcp .xfa-mcp-eg code {
+  background: none; border: 0; padding: 0;
+  font-size: 13px; line-height: 1.6; color: var(--ink);
+  white-space: pre-wrap;
+}
+.xfa-mcp .xfa-mcp-more { margin: 12px 0 0; font-size: 15px; font-weight: 600; }
 
 /* ---- hero (page-per-need headline) ---- */
 main { padding: 52px 0 40px; }

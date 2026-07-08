@@ -125,6 +125,19 @@
 </div>
 </main>
 
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent catch formula and type errors before they ship</h2>
+  <p>In an automated reporting flow, your agent can extract and re-evaluate every formula — catching stripped leading zeros, stale caches, and wrong results before the file reaches a person.</p>
+  <div class="xfa-mcp-fn">
+    <p class="xfa-mcp-fn-label">The tools this page runs</p>
+    <p>Your agent calls <code>xlsx_formulas</code> to extract every formula (cell, formula text, cached result) and <code>xlsx_eval</code> to recompute values live through a real engine — so a stale or missing cache doesn't hand back a wrong number.</p>
+    <ul>
+      <li><code>xlsx_formulas</code> options: <code>sheet</code>, <code>limit</code>, <code>include_results</code>.</li>
+      <li><code>xlsx_eval</code> options: <code>formulas</code> or <code>cells</code> to evaluate, plus <code>sheet</code>.</li>
+    </ul>
+  </div>
+</div>
+
 <footer class="site">
   <div class="wrap">
     <nav class="links" aria-label="Formula error pages">

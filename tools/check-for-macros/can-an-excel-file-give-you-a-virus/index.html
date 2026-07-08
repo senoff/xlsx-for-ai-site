@@ -123,6 +123,19 @@
 </div>
 </main>
 
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent screen files for macros automatically</h2>
+  <p>If files arrive through an inbox, a shared drive, or an upload form, your agent can screen every one for macros and embedded links before a human ever opens it — flagging the risky ones and passing the clean ones through, no manual check required.</p>
+  <div class="xfa-mcp-fn">
+    <p class="xfa-mcp-fn-label">The tools this page runs</p>
+    <p>Your agent calls <code>xlsx_macros</code> — it reports whether a VBA macro project is present, its size, and the likely module names, and by policy never extracts or runs the macro code. Pair it with <code>xlsx_external_links</code> to list any embedded links to other workbooks.</p>
+    <ul>
+      <li>Both take just the file — there are no options to set.</li>
+      <li><code>xlsx_macros</code> returns presence, project size, and module-name candidates; <code>xlsx_external_links</code> returns each target path and whether it's absolute, a network share, or relative.</li>
+    </ul>
+  </div>
+</div>
+
 <footer class="site">
   <div class="wrap">
     <nav class="links" aria-label="Shopify import tools">

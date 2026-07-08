@@ -105,6 +105,19 @@
 </div>
 </main>
 
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent find and repair broken links automatically</h2>
+  <p>In a pipeline that hands workbooks between systems, your agent can inventory every external reference and repair the broken ones — freezing, redirecting, or fully dereferencing them — so a moved source file never silently breaks a report.</p>
+  <div class="xfa-mcp-fn">
+    <p class="xfa-mcp-fn-label">The tools this page runs</p>
+    <p>Your agent calls <code>xlsx_external_links</code> to inventory every reference to another workbook — its target path and whether it's absolute, a network share, or relative — then <code>xlsx_healer_cure</code> to rewrite or freeze the broken ones.</p>
+    <ul>
+      <li><code>xlsx_external_links</code> takes just the file; no options.</li>
+      <li><code>xlsx_healer_cure</code> options: <code>operation</code> (e.g. <code>make_standalone</code>, <code>rename_move</code>, <code>source_deleted_freeze</code>) and <code>mode</code> (<code>as_copy</code> or <code>in_place</code>).</li>
+    </ul>
+  </div>
+</div>
+
 <footer class="site">
   <div class="wrap">
     <nav class="links" aria-label="Shopify import tools">

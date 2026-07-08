@@ -133,6 +133,14 @@
 <div class="xfa-mcp-copy" hidden>
   <h2>Let your agent inventory the tabs before processing</h2>
   <p>When an agent receives an xlsx file and needs to route data from the right tab to the right downstream system, it can call the same sheet-listing function directly — names, row counts, column headers, hidden tab detection — before any further processing. Wire xlsx-for-ai into your agent and tab discovery becomes one tool call, not a manual opening step.</p>
+  <div class="xfa-mcp-fn">
+    <p class="xfa-mcp-fn-label">The tools this page runs</p>
+    <p>Your agent calls <code>xlsx_list_sheets</code> (tab names, dimensions, visibility) and <code>xlsx_describe</code> (per-column count, nulls, unique values, and type) to map a workbook without dumping every cell.</p>
+    <ul>
+      <li><code>xlsx_describe</code> options: <code>sheet</code>, <code>max_rows</code>, <code>header_row</code>.</li>
+      <li>Or from your terminal: <code>xlsx-for-ai book.xlsx</code> prints the whole workbook (add <code>--md</code> or <code>--json</code>).</li>
+    </ul>
+  </div>
 </div>
 
 <footer class="site">

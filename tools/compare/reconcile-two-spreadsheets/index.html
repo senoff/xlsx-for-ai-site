@@ -151,6 +151,13 @@
 <div class="xfa-mcp-copy" hidden>
   <h2>Let your agent reconcile files as part of an automated workflow</h2>
   <p>When a reporting pipeline needs to verify that a newly received data file agrees with last period's file before processing it, it can run the same reconciliation automatically — rows changed, rows added, rows removed — and surface only the discrepancies that need human review. Wire xlsx-for-ai into your agent and reconciliation becomes a gate in the pipeline, not a manual step before it.</p>
+  <div class="xfa-mcp-fn">
+    <p class="xfa-mcp-fn-label">The tool this page runs</p>
+    <p>Your agent calls <code>xlsx_diff</code> with the two files and gets a deterministic, cell-level diff — changed, added, and removed values, plus a stable <code>diff_hash</code> for caching.</p>
+    <ul>
+      <li>Option: <code>sheet</code> — limit the comparison to a single tab.</li>
+    </ul>
+  </div>
 </div>
 
 <footer class="site">

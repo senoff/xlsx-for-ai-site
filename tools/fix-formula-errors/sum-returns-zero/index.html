@@ -111,6 +111,19 @@
 </div>
 </main>
 
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent verify totals in an automated pipeline</h2>
+  <p>When a total looks wrong, your agent can recompute it against the real values rather than trusting the cached number — catching the text-vs-number problem that makes SUM return zero, as a gate in the pipeline.</p>
+  <div class="xfa-mcp-fn">
+    <p class="xfa-mcp-fn-label">The tools this page runs</p>
+    <p>Your agent calls <code>xlsx_formulas</code> to extract every formula (cell, formula text, cached result) and <code>xlsx_eval</code> to recompute values live through a real engine — so a stale or missing cache doesn't hand back a wrong number.</p>
+    <ul>
+      <li><code>xlsx_formulas</code> options: <code>sheet</code>, <code>limit</code>, <code>include_results</code>.</li>
+      <li><code>xlsx_eval</code> options: <code>formulas</code> or <code>cells</code> to evaluate, plus <code>sheet</code>.</li>
+    </ul>
+  </div>
+</div>
+
 <footer class="site">
   <div class="wrap">
     <nav class="links" aria-label="Formula error pages">

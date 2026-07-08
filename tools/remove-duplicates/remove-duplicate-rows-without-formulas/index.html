@@ -130,6 +130,14 @@
 <div class="xfa-mcp-copy" hidden>
   <h2>Let your agent clean duplicate rows before processing</h2>
   <p>When an agent pipeline receives a spreadsheet that may have repeated entries — a CRM export, a combined order log, a vendor list merged from two sources — it can run the same deduplication step automatically, with the same whitespace-aware comparison and the same before/after row count, before the data reaches any downstream system.</p>
+  <div class="xfa-mcp-fn">
+    <p class="xfa-mcp-fn-label">The tool this page runs</p>
+    <p>Your agent calls <code>xlsx_data_clean</code> in <code>execute</code> mode to remove duplicate rows — every change surfaces as a finding you can accept or reject before the file is written.</p>
+    <ul>
+      <li>Options: <code>dedup_compare_columns</code> (which columns define a duplicate), <code>dedup_ignore_case</code>.</li>
+      <li>Run <code>diagnose</code> mode first to preview what would be removed.</li>
+    </ul>
+  </div>
 </div>
 
 <footer class="site">

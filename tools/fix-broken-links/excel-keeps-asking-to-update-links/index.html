@@ -104,6 +104,19 @@
 </div>
 </main>
 
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent strip out link prompts before a file ships</h2>
+  <p>Before a workbook goes to a client or a shared drive, your agent can find every external link and make the file standalone — so no one on the other end gets the “update links?” prompt or a wall of broken references.</p>
+  <div class="xfa-mcp-fn">
+    <p class="xfa-mcp-fn-label">The tools this page runs</p>
+    <p>Your agent calls <code>xlsx_external_links</code> to inventory every reference to another workbook — its target path and whether it's absolute, a network share, or relative — then <code>xlsx_healer_cure</code> to rewrite or freeze the broken ones.</p>
+    <ul>
+      <li><code>xlsx_external_links</code> takes just the file; no options.</li>
+      <li><code>xlsx_healer_cure</code> options: <code>operation</code> (e.g. <code>make_standalone</code>, <code>rename_move</code>, <code>source_deleted_freeze</code>) and <code>mode</code> (<code>as_copy</code> or <code>in_place</code>).</li>
+    </ul>
+  </div>
+</div>
+
 <footer class="site">
   <div class="wrap">
     <nav class="links" aria-label="Shopify import tools">

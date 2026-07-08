@@ -713,7 +713,13 @@
     var copy = document.querySelector(".xfa-mcp-copy");      // per-page unique prose
     var footer = document.querySelector("footer.site");
     if (!copy || !footer) return;                            // no copy/footer -> opt out
-    var inner = copy.innerHTML;                              // authored h2 + prose (no id)
+    // Optional per-page function reference (the specific tool + real options this
+    // page's operation maps to). Pulled out so the shell can place it AFTER the
+    // shared connect snippet — connect once, then call the named tool.
+    var fn = copy.querySelector(".xfa-mcp-fn");
+    var fnHtml = "";
+    if (fn) { fnHtml = fn.outerHTML; fn.parentNode.removeChild(fn); }
+    var inner = copy.innerHTML;                              // authored h2 + prose (no id, fn removed)
     copy.parentNode.removeChild(copy);                       // drop source first: never a dup id
     var sec = document.createElement("section");
     sec.className = "xfa-mcp";
@@ -723,6 +729,7 @@
         inner +                                              // unique, authored per tool
         '<pre class="xfa-mcp-cmd"><code>npm install -g xlsx-for-ai\n' +
         'claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>' +
+        fnHtml +                                             // per-page: the specific tool + options
         '<p class="xfa-mcp-more"><a href="/#docs">See the full setup and agent ' +
         'config →</a></p>' +
       '</div>';

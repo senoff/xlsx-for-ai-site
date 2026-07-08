@@ -146,6 +146,13 @@
 <div class="xfa-mcp-copy" hidden>
   <h2>Let your agent scrub files before sending them to AI services</h2>
   <p>When an agent pipeline processes user-uploaded spreadsheets before passing them to an LLM, it can run the same column-level redaction automatically — no user upload step, no browser. Wire xlsx-for-ai into your agent and sensitive columns get blanked before any external API call. The same before/after ledger is available programmatically so your pipeline can log exactly what was removed.</p>
+  <div class="xfa-mcp-fn">
+    <p class="xfa-mcp-fn-label">The tool this page runs</p>
+    <p>Your agent calls <code>xlsx_redact</code>; by default it masks PII values while preserving formulas, comments, named ranges, and styles.</p>
+    <ul>
+      <li>Options: <code>strip_formulas</code>, <code>strip_comments</code>, <code>strip_macros</code>, <code>strip_metadata</code> to remove those too; <code>mode: scaffold</code> to keep only the structure.</li>
+    </ul>
+  </div>
 </div>
 
 <footer class="site">

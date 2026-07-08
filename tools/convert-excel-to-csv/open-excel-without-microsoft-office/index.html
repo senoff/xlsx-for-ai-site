@@ -137,6 +137,14 @@
 <div class="xfa-mcp-copy" hidden>
   <h2>Let your agent convert Excel files without Office</h2>
   <p>When an AI agent receives an xlsx attachment and needs the data in a portable format, it can run the same conversion directly — no browser upload, no Microsoft Office dependency. Wire xlsx-for-ai into your agent and any xlsx becomes a clean CSV in one tool call, with the same encoding guarantees and per-sheet selection.</p>
+  <div class="xfa-mcp-fn">
+    <p class="xfa-mcp-fn-label">The tool this page runs</p>
+    <p>Your agent calls <code>xlsx_convert</code> — it reads 25+ formats (xlsx, xls, xlsb, ods, Numbers, csv, and more) and emits csv, json, md, html, or xlsx.</p>
+    <ul>
+      <li>Options: <code>to</code> (target format), <code>sheet</code> (one tab), or <code>sheets: first</code>.</li>
+      <li>Or straight from your terminal: <code>xlsx-for-ai book.xlsx --json</code> (also <code>--md</code>, <code>--sheet "Sheet1"</code>).</li>
+    </ul>
+  </div>
 </div>
 
 <footer class="site">

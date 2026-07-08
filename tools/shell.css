@@ -98,6 +98,18 @@ footer.site a:hover { color: var(--ink); }
   color: var(--ink);
   white-space: pre;
 }
+.xfa-mcp .xfa-mcp-fn { margin: 0 0 14px; }
+.xfa-mcp .xfa-mcp-fn-label {
+  font-size: 12.5px; font-weight: 650; text-transform: uppercase;
+  letter-spacing: .04em; color: var(--muted); margin: 0 0 6px;
+}
+.xfa-mcp .xfa-mcp-fn p { margin: 0 0 8px; }
+.xfa-mcp .xfa-mcp-fn code {
+  background: var(--code-bg); border: 1px solid var(--line);
+  border-radius: 4px; padding: 1px 5px; font-size: 13px; color: var(--ink);
+}
+.xfa-mcp .xfa-mcp-fn ul { margin: 8px 0 0; padding-left: 20px; }
+.xfa-mcp .xfa-mcp-fn li { color: var(--ink); font-size: 14px; margin: 0 0 5px; }
 .xfa-mcp .xfa-mcp-more { margin: 0; font-size: 15px; font-weight: 600; }
 
 /* ---- hero (page-per-need headline) ---- */

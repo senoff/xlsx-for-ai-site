@@ -1,0 +1,3 @@
+Title,URL handle,Description,Vendor,Tags,Published on online store,SKU,Price,Compare-at price,Inventory quantity,Requires shipping,Charge tax,Product image URL
+Café Mug,cafe-mug,A ceramic mug for your morning brew.,Acme,"coffee,mugs",TRUE,0001234,12.99,15.99,50,TRUE,TRUE,https://cdn.example.com/mug-black-s.jpg
+Trail Cap,trail-cap,A cap for the trail.,Acme,hats,TRUE,0002001,24.50,,15,TRUE,TRUE,

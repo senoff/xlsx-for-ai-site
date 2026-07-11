@@ -50,28 +50,51 @@ if (arg === "--list") {
   for (const [id, c] of Object.entries(CASES)) console.log(`${id}\t${c.path}\t${c.what}`);
   process.exit(0);
 }
-if (!arg) die("usage: node scripts/dod-page-walk.mjs <case-id> | --list");
+if (!arg) die("usage: node scripts/dod-page-walk.mjs <case-id> [--red-arm] | --list");
 
 // The existence assertion. A case-id we don't know is a DID-NOT-RUN, not a pass.
 const kase = CASES[arg];
 if (!kase) die(`unknown case "${arg}" — known: ${Object.keys(CASES).join(", ")}`);
 
+// ---- red arm -------------------------------------------------------------
+// A green is worth exactly what its red arm proves. --red-arm swaps in a DECOY
+// fixture the page cannot possibly satisfy and INVERTS the verdict: the run must
+// FAIL, or the check isn't reading this run's real output (a cached artifact, a
+// stale download, an assertion that would pass on anything). Making it a flag
+// rather than a one-time manual ritual means the arm stays proven — it can be
+// re-run any time, by anyone, including from a registry.
+//
+// Fail-closed: a case whose arm cannot be automated must NOT report "proven".
+const RED_ARM = process.argv.includes("--red-arm");
+if (RED_ARM) {
+  if (!kase.redArm) die(`${arg} declares no red arm`);
+  if (kase.redArm.manual) die(`${arg}'s red arm is not fixture-swappable: ${kase.redArm.manual}`);
+  kase.fixtures = [kase.redArm.fixture, ...kase.fixtures.slice(1)];
+}
+
 const url = BASE_URL + kase.path;
 const fixture = (f) => resolve(ROOT, "test/fixtures/pages", f);
 
-// A downloaded .xlsx is bytes; flatten it to text so a content assertion can be
-// written the same way for every case regardless of the output format.
-async function flatten(path, name) {
-  if (/\.xlsx?$|\.xlsm$/i.test(name)) {
+// A downloaded workbook is bytes; flatten it to text so a content assertion can
+// be written the same way for every case regardless of the output format.
+//
+// Sniff the BYTES, don't trust the filename. A page is free to hand back a CSV
+// under an .xlsx name (the Shopify fixer does exactly that on some inputs), and
+// trusting the extension made this throw "Corrupted zip" — a crash where an
+// assertion belonged. A workbook is a ZIP; a ZIP starts with PK\x03\x04.
+async function flatten(path) {
+  const buf = readFileSync(path);
+  const isZip = buf.length > 4 && buf[0] === 0x50 && buf[1] === 0x4b && buf[2] === 0x03 && buf[3] === 0x04;
+  if (isZip) {
     const wb = new ExcelJS.Workbook();
-    await wb.xlsx.readFile(path);
+    await wb.xlsx.load(buf);
     const lines = [];
     wb.eachSheet((ws) => {
       ws.eachRow((row) => lines.push(row.values.slice(1).map((v) => (v == null ? "" : String(v.text ?? v.result ?? v))).join(" | ")));
     });
     return { text: lines.join("\n"), rows: lines.length };
   }
-  const text = readFileSync(path, "utf8");
+  const text = buf.toString("utf8");
   return { text, rows: text.trim() === "" ? 0 : text.trim().split("\n").length };
 }
 
@@ -133,9 +156,15 @@ try {
   const err = page.locator(".notice.err");
   if (await err.count()) {
     const msg = ((await err.first().textContent()) || "").trim();
+    await browser.close();
+    if (RED_ARM) {
+      // The decoy was rejected outright — the page cannot be fooled into
+      // claiming success on it. That is the arm going red.
+      console.log(`RED-ARM-RESULT verdict=PROVEN case=${arg} — decoy rejected: ${msg}`);
+      process.exit(0);
+    }
     console.error(`PAGE-DOD-RESULT verdict=FAIL url=${url}`);
     console.error(`  ✗ the page surfaced an error: ${msg}`);
-    await browser.close();
     process.exit(1);
   }
 
@@ -168,7 +197,7 @@ try {
         page.waitForEvent("download", { timeout: 60000 }),
         dl.click(),
       ]);
-      out = await flatten(await got.path(), got.suggestedFilename());
+      out = await flatten(await got.path());
       if (!out.text.trim()) fails.push("the downloaded file is EMPTY — the page handed back nothing");
     }
   } else if (await page.locator("#xfa-dl").count()) {
@@ -211,6 +240,20 @@ if (kase.expectLedger && !(/what we did/i.test(panelText) && /(didn.t touch|wasn
 console.log(`--- ${kase.what}`);
 console.log(`--- panel (${panelText.length} chars) ---\n${panelText.slice(0, 400)}`);
 if (kase.download) console.log(`--- download (${out.rows} rows) ---\n${out.text.slice(0, 300)}`);
+
+if (RED_ARM) {
+  // Inverted: the decoy MUST have failed. A check that still passes when fed a
+  // file that cannot satisfy it is asserting nothing about this run.
+  if (!fails.length) {
+    console.error(`RED-ARM-RESULT verdict=NOT-PROVEN case=${arg} — the check PASSED on the decoy ` +
+      `(${kase.redArm.fixture}). It is not reading this run's real output.`);
+    process.exit(1);
+  }
+  console.log(`RED-ARM-RESULT verdict=PROVEN case=${arg} — decoy (${kase.redArm.fixture}) reddened it:`);
+  for (const f of fails) console.log(`  ✗ ${f}`);
+  process.exit(0);
+}
+
 if (fails.length) {
   console.error(`PAGE-DOD-RESULT verdict=FAIL case=${arg} url=${url}`);
   for (const f of fails) console.error(`  ✗ ${f}`);

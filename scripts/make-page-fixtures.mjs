@@ -223,21 +223,27 @@ await emit("pii.xlsx", await book({
   await emit("macros.xlsm", await zip.generateAsync({ type: "nodebuffer" }));
 }
 
-// --- shopify-products-messy.csv — for fix-shopify-products ----------------
-// A real-world-shaped export with none of Shopify's canonical column names
-// ("product name" not "Title", "url-slug" not "Handle"), variant rows whose
-// parent fields are blank, and a leading-zero SKU that a spreadsheet would eat.
-// The fix tool's whole job is to map this onto Shopify's import format, so the
-// assertion is that the canonical headers come back — a page that hands the
-// source file straight through cannot produce them.
+// --- shopify-products-adminui.csv — for fix-shopify-products --------------
+// A Shopify products export in the ADMIN-UI header convention ("URL handle",
+// "Description", "Price", "SKU"), which Shopify's own importer does not accept —
+// it wants the classic export headers ("Handle", "Body (HTML)", "Variant Price",
+// "Variant SKU"). Translating between Shopify's two conventions is precisely
+// what the fix tool owns, so the assertion is that the canonical headers come
+// back: a page that hands the source file straight through cannot produce them.
+//
+// The first draft of this fixture used arbitrary third-party labels ("product
+// name", "url-slug") and the tool correctly refused to map them — it declines to
+// GUESS a header, routing it to "needs your call" instead, because silently
+// deciding "product name" means Title could corrupt a live catalog. That was a
+// false RED from a mis-chosen fixture, which is as damaging as a false green:
+// the fixture has to match the contract the tool actually has.
 await emit(
-  "shopify-products-messy.csv",
+  "shopify-products-adminui.csv",
   Buffer.from(
     [
-      "product name,url-slug,description,brand,item-type,tags,active,color option,size option,sku-code,weight-grams,stock-qty,price-usd,compare-price,requires-ship,taxable,photo-url,seo-heading,seo-blurb,product-status",
-      'Café Mug,cafe-mug,A ceramic mug for your morning brew.,Acme,Mugs,"coffee,mugs",TRUE,Black,S,0001234,350,50,12.99,15.99,TRUE,TRUE,https://cdn.example.com/mug-black-s.jpg,Café Mug - Acme,A great mug for coffee lovers.,active',
-      "Café Mug,cafe-mug,,Acme,,,TRUE,Black,M,0001235,360,30,14.99,,TRUE,TRUE,,,,active",
-      "Trail Cap,trail-cap,A cap for the trail.,Acme,Hats,hats,TRUE,Green,OS,0002001,120,15,24.50,,TRUE,TRUE,,,,active",
+      "Title,URL handle,Description,Vendor,Tags,Published on online store,SKU,Price,Compare-at price,Inventory quantity,Requires shipping,Charge tax,Product image URL",
+      'Café Mug,cafe-mug,A ceramic mug for your morning brew.,Acme,"coffee,mugs",TRUE,0001234,12.99,15.99,50,TRUE,TRUE,https://cdn.example.com/mug-black-s.jpg',
+      "Trail Cap,trail-cap,A cap for the trail.,Acme,hats,TRUE,0002001,24.50,,15,TRUE,TRUE,",
       "",
     ].join("\n"),
     "utf8"

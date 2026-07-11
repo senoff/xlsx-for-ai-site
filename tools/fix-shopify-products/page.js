@@ -147,8 +147,18 @@
   }
 
   window.XFA.mount("#xfa-panel", {
-    accept: ".csv,.xlsx",
-    extensions: ["csv", "xlsx"],
+    // CSV only — the door must match the contract behind it. The fixer route is
+    // CSV-in/CSV-out (SPEC §6); it has no .xlsx parse. Handed a workbook it read
+    // the ZIP magic bytes as a column header, reported "the column 'PK♥♦' isn't a
+    // recognized Shopify field", and offered a CORRUPT file for download with no
+    // error at all. A clear "this reads .csv" is strictly better than a broken
+    // file that looks like a repair.
+    //
+    // Merchants really do keep their exports in Excel, so accepting .xlsx here is
+    // a genuine feature — it just has to be built (the route needs an xlsx→rows
+    // parse), not implied by an accept attribute. Carded.
+    accept: ".csv",
+    extensions: ["csv"],
     reassure:
       "Free · no signup. Your file is read in memory to check it against Shopify’s products import format, then discarded. " +
       "Nothing is stored, and your original file is never changed — you download a separate, repaired CSV.",

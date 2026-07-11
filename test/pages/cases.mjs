@@ -44,6 +44,15 @@ export const CASES = {
     download: true,
     expectLedger: true,
     expectPanel: ["Download the result", "Check another file"],
+    // The shell is fixture-independent by design, so no decoy can redden it —
+    // swapping the upload just produces a different valid result. Declared
+    // manual rather than left blank: --red-arm on this case exits DID-NOT-RUN
+    // instead of quietly reporting "proven". Arm exercised by pointing BASE_URL
+    // at a local copy of the site with the ledger renderer disabled, which
+    // reddens it on the expectLedger assertion.
+    redArm: {
+      manual: "shell contract — no fixture can redden it; run against a local build with renderResult's ledger block removed",
+    },
   },
 
   // --- XLS-195 — Convert Excel to CSV ------------------------------------
@@ -57,6 +66,7 @@ export const CASES = {
     download: true,
     expectDownload: ["sku,qty,price", "A-1,3,9.5", "D-4,9,14.75"],
     expectRows: 5,
+    redArm: { fixture: "duplicates.xlsx" }, // no A-1/D-4 rows to carry through
   },
 
   // --- XLS-196 — Remove duplicate rows -----------------------------------
@@ -72,6 +82,7 @@ export const CASES = {
     expectDownload: ["DUP-1", "DUP-2", "UNIQ-1", "UNIQ-2"],
     expectRows: 5,
     expectPanel: ["duplicate"],
+    redArm: { fixture: "rows.xlsx" }, // no duplicate rows -> nothing to collapse
   },
 
   // --- XLS-197 — Compare two spreadsheets ---------------------------------
@@ -84,9 +95,15 @@ export const CASES = {
     mode: "dual",
     fixtures: ["compare-a.xlsx", "compare-b.xlsx"],
     download: true,
-    expectDownload: ["B3", "70", "E-5"],
+    // Assert whole diff ROWS, not loose values. "70" and "E-5" come from file B
+    // alone, so any file A paired with B would satisfy them — the first draft of
+    // this case would have passed with the wrong original, which is precisely
+    // what --red-arm is for. The before→after pair can only be produced by BOTH
+    // files being the right ones.
+    expectDownload: ["| B3 | 7 | 70 |", "| A4 | C-3 | E-5 |"],
     absentDownload: ["A-1"],
     expectPanel: ["changed"],
+    redArm: { fixture: "duplicates.xlsx" }, // wrong original -> the "before" values change
   },
 
   // --- XLS-198 — Remove personal data ------------------------------------
@@ -109,19 +126,27 @@ export const CASES = {
       "4111 1111 1111 1111",
     ],
     expectDownload: ["keep-this-cell", "keep-this-too"],
+    redArm: { fixture: "rows.xlsx" }, // no PII -> the control cell cannot come back
   },
 
   // --- XLS-199 — Does this file have macros? ------------------------------
   // Driven with a REAL macro-bearing .xlsm. A page that only ever sees .xlsx
   // can only ever answer "no macros" — which is a green that cannot go red.
   "XLS-199": {
-    what: "check for macros — finds a real vbaProject and names its modules",
+    what: "check for macros — finds a real vbaProject in a real .xlsm",
     path: "/tools/check-for-macros/",
     mode: "single",
     fixtures: ["macros.xlsm"],
     download: false,
-    expectPanel: ["VBA macros", "Present", "Module1"],
+    // The page reports the module COUNT but deliberately doesn't name the
+    // modules (the names are heuristic, "may have false positives"), so the
+    // assertion names what it really does report. absentPanel carries the arm
+    // that matters: the all-clear heading must NOT appear. Upload a workbook
+    // with no macros and this page says exactly that — which is how we know the
+    // check can still go red now that the door accepts .xlsm.
+    expectPanel: ["VBA macros", "Present", "can run code", "5 modules"],
     absentPanel: ["No macros, no external links"],
+    redArm: { fixture: "rows.xlsx" }, // no macros -> must say so, and must not claim Present
   },
 
   // --- XLS-200 — Pull out just the rows I need ----------------------------
@@ -141,6 +166,7 @@ export const CASES = {
     download: true,
     expectDownload: ["B-2", "D-4"],
     absentDownload: ["A-1", "C-3"],
+    redArm: { fixture: "duplicates.xlsx" }, // no qty>5 rows named B-2/D-4
   },
 
   // --- XLS-201 — Summarize / total up my data -----------------------------
@@ -154,6 +180,7 @@ export const CASES = {
     download: true,
     expectPanel: ["total 20"],
     expectDownload: ["qty"],
+    redArm: { fixture: "duplicates.xlsx" }, // qty does not total 20
   },
 
   // --- XLS-202 — See what's inside this spreadsheet ------------------------
@@ -169,6 +196,7 @@ export const CASES = {
     fixtures: ["rows.xlsx"],
     download: false,
     expectPanel: ["Notes", "sku", "qty", "price"],
+    redArm: { fixture: "duplicates.xlsx" }, // single-sheet, no "price" column
   },
 
   // --- XLS-203 — Fix broken links & references ----------------------------
@@ -181,6 +209,7 @@ export const CASES = {
     fixtures: ["broken-links.xlsx"],
     download: false,
     expectPanel: ["missing-source-book", "broken link"],
+    redArm: { fixture: "rows.xlsx" }, // no external links -> nothing to name
   },
 
   // --- XLS-205 — Get this ready to send safely ----------------------------
@@ -194,20 +223,27 @@ export const CASES = {
     download: true,
     absentDownload: ["ada.lovelace@example.com", "123-45-6789", "4111 1111 1111 1111"],
     expectDownload: ["keep-this-cell"],
+    redArm: { fixture: "rows.xlsx" }, // nothing to clean -> no safe copy to hand back
   },
 
   // --- XLS-213 — Clean up / fix a Shopify product import file --------------
   // The fixture uses none of Shopify's canonical column names. The whole job is
   // mapping onto them, so the canonical headers coming back IS the proof — a
   // page that passes the source file through cannot produce them.
+  // Shopify's admin UI exports one set of header labels and Shopify's own
+  // importer demands another. Translating between the two is the fix tool's job,
+  // so the canonical headers coming back IS the proof — plus the leading-zero
+  // SKU surviving, which a spreadsheet round-trip would have eaten.
   "XLS-213": {
-    what: "fix Shopify products — maps a messy export onto Shopify's format",
+    what: "fix Shopify products — admin-UI headers come back import-ready",
     path: "/tools/fix-shopify-products/",
     mode: "single",
-    fixtures: ["shopify-products-messy.csv"],
+    fixtures: ["shopify-products-adminui.csv"],
     download: true,
-    expectDownload: ["Handle", "Title", "cafe-mug"],
+    expectDownload: ["Handle", "Title", "Body (HTML)", "Variant Price", "cafe-mug", "0001234"],
+    absentDownload: ["URL handle", "Compare-at price"],
     expectPanel: ["fixed"],
+    redArm: { fixture: "rows.xlsx" }, // not a Shopify export at all
   },
 
   // --- XLS-216 — Run any tool ---------------------------------------------
@@ -223,6 +259,7 @@ export const CASES = {
     form: [{ selector: '[data-xfa-field="tool"]', select: "xlsx_list_sheets", rerenders: true }],
     download: false,
     expectPanel: ["Sheet1", "Notes"],
+    redArm: { fixture: "duplicates.xlsx" }, // has no "Notes" sheet to list
   },
 
   // --- XLS-217 — the read-only preview-grid primitive -----------------------
@@ -237,5 +274,6 @@ export const CASES = {
     fixtures: ["rows.xlsx"],
     download: false,
     expectIn: [{ selector: "table.preview-grid", values: ["sku", "A-1", "D-4", "14.75"] }],
+    redArm: { fixture: "duplicates.xlsx" }, // grid cannot contain A-1 / 14.75
   },
 };

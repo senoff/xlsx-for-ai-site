@@ -31,6 +31,23 @@
  *   expectLedger    the "what we did / what we didn't touch" promise must render
  */
 export const CASES = {
+  // --- XLS-193 — Fix my formula errors ------------------------------------
+  // The fixture carries three real broken formulas (#REF! / #DIV/0! / #NAME?)
+  // AND one healthy one (B5, =1+1). Both halves matter: the page must name the
+  // three broken cells, and must NOT flag the healthy cell. "Flags everything"
+  // is as useless as "flags nothing", and only the absent arm can tell them
+  // apart.
+  "XLS-193": {
+    what: "fix formula errors — names the broken cells, spares the healthy one",
+    path: "/tools/fix-formula-errors/",
+    mode: "single",
+    fixtures: ["formula-errors.xlsx"],
+    download: false,
+    expectPanel: ["B2", "#REF!", "B3", "#DIV/0!", "B4", "#NAME?"],
+    absentPanel: ["B5"],
+    redArm: { fixture: "rows.xlsx" }, // no formulas at all -> nothing to name
+  },
+
   // --- XLS-194 — the shared shell + result-ledger (the design system) -----
   // Subject is the SHELL, not the tool: upload → run → result → download, and
   // the plain-language ledger. Driven on the convert page, but it asserts only

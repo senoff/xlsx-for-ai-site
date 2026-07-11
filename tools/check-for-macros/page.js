@@ -126,7 +126,13 @@
   }
 
   window.XFA.mount("#xfa-panel", {
-    accept: ".xlsx",
+    // Macros do not live in .xlsx — Excel refuses to save them there. They live
+    // in .xlsm. An .xlsx-only door meant this page turned away every file that
+    // could have macros and answered "no macros" to every file it let in: a
+    // verdict that could never come back positive. Accept the macro-bearing
+    // formats, which are the whole reason a visitor lands here.
+    accept: ".xlsx,.xlsm",
+    extensions: ["xlsx", "xlsm"],
     reassure:
       "Free · no signup. Read in memory to check for macros, then discarded — never opened, run, or stored. It reports whether macros are present, not whether they're malicious; an antivirus scanner is the tool for a full verdict.",
     runningLabel: "Checking your file…",

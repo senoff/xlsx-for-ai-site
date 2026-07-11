@@ -253,7 +253,7 @@
         '<div class="dropzone" id="xfa-drop" role="button" tabindex="0" aria-label="Choose a spreadsheet">' +
           '<div class="icon">↑</div>' +
           '<div class="big">Drop your spreadsheet here</div>' +
-          '<div class="small">or <span class="pick">choose a file</span> · .xlsx up to 10 MB</div>' +
+          '<div class="small">or <span class="pick">choose a file</span> · ' + esc(extLabel()) + ' up to 10 MB</div>' +
           '<input type="file" id="xfa-file" accept="' + esc(accept) + '" />' +
         '</div>' +
         '<div class="reassure">' + esc(cfg.reassure || "Your file is processed in memory and never stored.") + '</div>';

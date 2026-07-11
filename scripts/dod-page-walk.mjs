@@ -30,7 +30,7 @@
  */
 import { chromium } from "playwright";
 import ExcelJS from "exceljs";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { CASES } from "../test/pages/cases.mjs";
@@ -98,8 +98,52 @@ async function flatten(path) {
   return { text, rows: text.trim() === "" ? 0 : text.trim().split("\n").length };
 }
 
+/*
+ * One key for the whole harness, not one per run.
+ *
+ * The shell mints an anonymous key on first use and caches it in localStorage.
+ * A fresh browser context has no localStorage, so every single walk was
+ * registering a BRAND-NEW client — ~30 per full sweep (each case, plus each red
+ * arm). Two consequences, both bad:
+ *
+ *   1. It self-DoSes. The registration endpoint is per-IP rate limited, the
+ *      sweep tripped it, and a case went RED with "Couldn't start a session" —
+ *      a false red from the instrument itself, which is the one failure that
+ *      makes every other verdict untrustworthy.
+ *   2. Every run looked exactly like a real web-tools visitor in the clients
+ *      table, quietly inflating adoption with our own traffic.
+ *
+ * So: mint ONE key, cache it on disk (gitignored), seed it into localStorage
+ * before any page script runs, and register it under a platform that names us,
+ * so our own traffic stays separable from a real visitor's at ingest.
+ */
+const KEY_CACHE = join(ROOT, "node_modules", ".xfa-page-walk-key");
+async function harnessKey() {
+  if (process.env.XFA_WEB_KEY) return process.env.XFA_WEB_KEY;
+  if (existsSync(KEY_CACHE)) return readFileSync(KEY_CACHE, "utf8").trim();
+  const r = await fetch("https://api.xlsx-for-ai.dev/api/v1/clients", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ client_version: "page-dod-walk-1.0", platform: "page-dod-walk" }),
+  });
+  if (!r.ok) die(`could not mint a harness key (HTTP ${r.status})`);
+  const { api_key } = await r.json();
+  if (!api_key) die("registration returned no api_key");
+  writeFileSync(KEY_CACHE, api_key);
+  return api_key;
+}
+const apiKey = await harnessKey();
+
 const browser = await chromium.launch();
 const page = await browser.newPage({ acceptDownloads: true });
+// Before any page script runs, so the shell finds a key and never registers.
+await page.addInitScript((k) => {
+  try {
+    window.localStorage.setItem("xfa_web_key", k);
+  } catch {
+    /* private mode — the shell falls back to registering, same as a visitor */
+  }
+}, apiKey);
 const fails = [];
 let panelText = "";
 let out = { text: "", rows: 0 };

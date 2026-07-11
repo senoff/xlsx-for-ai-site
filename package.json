@@ -1,0 +1,17 @@
+{
+  "name": "xlsx-for-ai-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Static site for xlsx-for-ai. The npm toolchain is dev-only: it builds the site's own maintenance scripts (sitemap) and the page-DoD walk that drives the live web-tool pages in a real browser. Nothing here is served.",
+  "scripts": {
+    "sitemap": "node scripts/gen-sitemap.mjs",
+    "fixtures": "node scripts/make-page-fixtures.mjs",
+    "page-walk": "node scripts/dod-page-walk.mjs"
+  },
+  "devDependencies": {
+    "exceljs": "^4.4.0",
+    "jszip": "^3.10.1",
+    "playwright": "^1.49.0"
+  }
+}

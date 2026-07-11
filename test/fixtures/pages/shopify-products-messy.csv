@@ -1,0 +1,4 @@
+product name,url-slug,description,brand,item-type,tags,active,color option,size option,sku-code,weight-grams,stock-qty,price-usd,compare-price,requires-ship,taxable,photo-url,seo-heading,seo-blurb,product-status
+Café Mug,cafe-mug,A ceramic mug for your morning brew.,Acme,Mugs,"coffee,mugs",TRUE,Black,S,0001234,350,50,12.99,15.99,TRUE,TRUE,https://cdn.example.com/mug-black-s.jpg,Café Mug - Acme,A great mug for coffee lovers.,active
+Café Mug,cafe-mug,,Acme,,,TRUE,Black,M,0001235,360,30,14.99,,TRUE,TRUE,,,,active
+Trail Cap,trail-cap,A cap for the trail.,Acme,Hats,hats,TRUE,Green,OS,0002001,120,15,24.50,,TRUE,TRUE,,,,active

@@ -40,7 +40,14 @@ import { fileURLToPath } from "node:url";
 const ROOT = resolve(join(dirname(fileURLToPath(import.meta.url)), ".."));
 
 // Directories that are not part of the served page tree.
-const SKIP_DIRS = new Set([".git", "node_modules", "scripts", "test", "clean-data", "large-files", ".github"]);
+//
+// This MUST stay a subset of what gen-sitemap.mjs skips (currently
+// {node_modules, .git, scripts, logo}). A dir the sitemap generator walks but
+// this validator skips is a page that ships in sitemap.xml yet is never
+// structurally checked — clean-data/ and large-files/ each have a real served
+// index.html the sitemap lists, so they are NOT skipped here. (.git/.github are
+// already excluded by the leading-dot rule in findHtml; test/ holds no pages.)
+const SKIP_DIRS = new Set(["node_modules", "scripts", "test"]);
 
 // ---------------------------------------------------------------------------
 // Tree walk — every index.html plus any top-level *.html (index, privacy, etc.)

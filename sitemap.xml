@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://xlsx-for-ai.dev/</loc>
-    <lastmod>2026-07-06</lastmod>
+    <lastmod>2026-07-08</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/clean-data/</loc>
@@ -26,82 +26,6 @@
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/check-for-macros/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/clean-export/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/compare/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/convert-excel-to-csv/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/convert/</loc>
-    <lastmod>2026-07-08</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/filter-rows/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/fix-broken-links/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/fix-formula-errors/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/fix-shopify-products/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/get-ready-safely/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/import-shopify-collections/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/import-shopify-inventory/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/import-shopify-products/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/import-shopify-redirects/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/remove-duplicates/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/remove-personal-data/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/run-any-tool/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/see-inside/</loc>
-    <lastmod>2026-07-08</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/summarize/</loc>
-    <lastmod>2026-07-06</lastmod>
-  </url>
-  <url>
-    <loc>https://xlsx-for-ai.dev/tools/whats-inside-excel-file/</loc>
     <lastmod>2026-07-06</lastmod>
   </url>
   <url>
@@ -175,6 +99,10 @@
   <url>
     <loc>https://xlsx-for-ai.dev/tools/check-for-macros/what-is-a-xlsm-file-is-it-dangerous/</loc>
     <lastmod>2026-07-08</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/clean-export/</loc>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/clean-export/blank-rows-i-can-t-delete-in-excel-the-spreadsheet-scrolls-forever/</loc>
@@ -257,6 +185,10 @@
     <lastmod>2026-07-08</lastmod>
   </url>
   <url>
+    <loc>https://xlsx-for-ai.dev/tools/compare/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
     <loc>https://xlsx-for-ai.dev/tools/compare/check-if-two-excel-files-are-the-same/</loc>
     <lastmod>2026-07-08</lastmod>
   </url>
@@ -327,6 +259,10 @@
   <url>
     <loc>https://xlsx-for-ai.dev/tools/compare/which-cells-changed-between-two-excel-files/</loc>
     <lastmod>2026-07-08</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/convert-excel-to-csv/</loc>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/convert-excel-to-csv/accented-letters-and-special-characters-look-broken-or-garbled-in-my/</loc>
@@ -413,6 +349,18 @@
     <lastmod>2026-07-08</lastmod>
   </url>
   <url>
+    <loc>https://xlsx-for-ai.dev/tools/export-shopify-collections/</loc>
+    <lastmod>2026-07-18</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/export-shopify-products/</loc>
+    <lastmod>2026-07-18</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/filter-rows/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
     <loc>https://xlsx-for-ai.dev/tools/filter-rows/copy-filtered-rows-to-a-new-file-and-download-as-csv/</loc>
     <lastmod>2026-07-08</lastmod>
   </url>
@@ -485,6 +433,10 @@
     <lastmod>2026-07-08</lastmod>
   </url>
   <url>
+    <loc>https://xlsx-for-ai.dev/tools/fix-broken-links/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
     <loc>https://xlsx-for-ai.dev/tools/fix-broken-links/can-t-break-links-in-excel-button-works-but-link-comes-back/</loc>
     <lastmod>2026-07-08</lastmod>
   </url>
@@ -555,6 +507,10 @@
   <url>
     <loc>https://xlsx-for-ai.dev/tools/fix-broken-links/this-workbook-contains-links-to-other-data-sources-how-to-find-where/</loc>
     <lastmod>2026-07-08</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/fix-formula-errors/</loc>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/fix-formula-errors/divide-by-zero-error-in-excel-how-to-hide-it-or-show-blank-instead/</loc>
@@ -701,6 +657,10 @@
     <lastmod>2026-07-08</lastmod>
   </url>
   <url>
+    <loc>https://xlsx-for-ai.dev/tools/fix-shopify-products/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
     <loc>https://xlsx-for-ai.dev/tools/fix-shopify-products/accents-turned-into-question-marks-in-shopify-product-names/</loc>
     <lastmod>2026-07-08</lastmod>
   </url>
@@ -801,6 +761,10 @@
     <lastmod>2026-07-08</lastmod>
   </url>
   <url>
+    <loc>https://xlsx-for-ai.dev/tools/get-ready-safely/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
     <loc>https://xlsx-for-ai.dev/tools/get-ready-safely/are-hidden-rows-gone-when-you-email-an-excel-file-no-here-s-why/</loc>
     <lastmod>2026-07-08</lastmod>
   </url>
@@ -871,6 +835,10 @@
   <url>
     <loc>https://xlsx-for-ai.dev/tools/get-ready-safely/what-inspect-document-actually-checks-and-removes-plain-english/</loc>
     <lastmod>2026-07-08</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/import-shopify-collections/</loc>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/import-shopify-collections/add-a-collection-image-in-bulk-from-a-spreadsheet/</loc>
@@ -945,6 +913,10 @@
     <lastmod>2026-07-08</lastmod>
   </url>
   <url>
+    <loc>https://xlsx-for-ai.dev/tools/import-shopify-inventory/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
     <loc>https://xlsx-for-ai.dev/tools/import-shopify-inventory/excel-changed-my-sku-numbers-and-now-they-don-t-match-in-shopify/</loc>
     <lastmod>2026-07-08</lastmod>
   </url>
@@ -1015,6 +987,10 @@
   <url>
     <loc>https://xlsx-for-ai.dev/tools/import-shopify-inventory/why-won-t-shopify-let-me-enter-a-decimal-quantity-like-1-5-for/</loc>
     <lastmod>2026-07-08</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/import-shopify-products/</loc>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/import-shopify-products/excel-keeps-breaking-my-csv-file-bom-corruption-semicolon-delimiter/</loc>
@@ -1161,6 +1137,10 @@
     <lastmod>2026-07-08</lastmod>
   </url>
   <url>
+    <loc>https://xlsx-for-ai.dev/tools/import-shopify-redirects/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
     <loc>https://xlsx-for-ai.dev/tools/import-shopify-redirects/404-errors-after-migrating-to-shopify-how-to-redirect-hundreds-at-once/</loc>
     <lastmod>2026-07-08</lastmod>
   </url>
@@ -1241,6 +1221,10 @@
     <lastmod>2026-07-08</lastmod>
   </url>
   <url>
+    <loc>https://xlsx-for-ai.dev/tools/remove-duplicates/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
     <loc>https://xlsx-for-ai.dev/tools/remove-duplicates/count-how-many-times-each-value-appears-in-excel/</loc>
     <lastmod>2026-07-08</lastmod>
   </url>
@@ -1311,6 +1295,10 @@
   <url>
     <loc>https://xlsx-for-ai.dev/tools/remove-duplicates/why-remove-duplicates-says-no-duplicates-found/</loc>
     <lastmod>2026-07-08</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/remove-personal-data/</loc>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/remove-personal-data/black-out-social-security-numbers-in-a-spreadsheet-ssn-masking/</loc>
@@ -1393,6 +1381,14 @@
     <lastmod>2026-07-08</lastmod>
   </url>
   <url>
+    <loc>https://xlsx-for-ai.dev/tools/run-any-tool/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/summarize/</loc>
+    <lastmod>2026-07-06</lastmod>
+  </url>
+  <url>
     <loc>https://xlsx-for-ai.dev/tools/summarize/add-up-a-column-in-excel-how-to-get-the-total-without-a-formula/</loc>
     <lastmod>2026-07-08</lastmod>
   </url>
@@ -1463,6 +1459,10 @@
   <url>
     <loc>https://xlsx-for-ai.dev/tools/summarize/what-percentage-is-each-row-of-the-total-percent-of-column/</loc>
     <lastmod>2026-07-08</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/whats-inside-excel-file/</loc>
+    <lastmod>2026-07-06</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/whats-inside-excel-file/excel-file-too-big-to-open-see-what-s-inside-without-crashing/</loc>

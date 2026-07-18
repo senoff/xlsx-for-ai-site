@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Export Shopify collections to CSV — there's no native export | xlsx-for-ai</title>
+<meta name="description" content="Shopify has no native way to export your collections to CSV — the products CSV's Collection column is import-only and dropped on export. Here's how to get manual and smart collections out as a file.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Export Shopify collections to CSV — there's no native export | xlsx-for-ai">
+<meta property="og:description" content="Shopify has no native way to export your collections to CSV — the products CSV's Collection column is import-only and dropped on export. Here's how to get manual and smart collections out as a file.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/export-shopify-collections/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Export Shopify collections to CSV — there's no native export | xlsx-for-ai">
+<meta name="twitter:description" content="Shopify has no native way to export your collections to CSV — the products CSV's Collection column is import-only and dropped on export. Here's how to get manual and smart collections out as a file.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/export-shopify-collections/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Export Shopify collections to CSV",
+  "description": "Shopify has no native collection export. Get your manual and smart collections — titles, handles, descriptions, and smart-collection rules — out of Shopify as a downloadable CSV or Excel file.",
+  "url": "https://xlsx-for-ai.dev/tools/export-shopify-collections/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free Shopify collections export guide</div>
+    <h1>Shopify can't export your collections — here's how to get them out.</h1>
+    <p class="lede">Unlike products, Shopify has <strong>no native collection export</strong> at all. There's no
+      button in the admin that hands you your collections as a file, and the "Collection" column you've seen in the
+      products CSV won't help — it only works on the way in. This page explains why, and points you at a one-click
+      export that pulls both your manual and smart collections into a spreadsheet.</p>
+    <div class="free-pill">Free · no signup · runs in your own Shopify admin</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">export-shopify-collections · xlsx-for-ai</span>
+    </div>
+    <div class="panel">
+      <h2 class="cta-h">Get your collections as a file</h2>
+      <p class="cta-p">Importable fills the gap Shopify left: it runs a live export from inside your Shopify
+        admin and pulls <strong>every collection — manual and smart</strong> — with titles, handles,
+        descriptions, and each smart collection's rules. No upload, nothing to map; it reads your store directly.</p>
+      <p class="cta-actions"><a class="btn primary" href="https://app.xlsx-for-ai.dev/app/export" rel="noopener">Export your collections in Importable →</a></p>
+      <p class="cta-note">Collections is the first entity on the export screen — pick CSV or Excel and download. Free · no signup.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h2>There is genuinely no native collection export</h2>
+    <p>This isn't a hidden setting or a permissions issue. Shopify's admin lets you export products, orders, and
+      customers to CSV, but it offers <strong>no export for collections</strong> — smart or manual. The list of
+      collections you see in the admin is the only view; there's no "Export" action behind it. If your premise
+      when you landed here was "surely there's a native way," the honest answer is no, and everything below is
+      about the ways around it.</p>
+
+    <h2>The "Collection" column is a one-way street</h2>
+    <p>The products CSV does have a <code>Collection</code> column, and it's easy to assume it round-trips. It
+      doesn't. That column is <strong>import-only</strong>: on the way in it assigns products to a manual
+      collection, but it is dropped from the products export — you'll never see it in a file Shopify gives you.
+      And it only ever referred to manual collections: smart collections, which are defined by rules rather than a
+      fixed product list, were never expressible in that column at all.</p>
+
+    <h2>Manual and smart collections both need to come out</h2>
+    <p>A complete export has to handle two different shapes. <strong>Manual collections</strong> are a curated
+      list — title, handle, description, image, and their hand-picked membership. <strong>Smart
+      collections</strong> carry no fixed list; they're a set of conditions (tag equals, price greater than,
+      vendor is), and those <em>rules</em> are the thing you actually need exported — a membership snapshot alone
+      loses how the collection is defined. An export that only dumps titles isn't an export you can rebuild from.</p>
+
+    <h2>A reviewed export, run in your own admin</h2>
+    <p>The export runs inside the Importable app in your Shopify admin, reading your store over the live API and
+      handing you a file to download. It never writes back to your store, and there's nothing to upload here — the
+      button above opens the export screen with Collections already selected.</p>
+
+    <p class="muted">Automating the pull instead of clicking?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and let your
+      agent take a collection export and reshape, translate, or re-import it over MCP.</p>
+  </div>
+
+</div>
+</main>
+
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent rebuild collections from an export, not just read one</h2>
+  <p>Once your collections are out of Shopify, the interesting work starts — and it's the kind an agent is good at. Handed a collection export, your AI agent can translate every title and description for a new market, rewrite smart-collection rules to match a different store's tag scheme, or fold the whole set into a migration plan — keeping manual membership and smart-collection conditions straight instead of flattening them into one list.</p>
+  <p>Wire <strong>xlsx-for-ai</strong> into your agent and a collection export becomes something it can act on: cleaned, converted, and turned back into a ready-to-upload collections import, all inside its own workflow rather than a round of manual spreadsheet edits.</p>
+</div>
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify export tools">
+      <a href="/tools/export-shopify-products/">Shopify: export products</a>
+      <a href="/tools/export-shopify-collections/">Shopify: export collections</a>
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

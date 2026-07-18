@@ -143,6 +143,11 @@ function existsResolved(p) {
   }
   // Extensionless path that is really a directory index (e.g. "/tools/foo").
   if (!extname(p) && existsSync(join(p, "index.html"))) return true;
+  // Extensionless path GH Pages serves via clean-URL routing as "<p>.html"
+  // (e.g. a link to "/tools/convert" served by tools/convert.html). Adding this
+  // only turns a would-be false red green — it never rejects a link that the
+  // exact-path or directory-index branch already accepted.
+  if (!extname(p) && existsSync(p + ".html")) return true;
   return false;
 }
 
@@ -215,6 +220,8 @@ function selftest() {
   writeFileSync(join(fix, "shell.js"), "// ok");
   mkdirSync(join(fix, "sub"), { recursive: true });
   writeFileSync(join(fix, "sub", "index.html"), "<!doctype html><title>t</title><h1>t</h1>");
+  // A real .html file reachable by its extensionless clean URL ("page2" -> page2.html).
+  writeFileSync(join(fix, "page2.html"), "<!doctype html><title>t</title><h1>t</h1>");
   const anchorFile = join(fix, "index.html");
 
   const good = `<!doctype html><html lang="en"><head><title>ok</title>
@@ -248,6 +255,12 @@ function selftest() {
       (h) => h.replace("</body>", '<script>var s = \'<a href="/no-such-xyz/">\';</script></body>'), 0],
     ["dead href inside comment is ignored",
       (h) => h.replace("</body>", '<!-- <a href="/no-such-xyz/">x</a> --></body>'), 0],
+    // Clean-URL routing: an extensionless link to a real .html file is clean...
+    ["extensionless link resolves to .html",
+      (h) => h.replace('href="sub/"', 'href="page2"'), 0],
+    // ...but the fallback must not green a link with no backing file at all.
+    ["extensionless link with no .html still reddens",
+      (h) => h.replace('href="sub/"', 'href="page404"'), 1],
   ];
   let proven = 0, vacuous = 0, wrong = 0;
   try {

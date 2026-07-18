@@ -117,17 +117,29 @@ TAG_RE = re.compile(r"<[^>]+>")
 FORM_RE = re.compile(r"<form\b", re.I)
 HREF_RE = re.compile(r'<a\b[^>]*\bhref=["\']([^"\']+)["\']', re.I)
 PANEL_RE = re.compile(r'id\s*=\s*["\']xfa-panel["\']', re.I)
+NOISE_RE = re.compile(r"<!--.*?-->|<script\b[^>]*>.*?</script>|<style\b[^>]*>.*?</style>", re.I | re.S)
 SIGNUP_WALLS = ["sign in", "sign up", "log in", "create an account", "start free trial", "enter your card"]
 
 
 def has_valid_cta(html):
-    """True iff an actual anchor links the authenticated export surface —
-    scheme https (or protocol-relative), host EXACTLY app.xlsx-for-ai.dev, and
-    path under /app/export. A substring match would greenlight the string in a
-    comment or a look-alike host (app.xlsx-for-ai.dev.evil.com), so parse hrefs."""
-    for href in HREF_RE.findall(html):
+    """True iff a REAL clickable anchor links the authenticated export surface.
+    Robust to the ways a naive check goes wrong:
+      - comments/scripts/styles are stripped first, so a commented-out or
+        script-embedded anchor can't satisfy the CTA (it isn't clickable);
+      - host is compared via hostname (case-folded, port/userinfo removed), so a
+        look-alike host (app.xlsx-for-ai.dev.evil.com) is rejected but a valid
+        link with :443 or mixed case is not false-failed;
+      - the path must be EXACTLY /app/export (optionally with a trailing slash or
+        query), so /app/exports and /app/export-foo do NOT slip through.
+    """
+    body = NOISE_RE.sub(" ", html)
+    for href in HREF_RE.findall(body):
         u = urlparse(href if "://" in href else "https://" + href.lstrip("/"))
-        if u.scheme in ("https", "") and u.netloc == EXPORT_HOST and u.path.startswith(EXPORT_PATH_PREFIX):
+        if u.scheme not in ("https", ""):
+            continue
+        if (u.hostname or "").lower() != EXPORT_HOST:
+            continue
+        if u.path == EXPORT_PATH_PREFIX or u.path.startswith(EXPORT_PATH_PREFIX + "/"):
             return True
     return False
 

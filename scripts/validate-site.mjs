@@ -33,7 +33,7 @@
  * cannot fail is not a gate.
  */
 import { readdirSync, statSync, existsSync, readFileSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
-import { dirname, join, resolve, relative, extname } from "node:path";
+import { dirname, join, resolve, relative, extname, sep } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
@@ -119,7 +119,7 @@ function isExternal(url) {
 
 // Resolve a site-local URL to the file that must exist. Returns an absolute path
 // or null if the URL is external / an anchor (not our concern).
-function resolveLocal(url, pageFile) {
+function resolveLocal(url, pageFile, root = ROOT) {
   if (isExternal(url)) return null;
   let u = url.split("#")[0].split("?")[0];
   if (u === "") return null;
@@ -127,7 +127,7 @@ function resolveLocal(url, pageFile) {
   // existence check or a real file reads as missing (a false red). Malformed
   // escapes are left as-is rather than throwing.
   try { u = decodeURI(u); } catch { /* keep raw */ }
-  const base = u.startsWith("/") ? ROOT : dirname(pageFile);
+  const base = u.startsWith("/") ? root : dirname(pageFile);
   const rel = u.startsWith("/") ? u.slice(1) : u;
   let p = resolve(base, rel);
   // "/tools/" (or a dir with no extension) resolves to its index.html.
@@ -162,7 +162,7 @@ function stripNoise(html) {
     .replace(/(<style\b[^>]*>)[\s\S]*?(<\/style>)/gi, "$1$2");
 }
 
-function checkLinks(rawHtml, pageFile, errs) {
+function checkLinks(rawHtml, pageFile, errs, root = ROOT) {
   const html = stripNoise(rawHtml);
   const refs = [
     ...attrValues(html, "a", "href").map((u) => ["a href", u]),
@@ -171,8 +171,17 @@ function checkLinks(rawHtml, pageFile, errs) {
     ...attrValues(html, "img", "src").map((u) => ["img src", u]),
   ];
   for (const [where, url] of refs) {
-    const p = resolveLocal(url, pageFile);
+    const p = resolveLocal(url, pageFile, root);
     if (p === null) continue;              // external / anchor
+    // A "../" chain can resolve ABOVE the site root. GitHub Pages cannot serve
+    // anything outside the repo, so such a link is broken in production — but a
+    // bare existence check would false-GREEN it if the escaped path happens to
+    // exist on the CI runner's filesystem. Reject it as broken here, before the
+    // filesystem is consulted at all.
+    if (p !== root && !p.startsWith(root + sep)) {
+      errs.push(`${where} "${url}" resolves outside the site root (${relative(ROOT, p)})`);
+      continue;
+    }
     if (!existsResolved(p)) errs.push(`${where} "${url}" -> ${relative(ROOT, p)} does not exist`);
   }
 }
@@ -183,8 +192,13 @@ function checkLinks(rawHtml, pageFile, errs) {
 function validateFile(file) {
   const html = readFileSync(file, "utf8");
   const errs = [];
-  checkStructure(html, errs);
-  checkLinks(html, file, errs);
+  // Both checks run on the noise-stripped body so a structural tag written inside
+  // a comment or a <script>/<style> string (e.g. `"<html>"` in inline JS, or an
+  // example `<h1>` in a doc comment) is not counted as real markup. checkLinks
+  // also strips internally; the second pass is idempotent.
+  const clean = stripNoise(html);
+  checkStructure(clean, errs);
+  checkLinks(clean, file, errs);
   return errs;
 }
 
@@ -229,7 +243,7 @@ function selftest() {
     <body><h1>ok</h1><a href="sub/">tools</a>
     <script src="shell.js"></script></body></html>`;
 
-  const mutate = (fn) => { const errs = []; const h = fn(good); checkStructure(h, errs); checkLinks(h, anchorFile, errs); return errs; };
+  const mutate = (fn) => { const errs = []; const clean = stripNoise(fn(good)); checkStructure(clean, errs); checkLinks(clean, anchorFile, errs, fix); return errs; };
   const cases = [
     ["good page is clean", () => good, 0],
     ["missing doctype", (h) => h.replace(/<!doctype html>/i, ""), 1],
@@ -261,6 +275,17 @@ function selftest() {
     // ...but the fallback must not green a link with no backing file at all.
     ["extensionless link with no .html still reddens",
       (h) => h.replace('href="sub/"', 'href="page404"'), 1],
+    // A "../" chain that climbs above the site root is broken on GH Pages and
+    // must red here, not silently pass on a filesystem hit outside the tree.
+    ["link escaping site root reddens",
+      (h) => h.replace('href="sub/"', 'href="../../escape-xyz/"'), 1],
+    // Structure counts run on the stripped body: a structural tag written inside
+    // a comment or a script string must not inflate the count (would false-red
+    // "expected exactly 1" without the strip).
+    ["<h1> inside a comment is not counted",
+      (h) => h.replace("</body>", "<!-- <h1>doc example</h1> --></body>"), 0],
+    ["<html> inside a script string is not counted",
+      (h) => h.replace("</body>", '<script>var x = "<html>";</script></body>'), 0],
   ];
   let proven = 0, vacuous = 0, wrong = 0;
   try {

@@ -146,7 +146,19 @@ function existsResolved(p) {
   return false;
 }
 
-function checkLinks(html, pageFile, errs) {
+// Drop comment blocks and the BODIES of <script>/<style> (keeping the opening
+// tags, so <script src> is still extracted) before scanning for links. Without
+// this, a literal `href="..."` inside inline JS or a comment would be treated as
+// a real link and could false-red. Same rule the DoD probe's NOISE_RE applies.
+function stripNoise(html) {
+  return html
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/(<script\b[^>]*>)[\s\S]*?(<\/script>)/gi, "$1$2")
+    .replace(/(<style\b[^>]*>)[\s\S]*?(<\/style>)/gi, "$1$2");
+}
+
+function checkLinks(rawHtml, pageFile, errs) {
+  const html = stripNoise(rawHtml);
   const refs = [
     ...attrValues(html, "a", "href").map((u) => ["a href", u]),
     ...attrValues(html, "link", "href").map((u) => ["link href", u]),
@@ -230,6 +242,12 @@ function selftest() {
     // ...but the exemption must not leak: a NON-redirect page still needs its h1.
     ["non-redirect without h1 still reddens",
       () => good.replace("<h1>ok</h1>", ""), 1],
+    // Noise strip: a dead link inside a <script> body or a comment is not a real
+    // link and must not red.
+    ["dead href inside <script> body is ignored",
+      (h) => h.replace("</body>", '<script>var s = \'<a href="/no-such-xyz/">\';</script></body>'), 0],
+    ["dead href inside comment is ignored",
+      (h) => h.replace("</body>", '<!-- <a href="/no-such-xyz/">x</a> --></body>'), 0],
   ];
   let proven = 0, vacuous = 0, wrong = 0;
   try {

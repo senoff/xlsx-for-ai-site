@@ -95,6 +95,16 @@ PAGES = {
 # The XLS-221 uniqueness set the card names: the two new pages + XLS-206.
 UNIQUENESS_SET = ["export-shopify-products", "export-shopify-collections", "import-shopify-products"]
 
+# Each card owns ONE page. A card-id arg scopes the per-page content assertions to
+# that card's own page, so the row registered for XLS-210 can go RED for the
+# products page specifically (and XLS-211 for collections) — a check that cannot
+# fail for its own card is not that card's check. The cross-page uniqueness pass
+# still spans the whole set regardless, since that is what XLS-221 constrains.
+CARD_SLUG = {
+    "XLS-210": "export-shopify-products",
+    "XLS-211": "export-shopify-collections",
+}
+
 _p, _f = [], []
 def ok(m): _p.append(m); print("PASS:", m)
 def bad(m): _f.append(m); print("FAIL:", m)
@@ -229,10 +239,11 @@ def _synth_good(slug):
 
 
 # ------------------------------------------------------------------ live run
-def live():
-    print("== live DoD on %s ==" % SITE)
+def live(only_slug=None):
+    print("== live DoD on %s%s ==" % (SITE, (" [scoped: %s]" % only_slug) if only_slug else ""))
     htmls = {}
-    for slug in PAGES:
+    content_slugs = [only_slug] if only_slug else list(PAGES)
+    for slug in content_slugs:
         url = "%s/tools/%s/" % (SITE, slug)
         try:
             status, html = fetch(url)
@@ -248,14 +259,12 @@ def live():
     hashes = {}
     for slug in UNIQUENESS_SET:
         html = htmls.get(slug)
-        if html is None and slug not in PAGES:
+        if html is None:  # not fetched by the (possibly scoped) content pass — get it now
             try:
                 _s, html = fetch("%s/tools/%s/" % (SITE, slug))
             except Exception as e:
                 bad("%s: fetch failed for uniqueness (%s)" % (slug, e))
                 continue
-        if html is None:
-            continue
         t = prose_of(html)
         if not t:
             bad("%s: no .xfa-mcp-copy block for uniqueness" % slug)
@@ -274,4 +283,13 @@ def live():
 if __name__ == "__main__":
     if "--selftest" in sys.argv:
         sys.exit(selftest())
-    sys.exit(live())
+    # Optional card-id (XLS-210 | XLS-211) scopes the per-page content assertions
+    # to that card's own page. An unknown card-id is a DID-NOT-RUN, never a pass.
+    card = next((a for a in sys.argv[1:] if a.startswith("XLS-")), None)
+    only = None
+    if card is not None:
+        only = CARD_SLUG.get(card)
+        if only is None:
+            print("DID NOT RUN — unknown card %r (known: %s)" % (card, ", ".join(CARD_SLUG)))
+            sys.exit(2)
+    sys.exit(live(only))

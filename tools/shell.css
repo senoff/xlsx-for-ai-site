@@ -256,6 +256,14 @@ main { padding: 52px 0 40px; }
 .btn.primary { background: var(--ink); color: #fff; border-color: var(--ink); }
 .btn:hover { text-decoration: none; }
 .btn.primary:hover { background: #000; }
+a.btn { display: inline-block; }
+
+/* funnel-CTA panel (XLS-210/211): export pages have no upload widget — the tool
+   card holds a call-to-action that links to the authenticated app export surface */
+.tool .panel .cta-h { font-size: 20px; margin: 0 0 12px; letter-spacing: -.01em; }
+.tool .panel .cta-p { color: #333; margin: 0 0 20px; }
+.tool .panel .cta-actions { margin: 0 0 14px; }
+.tool .panel .cta-note { font-size: 13.5px; color: var(--muted); margin: 0; }
 
 .notice { border-radius: 12px; padding: 15px 18px; font-size: 14px; line-height: 1.55; margin-top: 4px; }
 .notice.err { background: var(--flag-soft); color: #8a4b16; }

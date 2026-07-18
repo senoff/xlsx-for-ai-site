@@ -88,6 +88,15 @@ function countTag(html, tag) {
   return m ? m.length : 0;
 }
 
+// The <head> inner HTML, or "" if there is no head. Used to count the document
+// <title> without also counting a <title> inside an inline SVG in the body (SVG
+// accessibility titles are legal and would otherwise false-red "expected 1
+// <title>, found 2"). Absence of a head is reported by its own structural check.
+function headSection(html) {
+  const m = html.match(/<head\b[^>]*>([\s\S]*?)<\/head>/i);
+  return m ? m[1] : "";
+}
+
 // ---------------------------------------------------------------------------
 // CHECK 1 — HTML structure
 // ---------------------------------------------------------------------------
@@ -107,7 +116,8 @@ function checkStructure(html, errs) {
   if (!/<\/head>/i.test(html)) errs.push("missing </head>");
   if (countTag(html, "body") !== 1) errs.push(`expected exactly 1 <body>, found ${countTag(html, "body")}`);
   if (!/<\/body>/i.test(html)) errs.push("missing </body>");
-  if (countTag(html, "title") !== 1) errs.push(`expected exactly 1 <title>, found ${countTag(html, "title")}`);
+  const titles = countTag(headSection(html), "title");
+  if (titles !== 1) errs.push(`expected exactly 1 <title> in <head>, found ${titles}`);
   if (!isRedirectStub(html)) {
     const h1 = countTag(html, "h1");
     if (h1 !== 1) errs.push(`expected exactly 1 <h1>, found ${h1}`);
@@ -293,6 +303,10 @@ function selftest() {
       (h) => h.replace("</body>", "<!-- <h1>doc example</h1> --></body>"), 0],
     ["<html> inside a script string is not counted",
       (h) => h.replace("</body>", '<script>var x = "<html>";</script></body>'), 0],
+    // The document <title> is counted in <head> only: a legal <title> inside an
+    // inline SVG in the body must not trip the "exactly 1 <title>" rule.
+    ["<title> inside inline SVG in body is not counted",
+      (h) => h.replace("<h1>ok</h1>", '<h1>ok</h1><svg aria-hidden="false"><title>icon</title></svg>'), 0],
   ];
   let proven = 0, vacuous = 0, wrong = 0;
   try {

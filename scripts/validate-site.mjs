@@ -32,8 +32,9 @@
  * the way that check must catch and requires each to redden. A validator that
  * cannot fail is not a gate.
  */
-import { readdirSync, statSync, existsSync, readFileSync } from "node:fs";
+import { readdirSync, statSync, existsSync, readFileSync, mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { dirname, join, resolve, relative, extname } from "node:path";
+import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
 
 const ROOT = resolve(join(dirname(fileURLToPath(import.meta.url)), ".."));
@@ -122,6 +123,10 @@ function resolveLocal(url, pageFile) {
   if (isExternal(url)) return null;
   let u = url.split("#")[0].split("?")[0];
   if (u === "") return null;
+  // A link may percent-encode on-disk characters (e.g. "%20"); decode before the
+  // existence check or a real file reads as missing (a false red). Malformed
+  // escapes are left as-is rather than throwing.
+  try { u = decodeURI(u); } catch { /* keep raw */ }
   const base = u.startsWith("/") ? ROOT : dirname(pageFile);
   const rel = u.startsWith("/") ? u.slice(1) : u;
   let p = resolve(base, rel);
@@ -189,12 +194,21 @@ function runAll() {
 // Self-test — every check must redden on a page broken exactly for it.
 // ---------------------------------------------------------------------------
 function selftest() {
+  // Hermetic: the self-test proves the validator's LOGIC, so it must not depend
+  // on live repo assets (a PR that renames /tools/shell.css must red the real
+  // pages, not the self-test). Fixtures live in an OS temp dir with RELATIVE
+  // links resolved against a temp anchor page, and are removed at the end.
+  const fix = mkdtempSync(join(tmpdir(), "validate-site-selftest-"));
+  writeFileSync(join(fix, "shell.css"), "/* ok */");
+  writeFileSync(join(fix, "shell.js"), "// ok");
+  mkdirSync(join(fix, "sub"), { recursive: true });
+  writeFileSync(join(fix, "sub", "index.html"), "<!doctype html><title>t</title><h1>t</h1>");
+  const anchorFile = join(fix, "index.html");
+
   const good = `<!doctype html><html lang="en"><head><title>ok</title>
-    <link rel="stylesheet" href="/tools/shell.css"></head>
-    <body><h1>ok</h1><a href="/tools/">tools</a>
-    <script src="/tools/shell.js"></script></body></html>`;
-  // The self-test resolves links against a real page file so /tools/ exists.
-  const anchorFile = join(ROOT, "index.html");
+    <link rel="stylesheet" href="shell.css"></head>
+    <body><h1>ok</h1><a href="sub/">tools</a>
+    <script src="shell.js"></script></body></html>`;
 
   const mutate = (fn) => { const errs = []; const h = fn(good); checkStructure(h, errs); checkLinks(h, anchorFile, errs); return errs; };
   const cases = [
@@ -203,26 +217,34 @@ function selftest() {
     ["two <h1>", (h) => h.replace("</body>", "<h1>extra</h1></body>"), 1],
     ["missing </head>", (h) => h.replace("</head>", ""), 1],
     ["no title", (h) => h.replace(/<title>.*?<\/title>/i, ""), 1],
-    ["dead root-relative href", (h) => h.replace('href="/tools/"', 'href="/tools/does-not-exist/"'), 1],
-    ["dead asset src", (h) => h.replace('src="/tools/shell.js"', 'src="/tools/nope.js"'), 1],
-    ["dead stylesheet", (h) => h.replace('href="/tools/shell.css"', 'href="/tools/nope.css"'), 1],
+    ["dead relative href", (h) => h.replace('href="sub/"', 'href="sub/does-not-exist/"'), 1],
+    ["dead asset src", (h) => h.replace('src="shell.js"', 'src="nope.js"'), 1],
+    ["dead stylesheet", (h) => h.replace('href="shell.css"', 'href="nope.css"'), 1],
+    // Exercises the ROOT-relative branch (u.startsWith("/") -> resolve against
+    // ROOT). Hermetic: the inserted path cannot exist in the repo, so it reddens
+    // regardless of tree contents.
+    ["dead root-relative href", (h) => h.replace("</body>", '<a href="/no-such-dir-xyz123/">x</a></body>'), 1],
     // The redirect-stub exemption: a "Moved" page with no <h1> is clean...
     ["redirect stub without h1 is clean",
-      () => `<!doctype html><html lang="en"><head><meta http-equiv="refresh" content="0; url=/tools/x/"><title>Moved</title></head><body><a href="/tools/">go</a></body></html>`, 0],
+      () => `<!doctype html><html lang="en"><head><meta http-equiv="refresh" content="0; url=/x/"><title>Moved</title></head><body><a href="sub/">go</a></body></html>`, 0],
     // ...but the exemption must not leak: a NON-redirect page still needs its h1.
     ["non-redirect without h1 still reddens",
       () => good.replace("<h1>ok</h1>", ""), 1],
   ];
   let proven = 0, vacuous = 0, wrong = 0;
-  for (const [name, fn, wantAtLeast] of cases) {
-    const n = mutate(fn).length;
-    if (wantAtLeast === 0) {
-      if (n === 0) { proven++; console.log(`  ✓ ${name}: clean as expected`); }
-      else { wrong++; console.error(`  ✗ ${name}: expected clean, got ${n} error(s)`); }
-    } else {
-      if (n >= wantAtLeast) { proven++; console.log(`  ✓ ${name}: reddened (${n})`); }
-      else { vacuous++; console.error(`  ✗ ${name}: expected >=1 error, got ${n} (VACUOUS)`); }
+  try {
+    for (const [name, fn, wantAtLeast] of cases) {
+      const n = mutate(fn).length;
+      if (wantAtLeast === 0) {
+        if (n === 0) { proven++; console.log(`  ✓ ${name}: clean as expected`); }
+        else { wrong++; console.error(`  ✗ ${name}: expected clean, got ${n} error(s)`); }
+      } else {
+        if (n >= wantAtLeast) { proven++; console.log(`  ✓ ${name}: reddened (${n})`); }
+        else { vacuous++; console.error(`  ✗ ${name}: expected >=1 error, got ${n} (VACUOUS)`); }
+      }
     }
+  } finally {
+    rmSync(fix, { recursive: true, force: true });
   }
   console.log(`\nselftest: ${proven} proven / ${vacuous} vacuous / ${wrong} wrong.`);
   process.exit(vacuous || wrong ? 1 : 0);

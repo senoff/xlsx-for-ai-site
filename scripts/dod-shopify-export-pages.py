@@ -41,10 +41,13 @@ import re
 import sys
 import time
 import urllib.request
+from urllib.parse import urlparse
 
 SITE = os.environ.get("BASE_URL", "https://xlsx-for-ai.dev").rstrip("/")
 # The authenticated export surface the pages must funnel to (XLS-210/211).
-EXPORT_SURFACE = "app.xlsx-for-ai.dev/app/export"
+EXPORT_HOST = "app.xlsx-for-ai.dev"
+EXPORT_PATH_PREFIX = "/app/export"
+EXPORT_SURFACE = EXPORT_HOST + EXPORT_PATH_PREFIX  # for human-readable messages
 # Non-existent public producer routes / anonymous-tool markers that would mean
 # the page claims an export path that does not exist.
 FORBIDDEN_ROUTES = [
@@ -66,7 +69,6 @@ PAGES = {
             "variant",                        # the real metafield gap axis
             "metafield",                      # the subject
             "leading-zero",                   # the Excel-fidelity gap, precisely stated
-            EXPORT_SURFACE,                   # CTA funnels to the auth surface
         ],
         # The card forbids the flat-false claim that native CSV has no metafields.
         "forbid": [
@@ -82,7 +84,6 @@ PAGES = {
             "no native collection export",    # the strongest, accurate gap
             "import-only",                     # the Collection-column truth
             "smart collection",               # must cover smart + manual
-            EXPORT_SURFACE,                   # CTA funnels to the auth surface
         ],
         "forbid": [
             # A page must not tell the visitor to use a native export that doesn't exist.
@@ -109,10 +110,26 @@ _p, _f = [], []
 def ok(m): _p.append(m); print("PASS:", m)
 def bad(m): _f.append(m); print("FAIL:", m)
 
+# Same recipe as the sibling scripts (dod-xls221.py / dod-shopify-import-pages.py):
+# the authored .xfa-mcp-copy block sits immediately above <footer>.
 BLOCK_RE = re.compile(r'<div class="xfa-mcp-copy"[^>]*>(.*?)</div>\s*<footer', re.S)
 TAG_RE = re.compile(r"<[^>]+>")
 FORM_RE = re.compile(r"<form\b", re.I)
+HREF_RE = re.compile(r'<a\b[^>]*\bhref=["\']([^"\']+)["\']', re.I)
+PANEL_RE = re.compile(r'id\s*=\s*["\']xfa-panel["\']', re.I)
 SIGNUP_WALLS = ["sign in", "sign up", "log in", "create an account", "start free trial", "enter your card"]
+
+
+def has_valid_cta(html):
+    """True iff an actual anchor links the authenticated export surface —
+    scheme https (or protocol-relative), host EXACTLY app.xlsx-for-ai.dev, and
+    path under /app/export. A substring match would greenlight the string in a
+    comment or a look-alike host (app.xlsx-for-ai.dev.evil.com), so parse hrefs."""
+    for href in HREF_RE.findall(html):
+        u = urlparse(href if "://" in href else "https://" + href.lstrip("/"))
+        if u.scheme in ("https", "") and u.netloc == EXPORT_HOST and u.path.startswith(EXPORT_PATH_PREFIX):
+            return True
+    return False
 
 
 def prose_of(html):
@@ -137,13 +154,13 @@ def check_page(slug, html, spec):
             else ok("%s: free of false claim %r" % (slug, needle))
 
     # 3) CTA funnels to the auth surface, NOT a public producer route / upload panel
-    ok("%s: CTA funnels to auth export surface" % slug) if EXPORT_SURFACE in low \
-        else bad("%s: CTA does not link the authenticated export surface" % slug)
+    ok("%s: CTA anchor funnels to auth export surface" % slug) if has_valid_cta(html) \
+        else bad("%s: no anchor links the authenticated export surface (%s%s)" % (slug, EXPORT_HOST, EXPORT_PATH_PREFIX))
     for route in FORBIDDEN_ROUTES:
         bad("%s: references non-existent public producer route %r" % (slug, route)) if route.lower() in low \
             else ok("%s: no public producer route %r" % (slug, route))
     bad("%s: has an upload panel (#xfa-panel) — export is not an anonymous upload" % slug) \
-        if 'id="xfa-panel"' in low else ok("%s: no anonymous upload panel" % slug)
+        if PANEL_RE.search(html) else ok("%s: no anonymous upload panel" % slug)
 
     # 4) free / no signup
     walls = [w for w in SIGNUP_WALLS if w in low]
@@ -161,12 +178,29 @@ def check_page(slug, html, spec):
     return prose
 
 
-def fetch(url, timeout=20):
+def _brief(e):
+    """A non-leaky one-line rendering of an exception: its type and a truncated
+    message. The script only ever fetches PUBLIC, unauthenticated URLs, so there
+    is nothing sensitive to leak — but keep logs terse and stack-trace-free."""
+    return "%s: %.160s" % (type(e).__name__, str(e).replace("\n", " "))
+
+
+def fetch(url, timeout=20, attempts=3):
+    """GET with a bounded retry so a transient network/CDN hiccup can't produce a
+    false red. Each attempt keeps its own timeout, so total time stays capped."""
     sep = "&" if "?" in url else "?"
-    req = urllib.request.Request(url + sep + "cb=%d" % time.time_ns(),
-                                 headers={"Cache-Control": "no-cache", "User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return r.status, r.read().decode("utf-8", "replace")
+    last = None
+    for i in range(attempts):
+        try:
+            req = urllib.request.Request(url + sep + "cb=%d" % time.time_ns(),
+                                         headers={"Cache-Control": "no-cache", "User-Agent": UA})
+            with urllib.request.urlopen(req, timeout=timeout) as r:
+                return r.status, r.read().decode("utf-8", "replace")
+        except Exception as e:  # noqa: BLE001 — retry any transient failure, report the last
+            last = e
+            if i + 1 < attempts:
+                time.sleep(0.5 * (i + 1))
+    raise last
 
 
 # ------------------------------------------------------------------ selftest
@@ -248,7 +282,7 @@ def live(only_slug=None):
         try:
             status, html = fetch(url)
         except Exception as e:
-            bad("%s: fetch failed (%s)" % (url, e))
+            bad("%s: fetch failed (%s)" % (url, _brief(e)))
             continue
         ok("%s 200" % url) if status == 200 else bad("%s HTTP %d" % (url, status))
         htmls[slug] = html
@@ -263,17 +297,22 @@ def live(only_slug=None):
             try:
                 _s, html = fetch("%s/tools/%s/" % (SITE, slug))
             except Exception as e:
-                bad("%s: fetch failed for uniqueness (%s)" % (slug, e))
+                bad("%s: fetch failed for uniqueness (%s)" % (slug, _brief(e)))
                 continue
         t = prose_of(html)
         if not t:
             bad("%s: no .xfa-mcp-copy block for uniqueness" % slug)
             continue
         hashes[slug] = hashlib.md5(t.encode()).hexdigest()
-    if len(hashes) == len(UNIQUENESS_SET) and len(set(hashes.values())) == len(UNIQUENESS_SET):
+    # Distinguish an incomplete set (a page missing/empty) from a genuine
+    # collision, so a fetch/extraction failure isn't misreported as a "dupe".
+    if len(hashes) != len(UNIQUENESS_SET):
+        bad("incomplete uniqueness set — got %d/%d prose blocks (%s); can't judge distinctness"
+            % (len(hashes), len(UNIQUENESS_SET), ", ".join(sorted(hashes)) or "none"))
+    elif len(set(hashes.values())) == len(UNIQUENESS_SET):
         ok("all %d prose blocks are md5-distinct (no SEO dilution)" % len(UNIQUENESS_SET))
     else:
-        dupes = [s for s in hashes if list(hashes.values()).count(hashes[s]) > 1]
+        dupes = sorted(s for s in hashes if list(hashes.values()).count(hashes[s]) > 1)
         bad("prose NOT all-distinct across the uniqueness set; collisions: %s" % dupes)
 
     print("\n==== Shopify export pages DoD: %d passed / %d failed ====" % (len(_p), len(_f)))

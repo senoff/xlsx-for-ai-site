@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy — xlsx-for-ai</title>
-<meta name="description" content="How xlsx-for-ai handles your data. Plain-English privacy policy for developers and FP&A reviewers.">
+<meta name="description" content="How xlsx-for-ai handles your data. Plain-English privacy policy for the CLI/API and the Importable Shopify app.">
 <meta name="author" content="xlsx-for-ai">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
@@ -124,9 +124,9 @@
 <div class="wrap">
 
 <h1>Privacy</h1>
-<p class="last-updated"><strong>Last updated:</strong> 2026-05-07</p>
+<p class="last-updated"><strong>Last updated:</strong> 2026-07-20</p>
 
-<p>This document covers how xlsx-for-ai handles your data. It is written for developers who want to audit the data flow before deploying xlsx-for-ai in an agent, and for FP&amp;A teams who need to forward it to legal before using an agent that touches financial spreadsheets.</p>
+<p>This document covers how xlsx-for-ai handles your data across <strong>two separate products</strong>: (A) the <strong>xlsx-for-ai CLI &amp; hosted API</strong>, and (B) <strong>Importable</strong>, our Shopify app. The sections below through "Changes to this document" describe the CLI &amp; API. <strong>If you use our Shopify app, see <a href="#importable">Importable — our Shopify app</a>.</strong> The two products handle data differently: the CLI never asks for an email or any identifying information; the Shopify app processes your store's data, which can include your customers' personal information, to perform the imports and exports you request.</p>
 
 <h2>Architecture</h2>
 
@@ -219,11 +219,61 @@ xlsx-for-ai --telemetry-status    # check current setting</code></pre>
 
 <p>Full-bytes captures carry the same privacy guarantees as redacted captures: 30-day TTL, no training use, no third-party sharing.</p>
 
+<h2 id="importable">Importable — our Shopify app</h2>
+
+<p><strong>This section applies if you use Importable, our Shopify app.</strong> Importable is a separate product from the xlsx-for-ai CLI/API described above. It imports and exports Shopify store data — products, inventory, collections, navigation, content, discounts, markets, and, for B2B stores, companies and their contacts — by converting spreadsheet files to and from your store. Because a store's data can include your customers' personal information, this section describes how we handle it.</p>
+
+<h3>Our role</h3>
+<p>You, the merchant, are the data controller. Importable is a data processor: we process personal data only on your instructions — the imports and exports you initiate — and for no other purpose. Our processing terms are set out in our <a href="/terms/#importable">Terms of Service &amp; Data Processing Addendum</a>.</p>
+
+<h3>What we process, and why</h3>
+<ul>
+  <li><strong>Store catalog data</strong> — products, inventory, collections, navigation, content, discounts, markets, metaobjects, files — read for export or written for import, as you direct.</li>
+  <li><strong>Protected customer data</strong> — only if you use the Companies (B2B) import or export, we process company contacts' <strong>name, email, and phone</strong>. We request Shopify's customer scopes solely to operate those features, process that data only to perform your requested operation, and retain it only transiently (see Retention).</li>
+</ul>
+<p>We do not sell your data, use it for advertising, or use it to train AI models.</p>
+
+<h3>Subprocessors</h3>
+<table>
+  <thead><tr><th>Subprocessor</th><th>Role</th><th>What reaches them</th></tr></thead>
+  <tbody>
+    <tr><td>Anthropic (Claude API)</td><td>AI-assisted column mapping, when a spreadsheet header can't be matched to a store field automatically</td><td>Column headers and, for unresolved columns, <strong>shape-masked</strong> sample values — raw customer contact values are masked before the call, so the model sees a value's shape, not the value itself</td></tr>
+    <tr><td>Fly.io</td><td>Hosting and database</td><td>Processed data, encrypted at rest (AES-XTS) and in transit (TLS)</td></tr>
+    <tr><td>Shopify</td><td>The platform your store runs on</td><td>Handled under Shopify's own terms</td></tr>
+  </tbody>
+</table>
+
+<h3>Retention</h3>
+<p>Importable is a pass-through operation, not a data warehouse. During an import we briefly stage uploaded rows (including any Companies contact rows) to complete the operation; this staging data is <strong>physically deleted within 24 hours</strong>, and immediately on a redaction request. Where we keep a short-lived record to de-duplicate a recent create, contact email is stored <strong>hashed</strong>, never in the clear, and purged on a rolling schedule.</p>
+
+<h3>Deletion &amp; data-subject requests</h3>
+<p>We honor Shopify's mandatory data-protection webhooks:</p>
+<ul>
+  <li><strong>customers/redact</strong> — we physically delete all data we hold matching that customer, including any transiently-staged contact rows (matched by email).</li>
+  <li><strong>shop/redact</strong> — when a store uninstalls, we physically delete all data we hold for that shop.</li>
+  <li><strong>customers/data_request</strong> — we report accurately what, if anything, we transiently hold for that data subject.</li>
+</ul>
+<p>Uninstalling the app triggers deletion of your store's data.</p>
+
+<h3>Security</h3>
+<ul>
+  <li>Encryption at rest (AES-XTS) and in transit (TLS).</li>
+  <li>Webhooks are HMAC-verified; only authenticated, authorized requests are processed.</li>
+  <li>We keep an access log of data-processing requests, and limit staff access to customer data to operating the service.</li>
+  <li>Administrative access is protected by two-factor authentication.</li>
+</ul>
+
+<h3>Automated processing</h3>
+<p>The AI column-mapping above is used only to match spreadsheet columns to store fields. It makes no decision about your customers that produces legal or similarly significant effects, so no customer opt-out applies.</p>
+
+<h3>Contact</h3>
+<p>Privacy questions or requests relating to the Shopify app: <a href="mailto:hello@xlsx-for-ai.dev">hello@xlsx-for-ai.dev</a>.</p>
+
 <h2>Compliance posture</h2>
 
 <p><strong>SOC 2:</strong> not yet certified. We operate with SOC 2-aligned controls (access logging, least-privilege service accounts, encrypted storage at rest, TLS in transit) and are working toward formal certification.</p>
 
-<p><strong>GDPR:</strong> we do not collect personally identifiable information. The client_id UUID is not linked to any natural person. If you believe a UUID is linked to you and want it deleted from our audit logs, contact us at the address below and we will delete all records for that client_id within 30 days.</p>
+<p><strong>GDPR (CLI &amp; API):</strong> the CLI and hosted API do not collect personally identifiable information. The client_id UUID is not linked to any natural person. If you believe a UUID is linked to you and want it deleted from our audit logs, contact us at the address below and we will delete all records for that client_id within 30 days. <em>(For the Shopify app, which does process customer personal data, see <a href="#importable">Importable — our Shopify app</a> above.)</em></p>
 
 <p><strong>HIPAA / PCI:</strong> xlsx-for-ai is not HIPAA- or PCI-certified. Do not use it to process protected health information or payment card data in regulated environments without additional controls.</p>
 

@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Terms of Service — xlsx-for-ai</title>
-<meta name="description" content="Terms of Service for the xlsx-for-ai npm package and hosted API.">
+<meta name="description" content="Terms of Service for the xlsx-for-ai npm package and hosted API, and Data Processing Addendum for the Importable Shopify app.">
 <meta name="author" content="xlsx-for-ai">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
@@ -101,9 +101,9 @@
 <div class="wrap">
 
 <h1>Terms of Service</h1>
-<p class="last-updated"><strong>Last updated:</strong> 2026-05-09</p>
+<p class="last-updated"><strong>Last updated:</strong> 2026-07-20</p>
 
-<p>By installing the xlsx-for-ai npm package or using the API at <code>api.xlsx-for-ai.dev</code> ("the Service"), you agree to these terms.</p>
+<p>By installing the xlsx-for-ai npm package or using the API at <code>api.xlsx-for-ai.dev</code> ("the Service"), you agree to these terms. Sections 1–9 govern the CLI and hosted API. <strong>If you use Importable, our Shopify app, the <a href="#importable">Data Processing Addendum in Section 10</a> also applies.</strong></p>
 
 <h2>1. The Service</h2>
 <p>xlsx-for-ai is software that processes Excel (.xlsx and related) files on behalf of LLM agents. The npm client is open-source. The hosted API is operated by xlsx-for-ai.</p>
@@ -134,7 +134,31 @@
 <h2>8. Governing law</h2>
 <p>These terms are governed by the laws of the State of Texas, United States, without regard to conflict-of-laws principles. Disputes will be resolved in courts located in Travis County, Texas.</p>
 
-<h2>9. Contact</h2>
+<h2 id="importable">10. Importable (Shopify app) — Data Processing Addendum</h2>
+<p>This Section applies where Importable, our Shopify app, processes personal data on your behalf. Importable imports and exports Shopify store data by converting spreadsheet files to and from your store.</p>
+
+<h3>10.1 Roles</h3>
+<p>You, the merchant, are the <strong>data controller</strong>. We are a <strong>data processor</strong>, processing personal data only on your documented instructions — the imports and exports you initiate.</p>
+
+<h3>10.2 Purpose limitation</h3>
+<p>We process personal data <strong>solely</strong> to perform the operation you request. We do not use it for any other purpose, do not sell it, and do not use it for advertising or to train AI models.</p>
+
+<h3>10.3 Categories of data &amp; data subjects</h3>
+<p><strong>Data subjects:</strong> your customers and B2B business contacts (only when you use Companies import/export). <strong>Personal data:</strong> company name, contact name, email, and phone, as present in the files you upload or the store records you export.</p>
+
+<h3>10.4 Subprocessors</h3>
+<p>We engage the subprocessors listed in our <a href="/privacy/#importable">Privacy Policy</a> (Anthropic for AI column mapping, with sample values shape-masked before transmission; Fly.io for encrypted hosting and database). We remain responsible for their compliance and will update that list if it changes.</p>
+
+<h3>10.5 Retention &amp; deletion</h3>
+<p>Import staging data is transient and <strong>physically deleted within 24 hours</strong>. On <code>customers/redact</code> we delete all matching data for that data subject; on <code>shop/redact</code> we delete all data for the uninstalling shop; on <code>customers/data_request</code> we report accurately what we transiently hold. These are physical deletes, not soft-deletes.</p>
+
+<h3>10.6 Security</h3>
+<p>Encryption at rest (AES-XTS) and in transit (TLS); HMAC-verified webhooks; two-factor authentication on administrative access; an access log of data-processing requests; and staff access to customer data limited to operating the service.</p>
+
+<h3>10.7 Assistance</h3>
+<p>We assist you, as processor, with data-subject requests and security obligations through the deletion and reporting mechanisms above.</p>
+
+<h2>Contact</h2>
 <p>Questions about these terms: <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a>.</p>
 
 </div>

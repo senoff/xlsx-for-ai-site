@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Live DoD for the Shopify EXPORT landing pages (XLS-210 products,
-XLS-211 collections) on the real deploy.
+XLS-211 collections) on the real deploy, plus the XLS-218 SEO-length
+hardening DoD (title <=60 / meta description <=155) across the three
+export/fix pages it trims.
 
 These are a DIFFERENT SHAPE from the import shell pages (XLS-206..209). Export is
 a live-store GraphQL pull inside the OAuth-gated Importable app — there is no
@@ -32,7 +34,9 @@ Exit 0 = PASS · 1 = FAIL · 2 = DID NOT RUN (never a green).
 
 Usage:
   python3 scripts/dod-shopify-export-pages.py            # live check on the deploy
-  python3 scripts/dod-shopify-export-pages.py --selftest # prove the assertions can fail
+  python3 scripts/dod-shopify-export-pages.py XLS-210    # scope content assertions to one card's page
+  python3 scripts/dod-shopify-export-pages.py XLS-218    # SEO length bars (title<=60/meta<=155) on the 3 trimmed pages
+  python3 scripts/dod-shopify-export-pages.py --selftest # prove the assertions can fail (content + length classes)
   BASE_URL=http://localhost:8000 python3 scripts/dod-shopify-export-pages.py
 """
 import hashlib
@@ -104,6 +108,18 @@ UNIQUENESS_SET = ["export-shopify-products", "export-shopify-collections", "impo
 CARD_SLUG = {
     "XLS-210": "export-shopify-products",
     "XLS-211": "export-shopify-collections",
+}
+
+# XLS-218 is a DIFFERENT assertion class from 210/211's content/funnel checks: it
+# hardened the SERP-length metadata (title <=60, meta description <=155) across
+# THREE pages it trimmed. Its DoD IS those length bars, live on the deploy — RED if
+# any served title/meta is over-length, GREEN on the trim. (A card that only ran
+# 210/211's content assertions would never fail on an over-length title, so it
+# would not be XLS-218's check.)
+TITLE_MAX = 60
+META_MAX = 155
+CARD_LENGTHS = {
+    "XLS-218": ["export-shopify-products", "export-shopify-collections", "fix-shopify-products"],
 }
 
 _p, _f = [], []
@@ -331,16 +347,112 @@ def live(only_slug=None):
     return 0 if not _f else 1
 
 
+# ------------------------------------------------------------------ XLS-218 lengths
+TITLE_RE = re.compile(r"<title>(.*?)</title>", re.I | re.S)
+META_DESC_RE = re.compile(r'<meta\s+name="description"\s+content="([^"]*)"', re.I)
+
+
+def _assert_len(slug, kind, text, limit):
+    """RED iff `text` exceeds `limit` characters (code points, matching a SERP
+    length count). GREEN at exactly the limit — the bar is <=."""
+    n = len(text)
+    if n <= limit:
+        ok("%s: %s length %d <= %d" % (slug, kind, n, limit))
+    else:
+        bad("%s: %s length %d > %d — %r" % (slug, kind, n, limit, text))
+
+
+def _check_lengths(slug, html):
+    """Assert the two SERP-length bars XLS-218 hardened on one page's served HTML."""
+    mt = TITLE_RE.search(html)
+    if not mt:
+        bad("%s: no <title>" % slug)
+    else:
+        _assert_len(slug, "title", mt.group(1).strip(), TITLE_MAX)
+    mm = META_DESC_RE.search(html)
+    if not mm:
+        bad('%s: no <meta name="description">' % slug)
+    else:
+        _assert_len(slug, "meta description", mm.group(1), META_MAX)
+
+
+def live_lengths(slugs):
+    """XLS-218 DoD: fetch each trimmed page on the deploy and assert its title and
+    meta description are within the SERP bars. RED (exit 1) if any page is
+    over-length or unfetchable; GREEN (exit 0) only when all pages are within."""
+    print("== XLS-218 live SEO-length DoD on %s (title<=%d, meta<=%d) ==" % (SITE, TITLE_MAX, META_MAX))
+    for slug in slugs:
+        url = "%s/tools/%s/" % (SITE, slug)
+        try:
+            status, html = fetch(url)
+        except Exception as e:
+            bad("%s: fetch failed (%s)" % (url, _brief(e)))
+            continue
+        ok("%s 200" % url) if status == 200 else bad("%s HTTP %d" % (url, status))
+        _check_lengths(slug, html)
+    print("\n==== XLS-218 SEO-length DoD: %d passed / %d failed ====" % (len(_p), len(_f)))
+    return 0 if not _f else 1
+
+
+def _selftest_lengths():
+    """Prove the length assertions can go RED. A good page (title=60, meta=155)
+    must pass; a title of 61 and a meta of 156 must each redden. A length check
+    that stays green on an over-length page is asserting nothing."""
+    print("== --selftest lengths (XLS-218): an over-length title/meta must redden ==")
+
+    def len_fails(html):
+        global _p, _f
+        sp, sf = _p, _f
+        _p, _f = [], []
+        _check_lengths("selftest", html)
+        out = list(_f)
+        _p, _f = sp, sf
+        return out
+
+    def page(tn, mn):
+        return '<title>%s</title><meta name="description" content="%s">' % ("x" * tn, "y" * mn)
+
+    base = len_fails(page(TITLE_MAX, META_MAX))
+    if base:
+        for f in base:
+            print("  unexpected FAIL on the at-limit page:", f)
+        print("SELFTEST-LEN: BROKEN — an at-limit page (title=60, meta=155) does not pass")
+        return 1
+    print("  baseline at-limit page (title=%d, meta=%d) passes (0 failures)" % (TITLE_MAX, META_MAX))
+
+    proven, vacuous = 0, 0
+    for name, html in {
+        "title 1 over the bar": page(TITLE_MAX + 1, META_MAX),
+        "meta 1 over the bar": page(TITLE_MAX, META_MAX + 1),
+    }.items():
+        got = len_fails(html)
+        if got:
+            proven += 1
+            print("PASS: length mutation reddened: %s (%d failure(s))" % (name, len(got)))
+        else:
+            vacuous += 1
+            print("FAIL: length mutation did NOT redden (assertion is vacuous): %s" % name)
+    print("\n==== --selftest lengths: %d proven / %d vacuous ====" % (proven, vacuous))
+    return 0 if vacuous == 0 else 1
+
+
 if __name__ == "__main__":
     if "--selftest" in sys.argv:
-        sys.exit(selftest())
-    # Optional card-id (XLS-210 | XLS-211) scopes the per-page content assertions
-    # to that card's own page. An unknown card-id is a DID-NOT-RUN, never a pass.
+        rc_content = selftest()
+        rc_lengths = _selftest_lengths()
+        sys.exit(rc_content or rc_lengths)
+    # Optional card-id scopes the run to that card's own DoD:
+    #   XLS-210/211 -> the per-page content/funnel assertions for that page
+    #   XLS-218     -> the SEO length bars across its three trimmed pages
+    # An unknown card-id is a DID-NOT-RUN (exit 2), never a green.
     card = next((a for a in sys.argv[1:] if a.startswith("XLS-")), None)
-    only = None
     if card is not None:
+        if card in CARD_LENGTHS:
+            sys.exit(live_lengths(CARD_LENGTHS[card]))
         only = CARD_SLUG.get(card)
         if only is None:
-            print("DID NOT RUN — unknown card %r (known: %s)" % (card, ", ".join(CARD_SLUG)))
+            known = ", ".join(list(CARD_SLUG) + list(CARD_LENGTHS))
+            print("DID NOT RUN — unknown card %r (known: %s)" % (card, known))
             sys.exit(2)
-    sys.exit(live(only))
+        sys.exit(live(only))
+    sys.exit(live())

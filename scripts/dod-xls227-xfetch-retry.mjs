@@ -23,7 +23,9 @@
  * root over a real (ephemeral-port) HTTP server rather than file://. Fully
  * self-contained and headless — no live server, no network.
  *
- * Exit 0 = PASS (both arms) · 1 = FAIL · 2 = DID NOT RUN (never a green).
+ * Exit 0 = PASS (both arms) · 1 = FAIL · 6 = DID NOT RUN (INDETERMINATE — the
+ * one non-zero code the xlsx-board-verify runner classifies as "could not
+ * determine" rather than card drift; any other non-zero is read as FAIL).
  */
 import { chromium } from "playwright";
 import { createServer } from "node:http";
@@ -36,7 +38,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const PAGE_PATH = "/tools/convert-excel-to-csv/"; // any page loading the shared shell
 const NAV_MS = 30000;
 
-const die = (msg) => { console.error(`DID NOT RUN — ${msg}`); process.exit(2); };
+const die = (msg) => { console.error(`DID NOT RUN — ${msg}`); process.exit(6); };
 
 const MIME = {
   ".html": "text/html; charset=utf-8",

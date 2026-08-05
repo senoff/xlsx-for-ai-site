@@ -1,0 +1,60 @@
+# build-validate — the MECHANICAL pre-merge gate for the static site.
+#
+# The site repo had zero CI, so xlsx-merge's merge-on-evidence door had nothing
+# to read but a grace-clean claim (exactly what the door will not merge on). This
+# is the graded pre-merge surface: it runs on the PR's own tree, needs no deploy,
+# and fails the merge if the tree is structurally broken. The live GitHub-Pages
+# DoD (dod-*.py / dod-page-walk.mjs) stays the post-deploy Done capstone; it does
+# NOT gate merge.
+#
+# `synchronize` is in the trigger list on purpose. Once this check is REQUIRED, a
+# required check that does not fire on the new head is ABSENT to branch protection
+# and blocks merge forever with nothing red to click. It must run on every push.
+name: build-validate
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, synchronize]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: HTML + links + sitemap
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # The validator uses only Node built-ins — no `npm ci`, no browser download.
+      - name: Prove the validator can still fail (self-test)
+        run: node scripts/validate-site.mjs --selftest
+
+      - name: Validate HTML structure + internal links + referenced assets
+        run: node scripts/validate-site.mjs
+
+      # gen-sitemap.mjs owns sitemap discovery + exclusion logic; regenerate and
+      # assert the committed sitemap COVERS the same URLs, rather than re-walking
+      # the tree here (a second implementation is a second answer that can drift).
+      #
+      # We compare <loc> URLs ONLY, not the whole file. <lastmod> is derived from
+      # each page's git commit date (`git log -1 --format=%cs`), which is empty on
+      # a shallow CI checkout for unchanged files (-> today) and shifts on every
+      # squash-merge — a full-file `git diff` would false-red on both. URL coverage
+      # is the real contract ("a new page must be registered in the sitemap") and
+      # is path-derived, so it is stable regardless of checkout depth or dates.
+      - name: Sitemap covers every page
+        run: |
+          git show HEAD:sitemap.xml | grep -oE '<loc>[^<]*</loc>' | sort > /tmp/committed-locs
+          node scripts/gen-sitemap.mjs
+          grep -oE '<loc>[^<]*</loc>' sitemap.xml | sort > /tmp/fresh-locs
+          if ! diff -u /tmp/committed-locs /tmp/fresh-locs; then
+            echo "::error::sitemap.xml URL coverage is stale — run 'node scripts/gen-sitemap.mjs' and commit the result."
+            exit 1
+          fi

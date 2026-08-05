@@ -1,1 +1,4 @@
 node_modules/
+
+# Python bytecode from scripts/dod-*.py
+__pycache__/

@@ -1,0 +1,63 @@
+# deploy-verify-sitemap — the POST-DEPLOY deploy-verify capstone (XLS-743, Bob 2026-08-05).
+#
+# build-validate.yml is the PRE-merge gate (runs on the PR tree, no deploy). This is
+# its post-deploy counterpart: after the site publishes, it proves — against the LIVE
+# prod URL — that (1) the sitemap covers every built route (no blind spot) and (2)
+# every sitemap URL 200s (no silently-404'd page). CI-green is not works-on-prod; this
+# is the arm that measures the executing surface after it is actually live.
+#
+# Triggers, most-reliable first:
+#   - schedule: a standing deploy-WIDE regression guard. Catches a page that breaks for
+#     ANY reason (bad deploy, dep rot, host incident), not only a bad merge — stronger
+#     than deploy-coupling alone.
+#   - workflow_dispatch: the on-demand run. THIS is what the lift deploy fires as its
+#     first real run, and what xlsx-merge invokes in the re-verify-each-door lift step.
+#   - workflow_run on "pages build and deployment": best-effort deploy-coupling. Classic
+#     GitHub-Pages emits this on publish; if it does not fire for a legacy-pages repo,
+#     schedule + dispatch still cover — the mechanism does not DEPEND on this trigger.
+#
+# Timing note: the completeness arm compares the checked-out main tree's built routes
+# against the LIVE sitemap. Post-publish (workflow_run) they agree. On a schedule tick
+# that lands in the ~35s window between a push to main and Pages publishing, a just-added
+# page is on disk but not yet live — completeness reds HONESTLY (the live site genuinely
+# does not serve it yet) and self-heals on the next run. That is a true transient, not a
+# false red; it is not softened, because a check tuned to dodge a real transient stops
+# biting the real defect it exists to catch.
+name: deploy-verify-sitemap
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: '17 */6 * * *'   # every 6h, offset off the hour to avoid the cron stampede
+  workflow_run:
+    workflows: ["pages build and deployment"]
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  sweep:
+    name: completeness + live 200 sweep
+    # On a workflow_run trigger, only sweep a SUCCESSFUL deploy — a failed publish left
+    # prod on the old content, so sweeping it would measure the wrong surface. dispatch
+    # and schedule carry no workflow_run payload and fall through the first clause.
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # RED-arm proof first: if the instrument cannot fail, its green means nothing.
+      - name: Prove the deploy-verify can still fail (self-test)
+        run: node scripts/dod-deploy-verify-sitemap.mjs --selftest
+
+      # The real measurement against the live deployed site.
+      - name: Sweep the live site — sitemap ⊇ built routes, every URL 200s
+        run: node scripts/dod-deploy-verify-sitemap.mjs
+        env:
+          BASE_URL: https://xlsx-for-ai.dev

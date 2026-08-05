@@ -78,21 +78,40 @@ function lastmod(file) {
   return new Date().toISOString().slice(0, 10);
 }
 
-const pages = findIndexHtml(ROOT)
-  .map((f) => ({ url: urlFor(f), lastmod: lastmod(f) }))
-  // homepage first, then alphabetical — deterministic output
-  .sort((a, b) => (a.url === ORIGIN + "/" ? -1 : b.url === ORIGIN + "/" ? 1 : a.url.localeCompare(b.url)));
+// Discover every canonical page URL from disk — the sitemap's source of truth.
+// Exported (XLS-743) so the post-deploy sitemap sweep reuses THIS discovery
+// instead of a second implementation that could drift; build-validate.yml makes
+// the same point about not re-walking the tree with a second answer.
+export function discoverPages() {
+  return findIndexHtml(ROOT)
+    .map((f) => ({ url: urlFor(f), lastmod: lastmod(f) }))
+    // homepage first, then alphabetical — deterministic output
+    .sort((a, b) => (a.url === ORIGIN + "/" ? -1 : b.url === ORIGIN + "/" ? 1 : a.url.localeCompare(b.url)));
+}
 
-const body = pages
-  .map((p) => `  <url>\n    <loc>${p.url}</loc>\n    <lastmod>${p.lastmod}</lastmod>\n  </url>`)
-  .join("\n");
+// Just the canonical URL set — what "built routes" means for the completeness guard.
+export function discoverPageUrls() {
+  return discoverPages().map((p) => p.url);
+}
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
+export function renderSitemap(pages) {
+  const body = pages
+    .map((p) => `  <url>\n    <loc>${p.url}</loc>\n    <lastmod>${p.lastmod}</lastmod>\n  </url>`)
+    .join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${body}
 </urlset>
 `;
+}
 
-writeFileSync(join(ROOT, "sitemap.xml"), xml);
-console.log(`sitemap.xml written — ${pages.length} pages`);
-for (const p of pages) console.log(`  ${p.url}  (${p.lastmod})`);
+export { ORIGIN, ROOT };
+
+// CLI: only write the file when run directly (node scripts/gen-sitemap.mjs),
+// never when imported by the sweep — importing must have no side effects.
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  const pages = discoverPages();
+  writeFileSync(join(ROOT, "sitemap.xml"), renderSitemap(pages));
+  console.log(`sitemap.xml written — ${pages.length} pages`);
+  for (const p of pages) console.log(`  ${p.url}  (${p.lastmod})`);
+}

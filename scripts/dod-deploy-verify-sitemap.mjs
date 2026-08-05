@@ -32,9 +32,6 @@
  * consumer greps a measured result, not a bare anchor an empty run could echo.
  */
 import { createServer } from "node:http";
-import { mkdtempSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
 import { discoverPageUrls } from "./gen-sitemap.mjs";
 
 const BASE_URL = (process.env.BASE_URL || "https://xlsx-for-ai.dev").replace(/\/$/, "");

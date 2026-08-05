@@ -36,6 +36,14 @@ jobs:
       - name: Prove the validator can still fail (self-test)
         run: node scripts/validate-site.mjs --selftest
 
+      # The deploy-verify's LIVE sweep is a post-deploy capstone (deploy-verify-sitemap.yml),
+      # not a merge gate — it must not couple the PR's green to live-prod health. But its
+      # hermetic RED-arm proof IS graded here: it proves the completeness + 200-sweep arms
+      # still bite (built-route dropped from the sitemap reds; a 404'd page reds), with no
+      # network to prod. If this instrument cannot fail, its post-deploy green is worthless.
+      - name: Prove the deploy-verify can still fail (self-test)
+        run: node scripts/dod-deploy-verify-sitemap.mjs --selftest
+
       - name: Validate HTML structure + internal links + referenced assets
         run: node scripts/validate-site.mjs
 

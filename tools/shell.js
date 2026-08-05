@@ -22,28 +22,60 @@
   var MAX_BYTES = 10 * 1024 * 1024; // FREE_TIER_MAX_FILE_BYTES on the server
   var TIMEOUT_MS = 90000;           // formula eval on a big workbook can be slow
   var MAX_GRID_ROWS = 500;          // preview-grid DOM ceiling (XLS-217)
+  var XFETCH_MAX_ATTEMPTS = 3;      // total xfetch tries (1 + 2 retries) — XLS-227
+  var XFETCH_RETRY_BASE_MS = 300;   // exponential backoff base: 300ms, 600ms
 
   function XfaError(message) { this.name = "XfaError"; this.message = message; }
   XfaError.prototype = Object.create(Error.prototype);
 
-  // fetch with an AbortController deadline so a hung request can't spin the
-  // UI forever. Only network-level failures (abort, offline, DNS) are mapped
-  // to a friendly XfaError here; HTTP status handling stays in the callers.
+  // fetch with an AbortController deadline so a hung request can't spin the UI
+  // forever, plus a small transient-retry (XLS-227): a network glitch or a 5xx
+  // from the API used to surface as a hard error and cost the visitor the whole
+  // upload→map→download flow. We retry the two TRANSIENT classes only —
+  //   (1) a genuine network failure (offline/DNS/reset — fetch rejects), and
+  //   (2) a 5xx response (fetch RESOLVES a 5xx, so we peek r.status) —
+  // up to XFETCH_MAX_ATTEMPTS with exponential backoff, each attempt getting its
+  // own fresh AbortController deadline. Everything else returns UNCHANGED:
+  //   - a timeout (our own abort) is terminal — it already waited the full
+  //     per-attempt deadline, so retrying only multiplies the wait; it maps
+  //     straight to the existing XfaError, as before.
+  //   - any non-5xx response (2xx/3xx AND every 4xx — 401 has its own re-mint
+  //     path in runTool, 400/413/415 are terminal) is returned verbatim so
+  //     callers' `.ok` / `.status` handling is completely unaffected.
+  // Reading r.status does not consume the body, so the returned Response is
+  // intact — no clone needed. On final failure the existing XfaError messages
+  // (here for network, in the callers for HTTP) are preserved.
   function xfetch(url, opts) {
-    var ctrl = new AbortController();
-    var timer = setTimeout(function () { ctrl.abort(); }, TIMEOUT_MS);
-    var merged = { signal: ctrl.signal };
-    for (var k in opts) if (Object.prototype.hasOwnProperty.call(opts, k)) merged[k] = opts[k];
-    return fetch(url, merged).then(function (r) {
-      clearTimeout(timer);
-      return r;
-    }, function (err) {
-      clearTimeout(timer);
-      if (err && err.name === "AbortError") {
-        throw new XfaError("That took too long to process. Try a smaller file, or try again in a moment.");
-      }
-      throw new XfaError("Couldn’t reach the checker. Check your connection and try again.");
-    });
+    function backoff(attempt) {
+      var ms = XFETCH_RETRY_BASE_MS * Math.pow(2, attempt - 1); // 300, 600, ...
+      return new Promise(function (resolve) { setTimeout(resolve, ms); });
+    }
+    function attempt(n) {
+      var ctrl = new AbortController();
+      var timer = setTimeout(function () { ctrl.abort(); }, TIMEOUT_MS);
+      var merged = { signal: ctrl.signal };
+      for (var k in opts) if (Object.prototype.hasOwnProperty.call(opts, k)) merged[k] = opts[k];
+      return fetch(url, merged).then(function (r) {
+        clearTimeout(timer);
+        // Transient 5xx → retry while attempts remain; otherwise return the
+        // response (final 5xx included) so the caller's !r.ok path speaks.
+        if (r.status >= 500 && r.status <= 599 && n < XFETCH_MAX_ATTEMPTS) {
+          return backoff(n).then(function () { return attempt(n + 1); });
+        }
+        return r;
+      }, function (err) {
+        clearTimeout(timer);
+        if (err && err.name === "AbortError") {
+          throw new XfaError("That took too long to process. Try a smaller file, or try again in a moment.");
+        }
+        // Genuine network failure → retry while attempts remain, else surface.
+        if (n < XFETCH_MAX_ATTEMPTS) {
+          return backoff(n).then(function () { return attempt(n + 1); });
+        }
+        throw new XfaError("Couldn’t reach the checker. Check your connection and try again.");
+      });
+    }
+    return attempt(1);
   }
 
   // The shell is the single HTML-escaping authority. Pages hand us plain
@@ -119,6 +151,33 @@
       });
     }).then(function (r) {
       if (r.status === 401 && !_retried) { clearKey(); return runTool(name, body, true); }
+      if (r.status === 413) throw new XfaError("That file is over the 10 MB limit for the free web tool.");
+      if (r.status === 429) throw new XfaError("Too many requests right now — give it a minute and try again.");
+      if (!r.ok) throw new XfaError("The tool couldn't process that file (error " + r.status + ").");
+      return r.json();
+    });
+  }
+
+  // ---- POST to an ANONYMOUS tool route (no key, no Bearer) ------------
+  // XLS-192: a small set of read-only tools are exposed on a public, no-auth
+  // rail (POST /api/v1/anon/<name>) with a tighter per-IP rate limit enforced
+  // server-side. This differs from runTool ONLY in the absence of the key
+  // round-trip: no ensureKey, no Authorization header, and therefore no 401
+  // re-mint path (there is no auth to go stale). The endpoint rejects exactly
+  // what the authed rail rejects (the same harden() + 10 MB decoded-size cap),
+  // so 413/429/4xx handling mirrors runTool. Same origin as the authed API, so
+  // the page's connect-src CSP is unchanged.
+  function runAnonTool(name, body) {
+    // name is supplied by our own page code, never user input — guard the URL
+    // path anyway so a bad caller can't smuggle path separators / traversal.
+    if (!/^[a-z0-9_]+$/.test(name)) {
+      return Promise.reject(new XfaError("Unknown tool."));
+    }
+    return xfetch(API + "/api/v1/anon/" + name, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    }).then(function (r) {
       if (r.status === 413) throw new XfaError("That file is over the 10 MB limit for the free web tool.");
       if (r.status === 429) throw new XfaError("Too many requests right now — give it a minute and try again.");
       if (!r.ok) throw new XfaError("The tool couldn't process that file (error " + r.status + ").");
@@ -420,7 +479,7 @@
     var lastDiscovered = {};
 
     function toolApi(name) {
-      return { runTool: runTool, parseTable: parseTable, parseGrid: parseGrid, textOf: textOf, esc: esc, step: stepState, filename: name };
+      return { runTool: runTool, runAnonTool: runAnonTool, parseTable: parseTable, parseGrid: parseGrid, textOf: textOf, esc: esc, step: stepState, filename: name };
     }
     // name is page-authored; still restrict to a DOM-safe id before use as a
     // selector so a bad config can't smuggle selector/attribute syntax.
@@ -680,7 +739,7 @@
   }
 
   window.XFA = {
-    mount: mount, runTool: runTool, parseTable: parseTable, parseGrid: parseGrid,
+    mount: mount, runTool: runTool, runAnonTool: runAnonTool, parseTable: parseTable, parseGrid: parseGrid,
     fileToBase64: fileToBase64, textOf: textOf, esc: esc, API: API
   };
 

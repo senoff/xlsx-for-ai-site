@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Importable — Shopify imports from a spreadsheet | xlsx-for-ai</title>
+<meta name="description" content="Turn any spreadsheet into a Shopify-ready import — products, collections, inventory, redirects. Free file tools now; the Importable Shopify app is coming soon.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Importable — Shopify imports from a spreadsheet | xlsx-for-ai">
+<meta property="og:description" content="Turn any spreadsheet into a Shopify-ready import — products, collections, inventory, redirects. Free file tools now; the Importable Shopify app is coming soon.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/importable/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Importable — Shopify imports from a spreadsheet">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Importable — Shopify imports from a spreadsheet">
+<meta name="twitter:description" content="Turn any spreadsheet into a Shopify-ready import. Free file tools now; the app is coming soon.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<link rel="canonical" href="https://xlsx-for-ai.dev/importable/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<style>
+  .imp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; margin: 28px 0 8px; }
+  .imp-card { border: 1px solid var(--border, #e6e6e6); border-radius: 8px; padding: 20px; background: #fff; display: flex; flex-direction: column; }
+  .imp-card h3 { margin: 0 0 8px; font-size: 16px; }
+  .imp-card p { margin: 0 0 16px; font-size: 14px; color: var(--muted, #5a5a5a); flex: 1 1 auto; }
+  .imp-card a.open { font-weight: 600; font-size: 14px; }
+  .imp-soon { border: 1px solid var(--border, #e6e6e6); border-left: 3px solid var(--accent, #107c41); border-radius: 8px; padding: 18px 22px; background: #fafafa; margin: 26px 0; }
+  .imp-soon .tag { display: inline-block; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--accent, #107c41); font-weight: 700; margin-bottom: 6px; }
+  .imp-soon p { margin: 0; font-size: 15px; }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify import &amp; migration</div>
+    <h1>Importable — bulk Shopify imports from any spreadsheet.</h1>
+    <p class="lede">Move a store's worth of products, collections, inventory and redirects into Shopify
+      from the spreadsheets you already have — with the columns mapped for you and nothing changed in
+      your original file.</p>
+  </div>
+
+  <div class="imp-soon">
+    <div class="tag">Coming soon — the Importable app</div>
+    <p>Importable is a Shopify app that brings all of this straight into your store: bulk import and
+      export of products, collections, inventory, redirects and more, with the same column-mapping and
+      safety checks — no files to shuffle back and forth. It's in the Shopify App Store review queue now.
+      Until it goes live, the free tools below do the import work today and hand you a Shopify-ready file
+      you upload yourself.</p>
+  </div>
+
+  <h2>The tools — free, right now</h2>
+  <p class="lede">Each one takes a CSV or Excel file, maps your columns to Shopify's fields, flags
+    anything that needs your judgment, and gives you back a Shopify-ready import file. Free · no signup ·
+    your file is never stored.</p>
+
+  <div class="imp-grid">
+
+    <div class="imp-card">
+      <h3>Import products</h3>
+      <p>Turn a product spreadsheet into a Shopify-ready products import file. We map your columns, flag
+        what needs review, and never change your original.</p>
+      <a class="open" href="/tools/import-shopify-products/">Open products import &rarr;</a>
+    </div>
+
+    <div class="imp-card">
+      <h3>Import collections</h3>
+      <p>Turn a CSV or Excel list into a Shopify-ready collections import file. We map your columns, flag
+        what needs review, and never change your original.</p>
+      <a class="open" href="/tools/import-shopify-collections/">Open collections import &rarr;</a>
+    </div>
+
+    <div class="imp-card">
+      <h3>Update inventory</h3>
+      <p>Turn a CSV or Excel list into a Shopify inventory import file. We map SKUs and quantities, flag
+        decimals and blank rows, and never change your original.</p>
+      <a class="open" href="/tools/import-shopify-inventory/">Open inventory update &rarr;</a>
+    </div>
+
+    <div class="imp-card">
+      <h3>Import redirects</h3>
+      <p>Turn a CSV or Excel of old and new paths into a Shopify URL redirects import. We map your
+        columns, flag malformed rows, and never change your original.</p>
+      <a class="open" href="/tools/import-shopify-redirects/">Open redirects import &rarr;</a>
+    </div>
+
+    <div class="imp-card">
+      <h3>Fix a broken products export</h3>
+      <p>Repair a broken Shopify products export so it imports cleanly — BOM/encoding, headers, price
+        formatting, and duplicate handles fixed. Original untouched.</p>
+      <a class="open" href="/tools/fix-shopify-products/">Open products fixer &rarr;</a>
+    </div>
+
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/tools/import-shopify-products/">Shopify: import products</a>
+      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shopify → Amazon feed — free products-export converter | xlsx-for-ai</title>
+<meta name="description" content="Turn a Shopify products export CSV into an Amazon flat-file inventory feed — free, no signup. Products missing a required identifier are listed, never guessed. Your file is never stored or changed.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Shopify → Amazon feed — free products-export converter | xlsx-for-ai">
+<meta property="og:description" content="Turn a Shopify products export CSV into an Amazon flat-file inventory feed — free, no signup. Products missing a required identifier are listed, never guessed. Your file is never stored or changed.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/shopify-amazon-feed/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shopify → Amazon feed — free products-export converter | xlsx-for-ai">
+<meta name="twitter:description" content="Turn a Shopify products export CSV into an Amazon flat-file inventory feed — free, no signup. Your file is never stored or changed.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/shopify-amazon-feed/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Shopify to Amazon feed converter",
+  "description": "Turn a Shopify products export CSV into an Amazon flat-file inventory feed. Free, no signup. Products missing a required identifier are listed, never guessed. Your file is never stored or changed.",
+  "url": "https://xlsx-for-ai.dev/tools/shopify-amazon-feed/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free Shopify → Amazon feed builder</div>
+    <h1>Turn your Shopify products export into an Amazon feed — free.</h1>
+    <p class="lede">Export your products from Shopify, upload the CSV, and get back an Amazon
+      flat-file inventory feed you can upload in Seller Central. We map your titles, prices, and
+      identifiers into Amazon's template columns — and any product missing a required identifier is
+      listed for you, never guessed.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">shopify-amazon-feed · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>What you upload</h2>
+    <p>A Shopify <strong>products</strong> export. In your Shopify admin go to <em>Products → Export</em>
+      and choose the plain CSV — that's the file this tool reads. It has one row per product (and per
+      variant), with columns like Title, Variant Price, Variant SKU, and Variant Barcode.</p>
+
+    <h2>What you get back</h2>
+    <p>A tab-delimited Amazon inventory file — the same shape as Amazon's flat-file Template sheet.
+      Each eligible variant becomes one listing row with its title, price, quantity, and identifier
+      mapped into the columns Amazon expects. Upload it in Seller Central under
+      <em>Inventory → Add Products via Upload</em>.</p>
+
+    <h2>Products without an identifier are listed, not guessed</h2>
+    <p>Amazon requires a real product identifier (UPC, EAN, or GTIN) to match or create a listing. If a
+      product doesn't carry one, we leave it out of the feed and list it in the results so you can add
+      the identifier yourself — we never invent one, because a fabricated barcode is a listing that gets
+      suppressed.</p>
+
+    <h2>How it works</h2>
+    <p>The page runs the same conversion your AI agent would call through our tools. It reads your export
+      in memory and never stores it — your original CSV is untouched; you download a new feed file, so
+      nothing is ever lost.</p>
+    <p class="muted">Want this inside your AI agent, on your own machine, with no upload at all?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask
+      Claude or Cursor to "turn this Shopify products export into an Amazon feed."</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify feed tools">
+      <a href="/tools/shopify-amazon-feed/">Shopify → Amazon feed</a>
+      <a href="/tools/shopify-google-feed/">Shopify → Google feed</a>
+      <a href="/tools/shopify-ebay-feed/">Shopify → eBay feed</a>
+      <a href="/tools/shopify-ups-feed/">Shopify → UPS WorldShip</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/tools/shopify-amazon-feed/page.js"></script>
+
+</body>
+</html>

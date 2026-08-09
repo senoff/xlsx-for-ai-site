@@ -1,0 +1,9 @@
+Handle,Title,Body (HTML),Vendor,Product Category,Type,Tags,Published,Option1 Name,Option1 Value,Variant SKU,Variant Grams,Variant Inventory Qty,Variant Inventory Policy,Variant Price,Variant Compare At Price,Variant Barcode,Image Src,Status
+cedar-cutting-board,Cedar Cutting Board,<p>Solid <b>cedar</b> board.</p>,Timberline,,Kitchen,,true,Title,Default Title,TL-CB-01,900,12,deny,34.95,,036000291452,https://cdn/board.png,active
+merino-beanie,Merino Beanie,Warm wool beanie,NordKnit,,Apparel,,true,Color,Charcoal,NK-BEA-CH,110,40,deny,24.00,,4006381333931,https://cdn/beanie.png,active
+merino-beanie,,,,,,,,Color,Rust,NK-BEA-RU,110,,deny,24.00,,5901234123457,,
+canvas-tote,Canvas Tote,,Baytown,,Bags,,true,Title,Default Title,BT-TOTE,300,7,,18.00,,,,active
+desk-lamp,LED Desk Lamp,,Lumino,,Lighting,,true,Title,Default Title,LM-LAMP,800,4,,45.00,,INTERNAL-LAMP-778,,active
+glass-tumbler,Glass Tumbler,,,,Kitchen,,true,Title,Default Title,GT-01,250,20,,9.50,,012345678905,,active
+wool-scarf,Wool Scarf,,NordKnit,,Apparel,,true,Title,Default Title,NK-SCARF,180,15,,,,4012345123456,,active
+ceramic-mug,Ceramic Mug,12oz stoneware mug,Clayworks,,Kitchen,,true,Title,Default Title,CW-MUG,400,30,,12.00,,887654321008,https://cdn/mug.png,active

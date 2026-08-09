@@ -22,13 +22,13 @@
  *      (default origin/main), NOT the working tree, so the arm is immune to whatever
  *      branch the npm checkout happens to sit on. NPM_README (an explicit file path)
  *      overrides for offline testing. If neither is resolvable (npm repo not on this
- *      box, or ref missing), the arm is DID_NOT_RUN (exit 2) — never a false PASS and
+ *      box, or ref missing), the arm is DID_NOT_RUN (exit 6) — never a false PASS and
  *      never a false FAIL: a check that cannot see its subject must say so, not guess.
  *
  *   3. LIVE (network).  GET both routes on the live host and assert HTTP 200 with
  *      NO redirect followed — DoD §5(2). A 301/404/5xx FAILS: a doc that links a
  *      route which does not 200 is a broken promise. Unreachable host (DNS/conn) =
- *      DID_NOT_RUN (exit 2), distinct from a reached-but-non-200 FAIL.
+ *      DID_NOT_RUN (exit 6), distinct from a reached-but-non-200 FAIL.
  *
  * The three are complementary: SITE proves the page says it, README proves the
  * package says it, LIVE proves the thing it points at is really there. None
@@ -41,7 +41,8 @@
  *   node scripts/dod-xls763-api-discoverability.mjs --selftest    # prove arms redden
  *
  * Exit: 0 = PASS (all runnable arms green) · 1 = FAIL (a real defect, named)
- *       2 = DID_NOT_RUN (an arm could not see its subject — never green).
+ *       6 = DID_NOT_RUN / INDETERMINATE (an arm could not see its subject — never
+ *           green; 6 is the ONLY rc xlsx_board_verify reads as INDETERMINATE).
  */
 
 import { readFileSync, existsSync } from 'node:fs';
@@ -62,7 +63,10 @@ const NPM_README = process.env.NPM_README || ''; // explicit file path override 
 // surface (as a full URL or a bare path — grep the path fragment, host-agnostic).
 const ROUTES = ['/api/v1/reference', '/api/v1/openapi.json'];
 
-const PASS = 0, FAIL = 1, DID_NOT_RUN = 2;
+// DID_NOT_RUN exits 6, NOT 2: xlsx_board_verify maps ONLY rc 6 to INDETERMINATE;
+// every other nonzero (incl. 2) is graded FAIL. A host-unreachable LIVE arm must
+// read as "could not measure", never as a card-reddening defect (XLS-806 class).
+const PASS = 0, FAIL = 1, DID_NOT_RUN = 6;
 
 function namesBothRoutes(haystack) {
   return ROUTES.filter((r) => !haystack.includes(r));

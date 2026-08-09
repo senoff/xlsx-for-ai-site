@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://xlsx-for-ai.dev/</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-09</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/clean-data/</loc>
@@ -1391,6 +1391,22 @@
   <url>
     <loc>https://xlsx-for-ai.dev/tools/run-any-tool/</loc>
     <lastmod>2026-08-06</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/shopify-amazon-feed/</loc>
+    <lastmod>2026-08-09</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/shopify-ebay-feed/</loc>
+    <lastmod>2026-08-09</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/shopify-google-feed/</loc>
+    <lastmod>2026-08-09</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/tools/shopify-ups-feed/</loc>
+    <lastmod>2026-08-09</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/summarize/</loc>

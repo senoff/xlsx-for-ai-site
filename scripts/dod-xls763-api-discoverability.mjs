@@ -17,11 +17,13 @@
  *      network: this is the arm that must never depend on a deploy to redden.
  *
  *   2. NPM README (cross-repo).  The npm package README must name both routes —
- *      DoD §5(1). The README lives in the sibling npm repo, not here, so its path
- *      is resolved via NPM_README (default $HOME/xlsx-for-ai/README.md). If that
- *      file is absent (npm repo not checked out on this box), the arm is
- *      DID_NOT_RUN (exit 2), never a false PASS and never a false FAIL — a check
- *      that cannot see its subject must say so, not guess.
+ *      DoD §5(1). The README lives in the sibling npm repo, not here, so it is read
+ *      from that repo's LANDED state — `git show <ref>:README.md` at NPM_README_REF
+ *      (default origin/main), NOT the working tree, so the arm is immune to whatever
+ *      branch the npm checkout happens to sit on. NPM_README (an explicit file path)
+ *      overrides for offline testing. If neither is resolvable (npm repo not on this
+ *      box, or ref missing), the arm is DID_NOT_RUN (exit 2) — never a false PASS and
+ *      never a false FAIL: a check that cannot see its subject must say so, not guess.
  *
  *   3. LIVE (network).  GET both routes on the live host and assert HTTP 200 with
  *      NO redirect followed — DoD §5(2). A 301/404/5xx FAILS: a doc that links a
@@ -43,6 +45,7 @@
  */
 
 import { readFileSync, existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve, join } from 'node:path';
 import { homedir } from 'node:os';
@@ -50,7 +53,10 @@ import { homedir } from 'node:os';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(HERE, '..');
 const BASE_URL = (process.env.BASE_URL || 'https://api.xlsx-for-ai.dev').replace(/\/+$/, '');
-const NPM_README = process.env.NPM_README || join(homedir(), 'xlsx-for-ai', 'README.md');
+// The npm README is read from its LANDED state, not a working tree (see header, ARM 2).
+const NPM_REPO = process.env.NPM_REPO || join(homedir(), 'xlsx-for-ai');
+const NPM_README_REF = process.env.NPM_README_REF || 'origin/main';
+const NPM_README = process.env.NPM_README || ''; // explicit file path override (offline testing)
 
 // The two discovery routes 763 exists to surface. Each must appear on every doc
 // surface (as a full URL or a bare path — grep the path fragment, host-agnostic).
@@ -76,17 +82,35 @@ function armSite() {
   return { arm: 'SITE', code: PASS, msg: `/developers/ names both discovery routes.` };
 }
 
-// ── ARM 2: NPM README (cross-repo) ─────────────────────────────────────────
+// ── ARM 2: NPM README (cross-repo, landed state) ───────────────────────────
+function readNpmReadme() {
+  // Explicit file path wins (offline testing).
+  if (NPM_README) {
+    if (!existsSync(NPM_README)) return { err: `NPM_README=${NPM_README} does not exist` };
+    return { text: readFileSync(NPM_README, 'utf8'), src: NPM_README };
+  }
+  // Otherwise read the LANDED README from the npm repo's ref (default origin/main).
+  if (!existsSync(join(NPM_REPO, '.git'))) return { err: `npm repo not a git checkout at ${NPM_REPO}` };
+  try {
+    const text = execFileSync('git', ['-C', NPM_REPO, 'show', `${NPM_README_REF}:README.md`], {
+      encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 8 * 1024 * 1024,
+    });
+    return { text, src: `${NPM_REPO}@${NPM_README_REF}:README.md` };
+  } catch {
+    return { err: `git show ${NPM_README_REF}:README.md failed in ${NPM_REPO} (ref missing / not fetched)` };
+  }
+}
+
 function armReadme() {
-  if (!existsSync(NPM_README)) {
-    return { arm: 'NPM-README', code: DID_NOT_RUN, msg: `npm README absent at ${NPM_README} — set NPM_README or check out senoff/xlsx-for-ai. Arm could not see its subject.` };
+  const { text, src, err } = readNpmReadme();
+  if (err) {
+    return { arm: 'NPM-README', code: DID_NOT_RUN, msg: `${err} — arm could not see its subject.` };
   }
-  const md = readFileSync(NPM_README, 'utf8');
-  const missing = namesBothRoutes(md);
+  const missing = namesBothRoutes(text);
   if (missing.length) {
-    return { arm: 'NPM-README', code: FAIL, msg: `npm README does not name ${missing.join(' + ')} — the discovery route(s) are not surfaced in the package docs.` };
+    return { arm: 'NPM-README', code: FAIL, msg: `npm README (${src}) does not name ${missing.join(' + ')} — the discovery route(s) are not surfaced in the package docs.` };
   }
-  return { arm: 'NPM-README', code: PASS, msg: `npm README names both discovery routes.` };
+  return { arm: 'NPM-README', code: PASS, msg: `npm README (${src}) names both discovery routes.` };
 }
 
 // ── ARM 3: LIVE (network) ──────────────────────────────────────────────────

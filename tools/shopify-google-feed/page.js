@@ -135,6 +135,7 @@
 
   window.XFA.mount("#xfa-panel", {
     accept: ".csv",
+    extensions: ["csv"],
     params: true,
     runLabel: "Build my Google feed",
     runningLabel: "Building your Google feed…",

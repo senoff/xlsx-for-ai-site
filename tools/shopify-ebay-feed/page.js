@@ -261,6 +261,7 @@
 
   window.XFA.mount("#xfa-panel", {
     accept: ".csv",
+    extensions: ["csv"],
     params: true,
     discoverLabel: "Reading your product types…",
     runLabel: "Build my eBay feed",

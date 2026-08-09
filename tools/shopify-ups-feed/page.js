@@ -166,6 +166,7 @@
 
   window.XFA.mount("#xfa-panel", {
     accept: ".csv",
+    extensions: ["csv"],
     params: true,
     runLabel: "Build my UPS batch",
     runningLabel: "Building your UPS batch…",

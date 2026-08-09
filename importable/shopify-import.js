@@ -173,5 +173,9 @@
     });
   }
 
-  window.XFA_SHOPIFY = { build: build };
+  // toViewModel is exported so catalog-source pages (XLS-809 Printful/Printify)
+  // can reuse the identical did/couldnt/warnings ledger → view-model mapping;
+  // they differ only in how the _meta is produced (a pull+import pair instead
+  // of a single file-producer route), not in how the ledger renders.
+  window.XFA_SHOPIFY = { build: build, toViewModel: toViewModel };
 })();

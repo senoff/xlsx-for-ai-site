@@ -142,21 +142,23 @@
 <h2>Anonymous, keyless on-ramp</h2>
 <p>Registration takes no email and no signup. <code>POST https://api.xlsx-for-ai.dev/api/v1/clients</code> (no auth) returns <code>{ client_id, api_key }</code>; then call any tool with an <code>Authorization: Bearer &lt;api_key&gt;</code> header. The free tier is <strong>10,000 calls/month, 10 MB per file</strong> &mdash; no billing.</p>
 <div class="cta">
-<pre class="copy" role="button" tabindex="0" data-copy="# Self-issue a key, then convert a workbook to Markdown — no signup:
-KEY=$(curl -s -XPOST https://api.xlsx-for-ai.dev/api/v1/clients \
+<pre class="copy" role="button" tabindex="0" data-copy="# Self-issue a key (no signup), then convert report.xlsx to Markdown. Needs jq.
+KEY=$(curl -fsS -XPOST https://api.xlsx-for-ai.dev/api/v1/clients \
   -H 'Content-Type: application/json' \
-  -d '{&quot;client_version&quot;:&quot;2.0.0&quot;,&quot;platform&quot;:&quot;linux&quot;}' | jq -r .api_key)
+  -d '{&quot;client_version&quot;:&quot;2.0.0&quot;,&quot;platform&quot;:&quot;cli&quot;}' | jq -r .api_key)
 
-curl -s -XPOST https://api.xlsx-for-ai.dev/api/v1/tools/xlsx_convert \
-  -H &quot;Authorization: Bearer $KEY&quot; -H 'Content-Type: application/json' \
-  -d &quot;{\&quot;file_b64\&quot;:\&quot;$(base64 -w0 report.xlsx)\&quot;,\&quot;to\&quot;:\&quot;md\&quot;}&quot;" title="Click to copy"><code># Self-issue a key, then convert a workbook to Markdown &mdash; no signup:
-KEY=$(curl -s -XPOST https://api.xlsx-for-ai.dev/api/v1/clients \
+jq -n --arg b64 &quot;$(base64 &lt; report.xlsx | tr -d '\n')&quot; '{file_b64: $b64, to: &quot;md&quot;}' \
+  | curl -fsS -XPOST https://api.xlsx-for-ai.dev/api/v1/tools/xlsx_convert \
+      -H &quot;Authorization: Bearer $KEY&quot; -H 'Content-Type: application/json' \
+      --data-binary @-" title="Click to copy"><code># Self-issue a key (no signup), then convert report.xlsx to Markdown. Needs jq.
+KEY=$(curl -fsS -XPOST https://api.xlsx-for-ai.dev/api/v1/clients \
   -H 'Content-Type: application/json' \
-  -d '{"client_version":"2.0.0","platform":"linux"}' | jq -r .api_key)
+  -d '{"client_version":"2.0.0","platform":"cli"}' | jq -r .api_key)
 
-curl -s -XPOST https://api.xlsx-for-ai.dev/api/v1/tools/xlsx_convert \
-  -H "Authorization: Bearer $KEY" -H 'Content-Type: application/json' \
-  -d "{\"file_b64\":\"$(base64 -w0 report.xlsx)\",\"to\":\"md\"}"</code></pre>
+jq -n --arg b64 "$(base64 &lt; report.xlsx | tr -d '\n')" '{file_b64: $b64, to: "md"}' \
+  | curl -fsS -XPOST https://api.xlsx-for-ai.dev/api/v1/tools/xlsx_convert \
+      -H "Authorization: Bearer $KEY" -H 'Content-Type: application/json' \
+      --data-binary @-</code></pre>
 </div>
 
 <h2>Discover the whole API &mdash; no key required</h2>

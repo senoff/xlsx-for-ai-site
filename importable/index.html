@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Importable — Shopify imports from a spreadsheet | xlsx-for-ai</title>
-<meta name="description" content="Turn any spreadsheet into a Shopify-ready import — products, collections, inventory, redirects. Free file tools now; the Importable Shopify app is coming soon.">
+<title>Importable — Shopify import &amp; export from a spreadsheet | xlsx-for-ai</title>
+<meta name="description" content="Importable is a Shopify app for bulk import and export — products, collections, inventory, files, URL redirects, pages, blog posts, translations, menus, metaobjects and more. Approve before anything is written, never deletes, hands you a reconciled receipt. Free spreadsheet tools too.">
 <meta name="author" content="xlsx-for-ai">
-<meta property="og:title" content="Importable — Shopify imports from a spreadsheet | xlsx-for-ai">
-<meta property="og:description" content="Turn any spreadsheet into a Shopify-ready import — products, collections, inventory, redirects. Free file tools now; the Importable Shopify app is coming soon.">
+<meta property="og:title" content="Importable — Shopify import &amp; export from a spreadsheet | xlsx-for-ai">
+<meta property="og:description" content="Bulk import and export your Shopify catalog from a spreadsheet — approve before anything is written, never deletes, reconciled receipts. Plus free spreadsheet tools.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,8 +15,8 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Importable — Shopify imports from a spreadsheet">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Importable — Shopify imports from a spreadsheet">
-<meta name="twitter:description" content="Turn any spreadsheet into a Shopify-ready import. Free file tools now; the app is coming soon.">
+<meta name="twitter:title" content="Importable — Shopify import &amp; export from a spreadsheet">
+<meta name="twitter:description" content="Bulk import and export your Shopify catalog from a spreadsheet — approve before anything is written, never deletes. Free spreadsheet tools too.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
@@ -30,6 +30,16 @@
   .imp-soon { border: 1px solid var(--border, #e6e6e6); border-left: 3px solid var(--accent, #107c41); border-radius: 8px; padding: 18px 22px; background: #fafafa; margin: 26px 0; }
   .imp-soon .tag { display: inline-block; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--accent, #107c41); font-weight: 700; margin-bottom: 6px; }
   .imp-soon p { margin: 0; font-size: 15px; }
+  .imp-safety { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin: 22px 0 8px; }
+  .imp-safety div { border: 1px solid var(--border, #e6e6e6); border-radius: 8px; padding: 18px 20px; background: #fff; }
+  .imp-safety h3 { margin: 0 0 6px; font-size: 15px; }
+  .imp-safety p { margin: 0; font-size: 14px; color: var(--muted, #5a5a5a); }
+  .imp-caps { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin: 20px 0 8px; }
+  .imp-caps section { border: 1px solid var(--border, #e6e6e6); border-radius: 8px; padding: 20px 22px; background: #fff; }
+  .imp-caps h3 { margin: 0 0 10px; font-size: 16px; }
+  .imp-caps ul { margin: 0; padding-left: 18px; }
+  .imp-caps li { font-size: 14px; color: var(--muted, #5a5a5a); margin: 0 0 6px; }
+  .imp-caps li b { color: inherit; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -49,23 +59,87 @@
 <div class="wrap">
 
   <div class="hero">
-    <div class="eyebrow">Shopify import &amp; migration</div>
-    <h1>Importable — bulk Shopify imports from any spreadsheet.</h1>
-    <p class="lede">Move a store's worth of products, collections, inventory and redirects into Shopify
-      from the spreadsheets you already have — with the columns mapped for you and nothing changed in
-      your original file.</p>
+    <div class="eyebrow">Shopify import, export &amp; migration</div>
+    <h1>Importable — bulk Shopify import and export from any spreadsheet.</h1>
+    <p class="lede">Move a store's worth of products, collections, inventory and more into Shopify from
+      the spreadsheets you already have — and pull your live catalog back out to a spreadsheet whenever
+      you need it. Columns mapped for you, every change shown and approved before it's written, and
+      nothing in your original file changed.</p>
   </div>
 
   <div class="imp-soon">
-    <div class="tag">Coming soon — the Importable app</div>
-    <p>Importable is a Shopify app that brings all of this straight into your store: bulk import and
-      export of products, collections, inventory, redirects and more, with the same column-mapping and
-      safety checks — no files to shuffle back and forth. It's in the Shopify App Store review queue now.
-      Until it goes live, the free tools below do the import work today and hand you a Shopify-ready file
-      you upload yourself.</p>
+    <div class="tag">Coming to the Shopify App Store</div>
+    <p>Importable is a Shopify app that brings all of this straight into your store — bulk import and
+      export with the same column-mapping and safety checks, no files to shuffle back and forth. It's
+      being prepared for the Shopify App Store. Until it's available there, the free tools further down
+      do the import work today and hand you a Shopify-ready file you upload yourself.</p>
   </div>
 
-  <h2>The tools — free, right now</h2>
+  <h2>Safe by design — nothing happens to your store until you approve it</h2>
+  <p class="lede">Every import is a two-step: we show you exactly what we'll do, then wait for your
+    go-ahead. This is the through-line of the whole app.</p>
+
+  <div class="imp-safety">
+    <div>
+      <h3>Approve before anything is written</h3>
+      <p>You get an itemized preview — exactly what changes for each row — and nothing touches your
+        store until you approve it. Review what we'll do, then approve; nothing has happened yet.</p>
+    </div>
+    <div>
+      <h3>Creates and updates, never deletes</h3>
+      <p>Importable only creates and updates. It never deletes anything. Any row that would remove or
+        clear data you already have is skipped and shown to you instead — never applied silently.</p>
+    </div>
+    <div>
+      <h3>A reconciled receipt for every run</h3>
+      <p>When a run finishes you get a receipt that accounts for every row in your file — what was
+        created or updated, what was skipped and why, and what failed — adding up to your file's total,
+        so nothing goes missing unexplained.</p>
+    </div>
+    <div>
+      <h3>Export is read-only</h3>
+      <p>Exporting your catalog to a spreadsheet only reads your store. It changes nothing — a safe way
+        to get a complete, spreadsheet-friendly copy of your data out of Shopify.</p>
+    </div>
+  </div>
+
+  <h2>What Importable moves</h2>
+  <p class="lede">Importable imports and exports the Shopify entities below. Import maps your spreadsheet
+    columns to Shopify's fields, flags anything that needs your judgment, and writes only on your
+    approval. Export reads your live store into a spreadsheet, including fields Shopify's native CSV
+    leaves out.</p>
+
+  <div class="imp-caps">
+    <section>
+      <h3>Import into your store</h3>
+      <ul>
+        <li><b>Products</b> — full catalog with variants, options and metafields</li>
+        <li><b>Collections</b> — manual and smart collections</li>
+        <li><b>Inventory</b> — quantities by SKU across your locations</li>
+        <li><b>URL redirects</b> — old-path → new-path redirects in bulk</li>
+        <li><b>Pages</b> — online-store pages</li>
+        <li><b>Blog posts</b> — articles across your blogs</li>
+        <li><b>Shop settings</b> — store-level settings and metafields</li>
+      </ul>
+    </section>
+    <section>
+      <h3>Export out to a spreadsheet</h3>
+      <ul>
+        <li><b>Products</b> — including variant, legacy and app-created metafields the native CSV drops</li>
+        <li><b>Collections</b> — manual and smart, which Shopify has no native export for</li>
+        <li><b>Inventory</b> — one row per variant with each location's available quantity</li>
+        <li><b>Files</b> — your uploaded files catalog</li>
+        <li><b>URL redirects</b> — every redirect in your store</li>
+        <li><b>Pages</b> and <b>blog posts</b> — online-store content</li>
+        <li><b>Translations</b> — localized content across your store</li>
+        <li><b>Menus</b> — your navigation menus</li>
+        <li><b>Metaobjects</b> — both definitions and entries</li>
+        <li><b>Store activity</b> — an activity export for your records</li>
+      </ul>
+    </section>
+  </div>
+
+  <h2>The free spreadsheet tools — right now, no app needed</h2>
   <p class="lede">Each one takes a CSV or Excel file, maps your columns to Shopify's fields, flags
     anything that needs your judgment, and gives you back a Shopify-ready import file. Free · no signup ·
     your file is never stored.</p>

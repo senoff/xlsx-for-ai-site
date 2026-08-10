@@ -377,6 +377,12 @@ export const CASES = {
     expectLedger: true,
     expectPanel: ["Your eBay File Exchange feed is ready"],
     expectDownload: ["20625", "Cedar Cutting Board"],
-    redArm: { fixture: "shopify-orders-feed-golden.csv" }, // no Type column -> discover rejects the decoy
+    // Red arm: a valid products export with four DIFFERENT types (so discover
+    // passes and the tool actually runs) whose products are not the golden's —
+    // the output carries 20625 but never "Cedar Cutting Board", so the assertion
+    // reddens on the REAL output. The wrong-shape orders golden can't serve here:
+    // eBay's discover step throws before any run, which the harness scores
+    // DID-NOT-RUN, not a proof the assertion bites.
+    redArm: { fixture: "shopify-products-typed-decoy.csv" },
   },
 };

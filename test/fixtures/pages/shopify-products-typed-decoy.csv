@@ -1,0 +1,5 @@
+Handle,Title,Body (HTML),Vendor,Product Category,Type,Tags,Published,Option1 Name,Option1 Value,Variant SKU,Variant Grams,Variant Inventory Qty,Variant Inventory Policy,Variant Price,Variant Compare At Price,Variant Barcode,Image Src,Status
+widget-alpha,Widget Alpha,<p>A widget.</p>,Acme,,Gadgets,,true,Title,Default Title,WG-A-01,300,10,deny,19.99,,036000291452,https://cdn/w.png,active
+gizmo-beta,Gizmo Beta,<p>A gizmo.</p>,Acme,,Tools,,true,Title,Default Title,GZ-B-01,300,5,deny,29.99,,4006381333931,https://cdn/g.png,active
+gadget-gamma,Gadget Gamma,<p>A gadget.</p>,Acme,,Devices,,true,Title,Default Title,GD-G-01,300,8,deny,39.99,,012345678905,https://cdn/d.png,active
+doohickey-delta,Doohickey Delta,<p>A doohickey.</p>,Acme,,Widgets,,true,Title,Default Title,DK-D-01,300,3,deny,49.99,,5901234123457,https://cdn/dk.png,active

@@ -280,6 +280,7 @@
     }
 
     function renderIdle() {
+      if (noFile) { startParams(cfg.startName || "catalog", ""); return; }
       if (dual) { renderIdleDual(); return; }
       panel.innerHTML =
         '<div class="dropzone" id="xfa-drop" role="button" tabindex="0" aria-label="Choose a spreadsheet">' +
@@ -427,7 +428,7 @@
 
       html += '<div class="actions">';
       if (vm.download) html += '<button class="btn primary" id="xfa-dl">Download the result</button>';
-      html += '<button class="btn" id="xfa-again">Check another file</button></div>';
+      html += '<button class="btn" id="xfa-again">' + esc(cfg.againLabel || "Check another file") + '</button></div>';
       panel.innerHTML = html;
 
       panel.querySelector("#xfa-again").addEventListener("click", renderIdle);
@@ -445,7 +446,12 @@
     // to cfg.process(b64, api, values). Single-file and dual paths untouched.
     // The primitive is domain-agnostic: it collects every field/repeat row
     // verbatim; the page decides per-row validity in its process().
-    var params = !!cfg.params;
+    // No-file catalog tools (XLS-809): the merchant supplies parameters (e.g.
+    // Printful catalog product IDs), not an uploaded file. noFile routes the
+    // idle screen straight to the params form and implies params mode. Every
+    // existing file-first page leaves noFile falsy and is untouched.
+    var noFile = !!cfg.noFile;
+    var params = !!cfg.params || noFile;
     // Holds the object cfg.discover() resolved to, so a dependent re-render
     // (XLS-216) can re-invoke cfg.buildForm(discovered, values) without
     // re-reading the file.
@@ -571,7 +577,7 @@
           '<form class="pform" onsubmit="return false">' + (fields || []).map(fieldHtml).join("") + '</form>' +
           '<div class="reassure">' + esc(cfg.reassure || "Your file is processed in memory and never stored.") + '</div>' +
           '<div class="actions"><button class="btn primary" id="xfa-run">' + esc(cfg.runLabel || "Run") + '</button>' +
-          '<button class="btn" id="xfa-params-back">Choose another file</button></div>' +
+          '<button class="btn" id="xfa-params-back">' + esc(cfg.backLabel || "Choose another file") + '</button></div>' +
         '</div>';
       (fields || []).forEach(function (f) { if (f.type === "repeat") wireRepeat(f); });
       // Dependent re-render (XLS-216): a field marked reload:true re-invokes
@@ -603,7 +609,7 @@
     // discover → buildForm → form. A rejection in discover OR a throw in
     // buildForm surfaces the standard error card (never a blank params screen).
     function startParams(name, b64) {
-      renderReading(name);
+      if (cfg.discover) renderReading(name);
       return Promise.resolve().then(function () {
         return cfg.discover ? cfg.discover(b64, toolApi(name)) : {};
       }).then(function (discovered) {

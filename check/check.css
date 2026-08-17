@@ -1,0 +1,89 @@
+/*
+ * /check/ — xlsx_check setup page (XLS-960). Rides /tools/shell.css for the site
+ * chrome, hero, prose, and brand tokens; this sheet adds only the setup-page
+ * pieces: block code snippets, the per-assistant install cards, the how-it-works
+ * steps, the "what it catches" rows, and the FAQ. Strict CSP — no inline styles.
+ */
+
+/* ---- block code snippets (shell.css styles inline <code>, not block <pre>) ---- */
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px 16px;
+  margin: 12px 0;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink);
+}
+pre code { background: none; padding: 0; font-size: inherit; color: inherit; white-space: pre; }
+pre.copy { cursor: pointer; }
+pre.copy:hover { border-color: var(--accent); }
+pre.copy.copied { border-color: var(--accent); background: var(--accent-soft); }
+
+/* ---- how it works: 3 steps ---- */
+.steps3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 26px 0 8px; }
+.steps3 .step { border: 1px solid var(--line); border-radius: 14px; background: var(--card); padding: 20px 18px; }
+.steps3 .step .n {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent-soft); color: var(--accent-ink); font-weight: 800; font-size: 14px; margin-bottom: 10px;
+}
+.steps3 .step h3 { font-size: 16px; margin: 0 0 6px; }
+.steps3 .step p { margin: 0; font-size: 14px; color: var(--muted); }
+
+/* ---- install groups + per-assistant cards ---- */
+.install-group { margin: 48px 0 0; }
+.install-group > h2 { font-size: 23px; margin: 0 0 6px; letter-spacing: -.01em; scroll-margin-top: 20px; }
+.install-group > .group-note { color: var(--muted); font-size: 14.5px; margin: 0 0 8px; max-width: 660px; }
+
+.assistant { border-top: 1px solid var(--line); padding: 22px 0 6px; scroll-margin-top: 20px; }
+.assistant h3 { font-size: 18px; margin: 0 0 5px; letter-spacing: -.01em; }
+.assistant .where { color: var(--muted); font-size: 13.5px; margin: 0 0 2px; }
+.assistant .where code { font-size: 12.5px; }
+.assistant .note { color: var(--faint); font-size: 13px; margin: 8px 0 0; }
+.assistant .note a { color: var(--muted); text-decoration: underline; }
+
+/* ---- prereq / generic callouts ---- */
+.callout { border: 1px solid var(--line); border-radius: 12px; background: #fbfcfb; padding: 18px 20px; margin: 20px 0; }
+.callout.accent { background: var(--accent-soft); border-color: #bfe2cd; }
+.callout h3 { font-size: 16px; margin: 0 0 8px; }
+.callout p { margin: 0 0 8px; font-size: 14.5px; }
+.callout p:last-child { margin-bottom: 0; }
+
+/* ---- hosted-by-URL honest note ---- */
+.hosted-note {
+  border-left: 3px solid var(--info); background: var(--info-soft);
+  border-radius: 0 10px 10px 0; padding: 14px 18px; margin: 4px 0 14px; font-size: 14.5px;
+}
+.hosted-note b { color: #1f3a8a; }
+.hosted-note a { color: #1f3a8a; text-decoration: underline; }
+
+/* ---- what it catches ---- */
+.catch { display: flex; flex-direction: column; gap: 12px; margin: 20px 0; }
+.catch .row { border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+.catch .row .tok {
+  display: inline-block; font-size: 11.5px; font-weight: 800; letter-spacing: .03em;
+  padding: 3px 9px; border-radius: 999px; background: var(--flag-soft); color: var(--flag);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; margin-bottom: 9px;
+}
+.catch .row h3 { font-size: 15.5px; margin: 0 0 6px; }
+.catch .row p { margin: 0; font-size: 14px; color: var(--muted); }
+.catch .row p b { color: var(--ink); font-weight: 650; }
+
+/* ---- FAQ ---- */
+.faq { margin: 10px 0 0; }
+.faq .qa { border-top: 1px solid var(--line); padding: 18px 0; }
+.faq .qa:last-child { border-bottom: 1px solid var(--line); }
+.faq .qa h3 { font-size: 16.5px; margin: 0 0 6px; }
+.faq .qa p { margin: 0; color: var(--muted); font-size: 14.5px; }
+.faq .qa p b { color: var(--ink); }
+
+.section-lead { color: var(--muted); font-size: 15px; max-width: 660px; margin: 6px 0 0; }
+h2.block { font-size: 24px; margin: 52px 0 4px; letter-spacing: -.01em; scroll-margin-top: 20px; }
+
+@media (max-width: 620px) {
+  .steps3 { grid-template-columns: 1fr; }
+}

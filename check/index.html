@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Check your AI's spreadsheet work — free MCP setup | xlsx-for-ai</title>
+<meta name="description" content="Set up xlsx_check so Claude, ChatGPT, Copilot, Gemini and any MCP assistant verify every formula in an Excel file with an independent engine. Free. Two-minute install — copy-paste config for every MCP client.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Check your AI's spreadsheet work — free MCP setup | xlsx-for-ai">
+<meta property="og:description" content="Set up xlsx_check so your AI assistant verifies every formula in an Excel file with an independent engine. Free. Copy-paste MCP config for every client.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/check/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Check your AI's spreadsheet work — free MCP setup | xlsx-for-ai">
+<meta name="twitter:description" content="Set up xlsx_check so your AI assistant verifies every formula in an Excel file with an independent engine. Free.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/check/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<link rel="stylesheet" href="/check/check.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "xlsx_check — AI spreadsheet checker",
+  "description": "Verifies every formula in an Excel file with an independent engine and reports broken references, ranges that miss the last row, and stale cached values. Free MCP tool for any AI assistant.",
+  "url": "https://xlsx-for-ai.dev/check/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web, macOS, Windows, Linux",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free · works with your assistant</div>
+    <h1>Check your AI's spreadsheet work.</h1>
+    <p class="lede">AI assistants are good at spreadsheets — and confidently wrong just often enough to
+      matter. <code>xlsx_check</code> re-computes every formula in a workbook with an independent engine
+      and compares the results against what the file claims, then reports what it finds. Add it to your
+      assistant's tools and it checks its own work: build the workbook, run the check, fix what it
+      catches, and hand you a verified, stamped file.</p>
+    <div class="free-pill">Free · no signup · runs on your machine</div>
+  </div>
+
+  <p class="section-lead" style="margin-bottom:0">This is a two-minute, one-time setup. Pick your
+    assistant below, paste one config block, and <code>xlsx_check</code> and <code>csv_check</code>
+    show up as tools your assistant can call on any <code>.xlsx</code> or <code>.csv</code> file.</p>
+
+  <h2 class="block" id="how-it-works">How it works</h2>
+  <div class="steps3">
+    <div class="step">
+      <div class="n">1</div>
+      <h3>Add one config snippet</h3>
+      <p>Register the <code>xfa</code> MCP server in your assistant — the block for your specific
+        client is below. One time, then you're done.</p>
+    </div>
+    <div class="step">
+      <div class="n">2</div>
+      <h3>Your assistant checks its own work</h3>
+      <p>After it edits a workbook, it calls <code>xlsx_check</code> — a second, independent engine
+        recomputes every formula and flags anything that disagrees.</p>
+    </div>
+    <div class="step">
+      <div class="n">3</div>
+      <h3>Findings, fixes, and a stamp</h3>
+      <p>You get exact cells and suggested fixes. A clean file gets a verifiable stamp inside it, so
+        anyone downstream can confirm it wasn't altered.</p>
+    </div>
+  </div>
+
+  <div class="callout accent" id="install">
+    <h3>First, install the server (once)</h3>
+    <p>Every snippet below registers a local MCP server named <code>xfa</code>. Install it with npm
+      (needs <a href="https://nodejs.org/" rel="noopener">Node</a> 18+):</p>
+    <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>npm install -g xlsx-for-ai</code></pre>
+    <p>That puts the <code>xlsx-for-ai-mcp</code> command on your PATH. Prefer not to install globally?
+      Replace <code>"command": "xlsx-for-ai-mcp"</code> with
+      <code>"command": "npx", "args": ["-y", "xlsx-for-ai-mcp"]</code> in any config below.</p>
+  </div>
+
+  <!-- ===================== GROUP 1: desktop & CLI assistants ===================== -->
+  <div class="install-group">
+    <h2 id="desktop-cli">Set it up: desktop &amp; CLI assistants</h2>
+    <p class="group-note">Every snippet here was verified against that client's current MCP
+      documentation on 2026-08-17. Each registers the same server under the name <code>xfa</code>.</p>
+
+    <!-- verified 2026-08-17 against https://modelcontextprotocol.io/docs (connect-local-servers) -->
+    <div class="assistant" id="claude-desktop">
+      <h3>Claude Desktop</h3>
+      <p class="where">Config: <code>~/Library/Application Support/Claude/claude_desktop_config.json</code>
+        (macOS) · <code>%APPDATA%\Claude\claude_desktop_config.json</code> (Windows). Settings →
+        Developer → Edit Config, then restart Claude.</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>{
+  "mcpServers": {
+    "xfa": {
+      "command": "xlsx-for-ai-mcp"
+    }
+  }
+}</code></pre>
+    </div>
+
+    <!-- verified 2026-08-17 against https://code.claude.com/docs/en/mcp-quickstart -->
+    <div class="assistant" id="claude-code">
+      <h3>Claude Code</h3>
+      <p class="where">One command in your terminal (writes to <code>~/.claude.json</code>; add
+        <code>--scope user</code> for all projects):</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
+    </div>
+
+    <!-- verified 2026-08-17 against https://cursor.com/docs/mcp -->
+    <div class="assistant" id="cursor">
+      <h3>Cursor</h3>
+      <p class="where">Config: <code>.cursor/mcp.json</code> (this project) or
+        <code>~/.cursor/mcp.json</code> (all workspaces). Enable it under Settings → Tools &amp; MCP.</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>{
+  "mcpServers": {
+    "xfa": {
+      "command": "xlsx-for-ai-mcp"
+    }
+  }
+}</code></pre>
+    </div>
+
+    <!-- verified 2026-08-17 against https://code.visualstudio.com/docs/agent-customization/mcp-servers -->
+    <div class="assistant" id="vscode-copilot">
+      <h3>VS Code (GitHub Copilot)</h3>
+      <p class="where">Config: <code>.vscode/mcp.json</code> (workspace) or the
+        <strong>MCP: Open User Configuration</strong> command. Note VS Code's key is
+        <code>servers</code> and each entry needs an explicit <code>"type": "stdio"</code>.</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>{
+  "servers": {
+    "xfa": {
+      "type": "stdio",
+      "command": "xlsx-for-ai-mcp"
+    }
+  }
+}</code></pre>
+    </div>
+
+    <!-- verified 2026-08-17 against https://google-gemini.github.io/gemini-cli/docs/tools/mcp-server.html -->
+    <div class="assistant" id="gemini-cli">
+      <h3>Gemini CLI</h3>
+      <p class="where">Config: <code>~/.gemini/settings.json</code> (or
+        <code>&lt;project&gt;/.gemini/settings.json</code>). Restart the CLI after saving.</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>{
+  "mcpServers": {
+    "xfa": {
+      "command": "xlsx-for-ai-mcp"
+    }
+  }
+}</code></pre>
+    </div>
+
+    <!-- verified 2026-08-17 against https://qwenlm.github.io/qwen-code-docs/en/developers/tools/mcp-server/ -->
+    <div class="assistant" id="qwen-code">
+      <h3>Qwen Code</h3>
+      <p class="where">Config: <code>~/.qwen/settings.json</code> (or <code>.qwen/settings.json</code>
+        per project). Qwen Code has the most established MCP support in the Qwen line.</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>{
+  "mcpServers": {
+    "xfa": {
+      "command": "xlsx-for-ai-mcp"
+    }
+  }
+}</code></pre>
+    </div>
+
+    <!-- verified 2026-08-17 against https://www.kimi.com/code/docs/en/kimi-code-cli/customization/mcp.html -->
+    <div class="assistant" id="kimi-code">
+      <h3>Kimi Code</h3>
+      <p class="where">One command: <code>kimi mcp add xfa -- xlsx-for-ai-mcp</code> — or edit
+        <code>~/.kimi/mcp.json</code> directly:</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>{
+  "mcpServers": {
+    "xfa": {
+      "command": "xlsx-for-ai-mcp"
+    }
+  }
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- ===================== GROUP 2: open & local harnesses ===================== -->
+  <div class="install-group">
+    <h2 id="open-local">Set it up: open &amp; local harnesses</h2>
+    <p class="group-note">Run any model — Llama, Mistral, Qwen, DeepSeek, GLM, Kimi — through one of
+      these harnesses and <code>xlsx_check</code> works the same way. The config lives with the
+      <em>harness</em>, not the model. All snippets verified 2026-08-17.</p>
+
+    <!-- verified 2026-08-17 against https://docs.cline.bot/mcp/configuring-mcp-servers -->
+    <div class="assistant" id="cline">
+      <h3>Cline (excel MCP for VS Code)</h3>
+      <p class="where">Open the Cline panel → MCP Servers icon → Configure → <strong>Configure MCP
+        Servers</strong> (this opens <code>cline_mcp_settings.json</code>).</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>{
+  "mcpServers": {
+    "xfa": {
+      "command": "xlsx-for-ai-mcp",
+      "args": [],
+      "disabled": false,
+      "autoApprove": []
+    }
+  }
+}</code></pre>
+    </div>
+
+    <!-- verified 2026-08-17 against https://docs.roocode.com/features/mcp/using-mcp-in-roo -->
+    <div class="assistant" id="roo-code">
+      <h3>Roo Code</h3>
+      <p class="where">Config: <code>.roo/mcp.json</code> (project, recommended) or the global
+        <code>mcp_settings.json</code> via the Roo Code MCP panel → Edit Global MCP.</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>{
+  "mcpServers": {
+    "xfa": {
+      "command": "xlsx-for-ai-mcp",
+      "args": [],
+      "disabled": false,
+      "alwaysAllow": []
+    }
+  }
+}</code></pre>
+    </div>
+
+    <!-- verified 2026-08-17 against https://docs.continue.dev/customize/deep-dives/mcp -->
+    <div class="assistant" id="continue-dev">
+      <h3>Continue.dev</h3>
+      <p class="where">Add a block file at <code>.continue/mcpServers/xfa.yaml</code> in your workspace
+        (reload the window afterward). Continue's <code>mcpServers</code> is a YAML list.</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>name: xlsx-for-ai
+version: 0.0.1
+schema: v1
+mcpServers:
+  - name: xfa
+    type: stdio
+    command: xlsx-for-ai-mcp</code></pre>
+    </div>
+
+    <!-- verified 2026-08-17 against https://goose-docs.ai/docs/getting-started/using-extensions/ -->
+    <div class="assistant" id="goose">
+      <h3>Goose</h3>
+      <p class="where">Fastest: <code>goose configure</code> → Add Extension → Command-line Extension
+        (name <code>xfa</code>, command <code>xlsx-for-ai-mcp</code>). Or edit
+        <code>~/.config/goose/config.yaml</code>:</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>extensions:
+  xfa:
+    name: xfa
+    cmd: xlsx-for-ai-mcp
+    args: []
+    enabled: true
+    type: stdio
+    timeout: 300
+    envs: {}</code></pre>
+    </div>
+
+    <!-- verified 2026-08-17 against https://lmstudio.ai/docs/app/mcp -->
+    <div class="assistant" id="lm-studio">
+      <h3>LM Studio</h3>
+      <p class="where">Program tab → Install → <strong>Edit mcp.json</strong> (file at
+        <code>~/.lmstudio/mcp.json</code>). Use the in-app button — the path varies by install.</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>{
+  "mcpServers": {
+    "xfa": {
+      "command": "xlsx-for-ai-mcp"
+    }
+  }
+}</code></pre>
+    </div>
+
+    <!-- verified 2026-08-17 against https://www.librechat.ai/docs/configuration/librechat_yaml/object_structure/mcp_servers -->
+    <div class="assistant" id="librechat">
+      <h3>LibreChat</h3>
+      <p class="where">Add to <code>librechat.yaml</code> under the top-level <code>mcpServers:</code>
+        key:</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>mcpServers:
+  xfa:
+    type: stdio
+    command: xlsx-for-ai-mcp</code></pre>
+    </div>
+
+    <!-- verified 2026-08-17 against https://docs.openwebui.com/features/extensibility/mcp/ -->
+    <div class="assistant" id="open-webui">
+      <h3>Open WebUI</h3>
+      <p class="where">Open WebUI speaks MCP over HTTP, so bridge the local server with
+        <code>mcpo</code>, then register the endpoint under Admin Settings → Integrations:</p>
+      <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>uvx mcpo --port 8000 -- xlsx-for-ai-mcp</code></pre>
+      <p class="note">Then add <code>http://localhost:8000</code> as a tool server in Open WebUI.</p>
+    </div>
+
+    <!-- verified 2026-08-17: Ollama has no native MCP (github.com/ollama/ollama/issues/7865 open) -->
+    <div class="assistant" id="ollama">
+      <h3>Ollama</h3>
+      <p class="where">Ollama itself has no MCP support — it's a model server. Pair it with a harness
+        that does: point <strong>Continue.dev</strong> (above) at your local Ollama model and add the
+        <code>xfa</code> server there, or run <strong>Open WebUI</strong> against Ollama with the
+        <code>mcpo</code> bridge above.</p>
+    </div>
+  </div>
+
+  <!-- ===================== GROUP 3: hosted assistants (connect by URL) ===================== -->
+  <div class="install-group">
+    <h2 id="hosted-url">Hosted assistants that connect by URL</h2>
+    <p class="group-note">Some assistants connect only to <em>remote</em> MCP servers reached over a
+      public URL — they can't launch a local command. <code>xlsx_check</code> runs as a local server,
+      so the simplest path today is to use one of the desktop or CLI clients above. For these, here's
+      the honest state as of 2026-08-17:</p>
+
+    <div class="assistant" id="chatgpt">
+      <h3>ChatGPT</h3>
+      <div class="hosted-note"><b>Remote MCP only.</b> ChatGPT's Developer mode / MCP apps connect to
+        a server over a public URL; there's no field for a local command. To use it there you'd expose
+        the server over HTTPS yourself (OpenAI's Secure MCP Tunnel). Until then, run the check in
+        Claude, Cursor, VS Code, or any CLI client above. See
+        <a href="https://help.openai.com/en/articles/12584461-developer-mode-and-mcp-apps-in-chatgpt" rel="noopener">ChatGPT's MCP docs</a>.</div>
+    </div>
+
+    <div class="assistant" id="grok">
+      <h3>Grok</h3>
+      <div class="hosted-note"><b>Remote MCP only.</b> Grok's "bring your own MCP" connectors take a
+        public server URL, not a local binary. Use a desktop/CLI client above today, or expose the
+        server over HTTPS via a tunnel. See
+        <a href="https://docs.x.ai/grok/connectors" rel="noopener">Grok's connector docs</a>.</div>
+    </div>
+
+    <div class="assistant" id="mistral-le-chat">
+      <h3>Mistral Le Chat</h3>
+      <div class="hosted-note"><b>Remote MCP only.</b> Le Chat's Custom MCP Connector accepts an HTTPS
+        server URL, not a local command. Run <code>xlsx_check</code> through a local client above, or
+        stand up a remote MCP endpoint. See
+        <a href="https://docs.mistral.ai/le-chat/knowledge-integrations/connectors/mcp-connectors" rel="noopener">Le Chat's MCP docs</a>.</div>
+    </div>
+
+    <div class="assistant" id="deepseek-qwen-chat">
+      <h3>DeepSeek &amp; Qwen Chat (web)</h3>
+      <div class="hosted-note">DeepSeek's app isn't an MCP host, and Qwen's web chat currently adds
+        remote (URL) MCP servers only. To check spreadsheets with these models, run them inside a
+        harness that speaks stdio MCP — <a href="#qwen-code">Qwen Code</a> for Qwen, or any harness in
+        the section above with DeepSeek as the backend model.</div>
+    </div>
+  </div>
+
+  <div class="callout" id="any-client">
+    <h3>Any other MCP-enabled assistant</h3>
+    <p>If your client speaks the Model Context Protocol over stdio, this generic block works — adapt it
+      to your client's config format:</p>
+    <pre class="copy" role="button" tabindex="0" title="Click to copy"><code>{
+  "mcpServers": {
+    "xfa": {
+      "command": "xlsx-for-ai-mcp"
+    }
+  }
+}</code></pre>
+    <p>Once it's wired, ask your assistant: <em>"Run xlsx_check on this workbook and tell me what's
+      wrong."</em></p>
+  </div>
+
+  <!-- ===================== what it catches ===================== -->
+  <h2 class="block" id="what-it-catches">What it catches</h2>
+  <p class="section-lead"><code>xlsx_check</code> recomputes the whole workbook through a second,
+    dissimilar engine and compares — so it catches the errors that don't announce themselves. Three of
+    the classes it flags:</p>
+  <div class="catch">
+    <div class="row">
+      <span class="tok">#REF!</span>
+      <h3>Broken references</h3>
+      <p>A formula points at a cell, column, or sheet that was deleted or moved — e.g.
+        <b>=SUM(Sheet2!B2:B40)</b> after Sheet2 was renamed. Reported with the exact cell and the
+        error token, as a <b>BLOCKER</b>.</p>
+    </div>
+    <div class="row">
+      <span class="tok">MISSED ROW</span>
+      <h3>A range that silently misses the last row</h3>
+      <p>The total looks fine but stops short of the data: <b>=SUM(B2:B41)</b> over a column that runs
+        to <b>B42</b>. No error token, wrong answer. Flagged as a <b>WARN</b> with the exact extended
+        range as the suggested fix.</p>
+    </div>
+    <div class="row">
+      <span class="tok">STALE VALUE</span>
+      <h3>Stale cached values that look right and aren't</h3>
+      <p>The file stores <b>1,240</b> for a cell whose formula now computes <b>1,318</b> — a value that
+        was correct when last saved and isn't now. The independent recompute catches the disagreement
+        and reports it as a <b>WARN</b>.</p>
+    </div>
+  </div>
+  <p class="section-lead">It also runs an error-cell census (<code>#DIV/0!</code>, <code>#NAME?</code>,
+    <code>#VALUE!</code> …) and a hygiene pass (macros, external links, hidden sheets).
+    <code>csv_check</code> covers CSV files: parse validity, ragged rows, encoding anomalies, and a
+    formula-injection lens.</p>
+
+  <!-- ===================== the stamp ===================== -->
+  <h2 class="block" id="the-stamp">The stamp</h2>
+  <p class="section-lead">When a file comes back clean, <code>xlsx_check</code> can embed a signed
+    receipt inside it — a stamp. It travels with the file: forward the workbook to anyone, and they can
+    run <code>xlsx_verify_stamp</code> to confirm it passed the check and wasn't altered afterward. The
+    stamp is the object that travels inside a verified file, so a reviewer downstream doesn't have to
+    take the sender's word for it.</p>
+
+  <!-- ===================== FAQ ===================== -->
+  <h2 class="block" id="faq">FAQ</h2>
+  <div class="faq">
+    <div class="qa">
+      <h3>Is it free?</h3>
+      <p>Yes. Every check is free — there's no billing gate on <code>xlsx_check</code> or
+        <code>csv_check</code>. A volume cap keeps the hosted API healthy; that's the only limit.</p>
+    </div>
+    <div class="qa">
+      <h3>Does it change my file?</h3>
+      <p>No. A check reads the workbook and reports — it changes nothing on its own. Your assistant
+        fixes what it catches and shows you the change. The one exception is when you ask for a
+        <b>stamp</b>: that writes a signed receipt into a clean copy (a Save-As), which is the point.</p>
+    </div>
+    <div class="qa">
+      <h3>What data is sent, and who can see it?</h3>
+      <p>The MCP server runs <b>locally, on your machine</b> — your spreadsheet is parsed there. The
+        hosted API uses anonymous UUID registration: no email, no name. A per-request strict mode
+        disables any error capture. <a href="/privacy/">Read the privacy policy</a>.</p>
+    </div>
+    <div class="qa">
+      <h3>Which assistants does it work with?</h3>
+      <p>Any assistant that speaks the Model Context Protocol over stdio — that's the whole
+        <a href="#desktop-cli">desktop &amp; CLI</a> and <a href="#open-local">open harness</a> list
+        above. Assistants that only connect to remote MCP servers by URL are covered
+        <a href="#hosted-url">here</a>.</p>
+    </div>
+    <div class="qa">
+      <h3>Do I need to write any code?</h3>
+      <p>No. Install once (<code>npm install -g xlsx-for-ai</code>), paste one config block for your
+        assistant, and ask it in plain English to check your spreadsheet.</p>
+    </div>
+  </div>
+
+  <p class="section-lead" style="margin-top:44px">Want the full spreadsheet tool surface — read, write,
+    pivot, diff, convert, redact — not just the check? See <a href="/">all 50 xlsx-for-ai tools</a>.</p>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/importable/import-shopify-products/">Shopify: import products</a>
+      <a href="/importable/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/importable/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/importable/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/importable/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<div id="copy-status" aria-live="polite" class="hidden"></div>
+<script src="/copy.js"></script>
+
+</body>
+</html>

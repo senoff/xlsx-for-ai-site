@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify metafields re-import: blank cells and type locks | xlsx-for-ai</title>
+<meta name="description" content="Re-importing edited Shopify metafields? A blank cell wipes the value, and a metafield's type can't be changed. Check your file first — free, nothing stored.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Shopify metafields re-import: blank cells and type locks | xlsx-for-ai">
+<meta property="og:description" content="Re-importing edited Shopify metafields? A blank cell wipes the value, and a metafield's type can't be changed. Check your file first — free, nothing stored.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-metafields/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shopify metafields re-import: blank cells and type locks | xlsx-for-ai">
+<meta name="twitter:description" content="Re-importing edited Shopify metafields? A blank cell wipes the value, and a metafield's type can't be changed. Check your file first — free, nothing stored.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-metafields/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Shopify metafields safe re-import checker",
+  "description": "Check an edited Shopify metafields file before you re-import it: blank cells are left alone instead of wiping values, and a changed type is flagged before it fails.",
+  "url": "https://xlsx-for-ai.dev/importable/import-shopify-metafields/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free Shopify metafields re-import checker</div>
+    <h1>The two metafield import footguns — and how to not fire them.</h1>
+    <p class="lede">Let your agent work across all your spreadsheets for you.</p>
+    <p class="lede">Export your metafields, edit a few cells, re-import. It sounds safe, and it usually
+      isn't. Two things go wrong quietly: <strong>a blank cell deletes the value that was there</strong>,
+      and <strong>a metafield's type can't be changed</strong> once it holds data. Upload your edited file
+      and we'll tell you exactly which rows would change, which would be left alone, and which ones would
+      have bitten you. Your original file is never changed.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">import-shopify-metafields · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>Footgun 1 — a blank cell means “delete”, not “skip”</h2>
+    <p>This is the one that costs people a weekend. You export 4,000 metafield rows, you edit the eleven
+      you cared about, and you re-import the whole sheet. The 3,989 rows you didn't touch still came along
+      — and any cell you cleared, or that came back empty from a spreadsheet round trip, is read as
+      <em>set this metafield to nothing</em>. The values are gone. There is no warning before it happens
+      and no undo after.</p>
+    <p>It's easy to produce blanks without meaning to. Deleting a row's text to “leave it out”. A filter
+      that hid rows while you retyped a column. A CSV opened and re-saved by a spreadsheet that dropped a
+      value it didn't like. In every case the file <em>looks</em> like the export you started from.</p>
+    <p><strong>What this tool does instead:</strong> blank means leave it alone. A row whose value cell is
+      empty is simply not written into the import file — it can't clear anything, because it isn't there.
+      You still see it: every skipped row is itemised under <em>left unchanged</em>, so “nothing happened”
+      is something you're told, not something you have to infer from an absence. If you genuinely do want
+      to clear a metafield, that's a deliberate delete you make in Shopify — not a side effect of an empty
+      cell.</p>
+
+    <h2>Footgun 2 — a metafield's type is locked once it holds values</h2>
+    <p>Every metafield has a type: <code>single_line_text_field</code>, <code>number_decimal</code>,
+      <code>boolean</code>, <code>date</code>, and so on. You cannot change that type while the metafield
+      has values. Change the type column in your sheet from a number to text and re-import, and the write
+      doesn't quietly convert — it fails, or the row is skipped, and you're left reading an error that
+      doesn't say “you changed a type”.</p>
+    <p>The fix Shopify requires is blunt: delete the existing values for that metafield first, change the
+      definition's type, then import the new values. That's a decision worth making on purpose, not one to
+      discover halfway through an import.</p>
+    <p><strong>What this tool does instead:</strong> we read the type on every row and compare it against
+      the type the same metafield uses everywhere else in your file. When two rows disagree about one
+      metafield's type, we hold the odd one back <em>before</em> it's written, name both types and both
+      rows, and tell you the remediation in plain words. Nothing is guessed and nothing is silently
+      converted.</p>
+
+    <h2>Try it on a file that fires both</h2>
+    <p>Here is a real export-edit-reimport workbook with both footguns loaded:
+      <a href="/importable/import-shopify-metafields/metafields-safe-roundtrip.xlsx" download>metafields-safe-roundtrip.xlsx</a>.
+      Ten rows: five edited with new values, four deliberately left blank, and one that changes a
+      metafield's type from a number to text. A second sheet records what the store held before the edits,
+      so you can check the result yourself rather than take our word for it.</p>
+    <p>Run it through the tool above. You should see five rows queued to update, four left unchanged —
+      the blank ones, still holding their old values — and one held back for the type change, with the
+      delete-first remediation spelled out. That is the whole claim of this page, and you can watch it
+      happen on your own screen.</p>
+
+    <h2>A reviewed file, not an automatic write</h2>
+    <p>This tool never touches your store. It reads your edited file, works out what a re-import would
+      actually do, and hands back a separate import CSV containing only the rows that carry a value you
+      typed. You review it and upload it in your Shopify admin yourself. Your uploaded file is read in
+      memory and never stored, and your original is never modified.</p>
+    <p class="muted">Want this inside your AI agent, on your own machine, with no upload at all?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask
+      Claude or Cursor to “check this metafields file before I re-import it.”</p>
+  </div>
+
+</div>
+</main>
+
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent check a metafields re-import before it lands</h2>
+  <p>This tool read one edited metafields export and worked out, row by row, what re-importing it would do — which values would change, which blank cells would have wiped a value, and which row would have been rejected for changing a locked type.</p>
+  <p>Wire <strong>xlsx-for-ai</strong> into your agent and that check runs inside its own workflow, so an edited export is verified before anything reaches your store rather than after.</p>
+</div>
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/importable/import-shopify-products/">Shopify: import products</a>
+      <a href="/importable/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/importable/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/importable/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/importable/import-shopify-metafields/">Shopify: metafields re-import</a>
+      <a href="/importable/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/importable/import-shopify-metafields/page.js"></script>
+
+</body>
+</html>

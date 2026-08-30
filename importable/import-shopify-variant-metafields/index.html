@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Bulk-edit Shopify variant metafields from a spreadsheet | xlsx-for-ai</title>
+<meta name="description" content="Shopify's CSV import ignores variant metafield columns. Turn a per-SKU spreadsheet into a variant metafields import file — your original is never changed.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Bulk-edit Shopify variant metafields from a spreadsheet | xlsx-for-ai">
+<meta property="og:description" content="Shopify's CSV import ignores variant metafield columns. Turn a per-SKU spreadsheet into a variant metafields import file — your original is never changed.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-variant-metafields/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bulk-edit Shopify variant metafields from a spreadsheet">
+<meta name="twitter:description" content="Shopify's CSV import ignores variant metafield columns. Turn a per-SKU spreadsheet into a variant metafields import file — your original is never changed.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-variant-metafields/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Bulk-edit Shopify variant metafields from a spreadsheet",
+  "description": "Shopify's CSV import ignores variant metafield columns. Turn a per-SKU spreadsheet into a variant metafields import file — your original is never changed.",
+  "url": "https://xlsx-for-ai.dev/importable/import-shopify-variant-metafields/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free Shopify variant metafields import builder</div>
+    <h1>Bulk-edit Shopify variant metafields from a spreadsheet — free.</h1>
+    <p class="lede">Let your agent work across all your spreadsheets for you.</p>
+    <p class="lede">Shopify's own CSV import has no way to load variant metafields. Add a
+      <code>Variant Metafield: custom.chest_cm</code> column to a product CSV and it is ignored —
+      no error, no warning, nothing written. Upload your per-SKU sheet here instead — one row per
+      variant, one column per metafield — and get back an import file that carries each value to the
+      right SKU. Your original file is never changed.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">import-shopify-variant-metafields · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>What it does</h2>
+    <p>Per-SKU data — chest and waist measurements that change with every size, fabric content that
+      changes with every colorway, a care code per variant — naturally lives one row per SKU, one
+      column per field. Shopify writes metafields one at a time, keyed by owner, namespace and key.
+      This tool does the conversion: it reads your SKU column and every column named
+      <code>Variant Metafield: &lt;namespace&gt;.&lt;key&gt;</code> and writes one import row per SKU
+      and metafield, with the type you declared in square brackets.</p>
+
+    <h2>Name your columns and we'll read them</h2>
+    <p>A metafield column is <code>Variant Metafield: custom.chest_cm [number_decimal]</code> — the
+      namespace and key exactly as they appear in your Shopify metafield definitions, and the type in
+      square brackets. Leave the brackets off and the values are carried as text. Your SKU column can
+      be called <code>Variant SKU</code> or just <code>SKU</code>.</p>
+
+    <h2>It flags what it won't write</h2>
+    <p>A column we can't place, a product-level metafield in a variant-level file, a type Shopify
+      doesn't recognise, two columns claiming the same metafield, a row with values but no SKU — none
+      of those are guessed at. They're held back and listed under <strong>what needs you</strong>, with
+      the reason. Everything we did map shows up under <strong>what we mapped</strong>, so every column
+      in your file is accounted for.</p>
+
+    <h2>Blank cells never clear a metafield</h2>
+    <p>An empty cell produces no import row at all, and every row we write is a merge — it creates the
+      metafield if it's missing and updates it if it's there. Nothing in the file you upload can turn
+      into an instruction to erase a value you already have.</p>
+
+    <h2>Reviewed file, not an automatic write</h2>
+    <p>This tool hands you a reviewed file to check and import yourself — it never writes to your store
+      directly. Your uploaded file is read in memory and never stored.</p>
+
+    <h2>Prefer to start from an example?</h2>
+    <p>Download the <a href="metafields-variant-per-sku.xlsx" download>per-SKU variant metafields
+      example</a> — one product, six SKUs, four measurement metafields and a fabric-content metafield,
+      with the column headers named the way this tool reads them. Replace the rows with your own.</p>
+
+    <p class="muted">Want this inside your AI agent, on your own machine, with no upload at all?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask
+      Claude or Cursor to “build a Shopify variant metafields import from these measurements.”</p>
+  </div>
+
+</div>
+</main>
+
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent load per-SKU data Shopify's importer can't</h2>
+  <p>This tool turned one per-SKU spreadsheet into a variant metafields import — the one thing Shopify's native CSV import cannot do at all. When your AI agent pulls measurements from a tech pack, fabric content from a supplier sheet, or care codes from a factory export, it can build the same import file, flagging anything it won't guess at.</p>
+  <p>Wire <strong>xlsx-for-ai</strong> into your agent and per-SKU metafield work gets prepared and checked inside its own workflow, so you see exactly what will be written before anything reaches your store.</p>
+</div>
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/importable/import-shopify-products/">Shopify: import products</a>
+      <a href="/importable/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/importable/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/importable/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/importable/import-shopify-variant-metafields/">Shopify: variant metafields</a>
+      <a href="/importable/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/importable/shopify-import.js"></script>
+<script src="/importable/import-shopify-variant-metafields/page.js"></script>
+
+</body>
+</html>

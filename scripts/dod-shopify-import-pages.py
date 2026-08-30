@@ -62,6 +62,18 @@ NEW = {
         "/old-gamma,/pages/about\n",
         3,
     ),
+    # XLS-1204. This door runs NO AI mapper (the metafield column convention is a
+    # declared naming grammar), so the honest-decline arm below does not apply to it:
+    # with or without a prod mapper key these columns map, and `did` is never empty.
+    "import-shopify-variant-metafields": (
+        "shopify_variant_metafields_import", "metafield",
+        "Variant SKU,Variant Metafield: custom.chest_cm [number_decimal],"
+        "Variant Metafield: custom.fabric_content [single_line_text_field]\n"
+        "DOD-TEE-S,96.5,100% Merino Wool\n"
+        "DOD-TEE-M,101.5,100% Merino Wool\n"
+        "DOD-TEE-L,106.5,100% Merino Wool\n",
+        3,
+    ),
 }
 
 # The existing tool pages that also carry a .xfa-mcp-copy block (uniqueness set).

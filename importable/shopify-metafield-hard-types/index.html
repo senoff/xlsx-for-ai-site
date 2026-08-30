@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shopify reference, list &amp; file metafields — the hard types | xlsx-for-ai</title>
+<meta name="description" content="Related products, spec-sheet PDFs and size-chart links as Shopify metafields — the exact list.product_reference, file_reference and metaobject_reference formats native CSV gets wrong, plus a working demo file proven against a live store.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Shopify reference, list &amp; file metafields — the hard types | xlsx-for-ai">
+<meta property="og:description" content="Related products, spec-sheet PDFs and size-chart links as Shopify metafields — the exact formats native CSV gets wrong, plus a working demo file proven against a live store.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/importable/shopify-metafield-hard-types/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shopify reference, list &amp; file metafields — the hard types | xlsx-for-ai">
+<meta name="twitter:description" content="Related products, spec-sheet PDFs and size-chart links as Shopify metafields — the exact formats native CSV gets wrong, plus a working demo file proven against a live store.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<link rel="canonical" href="https://xlsx-for-ai.dev/importable/shopify-metafield-hard-types/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<style>
+  .ht-err { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px; background: #2b2b28; color: #f4f4f0; border-radius: 6px; padding: 10px 14px; margin: 10px 0 14px; overflow-x: auto; white-space: pre-wrap; }
+  .ht-fmt { border: 1px solid var(--line); border-radius: 8px; padding: 14px 18px; margin: 14px 0; background: #fff; }
+  .ht-fmt code { font-size: 13px; background: #f2f2ee; padding: 2px 6px; border-radius: 4px; }
+  .ht-download { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; border: 1px solid var(--line); border-radius: 10px; padding: 22px 26px; margin: 20px 0 8px; background: #fff; }
+  .ht-download .btn { white-space: nowrap; }
+  .ht-proof { width: 100%; border-collapse: collapse; margin: 14px 0 6px; font-size: 14px; }
+  .ht-proof th, .ht-proof td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+  .ht-proof th { font-size: 12px; text-transform: uppercase; letter-spacing: .03em; color: var(--muted); font-weight: 600; }
+  .ht-proof td.ok { color: var(--accent, #107c41); font-weight: 600; white-space: nowrap; }
+  .ht-proof td code { font-size: 12.5px; }
+  .imp-soon { border: 1px solid var(--line); border-radius: 10px; padding: 20px 24px; margin: 32px 0; background: #fafaf8; }
+  .imp-soon .tag { display: inline-block; font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .muted { color: var(--muted); }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Shopify reference, list & file metafields — the hard types",
+  "description": "Related products, spec-sheet PDFs and size-chart links as Shopify metafields — the exact list.product_reference, file_reference and metaobject_reference formats native CSV gets wrong, plus a working demo file proven against a live store.",
+  "url": "https://xlsx-for-ai.dev/importable/shopify-metafield-hard-types/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify metafields — reference, list &amp; file types</div>
+    <h1>Related products, spec-sheet PDFs &amp; size-chart links as Shopify metafields — the hard types, done right.</h1>
+    <p class="lede">Three metafield types break almost every bulk-import tool: <code>list.product_reference</code>
+      (related-products blocks), <code>file_reference</code> (spec-sheet PDFs, swatch images), and
+      <code>metaobject_reference</code> (size-chart / spec links). Each one is underdocumented, and each fails
+      differently — usually with no error at all. Below is the exact working format for each, a demo file with
+      all three, and proof it actually imports clean.</p>
+  </div>
+
+  <div class="prose">
+
+    <h2>Why these three types trip up a normal import</h2>
+    <p>Native Shopify CSV and most bulk-import tools handle a plain text or number metafield fine. Reference,
+      list, and file metafields are different: their values are IDs (<code>gid://shopify/...</code>), and every
+      ID is specific to <strong>one store</strong>. Native CSV's list format is undocumented and inconsistently
+      enforced; file metafields have no handle fallback at all — only a raw file ID; and a
+      <code>metaobject_reference</code> needs a metafield <em>definition</em> to already exist, or the value is
+      refused. Worst of all: when one of these silently fails, Shopify usually says <strong>the import
+      succeeded</strong> — the field is empty or null, discovered only later on the storefront.</p>
+
+    <h2>list.product_reference — related products, linked products, "frequently bought together"</h2>
+    <p>This is the type behind a related-products block, a "frequently bought together" row, or any field that
+      points at a <em>list</em> of other products.</p>
+    <div class="ht-err">Owner subtype does not match the metafield definition's constraints</div>
+    <p>That's the error Shopify throws when the value shape doesn't match what a <code>list.product_reference</code>
+      expects. The undocumented part: it wants a JSON array of product <strong>handles or GIDs</strong> — not a
+      semicolon list, not comma-separated text, not one product per row.</p>
+    <div class="ht-fmt">Correct format: <code>["waxed-canvas-tote","recycled-wool-scarf"]</code> — a JSON array
+      of the target products' handles. Each handle is resolved against your store at import time; one that
+      doesn't match is refused and reported to you, never silently dropped.</div>
+
+    <h2>file_reference — spec-sheet PDFs, swatch images, downloadable files</h2>
+    <p>Used for a spec-sheet PDF, a size guide image, or any file attached to a product as a metafield rather than
+      a product image.</p>
+    <div class="ht-err">Value must be a file reference string
+Value references non-existent resource gid://shopify/MediaImage/…</div>
+    <p>Files have no portable handle — the value has to be the file's exact Shopify File ID. That ID is
+      store-specific: copy one store's file ID into another store (or paste a URL, or a filename) and you get the
+      second error above, a dangling pointer that reads as empty on the storefront.</p>
+    <div class="ht-fmt">Correct format: <code>gid://shopify/MediaImage/71302210945105</code> (or
+      <code>GenericFile/…</code> for a PDF) — copy it from Admin → Content → Files → select the file → Copy Media
+      ID. We don't yet resolve files by filename (a known v1 gap); an unknown or malformed ID is refused with a
+      clear reason, never guessed.</div>
+
+    <h2>metaobject_reference — size charts, spec links, structured entries</h2>
+    <p>Used for a size chart, a structured spec sheet, or any link to a metaobject entry (a custom structured
+      record you've defined in Shopify).</p>
+    <div class="ht-err">Value: must belong to the specified metaobject definition
+Handle is invalid</div>
+    <p>Two ways this breaks: the metafield definition points at the wrong (or a since-changed) metaobject
+      definition, or the handle in your value doesn't exist. Metaobjects <em>are</em> handle-portable — that's
+      the one hard type that survives a store move cleanly, as long as the destination has the same metaobject
+      type and entry.</p>
+    <div class="ht-fmt">Correct format: <code>dod_ref_thing/relaxed-fit</code> — <code>&lt;metaobject
+      type&gt;/&lt;entry handle&gt;</code>. Replace both sides with your own definition's type and the entry's
+      handle. An unmatched pair is refused, never silently dropped.</div>
+
+  </div>
+
+  <h2 style="margin-top:48px;">The demo file — all three types, proven against a live store</h2>
+  <p class="lede">One workbook, one tab per hard type, each cell showing the exact working format above. Not a
+    mockup — every value in it round-tripped through a real Shopify store during our own build verification.</p>
+
+  <div class="ht-download">
+    <div>
+      <strong>metafields-hard-types.xlsx</strong>
+      <div class="muted" style="font-size:13.5px;margin-top:4px;">3 tabs · list.product_reference,
+        file_reference, metaobject_reference · inline format note on every tab</div>
+    </div>
+    <a class="btn primary" href="metafields-hard-types.xlsx" download>Download the demo file &rarr;</a>
+  </div>
+
+  <table class="ht-proof">
+    <thead>
+      <tr><th>Tab</th><th>Example value</th><th>Live import result</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>list.product_reference</td>
+        <td><code>["waxed-canvas-tote","recycled-wool-scarf"]</code></td>
+        <td class="ok">✓ resolved &amp; verified</td>
+      </tr>
+      <tr>
+        <td>file_reference</td>
+        <td><code>gid://shopify/MediaImage/71302210945105</code></td>
+        <td class="ok">✓ resolved &amp; verified</td>
+      </tr>
+      <tr>
+        <td>metaobject_reference</td>
+        <td><code>dod_ref_thing/relaxed-fit</code></td>
+        <td class="ok">✓ resolved &amp; verified</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="muted" style="font-size:13px;">Verified end-to-end on a live Shopify store as part of our build
+    process — all 3 tabs imported with zero failures, zero silent drops, and a read-back match on every value.
+    Not a live status badge; a build-time proof this file actually works before we ship it.</p>
+
+  <div class="imp-soon">
+    <div class="tag">Coming to the Shopify App Store</div>
+    <p>This exact resolution — handles and type/handle pairs turned into the right store-specific IDs, refused
+      loudly instead of dropped silently — is what <strong>Importable</strong>, our Shopify app, does
+      automatically on upload. It's being prepared for the Shopify App Store. Until it's available there, the
+      demo file above shows you the exact format so you can build your own import correctly today.</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/importable/">Importable — Shopify import &amp; export</a>
+      <a href="/importable/import-shopify-products/">Shopify: import products</a>
+      <a href="/importable/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/importable/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/importable/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

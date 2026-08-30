@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://xlsx-for-ai.dev/</loc>
-    <lastmod>2026-08-09</lastmod>
+    <lastmod>2026-08-10</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/clean-data/</loc>
@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/importable/</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-10</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/importable/export-shopify-collections/</loc>
@@ -517,6 +517,10 @@
     <lastmod>2026-08-06</lastmod>
   </url>
   <url>
+    <loc>https://xlsx-for-ai.dev/importable/shopify-metafield-hard-types/</loc>
+    <lastmod>2026-08-29</lastmod>
+  </url>
+  <url>
     <loc>https://xlsx-for-ai.dev/large-files/</loc>
     <lastmod>2026-08-06</lastmod>
   </url>
@@ -530,7 +534,7 @@
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-08-09</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/check-for-macros/</loc>

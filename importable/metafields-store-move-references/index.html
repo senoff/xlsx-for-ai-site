@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify metafield references break when you move stores — here's the fix | xlsx-for-ai</title>
+<meta name="description" content="Cloning or migrating a Shopify store silently nulls product, file, and metaobject reference metafields — every GID changes. Here's the real fix: handle-based re-resolution, proven live.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Shopify metafield references break when you move stores — here's the fix | xlsx-for-ai">
+<meta property="og:description" content="Cloning or migrating a Shopify store silently nulls product, file, and metaobject reference metafields — every GID changes. Here's the real fix: handle-based re-resolution, proven live.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/importable/metafields-store-move-references/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shopify metafield references break when you move stores — here's the fix | xlsx-for-ai">
+<meta name="twitter:description" content="Cloning or migrating a Shopify store silently nulls product, file, and metaobject reference metafields — every GID changes. Here's the real fix: handle-based re-resolution, proven live.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/importable/metafields-store-move-references/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Shopify metafield references break when you move stores — here's the fix",
+  "description": "Cloning or migrating a Shopify store silently nulls product, file, and metaobject reference metafields — every GID changes. Here's the real fix: handle-based re-resolution, proven live.",
+  "url": "https://xlsx-for-ai.dev/importable/metafields-store-move-references/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Cross-store reference portability</div>
+    <h1>Cloning your Shopify store? Your reference metafields are about to go quietly null.</h1>
+    <p class="lede">Every product, file, and metaobject gets a brand-new ID in the destination store — and a
+      reference metafield written against the old ID doesn't error, it just stops pointing at anything.</p>
+    <p class="lede">This is why "duplicate my store," "metafields not transferring," and "specs vanished after
+      migration" show up on the forums with no error message attached: there usually isn't one. This page
+      shows the fix — a portable, handle-based key instead of a raw ID — proven with a live before/after
+      against a real Shopify store, not a mockup.</p>
+    <div class="free-pill">Real evidence below · no upload required to read it</div>
+  </div>
+
+  <div class="prose">
+    <h2>Why this happens</h2>
+    <p>A <code>product_reference</code>, <code>file_reference</code>, or <code>metaobject_reference</code>
+      metafield stores a Shopify GID — something like <code>gid://shopify/Product/16001385332817</code>. That
+      number is specific to the store it was created in. Duplicate the store, migrate to a new one, or sync
+      dev&rarr;prod, and every one of those IDs is gone; the destination store has never heard of
+      <code>16001385332817</code>. Shopify doesn't reject the import for this — the reference field is simply
+      left empty, or the import quietly drops the row. Nothing in the success message tells you it happened.</p>
+
+    <h2>The fix: resolve by handle, not by ID</h2>
+    <p>A product's <em>handle</em> (its URL slug), a metaobject's <code>type/handle</code> pair, and a
+      variant's <code>parent handle + SKU</code> are portable — they mean the same thing in every store,
+      because the merchant chose them, not Shopify's database. Import a reference as a portable key instead
+      of a raw GID, and re-resolution looks the destination store's own current objects up by that key at
+      write time. The reference survives the move because it was never tied to the old store's numbers in
+      the first place.</p>
+
+    <h2>Proof, not a promise: the live before/after</h2>
+    <p>We don't just say this works — we run it against a real Shopify store and show the actual result. The
+      hardest version of this test isn't "import once," it's <strong>the reference surviving a change on the
+      other end</strong>: what happens if the thing you're pointing at gets deleted and recreated under the
+      same handle — the exact shape of a real "we cloned the store, then kept building" scenario? We only own
+      one live dev store, so this is simulated by deleting the target product after the first fire, then
+      recreating it under the same handle, then firing the identical import row again unchanged.</p>
+
+    <div class="tool">
+      <div class="topbar">
+        <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <span class="label">dod-metafields-crossstore-rotation.mts · live run against a real Shopify store</span>
+      </div>
+      <div class="panel">
+        <div class="summary">
+          <div class="cnt"><div class="n">21/21</div><div class="l">assertions pass</div></div>
+          <div class="cnt"><div class="n">2/2</div><div class="l">consecutive clean re-runs</div></div>
+          <div class="cnt"><div class="n">0</div><div class="l">residue left behind</div></div>
+        </div>
+        <ul>
+          <li><strong>Before the move</strong> — <code>rel_product</code> resolves to the target
+            product's real GID: <code>gid://shopify/Product/16001385398353</code>.</li>
+          <li><strong>The move</strong> — that product is deleted and recreated under the same handle. Its
+            GID is now different: <code>gid://shopify/Product/16001385496657</code>.</li>
+          <li><strong>After the move, same unchanged source row</strong> — <code>rel_product</code> now
+            resolves to <code>...16001385496657</code>, not the stale <code>...16001385398353</code>. The
+            reference followed the move.</li>
+          <li><code>rel_metaobject</code> (a <code>metaobject_reference</code>) resolves correctly across the
+            same run and is unaffected by the product's rotation — proving the same handle-based mechanism
+            holds for metaobject references, not just products.</li>
+        </ul>
+        <p class="muted">Full log: 21 passed, 0 failed, both consecutive runs — captured from a real run
+          against the <code>importable-m53uzdmo.myshopify.com</code> Shopify store on 2026-08-29.</p>
+      </div>
+    </div>
+
+    <h2>The one type this doesn't fix: file references</h2>
+    <p>A <code>file_reference</code> metafield (a spec-sheet PDF, a size-chart image) points at a Shopify
+      <code>GenericFile</code> or <code>MediaImage</code> object — and unlike products or metaobjects, files
+      have no merchant-chosen handle to re-resolve by. We do not pretend otherwise: a file reference is
+      <strong>honestly ledgered as unresolved</strong> rather than guessed at or silently dropped. In the same
+      live run above, <code>rel_file</code> is reported absent from the owner's metafields after every fire —
+      never written, never faked. If you need file references to survive a store move today, re-upload the
+      file to the destination store and reattach it manually; we'll tell you exactly which rows need that,
+      we just won't pretend to have done it for you.</p>
+
+    <h2>What the free download is — and isn't</h2>
+    <p>The demo file below shows the portable-key format described above: <code>product_reference</code> and
+      <code>metaobject_reference</code> columns written as handles instead of raw IDs, and a
+      <code>file_reference</code> column left as an honest gap with a note on what to do about it. It's a
+      format reference you can copy from — <strong>opening or re-uploading this file does not connect to or
+      write to any Shopify store</strong>. The actual cross-store resolution shown above (looking up a
+      handle against a live destination store and writing the resolved GID) requires a connected store,
+      which is what the full Importable app does. This page and the free download are honest about that
+      line: format guidance is free and stateless; live resolution needs a connection.</p>
+    <p class="muted">Want this reference format loaded straight from your own store? Install
+      <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask Claude or
+      Cursor to check your metafield export for raw IDs that won't survive a store move.</p>
+
+    <h2>Download the demo file</h2>
+    <p><a href="/importable/metafields-store-move-references/metafields-store-move-references.xlsx">metafields-store-move-references.xlsx</a>
+      — a small catalog showing all three reference types (<code>product_reference</code>,
+      <code>file_reference</code>, <code>metaobject_reference</code>) in the correct portable-key format, with
+      an inline read-me row explaining each column.</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/importable/import-shopify-products/">Shopify: import products</a>
+      <a href="/importable/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/importable/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/importable/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/importable/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

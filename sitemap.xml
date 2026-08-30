@@ -14,7 +14,7 @@
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/importable/</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-30</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/importable/export-shopify-collections/</loc>
@@ -518,11 +518,15 @@
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/importable/import-shopify-variant-metafields/</loc>
-    <lastmod>2026-08-29</lastmod>
+    <lastmod>2026-08-30</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/importable/metafields-store-move-references/</loc>
+    <lastmod>2026-08-30</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/importable/shopify-metafield-hard-types/</loc>
-    <lastmod>2026-08-30</lastmod>
+    <lastmod>2026-08-29</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/large-files/</loc>

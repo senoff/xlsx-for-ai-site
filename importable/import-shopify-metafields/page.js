@@ -64,7 +64,7 @@
       { n: written, l: plural(written, "row will update", "rows will update"), cls: written > 0 ? "ok" : "" },
       { n: left, l: "left unchanged" },
     ];
-    if (declined > 0) summary.push({ n: declined, l: "need your review", cls: "bad" });
+    if (declined > 0) summary.push({ n: declined, l: plural(declined, "needs your review", "need your review"), cls: "bad" });
 
     // ---- the outcome table: one line per row of your file ----
     var byRow = {};

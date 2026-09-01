@@ -169,48 +169,6 @@
   .demo-step { margin: 0 0 8px; }
   .demo-step .label { font-weight: 600; color: var(--fg); }
 
-  .pricing {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 18px;
-    margin-top: 28px;
-  }
-  .tier {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 22px 20px;
-    background: white;
-    display: flex;
-    flex-direction: column;
-  }
-  .tier.featured {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-soft);
-  }
-  .tier h3 { font-size: 17px; margin: 0 0 4px; }
-  .tier .price {
-    font-size: 28px;
-    font-weight: 700;
-    margin: 8px 0 4px;
-    letter-spacing: -0.02em;
-  }
-  .tier .price small { font-size: 14px; color: var(--muted); font-weight: 500; }
-  .tier ul { padding-left: 18px; margin: 14px 0 0; color: var(--muted); font-size: 14px; }
-  .tier ul li { margin-bottom: 4px; }
-  .tier .badge {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    background: var(--accent);
-    color: white;
-    padding: 2px 8px;
-    border-radius: 999px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    align-self: flex-start;
-    margin-bottom: 8px;
-  }
-
   .legal h2 { font-size: 22px; margin-top: 32px; }
   .legal h3 { font-size: 16px; margin-top: 18px; }
   .legal p, .legal li { font-size: 14.5px; color: #2c2c2c; }
@@ -351,11 +309,28 @@
   "url": "https://xlsx-for-ai.dev/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Free",
+      "description": "First 10 uses free; then free for files within our free size limit.",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    {
+      "@type": "Offer",
+      "name": "Paid",
+      "description": "For files above the free size limit.",
+      "price": "25",
+      "priceCurrency": "USD",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "25",
+        "priceCurrency": "USD",
+        "billingDuration": "P1Y"
+      }
+    }
+  ],
   "isPartOf": {
     "@type": "WebSite",
     "name": "xlsx-for-ai",

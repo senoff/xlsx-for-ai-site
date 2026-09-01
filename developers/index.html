@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Using the raw HTTP API — xlsx-for-ai</title>
-<meta name="description" content="Call every xlsx-for-ai tool over plain HTTP from any language — no SDK. Anonymous keyless registration, free tier 10,000 calls/month. Browse the reference and OpenAPI contract without a key.">
+<meta name="description" content="Call every xlsx-for-ai tool over plain HTTP from any language — no SDK. Anonymous keyless registration; your first 10 uses are free, then free under 10 MB per file. Browse the reference and OpenAPI contract without a key.">
 <meta name="author" content="xlsx-for-ai">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/developers/">
@@ -140,7 +140,7 @@
 <p class="lede">The MCP client is the easy path for Claude, Cursor, and other agents. But if you're integrating directly, the same 50 tools are a versioned HTTP API you can browse and call without a key.</p>
 
 <h2>Anonymous, keyless on-ramp</h2>
-<p>Registration takes no email and no signup. <code>POST https://api.xlsx-for-ai.dev/api/v1/clients</code> (no auth) returns <code>{ client_id, api_key }</code>; then call any tool with an <code>Authorization: Bearer &lt;api_key&gt;</code> header. The free tier is <strong>10,000 calls/month, 10 MB per file</strong> &mdash; no billing.</p>
+<p>Registration takes no email and no signup. <code>POST https://api.xlsx-for-ai.dev/api/v1/clients</code> (no auth) returns <code>{ client_id, api_key }</code>; then call any tool with an <code>Authorization: Bearer &lt;api_key&gt;</code> header. Your first 10 uses are free; after that, calls stay free for files <strong>under 10 MB</strong>. Larger files need the paid plan &mdash; currently <strong>US $25 per year</strong>, billed annually.</p>
 <div class="cta">
 <pre class="copy" role="button" tabindex="0" data-copy="# Self-issue a key (no signup), then convert report.xlsx to Markdown.
 # Needs jq, and bash or zsh. The base64 body is passed to curl through a

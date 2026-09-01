@@ -1,0 +1,8 @@
+Order ID,Name,Order Number,PO Number,Phone,Row Type,Shipping Name,Shipping Company,Shipping Address1,Shipping Address2,Shipping City,Shipping Province Code,Shipping Zip,Shipping Country Code,Shipping Phone,Lineitem Title,Lineitem Quantity
+gid://shopify/Order/1001,#1001,1001,,512-555-0000,,Ada Lovelace,,12 Byte St,Suite 4,Austin,TX,78701,US,512-555-0100,Cedar Cutting Board,1
+,,,,,Transaction,,,,,,,,,,,
+gid://shopify/Order/1002,#1002,1002,PO-9,617-555-0200,,Grace Hopper,Navy Yard,1 Cobol Ct,,Boston,MA,02110,US,,Merino Beanie,2
+,,,,,,,,,,,,,,,Wool Scarf,1
+,,,,,,,,,,,,,,,Leather Gloves,1
+gid://shopify/Order/1003,#1003,1003,,,,Alan Turing,,2 Enigma Rd,,Manchester,,M1 1AA,GB,,Glass Tumbler,1
+gid://shopify/Order/1004,#1004,1004,,555-9999,,,,,,,,,,,Ghost Item,1

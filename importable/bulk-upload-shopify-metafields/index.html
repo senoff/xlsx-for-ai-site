@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Bulk-upload Shopify product metafields from a spreadsheet | xlsx-for-ai</title>
+<meta name="description" content="Upload the product sheet you already keep. We read your own column names — Fabric Content, Wash Instructions, Ingredients — and map them to the right product metafields. No template to fill in.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Bulk-upload Shopify product metafields from a spreadsheet | xlsx-for-ai">
+<meta property="og:description" content="Upload the product sheet you already keep. We read your own column names — Fabric Content, Wash Instructions, Ingredients — and map them to the right product metafields. No template to fill in.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/importable/bulk-upload-shopify-metafields/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bulk-upload Shopify product metafields from a spreadsheet">
+<meta name="twitter:description" content="Upload the product sheet you already keep. We read your own column names and map them to the right product metafields. No template to fill in.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/importable/bulk-upload-shopify-metafields/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Bulk-upload Shopify product metafields from a spreadsheet",
+  "description": "Upload the product sheet you already keep. We read your own column names — Fabric Content, Wash Instructions, Ingredients — and map them to the right product metafields. No template to fill in.",
+  "url": "https://xlsx-for-ai.dev/importable/bulk-upload-shopify-metafields/",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Free Shopify product metafields import builder</div>
+    <h1>Bulk-upload Shopify product metafields from a spreadsheet — free.</h1>
+    <p class="lede">Let your agent work across all your spreadsheets for you.</p>
+    <p class="lede">Every other metafield tool starts by telling you to rename your columns. This one
+      doesn't. Upload the product sheet you already keep — the one with <code>Fabric Content</code> and
+      <code>Wash Instructions</code> and <code>Ingredients</code> at the top — and we work out what each
+      column <em>means</em> and map it to the matching <code>product.metafields</code> field. Anything we
+      can't place is named, with the reason. Your original file is never changed.</p>
+    <div class="free-pill">Free · no signup · your file is never stored</div>
+  </div>
+
+  <div class="tool">
+    <div class="topbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="label">bulk-upload-shopify-metafields · xlsx-for-ai</span>
+    </div>
+    <div class="panel" id="xfa-panel"></div>
+  </div>
+
+  <div class="prose">
+    <h2>No template, no strict format</h2>
+    <p>The usual bulk-metafield workflow asks you to produce a file in Shopify's shape first: one row per
+      metafield, a <code>namespace.key</code> you have to look up, a type string you have to get exactly
+      right. That's a formatting exercise standing between you and the actual work, and it's why so much
+      product copy never makes it into metafields at all.</p>
+    <p>Upload your sheet as it is instead — one row per product, one column per thing you know about it.
+      We read the column <em>headers</em>, not a template: <code>Fabric Content</code>,
+      <code>Composition</code> and <code>Fibre Content</code> all land on the same material metafield,
+      because they all mean the same thing. Then we write the row-per-metafield import file for you, with
+      the namespace, key and type filled in correctly.</p>
+
+    <h2>The five it covers</h2>
+    <p>This page handles the five plain-text product metafields that account for most of the work — the
+      ones whose value is simply words:</p>
+    <ul>
+      <li><code>custom.material</code> — fabric content, composition, what it's made of.</li>
+      <li><code>custom.care_instructions</code> — washing and care.</li>
+      <li><code>custom.size_and_fit</code> — sizing and fit notes.</li>
+      <li><code>custom.ingredients</code> — ingredient or INCI lists.</li>
+      <li><code>custom.specifications</code> — specs, technical details, dimensions.</li>
+    </ul>
+    <p>Your product handle column can be called <code>Handle</code>, <code>Product Handle</code>,
+      <code>Slug</code> or <code>URL Handle</code> — we read any of them. Metafields whose value is a
+      <em>pointer</em> rather than words — a related product, a spec-sheet PDF, a size-chart image —
+      behave differently enough to have their own pages, linked below.</p>
+
+    <h2>You get a plain-language ledger, not a pass/fail</h2>
+    <p>Every column in your file comes back in one of two lists. <strong>What we mapped</strong> names the
+      column, the metafield it went to, and why. <strong>What we couldn't</strong> names the column and
+      what stopped us — no match, not confident enough, values that don't look like the field, or two
+      columns competing for the same metafield. Nothing is quietly dropped and nothing is quietly guessed:
+      if a column isn't in the first list, it's in the second with a reason you can act on.</p>
+    <p>That second list is the useful half. A column we won't place is usually a column that needs a
+      decision only you can make, and telling you which one is more honest than a silent skip that leaves
+      you to discover the gap in your storefront weeks later.</p>
+
+    <h2>Blank cells never clear a metafield</h2>
+    <p>An empty cell produces no import row at all, and every row we write is a merge — it creates the
+      metafield if it's missing and updates it if it's there. Nothing in the file you upload can turn into
+      an instruction to erase a value you already have.</p>
+
+    <h2>Reviewed file, not an automatic write</h2>
+    <p>This tool hands you a reviewed file to check and import yourself — it never writes to your store
+      directly. Your uploaded file is read in memory and never stored.</p>
+
+    <h2>Prefer to start from an example?</h2>
+    <p>Download <a href="metafields-apparel-basics.xlsx" download>metafields-apparel-basics.xlsx</a> — ten
+      products from a small apparel label, with the messy real-world headers a merchant actually keeps
+      (<code>Fabric Content</code>, <code>Wash Instructions</code>, <code>Fits Like</code>,
+      <code>Ingredients</code>, <code>Tech Specs</code>) and not one of them in Shopify's syntax. It also
+      carries three columns we deliberately <em>won't</em> place — a product title, a related-products
+      column and a lookbook PDF — so you can see both halves of the ledger on a real file before you
+      trust it with your own.</p>
+
+    <h2>The harder metafield cases have their own pages</h2>
+    <p>The five above are the simple ones: the value is words, and words import cleanly. The cases below
+      fail in ways that plain text never does — usually silently, with no error at all — so each one gets
+      its own page with the working format and a live proof:</p>
+    <ul>
+      <li><a href="/importable/import-shopify-variant-metafields/">Bulk-edit variant metafields</a> —
+        per-SKU values (chest measurements, per-colorway fabric) that Shopify's own CSV import ignores
+        entirely, with no error.</li>
+      <li><a href="/importable/shopify-metafield-hard-types/">Reference &amp; file metafields</a> —
+        related products, spec-sheet PDFs and size-chart images, where the value is a pointer to another
+        object rather than text.</li>
+      <li><a href="/importable/import-shopify-metafields/">Safe metafields re-import</a> — what your
+        edited export would actually do before you upload it, including the blank cells that wipe values
+        and the type changes that get rejected.</li>
+      <li><a href="/importable/metafields-store-move-references/">Metafield references across stores</a> —
+        why cloning or migrating a store nulls every reference metafield, and the handle-based fix.</li>
+    </ul>
+
+    <p class="muted">Want this inside your AI agent, on your own machine, with no upload at all?
+      Install <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask
+      Claude or Cursor to “turn this product sheet into a Shopify metafields import.”</p>
+  </div>
+
+</div>
+</main>
+
+<div class="xfa-mcp-copy" hidden>
+  <h2>Let your agent load the product copy that never makes it into metafields</h2>
+  <p>This tool read a merchant's own column names — not a template — and mapped them onto product metafields, then said plainly which columns it wouldn't place and why. When your AI agent pulls fabric content from a supplier sheet, care instructions from a factory export, or ingredient decks from a formulation doc, it can build the same import file and hand you the same two-list ledger.</p>
+  <p>Wire <strong>xlsx-for-ai</strong> into your agent and metafield work gets prepared and checked inside its own workflow, so you see exactly what will be written before anything reaches your store.</p>
+</div>
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/importable/import-shopify-products/">Shopify: import products</a>
+      <a href="/importable/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/importable/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/importable/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/importable/bulk-upload-shopify-metafields/">Shopify: product metafields</a>
+      <a href="/importable/import-shopify-variant-metafields/">Shopify: variant metafields</a>
+      <a href="/importable/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+<script src="/importable/shopify-import.js"></script>
+<script src="/importable/bulk-upload-shopify-metafields/page.js"></script>
+
+</body>
+</html>

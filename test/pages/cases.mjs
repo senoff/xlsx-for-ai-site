@@ -31,32 +31,6 @@
  *   expectLedger    the "what we did / what we didn't touch" promise must render
  */
 export const CASES = {
-  // --- XLS-192 — Validate an Excel file (cross-engine agreement) -----------
-  // The subject is the anon xlsx_validate rail: read the file through TWO
-  // independent engines and report whether they agree. The assertion is drawn
-  // from the fixture's OWN structure — rows.xlsx has exactly 2 sheets (Sheet1 +
-  // Notes) — AND from something only a real two-engine run can produce: the
-  // names of BOTH engines plus their agreement verdict. A page that only
-  // *looked* like it ran (one engine, or a no-op that prints "looks fine")
-  // cannot name both @protobi/exceljs and @cj-tech-master/excelts and the true
-  // sheet count. The red arm swaps in a 1-sheet fixture, so "2 sheets" goes
-  // absent and the case reddens for THIS card alone.
-  //
-  // NOTE — live-DoD is DEPLOY-GATED: the anon endpoint (/api/v1/anon/
-  // xlsx_validate) is built-and-HOLD under the App-Store deploy freeze and is
-  // not live yet. This case is WIRED and correct; it passes the moment the
-  // endpoint deploys. Until then the page-walk against production is expected to
-  // red on the network call, which is the honest state, not a page defect.
-  "XLS-192": {
-    what: "validate across engines — names both engines, the real sheet count, and their agreement",
-    path: "/tools/validate-excel-file/",
-    mode: "single",
-    fixtures: ["rows.xlsx"],
-    download: false,
-    expectPanel: ["protobi", "excelts", "agree", "2 sheets"],
-    redArm: { fixture: "duplicates.xlsx" }, // 1 sheet -> "2 sheets" can't appear
-  },
-
   // --- XLS-193 — Fix my formula errors ------------------------------------
   // The fixture carries three real broken formulas (#REF! / #DIV/0! / #NAME?)
   // AND one healthy one (B5, =1+1). Both halves matter: the page must name the
@@ -318,5 +292,97 @@ export const CASES = {
     download: false,
     expectIn: [{ selector: "table.preview-grid", values: ["sku", "A-1", "D-4", "14.75"] }],
     redArm: { fixture: "duplicates.xlsx" }, // grid cannot contain A-1 / 14.75
+  },
+
+  // --- XLS-817 — Shopify → marketplace feeds (the feed half) --------------
+  // Four pages, four real conversions, each asserting content ONLY a working
+  // producer emits from the fixture's own rows. The red arm for every feed is
+  // the WRONG export shape (products↔orders): a products page fed the orders
+  // golden — or the reverse — has nothing to map, hands back no file, and goes
+  // red. No decoy fixture invented; the two goldens redden each other.
+
+  // Amazon: a products export → the Amazon flat-file template. The SKU
+  // TL-CB-01 and the title only reach the download if the row was mapped.
+  "XLS-817-amazon": {
+    what: "Shopify products export → Amazon feed (the row's SKU + title carry through)",
+    path: "/tools/shopify-amazon-feed/",
+    mode: "single",
+    fixtures: ["shopify-products-feed-golden.csv"],
+    download: true,
+    expectLedger: true,
+    expectPanel: ["Your Amazon inventory feed is ready"],
+    expectDownload: ["TL-CB-01", "Cedar Cutting Board"],
+    redArm: { fixture: "shopify-orders-feed-golden.csv" }, // orders shape -> nothing to map -> no file
+  },
+
+  // Google: a products export + MY store domain/currency → a Merchant Center
+  // feed. The title proves the product carried through; the store domain in the
+  // link proves the form value I typed reached the producer.
+  "XLS-817-google": {
+    what: "Shopify products export → Google feed (title + my store link carry through)",
+    path: "/tools/shopify-google-feed/",
+    mode: "params",
+    fixtures: ["shopify-products-feed-golden.csv"],
+    form: [
+      { selector: '[data-xfa-field="store_domain"]', fill: "https://shop.example.com" },
+      { selector: '[data-xfa-field="currency_code"]', fill: "USD" },
+    ],
+    download: true,
+    expectLedger: true,
+    expectPanel: ["Your Google Shopping feed is ready"],
+    expectDownload: ["Cedar Cutting Board", "shop.example.com"],
+    redArm: { fixture: "shopify-orders-feed-golden.csv" }, // orders shape -> no offers
+  },
+
+  // UPS: an ORDERS export → a WorldShip batch. Ada (no company) ships
+  // residential under her own name; Grace's order carries company "Navy Yard",
+  // which becomes the ship-to name — both must appear, proving the B2B split.
+  "XLS-817-ups": {
+    what: "Shopify orders export → UPS WorldShip batch (residential + B2B ship-to)",
+    path: "/tools/shopify-ups-feed/",
+    mode: "params",
+    fixtures: ["shopify-orders-feed-golden.csv"],
+    form: [], // every field optional — run on the producer defaults
+    download: true,
+    expectLedger: true,
+    expectPanel: ["Your UPS WorldShip batch is ready"],
+    expectDownload: ["Ada Lovelace", "Navy Yard"],
+    redArm: { fixture: "shopify-products-feed-golden.csv" }, // products shape -> no shippable address
+  },
+
+  // eBay: a products export + a per-type category map → a File Exchange feed.
+  // The types are discovered in-browser (Kitchen/Apparel/Bags/Lighting, in file
+  // order); I map each to a real eBay category. Category 20625 in the output can
+  // only appear if MY Kitchen→20625 mapping reached the producer.
+  "XLS-817-ebay": {
+    what: "Shopify products export → eBay feed (my per-type category mapping carries through)",
+    path: "/tools/shopify-ebay-feed/",
+    mode: "params",
+    fixtures: ["shopify-products-feed-golden.csv"],
+    form: [
+      { selector: '[data-xfa-field="cat_0"]', fill: "20625" },  // Kitchen
+      { selector: '[data-xfa-field="cond_0"]', fill: "1000" },
+      { selector: '[data-xfa-field="cat_1"]', fill: "11450" },  // Apparel
+      { selector: '[data-xfa-field="cond_1"]', fill: "1000" },
+      { selector: '[data-xfa-field="cat_2"]', fill: "169291" }, // Bags
+      { selector: '[data-xfa-field="cond_2"]', fill: "1000" },
+      { selector: '[data-xfa-field="cat_3"]', fill: "20697" },  // Lighting
+      { selector: '[data-xfa-field="cond_3"]', fill: "1000" },
+      { selector: '[data-xfa-field="location"]', fill: "Austin, TX" },
+      { selector: '[data-xfa-field="dispatch_time_max"]', fill: "3" },
+      { selector: '[data-xfa-field="returns_accepted_option"]', fill: "ReturnsAccepted" },
+      { selector: '[data-xfa-field="shipping_type"]', fill: "Flat" },
+    ],
+    download: true,
+    expectLedger: true,
+    expectPanel: ["Your eBay File Exchange feed is ready"],
+    expectDownload: ["20625", "Cedar Cutting Board"],
+    // Red arm: a valid products export with four DIFFERENT types (so discover
+    // passes and the tool actually runs) whose products are not the golden's —
+    // the output carries 20625 but never "Cedar Cutting Board", so the assertion
+    // reddens on the REAL output. The wrong-shape orders golden can't serve here:
+    // eBay's discover step throws before any run, which the harness scores
+    // DID-NOT-RUN, not a proof the assertion bites.
+    redArm: { fixture: "shopify-products-typed-decoy.csv" },
   },
 };

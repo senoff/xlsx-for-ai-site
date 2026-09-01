@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Large files (over 10 MB) — xlsx-for-ai</title>
-<meta name="description" content="xlsx-for-ai handles files up to 10 MB free. Larger workbooks need more memory — we're weighing dedicated large-file support. Tell us if you'd use it.">
+<meta name="description" content="xlsx-for-ai handles files up to 10 MB free. Larger workbooks run on the paid plan — currently US $25 per year, billed annually.">
 <meta name="author" content="xlsx-for-ai">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-src https://tally.so; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/large-files/">
@@ -116,45 +116,13 @@
 <div class="wrap">
 
 <h1>Large files.</h1>
-<p class="lede">xlsx-for-ai reads workbooks up to <strong>10&nbsp;MB</strong> for free, like everything else it does. Files past that need more memory than we provision for a single job &mdash; so right now they're declined rather than run slowly or unreliably.</p>
+<p class="lede">xlsx-for-ai reads workbooks up to <strong>10&nbsp;MB</strong> for free, like everything else it does. Files past that run on the paid plan &mdash; currently <strong>US $25 per year</strong>, billed annually.</p>
 
-<h2>Why there's a limit</h2>
-<p>Reading a workbook into memory, evaluating its formulas, and writing a reviewed copy all hold the file &mdash; and intermediate working copies of it &mdash; in RAM at once. For most workbooks that's comfortable. Past about 10&nbsp;MB it stops being comfortable on the memory we run each job with, and we'd rather decline cleanly than give you a slow or flaky result.</p>
+<h2>Why there's a limit on the free tier</h2>
+<p>Reading a workbook into memory, evaluating its formulas, and writing a reviewed copy all hold the file &mdash; and intermediate working copies of it &mdash; in RAM at once. For most workbooks that's comfortable. Past about 10&nbsp;MB it stops being comfortable on the memory we provision for a free-tier job, so we ask you to move to the paid plan rather than risk a slow or flaky result.</p>
 
-<h2>We're weighing dedicated large-file support</h2>
-<p>We're considering running large files on dedicated machines with more memory, so the same review works on bigger workbooks. Before we build it, we want to know if it's actually wanted &mdash; and what it's worth to whoever needs it.</p>
-<p><strong>Everything up to 10&nbsp;MB stays free.</strong> This is about whether a bigger-file option should exist alongside it &mdash; not a change to what's free today, and there's no price set.</p>
-
-<h2>Tell us</h2>
-<p>If large files would help you, take 30 seconds &mdash; it tells us whether to build this, and what would make it worth it for you. A short form is going up here shortly.</p>
-
-<!--
-  Tally form embed. To enable: create the form in Tally (fields below),
-  replace TALLY_FORM_ID with its id (from the share/embed URL, e.g.
-  https://tally.so/r/wXYZ12 -> wXYZ12), then uncomment the block below.
-  Plain iframe (no embed.js) keeps the page CSP tight: frame-src
-  https://tally.so is already allowed in the CSP meta tag.
-
-  Form fields (6, keep minimal):
-    1. Would you use dedicated large-file support?  (yes / maybe / no)
-    2. Would you pay for it?  (yes / no / depends)
-    3. If we offered this, what would you most want?  (single choice:
-       faster/priority turnaround on large files /
-       ability to process bigger files /
-       a dedicated machine for your large jobs)
-    4. What would you pay?  (open text — NO price anchor)
-    5. What size files / use case?  (open text)
-    6. Email (optional)  (open text)
-
-<div class="form-embed">
-  <iframe
-    src="https://tally.so/embed/TALLY_FORM_ID?alignLeft=1&hideTitle=1&transparentBackground=1"
-    title="Large-file interest — xlsx-for-ai"
-    loading="lazy"></iframe>
-</div>
--->
-
-<p style="color: var(--muted); font-size: 14px;">Everything up to 10&nbsp;MB stays free, today and after &mdash; this is only about whether a bigger-file option should exist alongside it.</p>
+<h2>Larger files run on the paid plan</h2>
+<p>Everything up to 10&nbsp;MB stays free, same as everywhere else on xlsx-for-ai. Files above that run on the paid plan &mdash; currently <strong>US $25 per year</strong>, billed annually &mdash; which covers larger workbooks.</p>
 
 </div>
 </main>
@@ -162,11 +130,11 @@
 <footer>
   <div class="wrap">
     <nav class="links" aria-label="Shopify import tools">
-      <a href="/tools/import-shopify-products/">Shopify: import products</a>
-      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
-      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
-      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
-      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+      <a href="/importable/import-shopify-products/">Shopify: import products</a>
+      <a href="/importable/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/importable/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/importable/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/importable/fix-shopify-products/">Shopify: fix products CSV</a>
     </nav>
     <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
     <div class="links">

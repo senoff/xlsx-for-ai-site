@@ -68,8 +68,6 @@
     <ul>
       <li><a href="/tools/whats-inside-excel-file/">What's inside this Excel file?</a> —
         a plain-language overview of every sheet and column before you dig in.</li>
-      <li><a href="/tools/validate-excel-file/">Is my Excel file valid — will it open everywhere?</a> —
-        read it through two independent engines and flag any sheet, row, or cell they disagree on.</li>
       <li><a href="/tools/fix-formula-errors/">Why are my formulas showing errors?</a> —
         find the <code>#REF!</code>, <code>#DIV/0!</code> and other broken formulas in your workbook.</li>
       <li><a href="/tools/convert-excel-to-csv/">Convert Excel to CSV?</a> —
@@ -96,16 +94,28 @@
       <li><a href="/tools/run-any-tool/">Run any tool on your file</a> —
         the advanced surface: pick any file tool our API exposes, fill in its options, and run it — the
         exact tool an AI agent calls.</li>
-      <li><a href="/tools/import-shopify-products/">Convert a product spreadsheet to a Shopify import CSV</a> —
+      <li><a href="/importable/import-shopify-products/">Convert a product spreadsheet to a Shopify import CSV</a> —
         map your product list to Shopify's import format and download a reviewed CSV.</li>
-      <li><a href="/tools/import-shopify-collections/">Import Shopify collections from a CSV</a> —
+      <li><a href="/importable/import-shopify-collections/">Import Shopify collections from a CSV</a> —
         map your collections list to Shopify's import format and download a reviewed CSV.</li>
-      <li><a href="/tools/import-shopify-inventory/">Update Shopify inventory from a CSV</a> —
+      <li><a href="/importable/import-shopify-inventory/">Update Shopify inventory from a CSV</a> —
         map SKUs and quantities to Shopify's inventory import and see what changes before you import.</li>
-      <li><a href="/tools/import-shopify-redirects/">Import Shopify URL redirects from a CSV</a> —
+      <li><a href="/importable/import-shopify-redirects/">Import Shopify URL redirects from a CSV</a> —
         map your old and new paths to Shopify's redirect import and flag the malformed rows.</li>
-      <li><a href="/tools/fix-shopify-products/">Fix a broken Shopify products export CSV</a> —
+      <li><a href="/importable/fix-shopify-products/">Fix a broken Shopify products export CSV</a> —
         repair a broken Shopify products export so it imports cleanly — encoding, headers, prices, duplicate handles.</li>
+    </ul>
+
+    <h2>Send your Shopify catalog to a marketplace</h2>
+    <ul>
+      <li><a href="/tools/shopify-amazon-feed/">Turn a Shopify products export into an Amazon feed</a> —
+        map titles, prices, and identifiers into Amazon's flat-file template; products without an identifier are listed, never guessed.</li>
+      <li><a href="/tools/shopify-google-feed/">Turn a Shopify products export into a Google Shopping feed</a> —
+        add your store domain and currency and get a Google Merchant Center product feed; excluded products are listed with reasons.</li>
+      <li><a href="/tools/shopify-ebay-feed/">Turn a Shopify products export into an eBay feed</a> —
+        map each product type to an eBay category and get a File Exchange feed; unmapped types are listed, never guessed.</li>
+      <li><a href="/tools/shopify-ups-feed/">Turn a Shopify orders export into a UPS WorldShip batch</a> —
+        one shipment row per order, ready to import and print labels; orders without a shippable address are listed.</li>
     </ul>
     <p class="muted">More tools are on the way.</p>
 
@@ -123,7 +133,6 @@
   <div class="wrap">
     <nav class="links" aria-label="All tools">
       <a href="/tools/whats-inside-excel-file/">What's inside this Excel file?</a>
-      <a href="/tools/validate-excel-file/">Is my Excel file valid — will it open everywhere?</a>
       <a href="/tools/fix-formula-errors/">Why are my formulas showing errors?</a>
       <a href="/tools/convert-excel-to-csv/">Convert Excel to CSV?</a>
       <a href="/tools/remove-duplicates/">How do I remove duplicate rows?</a>
@@ -136,11 +145,11 @@
       <a href="/tools/filter-rows/">How do I pull out just the rows I need?</a>
       <a href="/tools/get-ready-safely/">How do I get this ready to send safely?</a>
       <a href="/tools/run-any-tool/">Run any tool on your file</a>
-      <a href="/tools/import-shopify-products/">Convert a product spreadsheet to a Shopify import CSV</a>
-      <a href="/tools/import-shopify-collections/">Import Shopify collections from a CSV</a>
-      <a href="/tools/import-shopify-inventory/">Update Shopify inventory from a CSV</a>
-      <a href="/tools/import-shopify-redirects/">Import Shopify URL redirects from a CSV</a>
-      <a href="/tools/fix-shopify-products/">Fix a broken Shopify products export CSV</a>
+      <a href="/importable/import-shopify-products/">Convert a product spreadsheet to a Shopify import CSV</a>
+      <a href="/importable/import-shopify-collections/">Import Shopify collections from a CSV</a>
+      <a href="/importable/import-shopify-inventory/">Update Shopify inventory from a CSV</a>
+      <a href="/importable/import-shopify-redirects/">Import Shopify URL redirects from a CSV</a>
+      <a href="/importable/fix-shopify-products/">Fix a broken Shopify products export CSV</a>
     </nav>
     <div class="links">
       <a href="/">Home</a>

@@ -169,48 +169,6 @@
   .demo-step { margin: 0 0 8px; }
   .demo-step .label { font-weight: 600; color: var(--fg); }
 
-  .pricing {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 18px;
-    margin-top: 28px;
-  }
-  .tier {
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 22px 20px;
-    background: white;
-    display: flex;
-    flex-direction: column;
-  }
-  .tier.featured {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px var(--accent-soft);
-  }
-  .tier h3 { font-size: 17px; margin: 0 0 4px; }
-  .tier .price {
-    font-size: 28px;
-    font-weight: 700;
-    margin: 8px 0 4px;
-    letter-spacing: -0.02em;
-  }
-  .tier .price small { font-size: 14px; color: var(--muted); font-weight: 500; }
-  .tier ul { padding-left: 18px; margin: 14px 0 0; color: var(--muted); font-size: 14px; }
-  .tier ul li { margin-bottom: 4px; }
-  .tier .badge {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 600;
-    background: var(--accent);
-    color: white;
-    padding: 2px 8px;
-    border-radius: 999px;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    align-self: flex-start;
-    margin-bottom: 8px;
-  }
-
   .legal h2 { font-size: 22px; margin-top: 32px; }
   .legal h3 { font-size: 16px; margin-top: 18px; }
   .legal p, .legal li { font-size: 14.5px; color: #2c2c2c; }
@@ -351,11 +309,28 @@
   "url": "https://xlsx-for-ai.dev/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Free",
+      "description": "First 10 uses free; then free for files within our free size limit.",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    {
+      "@type": "Offer",
+      "name": "Paid",
+      "description": "For files above the free size limit.",
+      "price": "25",
+      "priceCurrency": "USD",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "25",
+        "priceCurrency": "USD",
+        "billingDuration": "P1Y"
+      }
+    }
+  ],
   "isPartOf": {
     "@type": "WebSite",
     "name": "xlsx-for-ai",
@@ -375,8 +350,10 @@
       <a href="#demo">Demo</a>
       <a href="#setup-slack-teams">Setup</a>
       <a href="#tools">Tools</a>
+      <a href="/importable/">Importable</a>
       <a href="#functions">Functions</a>
       <a href="#docs">Docs</a>
+      <a href="/developers/">API</a>
       <a href="mailto:support@xlsx-for-ai.dev">Contact</a>
     </nav>
   </div>
@@ -609,7 +586,7 @@
   <div class="wrap">
     <h2>Functions</h2>
     <p style="color: var(--muted); max-width: 660px;">
-      <code>xlsx_eval</code> recalculates formulas with <a href="https://hyperformula.handsontable.com">HyperFormula</a> v3.2.0 —
+      <code>xlsx_eval</code> recalculates formulas for
       <strong>382 Excel functions</strong>. The engine has no <code>INDIRECT</code>, <code>WEBSERVICE</code>, <code>RTD</code>, <code>DDE</code>:
       there is no dynamic-reference, network, or external-data function in the set, so a recalc can’t reach off-workbook.
       The absent functions are the sandbox boundary.
@@ -723,17 +700,18 @@ xfa path/to/workbook.xlsx</code></pre>
 <footer>
   <div class="wrap">
     <nav class="links" aria-label="Shopify import tools">
-      <a href="/tools/import-shopify-products/">Shopify: import products</a>
-      <a href="/tools/import-shopify-collections/">Shopify: import collections</a>
-      <a href="/tools/import-shopify-inventory/">Shopify: update inventory</a>
-      <a href="/tools/import-shopify-redirects/">Shopify: import redirects</a>
-      <a href="/tools/fix-shopify-products/">Shopify: fix products CSV</a>
+      <a href="/importable/import-shopify-products/">Shopify: import products</a>
+      <a href="/importable/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/importable/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/importable/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/importable/fix-shopify-products/">Shopify: fix products CSV</a>
     </nav>
     <div>© 2026 xlsx-for-ai. All rights reserved.</div>
     <div>
       <a href="/terms/">Terms</a>
       <a href="/privacy/">Privacy</a>
       <a href="/clean-data/">Clean data</a>
+      <a href="/developers/">API</a>
       <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
       <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">npm</a>
       <a href="mailto:support@xlsx-for-ai.dev">Contact</a>

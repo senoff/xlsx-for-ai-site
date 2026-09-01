@@ -158,33 +158,6 @@
     });
   }
 
-  // ---- POST to an ANONYMOUS tool route (no key, no Bearer) ------------
-  // XLS-192: a small set of read-only tools are exposed on a public, no-auth
-  // rail (POST /api/v1/anon/<name>) with a tighter per-IP rate limit enforced
-  // server-side. This differs from runTool ONLY in the absence of the key
-  // round-trip: no ensureKey, no Authorization header, and therefore no 401
-  // re-mint path (there is no auth to go stale). The endpoint rejects exactly
-  // what the authed rail rejects (the same harden() + 10 MB decoded-size cap),
-  // so 413/429/4xx handling mirrors runTool. Same origin as the authed API, so
-  // the page's connect-src CSP is unchanged.
-  function runAnonTool(name, body) {
-    // name is supplied by our own page code, never user input — guard the URL
-    // path anyway so a bad caller can't smuggle path separators / traversal.
-    if (!/^[a-z0-9_]+$/.test(name)) {
-      return Promise.reject(new XfaError("Unknown tool."));
-    }
-    return xfetch(API + "/api/v1/anon/" + name, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
-    }).then(function (r) {
-      if (r.status === 413) throw new XfaError("That file is over the 10 MB limit for the free web tool.");
-      if (r.status === 429) throw new XfaError("Too many requests right now — give it a minute and try again.");
-      if (!r.ok) throw new XfaError("The tool couldn't process that file (error " + r.status + ").");
-      return r.json();
-    });
-  }
-
   // ---- helpers --------------------------------------------------------
   function fileToBase64(file) {
     return new Promise(function (resolve, reject) {
@@ -479,7 +452,7 @@
     var lastDiscovered = {};
 
     function toolApi(name) {
-      return { runTool: runTool, runAnonTool: runAnonTool, parseTable: parseTable, parseGrid: parseGrid, textOf: textOf, esc: esc, step: stepState, filename: name };
+      return { runTool: runTool, parseTable: parseTable, parseGrid: parseGrid, textOf: textOf, esc: esc, step: stepState, filename: name };
     }
     // name is page-authored; still restrict to a DOM-safe id before use as a
     // selector so a bad config can't smuggle selector/attribute syntax.
@@ -739,7 +712,7 @@
   }
 
   window.XFA = {
-    mount: mount, runTool: runTool, runAnonTool: runAnonTool, parseTable: parseTable, parseGrid: parseGrid,
+    mount: mount, runTool: runTool, parseTable: parseTable, parseGrid: parseGrid,
     fileToBase64: fileToBase64, textOf: textOf, esc: esc, API: API
   };
 

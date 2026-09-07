@@ -31,6 +31,32 @@
  *   expectLedger    the "what we did / what we didn't touch" promise must render
  */
 export const CASES = {
+  // --- XLS-192 — Validate an Excel file (cross-engine agreement) -----------
+  // The subject is the anon xlsx_validate rail: read the file through TWO
+  // independent engines and report whether they agree. The assertion is drawn
+  // from the fixture's OWN structure — rows.xlsx has exactly 2 sheets (Sheet1 +
+  // Notes) — AND from something only a real two-engine run can produce: the
+  // names of BOTH engines plus their agreement verdict. A page that only
+  // *looked* like it ran (one engine, or a no-op that prints "looks fine")
+  // cannot name both @protobi/exceljs and @cj-tech-master/excelts and the true
+  // sheet count. The red arm swaps in a 1-sheet fixture, so "2 sheets" goes
+  // absent and the case reddens for THIS card alone.
+  //
+  // NOTE — live-DoD is DEPLOY-GATED: the anon endpoint (/api/v1/anon/
+  // xlsx_validate) is built-and-HOLD under the App-Store deploy freeze and is
+  // not live yet. This case is WIRED and correct; it passes the moment the
+  // endpoint deploys. Until then the page-walk against production is expected to
+  // red on the network call, which is the honest state, not a page defect.
+  "XLS-192": {
+    what: "validate across engines — names both engines, the real sheet count, and their agreement",
+    path: "/tools/validate-excel-file/",
+    mode: "single",
+    fixtures: ["rows.xlsx"],
+    download: false,
+    expectPanel: ["protobi", "excelts", "agree", "2 sheets"],
+    redArm: { fixture: "duplicates.xlsx" }, // 1 sheet -> "2 sheets" can't appear
+  },
+
   // --- XLS-193 — Fix my formula errors ------------------------------------
   // The fixture carries three real broken formulas (#REF! / #DIV/0! / #NAME?)
   // AND one healthy one (B5, =1+1). Both halves matter: the page must name the

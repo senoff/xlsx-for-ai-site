@@ -423,6 +423,10 @@
         <p>Parse any .xlsx into LLM-friendly text. Per-column type inference with confidence. Describe, filter, and aggregate.</p>
       </div>
       <div class="card">
+        <h3>Reads live Google Sheets</h3>
+        <p>Point <code>xlsx_read</code> at a Google Sheet by id and get the same rendered output as reading the equivalent .xlsx. Read-only, with a read-only Google token you supply — no credential brokering.</p>
+      </div>
+      <div class="card">
         <h3>Structure preserved</h3>
         <p>Named ranges, merged cells, formulas, data validations, and conditional formatting are first-class — not collapsed by a naive one-shot read.</p>
       </div>
@@ -536,7 +540,7 @@
     </p>
 
     <h3 class="tool-group">Read &amp; explore a workbook</h3>
-    <div class="tool"><p class="name"><code>xlsx_read</code> — Read a workbook and return it as markdown, JSON, or SQL.</p><p class="prompt">"Read reporting-pack-v1.xlsx and show me the Summary sheet, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa <file.xlsx> [--md|--json] [--sheet <name>] [--evaluate]" title="Click to copy"><strong>Or run:</strong> <code>xfa &lt;file.xlsx&gt; [--md|--json] [--sheet &lt;name&gt;] [--evaluate]</code></p></div>
+    <div class="tool"><p class="name"><code>xlsx_read</code> — Read a workbook and return it as markdown, JSON, or SQL. Also reads a live Google Sheet by id (read-only, with a read-only Google token you supply).</p><p class="prompt">"Read reporting-pack-v1.xlsx and show me the Summary sheet, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa <file.xlsx> [--md|--json] [--sheet <name>] [--evaluate]" title="Click to copy"><strong>Or run:</strong> <code>xfa &lt;file.xlsx&gt; [--md|--json] [--sheet &lt;name&gt;] [--evaluate]</code></p></div>
     <div class="tool"><p class="name"><code>xlsx_list_sheets</code> — List sheet names, sizes, and which are hidden.</p><p class="prompt">"What sheets are in reporting-pack-v1.xlsx and how big is each, with xfa?"</p></div>
     <div class="tool"><p class="name"><code>xlsx_describe</code> — Per-column summary: count, nulls, unique, min/max/mean.</p><p class="prompt">"Give me a column-by-column summary of the Transactions sheet in reporting-pack-v1.xlsx, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_schema</code> — Infer each column's type, nullability, and a confidence score.</p><p class="prompt">"What are the column types in the Transactions sheet of reporting-pack-v1.xlsx, with xfa?"</p></div>

@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://xlsx-for-ai.dev/</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-09-11</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/clean-data/</loc>
@@ -11,6 +11,42 @@
   <url>
     <loc>https://xlsx-for-ai.dev/developers/</loc>
     <lastmod>2026-08-09</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/google-sheets/</loc>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/google-sheets/arrayformula-not-working-in-excel/</loc>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/google-sheets/csv-columns-wrong-semicolon-delimiter/</loc>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/google-sheets/dynamic-array-spill-broke-in-excel/</loc>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/google-sheets/huge-empty-rows-columns-in-export/</loc>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/google-sheets/named-function-error-in-excel/</loc>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/google-sheets/notes-comments-lost-converting-to-excel/</loc>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/google-sheets/numbers-dates-change-converting-to-excel/</loc>
+    <lastmod>2026-09-12</lastmod>
+  </url>
+  <url>
+    <loc>https://xlsx-for-ai.dev/google-sheets/sheets-only-functions-break-in-excel/</loc>
+    <lastmod>2026-09-12</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/importable/</loc>
@@ -542,7 +578,7 @@
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/terms/</loc>
-    <lastmod>2026-08-06</lastmod>
+    <lastmod>2026-09-01</lastmod>
   </url>
   <url>
     <loc>https://xlsx-for-ai.dev/tools/</loc>

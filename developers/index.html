@@ -188,8 +188,24 @@ CFG</code></pre>
   </li>
 </ul>
 
-<h2>Prefer the MCP client?</h2>
-<p>If your agent speaks <a href="https://modelcontextprotocol.io" rel="noopener">MCP</a>, skip the HTTP wiring entirely &mdash; install the client and register it with two commands:</p>
+<h2>Add it to Claude</h2>
+<p>xlsx-for-ai runs as a hosted <a href="https://modelcontextprotocol.io" rel="noopener">MCP</a> connector &mdash; no install and no API key. Add one URL in the Claude app and approve access, and the tools are available right inside your chats. Prefer to run it locally instead? Register the CLI client &mdash; both paths reach the same toolset.</p>
+
+<h3>Remote connector &mdash; claude.ai &amp; Claude Desktop</h3>
+<p>Point Claude at the hosted connector URL:</p>
+<div class="cta">
+<pre class="copy" role="button" tabindex="0" data-copy="https://api.xlsx-for-ai.dev/mcp/claude" title="Click to copy"><code>https://api.xlsx-for-ai.dev/mcp/claude</code></pre>
+</div>
+<ol>
+  <li>In <strong>claude.ai</strong> (or <strong>Claude Desktop</strong>), open <strong>Settings &rarr; Connectors</strong> and choose <strong>Add custom connector</strong>.</li>
+  <li>Paste the URL above and continue.</li>
+  <li>Claude opens a secure sign-in and consent screen. Approve access &mdash; Claude registers itself automatically, so there is no client ID or secret to copy.</li>
+  <li>That&rsquo;s it. The xlsx-for-ai tools now appear in your conversations; turn the connector on or off per chat from the same menu.</li>
+</ol>
+<p>Sign-in uses <a href="https://oauth.net/2/" rel="noopener">OAuth&nbsp;2.1</a> with PKCE: your login stays with the authorization step and is never handed to the tools, and you can revoke access at any time from <strong>Settings &rarr; Connectors</strong>.</p>
+
+<h3>Local client &mdash; Claude Code &amp; self-host</h3>
+<p>If your agent speaks MCP over stdio, skip the hosting entirely &mdash; install the client and register it with two commands:</p>
 <div class="cta">
 <pre class="copy" role="button" tabindex="0" data-copy="npm install -g xlsx-for-ai
 claude mcp add xfa -- xlsx-for-ai-mcp" title="Click to copy"><code>npm install -g xlsx-for-ai

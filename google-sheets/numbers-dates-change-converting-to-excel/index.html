@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Numbers or dates look different converting Sheets to Excel — xlsx-for-ai</title>
+<meta name="description" content="Display formatting can shift between Google Sheets and Excel. xlsx-for-ai doesn&#x27;t silently change the stored value, and discloses any case where a locale shift would change a value.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Numbers or dates look different converting Sheets to Excel — xlsx-for-ai">
+<meta property="og:description" content="Display formatting can shift between Google Sheets and Excel. xlsx-for-ai doesn&#x27;t silently change the stored value, and discloses any case where a locale shift would change a value.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/google-sheets/numbers-dates-change-converting-to-excel/">
+<meta property="og:type" content="article">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/google-sheets/numbers-dates-change-converting-to-excel/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #5a5a5a;
+    --bg: #ffffff;
+    --accent: #107c41;
+    --border: #e6e6e6;
+    --code-bg: #f5f5f5;
+    --flag: #c2610c;
+    --flag-soft: #fdf1e5;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, pre {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 16px 0;
+    white-space: pre-wrap;
+  }
+  code { background: var(--code-bg); padding: 2px 5px; border-radius: 3px; }
+  pre code { background: none; padding: 0; }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+  }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; }
+  header .logo { font-weight: 700; font-size: 18px; color: var(--fg); }
+  header .logo .x { color: var(--accent); }
+  header nav a { color: var(--muted); margin-left: 22px; font-size: 14px; }
+  header nav a:hover { color: var(--fg); text-decoration: none; }
+
+  main { padding: 48px 0 96px; }
+  main h1 {
+    font-size: 34px;
+    line-height: 1.2;
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+  }
+  main .lede { font-size: 19px; color: var(--muted); margin: 0 0 12px; }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px;
+    font-weight: 600; color: var(--accent); margin: 0 0 10px;
+  }
+  main h2 {
+    font-size: 22px;
+    margin: 36px 0 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    letter-spacing: -0.01em;
+  }
+  main h2:first-of-type { border-top: 0; padding-top: 0; }
+  main h3 { font-size: 17px; margin: 24px 0 8px; }
+  main ul, main ol { padding-left: 22px; }
+  main li { margin: 8px 0; }
+  main strong { font-weight: 600; }
+  main em { color: var(--muted); }
+
+  .note {
+    background: var(--flag-soft);
+    border: 1px solid #f2d9bf;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 20px 0;
+    font-size: 15px;
+  }
+  .note strong { color: var(--flag); }
+
+  .card-list { list-style: none; padding-left: 0; }
+  .card-list li { margin: 14px 0; }
+  .card-list .q { font-weight: 600; }
+
+  .copy { cursor: pointer; position: relative; }
+  .copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .copy.copied { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .copy::after {
+    content: 'Click to copy';
+    position: absolute; top: 8px; right: 10px;
+    font-size: 11px; color: var(--muted);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .copy.copied::after { content: 'Copied \2713'; color: var(--accent); }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  footer a { color: var(--muted); margin-left: 0; }
+  footer .links a { margin-left: 16px; }
+  footer a:hover { color: var(--fg); }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Numbers or dates look different converting Sheets to Excel \u2014 xlsx-for-ai",
+  "description": "Display formatting can shift between Google Sheets and Excel. xlsx-for-ai doesn't silently change the stored value, and discloses any case where a locale shift would change a value.",
+  "url": "https://xlsx-for-ai.dev/google-sheets/numbers-dates-change-converting-to-excel/",
+  "isPartOf": { "@type": "WebSite", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" },
+  "publisher": { "@type": "Organization", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" }
+}
+</script>
+</head>
+<body>
+
+<span id="copy-status" class="sr-only" aria-live="polite"></span>
+
+<header>
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/google-sheets/">Google Sheets</a>
+      <a href="/developers/">Developers</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+<div class="eyebrow">Google Sheets &rarr; Excel</div>
+<h1>My numbers or dates look different after converting to Excel</h1>
+<p class="lede">A date that read <code>13/04/2026</code> in Google Sheets now shows as <code>04/13/2026</code> in Excel, or a currency amount lost its symbol, or a number gained or dropped decimal places. Did the data change &mdash; or just how it&rsquo;s shown?</p>
+
+<h2>What&rsquo;s actually breaking</h2>
+<p>Most of the time, nothing in your data changed &mdash; only its <em>display format</em> did. A spreadsheet stores a number (say <code>46125</code> for a date, or <code>1234.5</code> for an amount) separately from the mask that decides how it&rsquo;s shown (<code>dd/mm/yyyy</code>, <code>$#,##0.00</code>, and so on). Google Sheets and Excel don&rsquo;t always carry those masks across identically, and both lean on the reader&rsquo;s locale for defaults &mdash; so the same stored value can appear in a different date order or with a different currency symbol.</p>
+<p>The distinction that matters: a <strong>cosmetic</strong> format shift leaves the underlying value intact (the date is still the same day, just written differently). A genuine <strong>value</strong> change &mdash; where a locale difference actually reinterprets the stored number &mdash; is rarer but far more serious.</p>
+
+<section class="solution" data-catalog-class="d16" data-disposition="passthrough-ok" data-claim-tier="no-silent-corruption">
+<h2>How xlsx-for-ai handles it</h2>
+<p>xlsx-for-ai reads the stored value with its own engine, so it <strong>doesn&rsquo;t silently corrupt the number underneath the format</strong>. When you read a workbook, the value it reports is the value the file holds &mdash; a display-format difference between Sheets and Excel is cosmetic and doesn&rsquo;t change what&rsquo;s stored.</p>
+<p>We&rsquo;re scoping this claim carefully rather than promising perfect format preservation. The honest statement is: <strong>we don&rsquo;t change your values, and if a case ever arose where a locale shift would change a stored value rather than just its display, that&rsquo;s exactly the kind of thing we disclose rather than pass through quietly.</strong> We are not claiming pixel-perfect reproduction of every number and date <em>mask</em> &mdash; some display drift between the two products is expected, and it&rsquo;s cosmetic.</p>
+<p>So if a date looks re-ordered after conversion, read the underlying value (xfa will show it): in almost every case it&rsquo;s the same day, and you only need to reapply the date format you want in Excel.
+</section>
+
+<h2>How to check your file</h2>
+<ol>
+  <li><strong>Add the connector to Claude</strong> once &mdash; open <strong>Settings &rarr; Connectors &rarr; Add custom connector</strong> and paste <code>https://api.xlsx-for-ai.dev/mcp/claude</code>. Full steps are on the <a href="/developers/">developers page</a>.</li>
+  <li><strong>Read the live Sheet by id.</strong> In Claude, ask:
+    <pre class="copy" role="button" tabindex="0" data-copy="Read this Google Sheet and convert it to an .xlsx, with xfa. Flag anything that won&#39;t survive the conversion: https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit" title="Click to copy"><code>Read this Google Sheet and convert it to an .xlsx, with xfa.
+Flag anything that won't survive the conversion:
+https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit</code></pre>
+    Reading a live Sheet is read-only and uses a read-only Google token you supply &mdash; see the <a href="/developers/">developers page</a> for the one-time setup.</li>
+  <li><strong>Or skip the token</strong> &mdash; in Google Sheets choose <strong>File &rarr; Download &rarr; Microsoft Excel (.xlsx)</strong>, then ask Claude to <em>&ldquo;read this file with xfa and tell me what it flagged.&rdquo;</em> Same reader, same flags.</li>
+  <li><strong>Read the flags.</strong> The result tells you exactly what it did and what it couldn&rsquo;t carry across &mdash; so you review a short list instead of hunting for a wrong number later.</li>
+</ol>
+<div class="note"><strong>Quick sanity check:</strong> ask xfa for the raw value of a suspicious cell. If the stored number matches, it&rsquo;s a formatting difference &mdash; fix it with <strong>Format &rarr; Cells</strong> in Excel, and your data is untouched.</div>
+<h2>More Google Sheets &harr; Excel problems</h2>
+<ul class="card-list">
+  <li><span class="q"><a href="/google-sheets/arrayformula-not-working-in-excel/">ARRAYFORMULA stopped working in Excel</a></span></li>
+  <li><span class="q"><a href="/google-sheets/dynamic-array-spill-broke-in-excel/">A spilled range (FILTER, SORT, UNIQUE) broke in Excel</a></span></li>
+  <li><span class="q"><a href="/google-sheets/sheets-only-functions-break-in-excel/">Google-Sheets-only functions break in Excel</a></span></li>
+  <li><span class="q"><a href="/google-sheets/named-function-error-in-excel/">A named function shows an error in Excel</a></span></li>
+  <li><span class="q"><a href="/google-sheets/numbers-dates-change-converting-to-excel/">Numbers or dates look different after converting</a></span></li>
+  <li><span class="q"><a href="/google-sheets/notes-comments-lost-converting-to-excel/">Notes and comments when converting to Excel</a></span></li>
+  <li><span class="q"><a href="/google-sheets/huge-empty-rows-columns-in-export/">Huge empty rows or columns in a Sheets export</a></span></li>
+  <li><span class="q"><a href="/google-sheets/csv-columns-wrong-semicolon-delimiter/">CSV columns are wrong (semicolons instead of commas)</a></span></li>
+</ul>
+<p style="margin-top:24px;"><a href="/google-sheets/">&larr; All Google Sheets &harr; Excel guides</a></p>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/google-sheets/">Google Sheets</a>
+      <a href="/tools/">Tools</a>
+      <a href="/developers/">Developers</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/copy.js"></script>
+
+</body>
+</html>

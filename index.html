@@ -426,6 +426,7 @@
         <h3>Reads live Google Sheets</h3>
         <p>Point <code>xlsx_read</code> at a Google Sheet by id and get the same rendered output as reading the equivalent .xlsx. Read-only, with a read-only Google token you supply — no credential brokering.</p>
         <p><a href="/google-sheets/">Google Sheets &harr; Excel: what breaks &amp; how we handle it &rarr;</a></p>
+        <p><a href="/google-sheets-to-excel/">Repair a Google Sheet exported to Excel: see &amp; fix the loss &rarr;</a></p>
       </div>
       <div class="card">
         <h3>Structure preserved</h3>
@@ -588,10 +589,10 @@
     <div class="tool"><p class="name"><code>xlsx_redact</code> — Detect and redact only the PII; everything else is preserved, with a manifest.</p><p class="prompt">"Redact the PII in reporting-pack-v1.xlsx and give me the audit manifest of what was removed, with xfa."</p></div>
 
     <h3 class="tool-group">Heal broken external references</h3>
-    <div class="tool"><p class="name"><code>xlsx_healer_diagnose</code> — Structured report of broken / at-risk external references.</p><p class="prompt">"Diagnose the external-reference problems in reporting-pack-v1.xlsx, with xfa."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_healer_diagnose</code> — Structured report of repairable damage: broken / at-risk external references, and <a href="/google-sheets-to-excel/">Google-Sheets-to-Excel export damage</a> (dead Sheets-only formulas, oversized used-range, un-compacted formulas).</p><p class="prompt">"Diagnose the external-reference problems in reporting-pack-v1.xlsx, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_healer_simulate</code> — Predict which references will break when you send the file to someone.</p><p class="prompt">"If I send reporting-pack-v1.xlsx to someone who can't see our network share, what breaks, with xfa?"</p></div>
     <div class="tool"><p class="name"><code>xlsx_healer_intent</code> — Describe the goal in plain English; Healer plans and applies the fix.</p><p class="prompt">"Make reporting-pack-v1.xlsx fully self-contained so it works for an outside recipient, with xfa."</p></div>
-    <div class="tool"><p class="name"><code>xlsx_healer_cure</code> — Apply one specific repair operation to a diagnosed workbook.</p><p class="prompt">"Freeze the broken external refs in reporting-pack-v1.xlsx to their last cached values, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa heal <path> [--mode as_copy|in_place] [--out <path>] [--format text|json]" title="Click to copy"><strong>Or run:</strong> <code>xfa heal &lt;path&gt; [--mode as_copy|in_place] [--out &lt;path&gt;] [--format text|json]</code></p></div>
+    <div class="tool"><p class="name"><code>xlsx_healer_cure</code> — Apply one specific repair to a diagnosed workbook: rewrite / freeze / localize external references, or, for a Google Sheets export, flag each dead Sheets-only formula in-cell (it does not recompute — there is no Excel equivalent), trim the used-range, or compact repeated formulas.</p><p class="prompt">"Freeze the broken external refs in reporting-pack-v1.xlsx to their last cached values, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa heal <path> [--mode as_copy|in_place] [--out <path>] [--format text|json]" title="Click to copy"><strong>Or run:</strong> <code>xfa heal &lt;path&gt; [--mode as_copy|in_place] [--out &lt;path&gt;] [--format text|json]</code></p></div>
 
     <h3 class="tool-group">Validate</h3>
     <div class="tool"><p class="name"><code>xlsx_validate</code> — Render the workbook through two independent engines and flag disagreements.</p><p class="prompt">"Render reporting-pack-v1.xlsx through two independent engines and flag any cell where they disagree, with xfa."</p></div>

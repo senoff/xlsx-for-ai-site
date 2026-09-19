@@ -2,7 +2,7 @@
  * Web-tools shared shell (XLS-194) — runtime.
  *
  * One script drives every page-per-need upload surface: anonymous key
- * bootstrap (no signup), the upload widget, the reading/running/result/error
+ * bootstrap, the upload widget, the reading/running/result/error
  * state machine, the POST-to-tool helper, and the standard result + ledger
  * renderer. A page supplies only a config object with its copy and a `process`
  * function that orchestrates the compound chain and returns a view model.
@@ -11,11 +11,25 @@
  *   POST /api/v1/clients        {client_version, platform} -> {api_key}
  *   POST /api/v1/tools/<name>   {file_b64, options} + Bearer -> {content:[{text}], _meta}
  * Auth is Bearer-only; the anon key is minted transparently and cached in
- * localStorage so a returning visitor never re-registers. "Free, no signup" is
- * preserved: the visitor never sees a key or a form.
+ * localStorage so a returning visitor never re-registers — the visitor never
+ * sees a key or a form. (The rendered reassure box says just "Free"; the older
+ * signup-free marketing clause was dropped per XLS-1555 as inaccurate for the
+ * web tool.)
  */
 (function () {
   "use strict";
+
+  // The reassure box's "Free" line — ONE source of truth (XLS-1555, Bob 2026-09-15).
+  // It carried a signup-free clause until Bob ruled that claim false for the web tool
+  // (a visitor is gated to use it; the API/CLI self-issue path stays exempt — it is
+  // genuinely free of any form). Every reassure surface — the shell's render sites AND page
+  // cfg.reassure — now composes from here via reassure(), so the next copy change is one
+  // edit. Pages pass ONLY their per-tool privacy sentence; this prepends the Free line.
+  var FREE_LINE = "Free.";
+  function reassure(privacy, fallback) {
+    var tail = privacy || fallback || "Your file is processed in memory and never stored.";
+    return FREE_LINE + " " + tail;
+  }
 
   var API = "https://api.xlsx-for-ai.dev";
   var KEY_STORE = "xfa_web_key";
@@ -288,7 +302,7 @@
           '<div class="small">or <span class="pick">choose a file</span> · ' + esc(extLabel()) + ' up to 10 MB</div>' +
           '<input type="file" id="xfa-file" accept="' + esc(accept) + '" />' +
         '</div>' +
-        '<div class="reassure">' + esc(cfg.reassure || "Your file is processed in memory and never stored.") + '</div>';
+        '<div class="reassure">' + esc(reassure(cfg.reassure)) + '</div>';
       wireDrop(panel.querySelector("#xfa-drop"), start);
     }
 
@@ -319,7 +333,7 @@
       fileA = null; fileB = null;
       panel.innerHTML =
         '<div class="dual">' + dualZone("xfa-drop-a", labelA) + dualZone("xfa-drop-b", labelB) + '</div>' +
-        '<div class="reassure">' + esc(cfg.reassure || "Your files are processed in memory and never stored.") + '</div>' +
+        '<div class="reassure">' + esc(reassure(cfg.reassure, "Your files are processed in memory and never stored.")) + '</div>' +
         '<div class="actions"><button class="btn primary" id="xfa-compare" disabled>' + esc(cfg.actionLabel || "Compare") + '</button></div>';
       var dropA = panel.querySelector("#xfa-drop-a");
       var dropB = panel.querySelector("#xfa-drop-b");
@@ -569,7 +583,7 @@
         '<div class="params">' +
           '<div class="pfile">' + esc(name) + '</div>' +
           '<form class="pform" onsubmit="return false">' + (fields || []).map(fieldHtml).join("") + '</form>' +
-          '<div class="reassure">' + esc(cfg.reassure || "Your file is processed in memory and never stored.") + '</div>' +
+          '<div class="reassure">' + esc(reassure(cfg.reassure)) + '</div>' +
           '<div class="actions"><button class="btn primary" id="xfa-run">' + esc(cfg.runLabel || "Run") + '</button>' +
           '<button class="btn" id="xfa-params-back">Choose another file</button></div>' +
         '</div>';
@@ -713,7 +727,7 @@
 
   window.XFA = {
     mount: mount, runTool: runTool, parseTable: parseTable, parseGrid: parseGrid,
-    fileToBase64: fileToBase64, textOf: textOf, esc: esc, API: API
+    fileToBase64: fileToBase64, textOf: textOf, esc: esc, API: API, reassure: reassure
   };
 
   // MCP-adoption section (XLS-221). Every tool page loads this shell, so it

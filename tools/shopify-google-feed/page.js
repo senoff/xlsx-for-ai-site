@@ -145,7 +145,7 @@
       "Preparing your download",
     ],
     reassure:
-      "Free · no signup. Your export is read in memory to build the Google feed, then discarded. Nothing is stored, and your original file is never changed — you download a new feed file.",
+      "Your export is read in memory to build the Google feed, then discarded. Nothing is stored, and your original file is never changed — you download a new feed file.",
     buildForm: buildForm,
     process: process,
   });

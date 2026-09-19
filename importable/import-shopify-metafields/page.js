@@ -201,7 +201,7 @@
     accept: ".csv,.xlsx",
     extensions: ["csv", "xlsx"],
     reassure:
-      "Free · no signup. Your file is read in memory to work out which metafields would change, then discarded. Nothing is stored, and your original file is never changed — you download a separate import CSV.",
+      "Your file is read in memory to work out which metafields would change, then discarded. Nothing is stored, and your original file is never changed — you download a separate import CSV.",
     runningLabel: "Checking what this import would change…",
     steps: ["Comparing every row against what a re-import would do"],
     process: process,

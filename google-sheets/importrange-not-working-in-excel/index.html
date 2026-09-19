@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Huge empty rows or columns in a Google Sheets export — xlsx-for-ai</title>
-<meta name="description" content="A Google Sheets export can carry a used range of millions of empty cells, bloating the file. xlsx-for-ai detects the phantom dimensions and flags them.">
+<title>IMPORTRANGE not working in Excel after Google Sheets — xlsx-for-ai</title>
+<meta name="description" content="IMPORTRANGE pulls live data from another Google Sheet — Excel has no equivalent, so the values freeze the moment you export. Here&#x27;s what that means and how to get live data back with Power Query.">
 <meta name="author" content="xlsx-for-ai">
-<meta property="og:title" content="Huge empty rows or columns in a Google Sheets export — xlsx-for-ai">
-<meta property="og:description" content="A Google Sheets export can carry a used range of millions of empty cells, bloating the file. xlsx-for-ai detects the phantom dimensions and flags them.">
-<meta property="og:url" content="https://xlsx-for-ai.dev/google-sheets/huge-empty-rows-columns-in-export/">
+<meta property="og:title" content="IMPORTRANGE not working in Excel after Google Sheets — xlsx-for-ai">
+<meta property="og:description" content="IMPORTRANGE pulls live data from another Google Sheet — Excel has no equivalent, so the values freeze the moment you export. Here&#x27;s what that means and how to get live data back with Power Query.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/google-sheets/importrange-not-working-in-excel/">
 <meta property="og:type" content="article">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
-<link rel="canonical" href="https://xlsx-for-ai.dev/google-sheets/huge-empty-rows-columns-in-export/">
+<link rel="canonical" href="https://xlsx-for-ai.dev/google-sheets/importrange-not-working-in-excel/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
 <style>
   :root {
@@ -132,9 +132,9 @@
 {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  "headline": "Huge empty rows or columns in a Google Sheets export \u2014 xlsx-for-ai",
-  "description": "A Google Sheets export can carry a used range of millions of empty cells, bloating the file. xlsx-for-ai detects the phantom dimensions and flags them.",
-  "url": "https://xlsx-for-ai.dev/google-sheets/huge-empty-rows-columns-in-export/",
+  "headline": "IMPORTRANGE not working in Excel after Google Sheets \u2014 xlsx-for-ai",
+  "description": "IMPORTRANGE pulls live data from another Google Sheet \u2014 Excel has no equivalent, so the values freeze the moment you export. Here's what that means and how to get live data back with Power Query.",
+  "url": "https://xlsx-for-ai.dev/google-sheets/importrange-not-working-in-excel/",
   "isPartOf": { "@type": "WebSite", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" },
   "publisher": { "@type": "Organization", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" }
 }
@@ -159,16 +159,17 @@
 <main>
 <div class="wrap">
 <div class="eyebrow">Google Sheets &rarr; Excel</div>
-<h1>My Google Sheets export has millions of empty rows and columns</h1>
-<p class="lede">You exported a modest Sheet, but the Excel file is huge and slow, the scrollbar thinks there are millions of rows, and pressing <kbd>Ctrl</kbd>+<kbd>End</kbd> jumps miles past your last real cell.</p>
+<h1>IMPORTRANGE doesn&rsquo;t work after I moved the file to Excel</h1>
+<p class="lede"><code>IMPORTRANGE</code> was pulling live rows from another Google Sheet into this one. In Excel that link is just gone &mdash; either an error, or numbers that look fine and will never change again.</p>
 
 <h2>What&rsquo;s actually breaking</h2>
-<p>Every spreadsheet tracks a <em>used range</em> &mdash; the rectangle from A1 to the furthest cell it considers &ldquo;in use.&rdquo; Google Sheets is generous about what counts: a stray format applied to a whole column, a leftover value far down a sheet, or just the sheet&rsquo;s default grid can push that boundary out to enormous dimensions. When the file is exported, that inflated used range comes with it &mdash; so Excel believes the sheet spans far more rows and columns than actually hold data. The file balloons, opens slowly, and formulas that reference whole columns do needless work.</p>
+<p><code>IMPORTRANGE(spreadsheet_url, range)</code> is a live formula reference into a completely different spreadsheet &mdash; it recalculates and re-pulls every time the source Sheet changes. Excel has no function that reaches across into another Google Sheet by URL like that. It&rsquo;s not that Excel&rsquo;s version is weaker or needs a flag turned on &mdash; there isn&rsquo;t one, because the two products don&rsquo;t share a data layer.</p>
+<p>That makes <code>IMPORTRANGE</code> the worst case in this whole family for silently going stale. Most Sheets-only functions leave some trace behind on export &mdash; a dead formula string, a <code>#NAME?</code>, Google&rsquo;s own <code>__xludf.DUMMYFUNCTION</code> wrapper (see <a href="/google-sheets/xludf-dummyfunction-name-error-in-excel/">that page</a> for what the wrapper looks like when it does survive). But because <code>IMPORTRANGE</code> exists purely to bring in values, an export very often just freezes those values as plain numbers or text with nothing marking them as imported at all. They look exactly like something a person typed in by hand &mdash; and they&rsquo;ll sit there, unchanged, forever.</p>
 
-<section class="solution" data-catalog-class="d17" data-disposition="detected-metered" data-claim-tier="disclose">
+<section class="solution" data-catalog-class="A1" data-disposition="silently-wrong" data-claim-tier="detect-scoped">
 <h2>How xlsx-for-ai handles it</h2>
-<p>xlsx-for-ai has a dedicated profile for Google-Sheets exports that <strong>detects this phantom dimension bloat and flags it</strong>. When it reads a workbook whose declared used range is far larger than its real data, it recognises the pattern and calls it out, so a 40&nbsp;MB file that holds a few thousand real cells isn&rsquo;t a mystery &mdash; you&rsquo;re told the used range is inflated and by roughly how much.</p>
-<p>The claim here is detection and disclosure: <strong>we surface the bloat so it&rsquo;s not invisible.</strong> That&rsquo;s the piece that&rsquo;s live and regression-guarded today. Trimming the sheet back to its true extent is then a deliberate step you take in Excel &mdash; select the empty rows below your data and the empty columns to the right, delete them, and save &mdash; rather than something that happens to your file without your say-so.</p>
+<p>xfa (the reader I use for this) catches an <code>IMPORTRANGE</code> the same way it catches any Sheets-only function: when the formula itself, a cached error, or the <code>__xludf.DUMMYFUNCTION</code> wrapper is still present in the file, it flags the cell as a dead <code>IMPORTRANGE</code> rather than letting you mistake it for a real value.</p>
+<p>What it does <strong>not</strong> catch: values already frozen to plain numbers with no formula or wrapper left &mdash; and because <code>IMPORTRANGE</code> cells convert to exactly that shape so easily, this is the function on this whole site where that blind spot bites hardest. If a converted number came from an <code>IMPORTRANGE</code> cell and it actually matters, don&rsquo;t trust a lack of a flag as proof it&rsquo;s current &mdash; check it against the live source.</p>
 </section>
 
 <h2>How to check your file</h2>
@@ -182,7 +183,7 @@ https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit</code></pre>
   <li><strong>Or skip the token</strong> &mdash; in Google Sheets choose <strong>File &rarr; Download &rarr; Microsoft Excel (.xlsx)</strong>, then ask Claude to <em>&ldquo;read this file with xfa and tell me what it flagged.&rdquo;</em> Same reader, same flags.</li>
   <li><strong>Read the flags.</strong> The result tells you exactly what it did and what it couldn&rsquo;t carry across &mdash; so you review a short list instead of hunting for a wrong number later.</li>
 </ol>
-<div class="note"><strong>To slim the file in Excel:</strong> click the first empty row under your data, press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&darr;</kbd> and delete; do the same for empty columns to the right; then save. The phantom used range collapses to your real data.</div>
+<div class="note"><strong>Getting live data back in Excel:</strong> <code>IMPORTRANGE</code>&rsquo;s equivalent isn&rsquo;t a formula, it&rsquo;s <strong>Data &rarr; Get Data</strong> (Power Query) pointed at the source file or a published-to-web CSV, with a refresh schedule. Different mechanism, same job &mdash; numbers that update instead of freezing at export.</div>
 <h2>More Google Sheets &harr; Excel problems</h2>
 <ul class="card-list">
   <li><span class="q"><a href="/google-sheets/arrayformula-not-working-in-excel/">ARRAYFORMULA stopped working in Excel</a></span></li>

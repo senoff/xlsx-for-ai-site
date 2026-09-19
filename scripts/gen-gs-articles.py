@@ -247,6 +247,10 @@ RELATED = """<h2>More Google Sheets &harr; Excel problems</h2>
   <li><span class="q"><a href="/google-sheets/arrayformula-not-working-in-excel/">ARRAYFORMULA stopped working in Excel</a></span></li>
   <li><span class="q"><a href="/google-sheets/dynamic-array-spill-broke-in-excel/">A spilled range (FILTER, SORT, UNIQUE) broke in Excel</a></span></li>
   <li><span class="q"><a href="/google-sheets/sheets-only-functions-break-in-excel/">Google-Sheets-only functions break in Excel</a></span></li>
+  <li><span class="q"><a href="/google-sheets/xludf-dummyfunction-name-error-in-excel/">__xludf.DUMMYFUNCTION / #NAME? after downloading a Google Sheet</a></span></li>
+  <li><span class="q"><a href="/google-sheets/query-function-not-working-in-excel/">QUERY function not working in Excel</a></span></li>
+  <li><span class="q"><a href="/google-sheets/importrange-not-working-in-excel/">IMPORTRANGE not working in Excel</a></span></li>
+  <li><span class="q"><a href="/google-sheets/googlefinance-not-working-in-excel/">GOOGLEFINANCE not working in Excel</a></span></li>
   <li><span class="q"><a href="/google-sheets/named-function-error-in-excel/">A named function shows an error in Excel</a></span></li>
   <li><span class="q"><a href="/google-sheets/numbers-dates-change-converting-to-excel/">Numbers or dates look different after converting</a></span></li>
   <li><span class="q"><a href="/google-sheets/notes-comments-lost-converting-to-excel/">Notes and comments when converting to Excel</a></span></li>
@@ -471,6 +475,102 @@ ARTICLES.append(dict(
 """ + RELATED,
 ))
 
+# ---------- XLS-1645: the __xludf.DUMMYFUNCTION wrapper (A1, silently-wrong, strong detect-scoped) ----------
+ARTICLES.append(dict(
+  slug="xludf-dummyfunction-name-error-in-excel",
+  title="__xludf.DUMMYFUNCTION / #NAME? after downloading a Google Sheet — xlsx-for-ai",
+  desc="Cells showing __xludf.DUMMYFUNCTION or #NAME? after a Google Sheets download aren't corrupt — Google wrapped the formula and cached its last result. xlsx-for-ai reliably detects the wrapper and reads back every function it hid, plus its cached value.",
+  body="""<div class="eyebrow">Google Sheets &rarr; Excel</div>
+<h1>My cells show __xludf.DUMMYFUNCTION or #NAME? after downloading from Google Sheets</h1>
+<p class="lede">You did <strong>File &rarr; Download &rarr; Microsoft Excel (.xlsx)</strong>, opened the file, and a bunch of cells now read something like <code>=IFERROR(__xludf.DUMMYFUNCTION(&quot;QUERY(A1:C50,...)&quot;),853.12)</code> &mdash; or just a flat <code>#NAME?</code>. Nothing is corrupt. That&rsquo;s Google leaving you a clue, not Excel breaking your file.</p>
+
+<h2>What&rsquo;s actually breaking</h2>
+<p>Every formula Sheets has that Excel doesn&rsquo;t &mdash; <code>QUERY</code>, <code>ARRAYFORMULA</code>, <code>IMPORTRANGE</code>, <code>GOOGLEFINANCE</code>, <code>GOOGLETRANSLATE</code>, the whole list &mdash; gets the same treatment on export. Google can&rsquo;t hand Excel a formula Excel can&rsquo;t run, so it wraps it: the real formula becomes a text string inside a function called <code>__xludf.DUMMYFUNCTION</code>, and the last value Sheets actually computed gets tucked into the second argument of an <code>IFERROR</code> around it. Click the cell and you&rsquo;re looking at both halves at once &mdash; the dead formula, and the answer it used to give.</p>
+<p>Excel has never heard of <code>__xludf.DUMMYFUNCTION</code>, so it can&rsquo;t run it. Most of the time <code>IFERROR</code> catches that failure and falls through to the cached number, and the cell just looks normal &mdash; a plain value sitting there, quietly frozen. Sometimes, depending on how the formula nested, Excel can&rsquo;t even get that far and you get a flat <code>#NAME?</code> with no visible number at all.</p>
+<p>Either way, the question that matters is <em>which</em> function got wrapped and whether the number you&rsquo;re looking at is the real cached answer. Wrapped a <code>QUERY</code>? See <a href="/google-sheets/query-function-not-working-in-excel/">QUERY function not working in Excel</a>. <code>IMPORTRANGE</code>? See <a href="/google-sheets/importrange-not-working-in-excel/">IMPORTRANGE not working in Excel</a>. <code>GOOGLEFINANCE</code>? See <a href="/google-sheets/googlefinance-not-working-in-excel/">GOOGLEFINANCE not working in Excel</a>.</p>
+
+""" + solution("A1", "silently-wrong", "detect-scoped", """<p>This is the one spot in the whole Sheets-only-function mess where I&rsquo;ll say &ldquo;reliable&rdquo; without hedging it. <code>__xludf.DUMMYFUNCTION</code> is a literal, unmistakable string sitting in the formula &mdash; there&rsquo;s no guessing about whether it&rsquo;s there. Hand the file to xfa (the reader I use for this) and it <strong>reliably finds every <code>__xludf.DUMMYFUNCTION</code> wrapper, pulls out which Sheets-only function it&rsquo;s hiding, and reads back the cached value from the second argument</strong> &mdash; the same value Excel is either showing you or burying behind <code>#NAME?</code>.</p>
+<p>That confidence is specific to this one signature. The moment a value has already been flattened &mdash; no wrapper, no formula text, just a plain number sitting where the formula used to be &mdash; there is nothing left in the file to detect, and xfa does <strong>not</strong> claim to catch that case; there&rsquo;s no tell left to find. But if what you&rsquo;re staring at is <code>__xludf.DUMMYFUNCTION</code> or a <code>#NAME?</code> that came from one, that wrapper is exactly the signature xfa is built to catch.</p>
+<p>So instead of squinting at nested <code>IFERROR</code> arguments yourself, you get a list back: cell, which function got wrapped, and the value that was sitting inside it.</p>""") + """
+
+<h2>How to check your file</h2>
+""" + CONNECT_STEPS + """
+<div class="note"><strong>Quick manual check:</strong> click any cell showing <code>__xludf.DUMMYFUNCTION</code> and read the formula bar &mdash; the second argument to <code>IFERROR</code> is the cached value. That&rsquo;s the last-known-good number; it just stopped updating the moment you downloaded the file.</div>
+""" + RELATED,
+))
+
+# ---------- XLS-1645: QUERY (A1, silently-wrong, detect-scoped) ----------
+ARTICLES.append(dict(
+  slug="query-function-not-working-in-excel",
+  title="QUERY function not working in Excel after Google Sheets — xlsx-for-ai",
+  desc="QUERY is a Google Sheets-only function — Excel has no built-in equivalent. Here's the fix map (FILTER, SUMIFS/COUNTIFS, Power Query) and what xlsx-for-ai can and can't tell you about the value left behind.",
+  body="""<div class="eyebrow">Google Sheets &rarr; Excel</div>
+<h1>My QUERY function doesn&rsquo;t work after I opened the file in Excel</h1>
+<p class="lede">You built something with <code>=QUERY(A2:F900, &quot;select A, sum(D) where C=&#39;East&#39; group by A&quot;)</code> in Sheets. In Excel that cell is dead &mdash; <code>#NAME?</code>, or a frozen number that used to be right and no longer moves.</p>
+
+<h2>What&rsquo;s actually breaking</h2>
+<p><code>QUERY</code> runs a small SQL-like query language over a range &mdash; select, where, group by, order by, all in one string. Excel has no function that does that. Not a smaller version of it, not a rename &mdash; nothing. There&rsquo;s no direct swap, so the fix is rebuilding the logic with whatever piece of Excel actually covers what your particular <code>QUERY</code> was doing:</p>
+<ul>
+  <li><strong>Simple select/where</strong> (pick some columns, filter some rows) &mdash; Excel 365&rsquo;s <code>FILTER()</code> spills a range the same way <code>QUERY</code> did, natively, no helper columns.</li>
+  <li><strong>Aggregate / group by</strong> (sums, counts, averages per group) &mdash; <code>SUMIFS</code>, <code>COUNTIFS</code>, <code>AVERAGEIFS</code> cover almost all of it once you know which group-by column you&rsquo;re keying on.</li>
+  <li><strong>Real multi-condition, SQL-shaped stuff</strong> (joins, multiple aggregations, reshaping) &mdash; that&rsquo;s Power Query&rsquo;s job (<strong>Data &rarr; Get Data</strong>), not a single formula&rsquo;s.</li>
+</ul>
+<p>On export from Sheets, a broken <code>QUERY</code> cell almost always shows up wrapped in Google&rsquo;s own placeholder rather than as a clean error &mdash; see <a href="/google-sheets/xludf-dummyfunction-name-error-in-excel/">__xludf.DUMMYFUNCTION / #NAME? after downloading a Google Sheet</a> for what that wrapper contains and how to read the last real result back out of it.</p>
+
+""" + solution("A1", "silently-wrong", "detect-scoped", """<p>xfa (the reader I use for this) reads a workbook and looks specifically for the ways a Sheets-only function survives into a file: a live <code>QUERY(...)</code> formula Excel can&rsquo;t resolve, a cached <code>#NAME?</code>, or &mdash; the strongest case &mdash; the <code>__xludf.DUMMYFUNCTION</code> wrapper with QUERY&rsquo;s last result cached inside it. All three of those, it flags: which cell, that it was a dead <code>QUERY</code>, and what value (if any) it can recover.</p>
+<p>What it does <strong>not</strong> catch: a <code>QUERY</code> result that&rsquo;s already been flattened to a plain number or table with no formula and no wrapper left behind. At that point there&rsquo;s no signature in the file distinguishing it from data someone typed by hand, and xfa doesn&rsquo;t pretend otherwise.</p>
+<p>So the honest claim is narrow: <strong>it catches a dead QUERY that still carries a tell, and it says so plainly when a frozen result might have slipped through with none.</strong></p>""") + """
+
+<h2>How to check your file</h2>
+""" + CONNECT_STEPS + """
+<div class="note"><strong>Rebuilding tip:</strong> <code>FILTER()</code> handles the select/where half natively and spills like <code>QUERY</code> did &mdash; wrap it in <code>SORT()</code> if the original had an <code>order by</code>.</div>
+""" + RELATED,
+))
+
+# ---------- XLS-1645: IMPORTRANGE (A1, silently-wrong, detect-scoped) ----------
+ARTICLES.append(dict(
+  slug="importrange-not-working-in-excel",
+  title="IMPORTRANGE not working in Excel after Google Sheets — xlsx-for-ai",
+  desc="IMPORTRANGE pulls live data from another Google Sheet — Excel has no equivalent, so the values freeze the moment you export. Here's what that means and how to get live data back with Power Query.",
+  body="""<div class="eyebrow">Google Sheets &rarr; Excel</div>
+<h1>IMPORTRANGE doesn&rsquo;t work after I moved the file to Excel</h1>
+<p class="lede"><code>IMPORTRANGE</code> was pulling live rows from another Google Sheet into this one. In Excel that link is just gone &mdash; either an error, or numbers that look fine and will never change again.</p>
+
+<h2>What&rsquo;s actually breaking</h2>
+<p><code>IMPORTRANGE(spreadsheet_url, range)</code> is a live formula reference into a completely different spreadsheet &mdash; it recalculates and re-pulls every time the source Sheet changes. Excel has no function that reaches across into another Google Sheet by URL like that. It&rsquo;s not that Excel&rsquo;s version is weaker or needs a flag turned on &mdash; there isn&rsquo;t one, because the two products don&rsquo;t share a data layer.</p>
+<p>That makes <code>IMPORTRANGE</code> the worst case in this whole family for silently going stale. Most Sheets-only functions leave some trace behind on export &mdash; a dead formula string, a <code>#NAME?</code>, Google&rsquo;s own <code>__xludf.DUMMYFUNCTION</code> wrapper (see <a href="/google-sheets/xludf-dummyfunction-name-error-in-excel/">that page</a> for what the wrapper looks like when it does survive). But because <code>IMPORTRANGE</code> exists purely to bring in values, an export very often just freezes those values as plain numbers or text with nothing marking them as imported at all. They look exactly like something a person typed in by hand &mdash; and they&rsquo;ll sit there, unchanged, forever.</p>
+
+""" + solution("A1", "silently-wrong", "detect-scoped", """<p>xfa (the reader I use for this) catches an <code>IMPORTRANGE</code> the same way it catches any Sheets-only function: when the formula itself, a cached error, or the <code>__xludf.DUMMYFUNCTION</code> wrapper is still present in the file, it flags the cell as a dead <code>IMPORTRANGE</code> rather than letting you mistake it for a real value.</p>
+<p>What it does <strong>not</strong> catch: values already frozen to plain numbers with no formula or wrapper left &mdash; and because <code>IMPORTRANGE</code> cells convert to exactly that shape so easily, this is the function on this whole site where that blind spot bites hardest. If a converted number came from an <code>IMPORTRANGE</code> cell and it actually matters, don&rsquo;t trust a lack of a flag as proof it&rsquo;s current &mdash; check it against the live source.</p>""") + """
+
+<h2>How to check your file</h2>
+""" + CONNECT_STEPS + """
+<div class="note"><strong>Getting live data back in Excel:</strong> <code>IMPORTRANGE</code>&rsquo;s equivalent isn&rsquo;t a formula, it&rsquo;s <strong>Data &rarr; Get Data</strong> (Power Query) pointed at the source file or a published-to-web CSV, with a refresh schedule. Different mechanism, same job &mdash; numbers that update instead of freezing at export.</div>
+""" + RELATED,
+))
+
+# ---------- XLS-1645: GOOGLEFINANCE (A1, silently-wrong, detect-scoped) ----------
+ARTICLES.append(dict(
+  slug="googlefinance-not-working-in-excel",
+  title="GOOGLEFINANCE not working in Excel after Google Sheets — xlsx-for-ai",
+  desc="GOOGLEFINANCE is Sheets-only — Excel has no matching function, though the 365 Stocks data type covers some of the same ground. Here's the fix and what a frozen GOOGLEFINANCE value looks like.",
+  body="""<div class="eyebrow">Google Sheets &rarr; Excel</div>
+<h1>GOOGLEFINANCE doesn&rsquo;t work after I opened my Sheet in Excel</h1>
+<p class="lede">You had <code>=GOOGLEFINANCE(&quot;NASDAQ:AAPL&quot;,&quot;price&quot;)</code> pulling a live quote. In Excel that cell either shows <code>#NAME?</code>, or a number that hasn&rsquo;t moved since the day you downloaded the file.</p>
+
+<h2>What&rsquo;s actually breaking</h2>
+<p><code>GOOGLEFINANCE</code> is a live market-data feed built into Sheets &mdash; prices, exchange rates, historical series, fundamentals &mdash; with no Excel function of the same name and no exact equivalent. The closest thing Excel has is the <strong>Stocks</strong> linked data type in Excel 365 (<strong>Data &rarr; Stocks</strong>): you type a ticker or company name into a cell, convert it to the Stocks type, and pull fields out of it with dot-notation formulas like <code>=A1.Price</code>. It&rsquo;s a different mechanism (a typed cell, not a function call) with a different field set, so it isn&rsquo;t a drop-in swap &mdash; some of what <code>GOOGLEFINANCE</code> could pull (certain historical ranges, some currency pairs) the Stocks type simply doesn&rsquo;t carry.</p>
+<p>When a <code>GOOGLEFINANCE</code> cell crosses over to Excel, it goes through the same export path as every other Sheets-only function: a dead formula, a cached error, or Google&rsquo;s <code>__xludf.DUMMYFUNCTION</code> wrapper with the last quote cached inside it &mdash; see <a href="/google-sheets/xludf-dummyfunction-name-error-in-excel/">that page</a> for how to read the cached value back out.</p>
+
+""" + solution("A1", "silently-wrong", "detect-scoped", """<p>xfa (the reader I use for this) flags a dead <code>GOOGLEFINANCE</code> cell the same way it flags any Sheets-only function: a live formula Excel can&rsquo;t resolve, a cached <code>#NAME?</code>, or the <code>__xludf.DUMMYFUNCTION</code> wrapper all get caught and reported, with the cached quote pulled out where it&rsquo;s recoverable.</p>
+<p>What it does <strong>not</strong> catch: a quote already frozen to a plain number with no formula or wrapper surviving in the file. A stock price that&rsquo;s just a number looks identical to one typed by hand, and xfa won&rsquo;t claim to tell those apart. If a price matters and the cell used to be <code>GOOGLEFINANCE</code>, treat any unflagged number as unverified and check it against a live source before you rely on it.</p>""") + """
+
+<h2>How to check your file</h2>
+""" + CONNECT_STEPS + """
+<div class="note"><strong>Rebuilding tip:</strong> put the ticker in a cell, <strong>Data &rarr; Stocks</strong> to convert it to a linked data type, then reference fields with <code>=CELL.Price</code>, <code>=CELL.&quot;52 Week High&quot;</code>, and so on &mdash; that&rsquo;s the closest live equivalent Excel has.</div>
+""" + RELATED,
+))
+
 # ---- hub page --------------------------------------------------------------
 
 HUB_LD = ('{\n'
@@ -495,6 +595,14 @@ HUB_BODY = """<div class="eyebrow">Google Sheets &harr; Excel</div>
     Dynamic arrays don&rsquo;t always cross faithfully &mdash; we detect the spill and flag it instead of writing a shorter list.</li>
   <li><span class="q"><a href="/google-sheets/sheets-only-functions-break-in-excel/">Google-Sheets-only functions break in Excel</a></span><br>
     <code>GOOGLEFINANCE</code>, <code>IMPORTRANGE</code> and friends &mdash; we catch the cases that leave a tell, and we&rsquo;re open about the one that doesn&rsquo;t.</li>
+  <li><span class="q"><a href="/google-sheets/xludf-dummyfunction-name-error-in-excel/">__xludf.DUMMYFUNCTION / #NAME? after downloading a Google Sheet</a></span><br>
+    Google&rsquo;s own wrapper around the dead formula, with the last result cached inside it &mdash; the one case here we detect reliably.</li>
+  <li><span class="q"><a href="/google-sheets/query-function-not-working-in-excel/">QUERY function not working in Excel</a></span><br>
+    No Excel equivalent &mdash; the fix map is FILTER, SUMIFS/COUNTIFS, or Power Query depending on what the query did.</li>
+  <li><span class="q"><a href="/google-sheets/importrange-not-working-in-excel/">IMPORTRANGE not working in Excel</a></span><br>
+    Live cross-sheet data that freezes at export &mdash; the case most likely to slip past detection with no tell left.</li>
+  <li><span class="q"><a href="/google-sheets/googlefinance-not-working-in-excel/">GOOGLEFINANCE not working in Excel</a></span><br>
+    No direct Excel equivalent, though the 365 Stocks data type covers some of the same ground.</li>
   <li><span class="q"><a href="/google-sheets/named-function-error-in-excel/">A named function shows an error in Excel</a></span><br>
     Custom named functions don&rsquo;t exist in Excel &mdash; you get a visible error, not a silently wrong value.</li>
 </ul>

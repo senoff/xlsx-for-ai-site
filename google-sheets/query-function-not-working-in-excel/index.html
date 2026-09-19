@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Huge empty rows or columns in a Google Sheets export — xlsx-for-ai</title>
-<meta name="description" content="A Google Sheets export can carry a used range of millions of empty cells, bloating the file. xlsx-for-ai detects the phantom dimensions and flags them.">
+<title>QUERY function not working in Excel after Google Sheets — xlsx-for-ai</title>
+<meta name="description" content="QUERY is a Google Sheets-only function — Excel has no built-in equivalent. Here&#x27;s the fix map (FILTER, SUMIFS/COUNTIFS, Power Query) and what xlsx-for-ai can and can&#x27;t tell you about the value left behind.">
 <meta name="author" content="xlsx-for-ai">
-<meta property="og:title" content="Huge empty rows or columns in a Google Sheets export — xlsx-for-ai">
-<meta property="og:description" content="A Google Sheets export can carry a used range of millions of empty cells, bloating the file. xlsx-for-ai detects the phantom dimensions and flags them.">
-<meta property="og:url" content="https://xlsx-for-ai.dev/google-sheets/huge-empty-rows-columns-in-export/">
+<meta property="og:title" content="QUERY function not working in Excel after Google Sheets — xlsx-for-ai">
+<meta property="og:description" content="QUERY is a Google Sheets-only function — Excel has no built-in equivalent. Here&#x27;s the fix map (FILTER, SUMIFS/COUNTIFS, Power Query) and what xlsx-for-ai can and can&#x27;t tell you about the value left behind.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/google-sheets/query-function-not-working-in-excel/">
 <meta property="og:type" content="article">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
-<link rel="canonical" href="https://xlsx-for-ai.dev/google-sheets/huge-empty-rows-columns-in-export/">
+<link rel="canonical" href="https://xlsx-for-ai.dev/google-sheets/query-function-not-working-in-excel/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
 <style>
   :root {
@@ -132,9 +132,9 @@
 {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  "headline": "Huge empty rows or columns in a Google Sheets export \u2014 xlsx-for-ai",
-  "description": "A Google Sheets export can carry a used range of millions of empty cells, bloating the file. xlsx-for-ai detects the phantom dimensions and flags them.",
-  "url": "https://xlsx-for-ai.dev/google-sheets/huge-empty-rows-columns-in-export/",
+  "headline": "QUERY function not working in Excel after Google Sheets \u2014 xlsx-for-ai",
+  "description": "QUERY is a Google Sheets-only function \u2014 Excel has no built-in equivalent. Here's the fix map (FILTER, SUMIFS/COUNTIFS, Power Query) and what xlsx-for-ai can and can't tell you about the value left behind.",
+  "url": "https://xlsx-for-ai.dev/google-sheets/query-function-not-working-in-excel/",
   "isPartOf": { "@type": "WebSite", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" },
   "publisher": { "@type": "Organization", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" }
 }
@@ -159,16 +159,23 @@
 <main>
 <div class="wrap">
 <div class="eyebrow">Google Sheets &rarr; Excel</div>
-<h1>My Google Sheets export has millions of empty rows and columns</h1>
-<p class="lede">You exported a modest Sheet, but the Excel file is huge and slow, the scrollbar thinks there are millions of rows, and pressing <kbd>Ctrl</kbd>+<kbd>End</kbd> jumps miles past your last real cell.</p>
+<h1>My QUERY function doesn&rsquo;t work after I opened the file in Excel</h1>
+<p class="lede">You built something with <code>=QUERY(A2:F900, &quot;select A, sum(D) where C=&#39;East&#39; group by A&quot;)</code> in Sheets. In Excel that cell is dead &mdash; <code>#NAME?</code>, or a frozen number that used to be right and no longer moves.</p>
 
 <h2>What&rsquo;s actually breaking</h2>
-<p>Every spreadsheet tracks a <em>used range</em> &mdash; the rectangle from A1 to the furthest cell it considers &ldquo;in use.&rdquo; Google Sheets is generous about what counts: a stray format applied to a whole column, a leftover value far down a sheet, or just the sheet&rsquo;s default grid can push that boundary out to enormous dimensions. When the file is exported, that inflated used range comes with it &mdash; so Excel believes the sheet spans far more rows and columns than actually hold data. The file balloons, opens slowly, and formulas that reference whole columns do needless work.</p>
+<p><code>QUERY</code> runs a small SQL-like query language over a range &mdash; select, where, group by, order by, all in one string. Excel has no function that does that. Not a smaller version of it, not a rename &mdash; nothing. There&rsquo;s no direct swap, so the fix is rebuilding the logic with whatever piece of Excel actually covers what your particular <code>QUERY</code> was doing:</p>
+<ul>
+  <li><strong>Simple select/where</strong> (pick some columns, filter some rows) &mdash; Excel 365&rsquo;s <code>FILTER()</code> spills a range the same way <code>QUERY</code> did, natively, no helper columns.</li>
+  <li><strong>Aggregate / group by</strong> (sums, counts, averages per group) &mdash; <code>SUMIFS</code>, <code>COUNTIFS</code>, <code>AVERAGEIFS</code> cover almost all of it once you know which group-by column you&rsquo;re keying on.</li>
+  <li><strong>Real multi-condition, SQL-shaped stuff</strong> (joins, multiple aggregations, reshaping) &mdash; that&rsquo;s Power Query&rsquo;s job (<strong>Data &rarr; Get Data</strong>), not a single formula&rsquo;s.</li>
+</ul>
+<p>On export from Sheets, a broken <code>QUERY</code> cell almost always shows up wrapped in Google&rsquo;s own placeholder rather than as a clean error &mdash; see <a href="/google-sheets/xludf-dummyfunction-name-error-in-excel/">__xludf.DUMMYFUNCTION / #NAME? after downloading a Google Sheet</a> for what that wrapper contains and how to read the last real result back out of it.</p>
 
-<section class="solution" data-catalog-class="d17" data-disposition="detected-metered" data-claim-tier="disclose">
+<section class="solution" data-catalog-class="A1" data-disposition="silently-wrong" data-claim-tier="detect-scoped">
 <h2>How xlsx-for-ai handles it</h2>
-<p>xlsx-for-ai has a dedicated profile for Google-Sheets exports that <strong>detects this phantom dimension bloat and flags it</strong>. When it reads a workbook whose declared used range is far larger than its real data, it recognises the pattern and calls it out, so a 40&nbsp;MB file that holds a few thousand real cells isn&rsquo;t a mystery &mdash; you&rsquo;re told the used range is inflated and by roughly how much.</p>
-<p>The claim here is detection and disclosure: <strong>we surface the bloat so it&rsquo;s not invisible.</strong> That&rsquo;s the piece that&rsquo;s live and regression-guarded today. Trimming the sheet back to its true extent is then a deliberate step you take in Excel &mdash; select the empty rows below your data and the empty columns to the right, delete them, and save &mdash; rather than something that happens to your file without your say-so.</p>
+<p>xfa (the reader I use for this) reads a workbook and looks specifically for the ways a Sheets-only function survives into a file: a live <code>QUERY(...)</code> formula Excel can&rsquo;t resolve, a cached <code>#NAME?</code>, or &mdash; the strongest case &mdash; the <code>__xludf.DUMMYFUNCTION</code> wrapper with QUERY&rsquo;s last result cached inside it. All three of those, it flags: which cell, that it was a dead <code>QUERY</code>, and what value (if any) it can recover.</p>
+<p>What it does <strong>not</strong> catch: a <code>QUERY</code> result that&rsquo;s already been flattened to a plain number or table with no formula and no wrapper left behind. At that point there&rsquo;s no signature in the file distinguishing it from data someone typed by hand, and xfa doesn&rsquo;t pretend otherwise.</p>
+<p>So the honest claim is narrow: <strong>it catches a dead QUERY that still carries a tell, and it says so plainly when a frozen result might have slipped through with none.</strong></p>
 </section>
 
 <h2>How to check your file</h2>
@@ -182,7 +189,7 @@ https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit</code></pre>
   <li><strong>Or skip the token</strong> &mdash; in Google Sheets choose <strong>File &rarr; Download &rarr; Microsoft Excel (.xlsx)</strong>, then ask Claude to <em>&ldquo;read this file with xfa and tell me what it flagged.&rdquo;</em> Same reader, same flags.</li>
   <li><strong>Read the flags.</strong> The result tells you exactly what it did and what it couldn&rsquo;t carry across &mdash; so you review a short list instead of hunting for a wrong number later.</li>
 </ol>
-<div class="note"><strong>To slim the file in Excel:</strong> click the first empty row under your data, press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&darr;</kbd> and delete; do the same for empty columns to the right; then save. The phantom used range collapses to your real data.</div>
+<div class="note"><strong>Rebuilding tip:</strong> <code>FILTER()</code> handles the select/where half natively and spills like <code>QUERY</code> did &mdash; wrap it in <code>SORT()</code> if the original had an <code>order by</code>.</div>
 <h2>More Google Sheets &harr; Excel problems</h2>
 <ul class="card-list">
   <li><span class="q"><a href="/google-sheets/arrayformula-not-working-in-excel/">ARRAYFORMULA stopped working in Excel</a></span></li>

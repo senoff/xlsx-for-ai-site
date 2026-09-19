@@ -44,8 +44,35 @@ jobs:
       - name: Prove the deploy-verify can still fail (self-test)
         run: node scripts/dod-deploy-verify-sitemap.mjs --selftest
 
+      # Falsifiability, same posture as the two self-tests above: a stale-URL
+      # detector that cannot redden is not a detector.
+      - name: Prove the stale-sitemap-URL check can still fail (self-test)
+        run: node scripts/dod-sitemap-no-stale-urls.mjs --selftest
+
       - name: Validate HTML structure + internal links + referenced assets
         run: node scripts/validate-site.mjs
+
+      # gen-internal-links.mjs owns breadcrumb/children/related-siblings
+      # injection for /tools/ + /importable/ (XLS-1616). It is idempotent
+      # (marker-replace, write-only-on-change), so a clean tree regenerates to
+      # itself; a diff here means a page was added/moved/renamed without
+      # re-running the generator and committing the result.
+      - name: Internal links (breadcrumbs + related + children) are current
+        run: |
+          node scripts/gen-internal-links.mjs
+          git diff --exit-code -- tools/ importable/ \
+            || { echo "::error::internal-link blocks are stale — run 'node scripts/gen-internal-links.mjs' and commit the result."; exit 1; }
+
+      # gen-shopify-redirect-stubs.mjs owns the 124 tools/-tree meta-refresh
+      # stubs that forward the 7 Shopify tool trees moved to /importable/
+      # (XLS-1616 §2). Full-file regenerate, always-overwrite — a diff here
+      # means /importable/'s content under those 7 trees moved without
+      # reissuing the matching /tools/ stub.
+      - name: Shopify redirect stubs are current
+        run: |
+          node scripts/gen-shopify-redirect-stubs.mjs
+          git diff --exit-code -- tools/ \
+            || { echo "::error::Shopify redirect stubs are stale — run 'node scripts/gen-shopify-redirect-stubs.mjs' and commit the result."; exit 1; }
 
       # gen-sitemap.mjs owns sitemap discovery + exclusion logic; regenerate and
       # assert the committed sitemap COVERS the same URLs, rather than re-walking
@@ -66,3 +93,11 @@ jobs:
             echo "::error::sitemap.xml URL coverage is stale — run 'node scripts/gen-sitemap.mjs' and commit the result."
             exit 1
           fi
+
+      # The reverse of the check above: every committed sitemap.xml <loc> must
+      # have a matching page on disk (XLS-1616 §3). Catches a hand-edited or
+      # never-regenerated sitemap.xml row pointing at a URL that only
+      # 301s/404s live — the completeness check above cannot see this
+      # direction (it only proves disk ⊆ sitemap, not sitemap ⊆ disk).
+      - name: Sitemap has no stale (disk-orphaned) URLs
+        run: node scripts/dod-sitemap-no-stale-urls.mjs

@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Huge empty rows or columns in a Google Sheets export — xlsx-for-ai</title>
-<meta name="description" content="A Google Sheets export can carry a used range of millions of empty cells, bloating the file. xlsx-for-ai detects the phantom dimensions and flags them.">
+<title>GOOGLEFINANCE not working in Excel after Google Sheets — xlsx-for-ai</title>
+<meta name="description" content="GOOGLEFINANCE is Sheets-only — Excel has no matching function, though the 365 Stocks data type covers some of the same ground. Here&#x27;s the fix and what a frozen GOOGLEFINANCE value looks like.">
 <meta name="author" content="xlsx-for-ai">
-<meta property="og:title" content="Huge empty rows or columns in a Google Sheets export — xlsx-for-ai">
-<meta property="og:description" content="A Google Sheets export can carry a used range of millions of empty cells, bloating the file. xlsx-for-ai detects the phantom dimensions and flags them.">
-<meta property="og:url" content="https://xlsx-for-ai.dev/google-sheets/huge-empty-rows-columns-in-export/">
+<meta property="og:title" content="GOOGLEFINANCE not working in Excel after Google Sheets — xlsx-for-ai">
+<meta property="og:description" content="GOOGLEFINANCE is Sheets-only — Excel has no matching function, though the 365 Stocks data type covers some of the same ground. Here&#x27;s the fix and what a frozen GOOGLEFINANCE value looks like.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/google-sheets/googlefinance-not-working-in-excel/">
 <meta property="og:type" content="article">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
-<link rel="canonical" href="https://xlsx-for-ai.dev/google-sheets/huge-empty-rows-columns-in-export/">
+<link rel="canonical" href="https://xlsx-for-ai.dev/google-sheets/googlefinance-not-working-in-excel/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
 <style>
   :root {
@@ -132,9 +132,9 @@
 {
   "@context": "https://schema.org",
   "@type": "TechArticle",
-  "headline": "Huge empty rows or columns in a Google Sheets export \u2014 xlsx-for-ai",
-  "description": "A Google Sheets export can carry a used range of millions of empty cells, bloating the file. xlsx-for-ai detects the phantom dimensions and flags them.",
-  "url": "https://xlsx-for-ai.dev/google-sheets/huge-empty-rows-columns-in-export/",
+  "headline": "GOOGLEFINANCE not working in Excel after Google Sheets \u2014 xlsx-for-ai",
+  "description": "GOOGLEFINANCE is Sheets-only \u2014 Excel has no matching function, though the 365 Stocks data type covers some of the same ground. Here's the fix and what a frozen GOOGLEFINANCE value looks like.",
+  "url": "https://xlsx-for-ai.dev/google-sheets/googlefinance-not-working-in-excel/",
   "isPartOf": { "@type": "WebSite", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" },
   "publisher": { "@type": "Organization", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" }
 }
@@ -159,16 +159,17 @@
 <main>
 <div class="wrap">
 <div class="eyebrow">Google Sheets &rarr; Excel</div>
-<h1>My Google Sheets export has millions of empty rows and columns</h1>
-<p class="lede">You exported a modest Sheet, but the Excel file is huge and slow, the scrollbar thinks there are millions of rows, and pressing <kbd>Ctrl</kbd>+<kbd>End</kbd> jumps miles past your last real cell.</p>
+<h1>GOOGLEFINANCE doesn&rsquo;t work after I opened my Sheet in Excel</h1>
+<p class="lede">You had <code>=GOOGLEFINANCE(&quot;NASDAQ:AAPL&quot;,&quot;price&quot;)</code> pulling a live quote. In Excel that cell either shows <code>#NAME?</code>, or a number that hasn&rsquo;t moved since the day you downloaded the file.</p>
 
 <h2>What&rsquo;s actually breaking</h2>
-<p>Every spreadsheet tracks a <em>used range</em> &mdash; the rectangle from A1 to the furthest cell it considers &ldquo;in use.&rdquo; Google Sheets is generous about what counts: a stray format applied to a whole column, a leftover value far down a sheet, or just the sheet&rsquo;s default grid can push that boundary out to enormous dimensions. When the file is exported, that inflated used range comes with it &mdash; so Excel believes the sheet spans far more rows and columns than actually hold data. The file balloons, opens slowly, and formulas that reference whole columns do needless work.</p>
+<p><code>GOOGLEFINANCE</code> is a live market-data feed built into Sheets &mdash; prices, exchange rates, historical series, fundamentals &mdash; with no Excel function of the same name and no exact equivalent. The closest thing Excel has is the <strong>Stocks</strong> linked data type in Excel 365 (<strong>Data &rarr; Stocks</strong>): you type a ticker or company name into a cell, convert it to the Stocks type, and pull fields out of it with dot-notation formulas like <code>=A1.Price</code>. It&rsquo;s a different mechanism (a typed cell, not a function call) with a different field set, so it isn&rsquo;t a drop-in swap &mdash; some of what <code>GOOGLEFINANCE</code> could pull (certain historical ranges, some currency pairs) the Stocks type simply doesn&rsquo;t carry.</p>
+<p>When a <code>GOOGLEFINANCE</code> cell crosses over to Excel, it goes through the same export path as every other Sheets-only function: a dead formula, a cached error, or Google&rsquo;s <code>__xludf.DUMMYFUNCTION</code> wrapper with the last quote cached inside it &mdash; see <a href="/google-sheets/xludf-dummyfunction-name-error-in-excel/">that page</a> for how to read the cached value back out.</p>
 
-<section class="solution" data-catalog-class="d17" data-disposition="detected-metered" data-claim-tier="disclose">
+<section class="solution" data-catalog-class="A1" data-disposition="silently-wrong" data-claim-tier="detect-scoped">
 <h2>How xlsx-for-ai handles it</h2>
-<p>xlsx-for-ai has a dedicated profile for Google-Sheets exports that <strong>detects this phantom dimension bloat and flags it</strong>. When it reads a workbook whose declared used range is far larger than its real data, it recognises the pattern and calls it out, so a 40&nbsp;MB file that holds a few thousand real cells isn&rsquo;t a mystery &mdash; you&rsquo;re told the used range is inflated and by roughly how much.</p>
-<p>The claim here is detection and disclosure: <strong>we surface the bloat so it&rsquo;s not invisible.</strong> That&rsquo;s the piece that&rsquo;s live and regression-guarded today. Trimming the sheet back to its true extent is then a deliberate step you take in Excel &mdash; select the empty rows below your data and the empty columns to the right, delete them, and save &mdash; rather than something that happens to your file without your say-so.</p>
+<p>xfa (the reader I use for this) flags a dead <code>GOOGLEFINANCE</code> cell the same way it flags any Sheets-only function: a live formula Excel can&rsquo;t resolve, a cached <code>#NAME?</code>, or the <code>__xludf.DUMMYFUNCTION</code> wrapper all get caught and reported, with the cached quote pulled out where it&rsquo;s recoverable.</p>
+<p>What it does <strong>not</strong> catch: a quote already frozen to a plain number with no formula or wrapper surviving in the file. A stock price that&rsquo;s just a number looks identical to one typed by hand, and xfa won&rsquo;t claim to tell those apart. If a price matters and the cell used to be <code>GOOGLEFINANCE</code>, treat any unflagged number as unverified and check it against a live source before you rely on it.</p>
 </section>
 
 <h2>How to check your file</h2>
@@ -182,7 +183,7 @@ https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit</code></pre>
   <li><strong>Or skip the token</strong> &mdash; in Google Sheets choose <strong>File &rarr; Download &rarr; Microsoft Excel (.xlsx)</strong>, then ask Claude to <em>&ldquo;read this file with xfa and tell me what it flagged.&rdquo;</em> Same reader, same flags.</li>
   <li><strong>Read the flags.</strong> The result tells you exactly what it did and what it couldn&rsquo;t carry across &mdash; so you review a short list instead of hunting for a wrong number later.</li>
 </ol>
-<div class="note"><strong>To slim the file in Excel:</strong> click the first empty row under your data, press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>&darr;</kbd> and delete; do the same for empty columns to the right; then save. The phantom used range collapses to your real data.</div>
+<div class="note"><strong>Rebuilding tip:</strong> put the ticker in a cell, <strong>Data &rarr; Stocks</strong> to convert it to a linked data type, then reference fields with <code>=CELL.Price</code>, <code>=CELL.&quot;52 Week High&quot;</code>, and so on &mdash; that&rsquo;s the closest live equivalent Excel has.</div>
 <h2>More Google Sheets &harr; Excel problems</h2>
 <ul class="card-list">
   <li><span class="q"><a href="/google-sheets/arrayformula-not-working-in-excel/">ARRAYFORMULA stopped working in Excel</a></span></li>

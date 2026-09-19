@@ -170,6 +170,14 @@
     Dynamic arrays don&rsquo;t always cross faithfully &mdash; we detect the spill and flag it instead of writing a shorter list.</li>
   <li><span class="q"><a href="/google-sheets/sheets-only-functions-break-in-excel/">Google-Sheets-only functions break in Excel</a></span><br>
     <code>GOOGLEFINANCE</code>, <code>IMPORTRANGE</code> and friends &mdash; we catch the cases that leave a tell, and we&rsquo;re open about the one that doesn&rsquo;t.</li>
+  <li><span class="q"><a href="/google-sheets/xludf-dummyfunction-name-error-in-excel/">__xludf.DUMMYFUNCTION / #NAME? after downloading a Google Sheet</a></span><br>
+    Google&rsquo;s own wrapper around the dead formula, with the last result cached inside it &mdash; the one case here we detect reliably.</li>
+  <li><span class="q"><a href="/google-sheets/query-function-not-working-in-excel/">QUERY function not working in Excel</a></span><br>
+    No Excel equivalent &mdash; the fix map is FILTER, SUMIFS/COUNTIFS, or Power Query depending on what the query did.</li>
+  <li><span class="q"><a href="/google-sheets/importrange-not-working-in-excel/">IMPORTRANGE not working in Excel</a></span><br>
+    Live cross-sheet data that freezes at export &mdash; the case most likely to slip past detection with no tell left.</li>
+  <li><span class="q"><a href="/google-sheets/googlefinance-not-working-in-excel/">GOOGLEFINANCE not working in Excel</a></span><br>
+    No direct Excel equivalent, though the 365 Stocks data type covers some of the same ground.</li>
   <li><span class="q"><a href="/google-sheets/named-function-error-in-excel/">A named function shows an error in Excel</a></span><br>
     Custom named functions don&rsquo;t exist in Excel &mdash; you get a visible error, not a silently wrong value.</li>
 </ul>

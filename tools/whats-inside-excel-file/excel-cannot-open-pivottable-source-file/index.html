@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><title>Someone sent me an Excel file — how to open it without buying software | xlsx-for-ai</title>
-<meta name="description" content="Here&#x27;s the straightforward way to do this — and how to hand it off so you never have to do it by hand again. Drop your file in below to">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Excel cannot open the PivotTable source file | xlsx-for-ai</title>
+<meta name="description" content="&quot;Excel cannot open the PivotTable source file&quot; means the external workbook or connection your pivot depends on is gone. Here's why, and how to read the pivot's own data without it.">
 <meta name="author" content="xlsx-for-ai">
-<meta property="og:title" content="Someone sent me an Excel file — how to open it without buying software | xlsx-for-ai">
-<meta property="og:description" content="Here&#x27;s the straightforward way to do this — and how to hand it off so you never have to do it by hand again. Drop your file in below to">
-<meta property="og:url" content="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/">
+<meta property="og:title" content="Excel cannot open the PivotTable source file | xlsx-for-ai">
+<meta property="og:description" content="&quot;Excel cannot open the PivotTable source file&quot; means the external workbook or connection your pivot depends on is gone. Here's why, and how to read the pivot's own data without it.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/excel-cannot-open-pivottable-source-file/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Someone sent me an Excel file — how to open it without buying software | xlsx-for-ai">
-<meta name="twitter:description" content="Here&#x27;s the straightforward way to do this — and how to hand it off so you never have to do it by hand again. Drop your file in below to">
+<meta name="twitter:title" content="Excel cannot open the PivotTable source file | xlsx-for-ai">
+<meta name="twitter:description" content="&quot;Excel cannot open the PivotTable source file&quot; means the external workbook or connection your pivot depends on is gone. Here's why, and how to read the pivot's own data without it.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
-<link rel="canonical" href="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/excel-cannot-open-pivottable-source-file/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="/tools/shell.css">
 <script type="application/ld+json">
@@ -28,11 +28,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Someone sent me an Excel file \u2014 how to open it without buying software",
-      "acceptedAnswer": { "@type": "Answer", "text": "There's a reliable way to do this without fighting the spreadsheet or learning a formula. Below is the clean way to get it done." }
+      "name": "What does \"Excel cannot open the PivotTable source file\" mean?",
+      "acceptedAnswer": { "@type": "Answer", "text": "It means your pivot table was built from an external source — a separate workbook, a saved query, or a database connection — and Excel can no longer reach it at the path or connection string it has stored. Refreshing the pivot tries to reopen that source and fails before it ever touches your current data." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does this happen even though my file opens fine?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Your workbook and its pivot table open normally because they only need the CACHED results from the last successful refresh — those are saved inside the file itself. It's only the refresh action that reaches out to the external source, and that's the step that fails when the source file was moved, renamed, deleted, or sits on a drive or server you no longer have access to." }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the data in my pivot table lost?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. The pivot's last-refreshed numbers are stored in the workbook as a cache, independent of whether the source file can be reached again. You can still read that cached data and the pivot's layout even if the original source is permanently gone." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can xlsx-for-ai reconnect the pivot to its external source?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No — it doesn't repair connections or reach out to external files on your behalf. It reads what's already inside the workbook in front of you: the pivot's cached data, its field layout, and any local source range, so a dead external link doesn't stop you from getting the numbers." }
     }
   ],
-  "url": "https://xlsx-for-ai.dev/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/",
+  "url": "https://xlsx-for-ai.dev/tools/whats-inside-excel-file/excel-cannot-open-pivottable-source-file/",
   "isPartOf": { "@type": "WebSite", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" }
 }
 </script>
@@ -60,17 +75,17 @@
   <span aria-hidden="true">/</span>
   <a href="/tools/whats-inside-excel-file/">What's inside this Excel file? See inside, free.</a>
   <span aria-hidden="true">/</span>
-  <span aria-current="page">Someone sent me an Excel file — how to open it without buying software</span>
+  <span aria-current="page">Excel cannot open the PivotTable source file</span>
 </nav>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://xlsx-for-ai.dev/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://xlsx-for-ai.dev/tools/"},{"@type":"ListItem","position":3,"name":"What's inside this Excel file? See inside, free.","item":"https://xlsx-for-ai.dev/tools/whats-inside-excel-file/"},{"@type":"ListItem","position":4,"name":"Someone sent me an Excel file — how to open it without buying software","item":"https://xlsx-for-ai.dev/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/"}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://xlsx-for-ai.dev/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://xlsx-for-ai.dev/tools/"},{"@type":"ListItem","position":3,"name":"What's inside this Excel file? See inside, free.","item":"https://xlsx-for-ai.dev/tools/whats-inside-excel-file/"},{"@type":"ListItem","position":4,"name":"Excel cannot open the PivotTable source file","item":"https://xlsx-for-ai.dev/tools/whats-inside-excel-file/excel-cannot-open-pivottable-source-file/"}]}
 </script>
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">Step by step</div>
-    <h1>Someone sent me an Excel file — how to open it without buying software</h1>
-    <p class="lede">Here&#x27;s the straightforward way to do this — and how to hand it off so you never have to do it by hand again. Drop your file in below to start.</p>
+    <div class="eyebrow">Dead external link</div>
+    <h1>Excel cannot open the PivotTable source file</h1>
+    <p class="lede">You refresh a pivot table and Excel says it cannot open the PivotTable source file — a workbook, query, or connection the pivot depends on that's now moved, renamed, or unreachable. Your data isn't gone. Drop the file in below to read the pivot's cached numbers and layout directly.</p>
   </div>
 
   <div class="tool">
@@ -83,17 +98,20 @@
 
   <div class="prose">
 
-    <h2>The short version</h2>
-    <p>There's a reliable way to do this without fighting the spreadsheet or learning a formula. Below is the clean way to get it done.</p>
-    <h2>Do it with your agent</h2>
-    <p>Once you've done it once, your agent can do it every time from a plain instruction — see the box at the top and the workflow below.</p>
+    <h2>What this looks like</h2>
+    <p>You click Refresh, or reopen a workbook set to refresh on open, and Excel throws “Excel cannot open the PivotTable source file [name]” or a similar dialog naming a file it can't reach. The workbook you have open loads fine — it's specifically the refresh step that fails, and it fails before touching any of the data currently sitting in the pivot.</p>
+
+    <h2>Why it happens</h2>
+    <p>Not every pivot table is built from data on the same sheet or even the same workbook. Pivots built from an external workbook, a saved query, or a database connection store a path or connection string, not a copy of the live data — the pivot's numbers are a cache from the last time that connection worked. If the source workbook is moved, renamed, deleted, or sits on a network drive or server you're no longer connected to, that cached path goes stale and the refresh has nothing to reach.</p>
+
+    <h2>What you actually want</h2>
+    <p>The numbers that are already in the workbook, not a live reconnection to a file that may not exist anymore. Every pivot table keeps its last-refreshed results cached inside the workbook itself, independent of the external source. xlsx-for-ai reads that cached pivot data and layout, along with any source data that does live locally in the file, directly — without trying to reopen the external connection — so a dead external link doesn't stop you from getting the data you actually have.</p>
 
   </div>
 
 <!-- XLS-1616:related:start -->
 <h2>More What's inside this Excel file? See inside, free. guides</h2>
 <ul class="xfa-related">
-  <li><a href="/tools/whats-inside-excel-file/excel-cannot-open-pivottable-source-file/">Excel cannot open the PivotTable source file</a></li>
   <li><a href="/tools/whats-inside-excel-file/excel-file-has-too-many-sheets-tabs-to-open/">Excel file has too many sheets/tabs to open</a></li>
   <li><a href="/tools/whats-inside-excel-file/excel-file-too-big-to-open-see-what-s-inside-without-crashing/">Excel file too big to open — see what&#x27;s inside without crashing</a></li>
   <li><a href="/tools/whats-inside-excel-file/excel-file-too-large-to-open-read-it-without-opening-in-excel/">Excel file too large to open — read it without opening in Excel</a></li>
@@ -110,6 +128,7 @@
   <li><a href="/tools/whats-inside-excel-file/open-an-excel-file-without-excel-free-online-no-download/">Open an Excel file without Excel — free, online, no download</a></li>
   <li><a href="/tools/whats-inside-excel-file/pivottable-report-cannot-overlap-another-pivottable-report/">A PivotTable report cannot overlap another PivotTable report</a></li>
   <li><a href="/tools/whats-inside-excel-file/preview-an-excel-file-online-before-downloading-it/">Preview an Excel file online before downloading it</a></li>
+  <li><a href="/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/">Someone sent me an Excel file — how to open it without buying software</a></li>
   <li><a href="/tools/whats-inside-excel-file/too-many-columns-for-excel-over-the-16-384-column-limit/">Too many columns for Excel — over the 16,384 column limit</a></li>
   <li><a href="/tools/whats-inside-excel-file/too-many-rows-for-excel-over-the-1-048-576-row-limit/">Too many rows for Excel — over the 1,048,576 row limit</a></li>
   <li><a href="/tools/whats-inside-excel-file/view-an-excel-file-on-your-phone-iphone-android-no-app-needed/">View an Excel file on your phone — iPhone, Android, no app needed</a></li>

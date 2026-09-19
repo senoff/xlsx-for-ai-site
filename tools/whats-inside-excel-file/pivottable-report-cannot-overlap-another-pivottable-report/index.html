@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><title>Someone sent me an Excel file — how to open it without buying software | xlsx-for-ai</title>
-<meta name="description" content="Here&#x27;s the straightforward way to do this — and how to hand it off so you never have to do it by hand again. Drop your file in below to">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>A PivotTable report cannot overlap another PivotTable report | xlsx-for-ai</title>
+<meta name="description" content="&quot;A PivotTable report cannot overlap another PivotTable report&quot; blocks the refresh or move outright, without saying which pivot or where. Here's why, and how to read the pivot's layout and data instead.">
 <meta name="author" content="xlsx-for-ai">
-<meta property="og:title" content="Someone sent me an Excel file — how to open it without buying software | xlsx-for-ai">
-<meta property="og:description" content="Here&#x27;s the straightforward way to do this — and how to hand it off so you never have to do it by hand again. Drop your file in below to">
-<meta property="og:url" content="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/">
+<meta property="og:title" content="A PivotTable report cannot overlap another PivotTable report | xlsx-for-ai">
+<meta property="og:description" content="&quot;A PivotTable report cannot overlap another PivotTable report&quot; blocks the refresh or move outright, without saying which pivot or where. Here's why, and how to read the pivot's layout and data instead.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/pivottable-report-cannot-overlap-another-pivottable-report/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Someone sent me an Excel file — how to open it without buying software | xlsx-for-ai">
-<meta name="twitter:description" content="Here&#x27;s the straightforward way to do this — and how to hand it off so you never have to do it by hand again. Drop your file in below to">
+<meta name="twitter:title" content="A PivotTable report cannot overlap another PivotTable report | xlsx-for-ai">
+<meta name="twitter:description" content="&quot;A PivotTable report cannot overlap another PivotTable report&quot; blocks the refresh or move outright, without saying which pivot or where. Here's why, and how to read the pivot's layout and data instead.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
-<link rel="canonical" href="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/pivottable-report-cannot-overlap-another-pivottable-report/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="/tools/shell.css">
 <script type="application/ld+json">
@@ -28,11 +28,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Someone sent me an Excel file \u2014 how to open it without buying software",
-      "acceptedAnswer": { "@type": "Answer", "text": "There's a reliable way to do this without fighting the spreadsheet or learning a formula. Below is the clean way to get it done." }
+      "name": "What causes \"A PivotTable report cannot overlap another PivotTable report\"?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Excel reserves a rectangular output range for every pivot table on a sheet, even the blank cells around it that a future refresh might expand into. If you try to refresh, move, or place a pivot table into a range that collides with another pivot's reserved range — even by one cell — Excel blocks the action instead of silently overwriting it." }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does it happen on a pivot that worked fine before?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Pivot ranges grow and shrink as the underlying data changes. A pivot that fit cleanly last month can expand into a neighboring pivot's space this month just from new rows in the source data, or from a sheet being copied and leaving two pivot definitions occupying the same cells." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does deleting rows or columns fix the overlap?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Sometimes, but it's a guess made inside Excel with the pivots' actual boundaries hidden from view, and it risks deleting real data. Knowing each pivot's actual range and source before you touch anything is safer than trial and error." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can xlsx-for-ai fix the overlap for me?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No — it doesn't edit your workbook or move pivot tables inside Excel. It reads the pivot definitions and source data directly from the file, so you can see exactly what's colliding and fix the layout yourself." }
     }
   ],
-  "url": "https://xlsx-for-ai.dev/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/",
+  "url": "https://xlsx-for-ai.dev/tools/whats-inside-excel-file/pivottable-report-cannot-overlap-another-pivottable-report/",
   "isPartOf": { "@type": "WebSite", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" }
 }
 </script>
@@ -60,17 +75,17 @@
   <span aria-hidden="true">/</span>
   <a href="/tools/whats-inside-excel-file/">What's inside this Excel file? See inside, free.</a>
   <span aria-hidden="true">/</span>
-  <span aria-current="page">Someone sent me an Excel file — how to open it without buying software</span>
+  <span aria-current="page">A PivotTable report cannot overlap another PivotTable report</span>
 </nav>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://xlsx-for-ai.dev/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://xlsx-for-ai.dev/tools/"},{"@type":"ListItem","position":3,"name":"What's inside this Excel file? See inside, free.","item":"https://xlsx-for-ai.dev/tools/whats-inside-excel-file/"},{"@type":"ListItem","position":4,"name":"Someone sent me an Excel file — how to open it without buying software","item":"https://xlsx-for-ai.dev/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/"}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://xlsx-for-ai.dev/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://xlsx-for-ai.dev/tools/"},{"@type":"ListItem","position":3,"name":"What's inside this Excel file? See inside, free.","item":"https://xlsx-for-ai.dev/tools/whats-inside-excel-file/"},{"@type":"ListItem","position":4,"name":"A PivotTable report cannot overlap another PivotTable report","item":"https://xlsx-for-ai.dev/tools/whats-inside-excel-file/pivottable-report-cannot-overlap-another-pivottable-report/"}]}
 </script>
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">Step by step</div>
-    <h1>Someone sent me an Excel file — how to open it without buying software</h1>
-    <p class="lede">Here&#x27;s the straightforward way to do this — and how to hand it off so you never have to do it by hand again. Drop your file in below to start.</p>
+    <div class="eyebrow">Blocked pivot placement</div>
+    <h1>A PivotTable report cannot overlap another PivotTable report</h1>
+    <p class="lede">You try to refresh, move, or drop a new pivot table onto a sheet and Excel stops you cold: “A PivotTable report cannot overlap another PivotTable report.” It doesn't say which pivot, or where the collision is. Drop the file in below to see every pivot's range and the data behind it instead.</p>
   </div>
 
   <div class="tool">
@@ -83,10 +98,14 @@
 
   <div class="prose">
 
-    <h2>The short version</h2>
-    <p>There's a reliable way to do this without fighting the spreadsheet or learning a formula. Below is the clean way to get it done.</p>
-    <h2>Do it with your agent</h2>
-    <p>Once you've done it once, your agent can do it every time from a plain instruction — see the box at the top and the workflow below.</p>
+    <h2>What this looks like</h2>
+    <p>You click Refresh, drag a pivot table to a new spot, or paste a new pivot near an existing one, and Excel throws “A PivotTable report cannot overlap another PivotTable report” and refuses to complete the action. The refresh or move doesn't partially apply — it just fails, and the dialog gives you no cell reference or pivot name to go check.</p>
+
+    <h2>Why it happens</h2>
+    <p>Every pivot table reserves a rectangular output range on its sheet, and Excel enforces a strict no-overlap rule between reserved ranges so it can safely rebuild a pivot's layout on refresh without clobbering a neighbor. The range a pivot reserves isn't just its current visible size — it accounts for how the report could grow. Two pivots that looked fine side by side can collide the moment either one's data grows, a sheet gets copied and duplicates a pivot definition, or someone drags a pivot a few rows closer to another.</p>
+
+    <h2>What you actually want</h2>
+    <p>Not to guess at cell boundaries inside Excel — you want to see where each pivot table actually sits, what source range and data it's built from, and its row/column/value field layout, so you can diagnose or rebuild it deliberately. xlsx-for-ai reads pivot table definitions directly out of the file — their source range, cached layout, and field structure — without running Excel's pivot engine, so an overlap that blocks Excel doesn't block you from seeing what each pivot was built from and where it actually sits.</p>
 
   </div>
 
@@ -108,8 +127,8 @@
   <li><a href="/tools/whats-inside-excel-file/open-an-excel-file-on-a-chromebook-free-no-office-needed/">Open an Excel file on a Chromebook — free, no Office needed</a></li>
   <li><a href="/tools/whats-inside-excel-file/open-an-excel-file-on-a-mac-without-microsoft-office/">Open an Excel file on a Mac without Microsoft Office</a></li>
   <li><a href="/tools/whats-inside-excel-file/open-an-excel-file-without-excel-free-online-no-download/">Open an Excel file without Excel — free, online, no download</a></li>
-  <li><a href="/tools/whats-inside-excel-file/pivottable-report-cannot-overlap-another-pivottable-report/">A PivotTable report cannot overlap another PivotTable report</a></li>
   <li><a href="/tools/whats-inside-excel-file/preview-an-excel-file-online-before-downloading-it/">Preview an Excel file online before downloading it</a></li>
+  <li><a href="/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/">Someone sent me an Excel file — how to open it without buying software</a></li>
   <li><a href="/tools/whats-inside-excel-file/too-many-columns-for-excel-over-the-16-384-column-limit/">Too many columns for Excel — over the 16,384 column limit</a></li>
   <li><a href="/tools/whats-inside-excel-file/too-many-rows-for-excel-over-the-1-048-576-row-limit/">Too many rows for Excel — over the 1,048,576 row limit</a></li>
   <li><a href="/tools/whats-inside-excel-file/view-an-excel-file-on-your-phone-iphone-android-no-app-needed/">View an Excel file on your phone — iPhone, Android, no app needed</a></li>

@@ -2,23 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1"><title>Someone sent me an Excel file — how to open it without buying software | xlsx-for-ai</title>
-<meta name="description" content="Here&#x27;s the straightforward way to do this — and how to hand it off so you never have to do it by hand again. Drop your file in below to">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Excel PivotTable won't refresh — data source reference isn't valid | xlsx-for-ai</title>
+<meta name="description" content="&quot;The PivotTable field name is not valid&quot; or &quot;Reference isn't valid&quot; on refresh means the pivot's source range is broken. Here's why, and how to see the real source range and data.">
 <meta name="author" content="xlsx-for-ai">
-<meta property="og:title" content="Someone sent me an Excel file — how to open it without buying software | xlsx-for-ai">
-<meta property="og:description" content="Here&#x27;s the straightforward way to do this — and how to hand it off so you never have to do it by hand again. Drop your file in below to">
-<meta property="og:url" content="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/">
+<meta property="og:title" content="Excel PivotTable won't refresh — data source reference isn't valid | xlsx-for-ai">
+<meta property="og:description" content="&quot;The PivotTable field name is not valid&quot; or &quot;Reference isn't valid&quot; on refresh means the pivot's source range is broken. Here's why, and how to see the real source range and data.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/excel-pivottable-won-t-refresh-data-source-reference-is-not-valid/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Someone sent me an Excel file — how to open it without buying software | xlsx-for-ai">
-<meta name="twitter:description" content="Here&#x27;s the straightforward way to do this — and how to hand it off so you never have to do it by hand again. Drop your file in below to">
+<meta name="twitter:title" content="Excel PivotTable won't refresh — data source reference isn't valid | xlsx-for-ai">
+<meta name="twitter:description" content="&quot;The PivotTable field name is not valid&quot; or &quot;Reference isn't valid&quot; on refresh means the pivot's source range is broken. Here's why, and how to see the real source range and data.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
-<link rel="canonical" href="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/">
+<link rel="canonical" href="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/excel-pivottable-won-t-refresh-data-source-reference-is-not-valid/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
 <link rel="stylesheet" href="/tools/shell.css">
 <script type="application/ld+json">
@@ -28,11 +28,26 @@
   "mainEntity": [
     {
       "@type": "Question",
-      "name": "Someone sent me an Excel file \u2014 how to open it without buying software",
-      "acceptedAnswer": { "@type": "Answer", "text": "There's a reliable way to do this without fighting the spreadsheet or learning a formula. Below is the clean way to get it done." }
+      "name": "Why does my PivotTable say \"Reference isn't valid\" or \"The PivotTable field name is not valid\" when I refresh?",
+      "acceptedAnswer": { "@type": "Answer", "text": "A pivot table stores a fixed reference to its source range — a sheet name plus a cell range, or a named range. If that source sheet was renamed or deleted, the range was moved or resized, or a header cell in the source range is now blank or duplicated, Excel can't re-bind the pivot to live data and throws one of these errors on refresh." }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this mean my data is gone?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. The pivot's cached results and its source reference are both still stored in the file — it's the refresh step, not the data, that's failing. The underlying data almost always still exists somewhere in the workbook; the pivot just can't find it at the address it remembers." }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I find out what source range a broken pivot is actually pointing at?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Open the pivot's field list or data source settings in Excel to see the stored reference, or read it directly with xlsx-for-ai, which surfaces every pivot table's stored source range alongside the live data currently in the workbook — so you can see the mismatch without refreshing anything." }
+    },
+    {
+      "@type": "Question",
+      "name": "Can xlsx-for-ai repair the broken reference for me?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No — it doesn't edit the pivot's source setting or your workbook. It reads the pivot's definition and the underlying data as they exist in the file, so you have the numbers and the mismatch in front of you to fix in Excel." }
     }
   ],
-  "url": "https://xlsx-for-ai.dev/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/",
+  "url": "https://xlsx-for-ai.dev/tools/whats-inside-excel-file/excel-pivottable-won-t-refresh-data-source-reference-is-not-valid/",
   "isPartOf": { "@type": "WebSite", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" }
 }
 </script>
@@ -60,17 +75,17 @@
   <span aria-hidden="true">/</span>
   <a href="/tools/whats-inside-excel-file/">What's inside this Excel file? See inside, free.</a>
   <span aria-hidden="true">/</span>
-  <span aria-current="page">Someone sent me an Excel file — how to open it without buying software</span>
+  <span aria-current="page">Excel PivotTable won't refresh — data source reference isn't valid</span>
 </nav>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://xlsx-for-ai.dev/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://xlsx-for-ai.dev/tools/"},{"@type":"ListItem","position":3,"name":"What's inside this Excel file? See inside, free.","item":"https://xlsx-for-ai.dev/tools/whats-inside-excel-file/"},{"@type":"ListItem","position":4,"name":"Someone sent me an Excel file — how to open it without buying software","item":"https://xlsx-for-ai.dev/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/"}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://xlsx-for-ai.dev/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://xlsx-for-ai.dev/tools/"},{"@type":"ListItem","position":3,"name":"What's inside this Excel file? See inside, free.","item":"https://xlsx-for-ai.dev/tools/whats-inside-excel-file/"},{"@type":"ListItem","position":4,"name":"Excel PivotTable won't refresh — data source reference isn't valid","item":"https://xlsx-for-ai.dev/tools/whats-inside-excel-file/excel-pivottable-won-t-refresh-data-source-reference-is-not-valid/"}]}
 </script>
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">Step by step</div>
-    <h1>Someone sent me an Excel file — how to open it without buying software</h1>
-    <p class="lede">Here&#x27;s the straightforward way to do this — and how to hand it off so you never have to do it by hand again. Drop your file in below to start.</p>
+    <div class="eyebrow">Broken source reference</div>
+    <h1>Excel PivotTable won't refresh — data source reference isn't valid</h1>
+    <p class="lede">You click Refresh and instead of new numbers you get “The PivotTable field name is not valid” or “Reference isn't valid.” The pivot isn't broken — its stored pointer to the source data is. Drop the file in below to see the actual source range and the data behind it.</p>
   </div>
 
   <div class="tool">
@@ -83,10 +98,14 @@
 
   <div class="prose">
 
-    <h2>The short version</h2>
-    <p>There's a reliable way to do this without fighting the spreadsheet or learning a formula. Below is the clean way to get it done.</p>
-    <h2>Do it with your agent</h2>
-    <p>Once you've done it once, your agent can do it every time from a plain instruction — see the box at the top and the workflow below.</p>
+    <h2>What this looks like</h2>
+    <p>You click Refresh (or open a workbook that auto-refreshes on load) and instead of updated numbers, Excel shows “The PivotTable field name is not valid” or a flatter “Reference isn't valid.” The pivot table itself is still on the sheet, still showing its last-cached numbers, but Excel won't rebuild it from current data.</p>
+
+    <h2>Why it happens</h2>
+    <p>A pivot table doesn't store a live link to your data — it stores a fixed reference: a sheet name plus a cell range, or a named range, captured when the pivot was built. That reference breaks in a handful of common ways: the source sheet was renamed or deleted, rows or columns were inserted or removed so the range no longer lines up with the pivot's field list, a header cell in the source range went blank or turned into a duplicate of another header, or the workbook was copied and the source data moved with it while the pivot's reference didn't follow.</p>
+
+    <h2>What you actually want</h2>
+    <p>To see what the pivot's source range actually is right now, and what data currently lives there, so you can spot the mismatch — not to keep clicking Refresh and reading the same error. xlsx-for-ai reads a pivot table's stored source reference directly from the file, alongside the live data in the workbook, without running Excel's refresh logic — so a broken binding doesn't stop you from seeing the source range, the field layout, or the underlying rows.</p>
 
   </div>
 
@@ -98,7 +117,6 @@
   <li><a href="/tools/whats-inside-excel-file/excel-file-too-big-to-open-see-what-s-inside-without-crashing/">Excel file too big to open — see what&#x27;s inside without crashing</a></li>
   <li><a href="/tools/whats-inside-excel-file/excel-file-too-large-to-open-read-it-without-opening-in-excel/">Excel file too large to open — read it without opening in Excel</a></li>
   <li><a href="/tools/whats-inside-excel-file/excel-file-won-t-open-corrupted-or-unreadable-content-recover-the-data/">Excel file won&#x27;t open — corrupted or unreadable content, recover the data</a></li>
-  <li><a href="/tools/whats-inside-excel-file/excel-pivottable-won-t-refresh-data-source-reference-is-not-valid/">Excel PivotTable won't refresh — data source reference isn't valid</a></li>
   <li><a href="/tools/whats-inside-excel-file/excel-ran-out-of-memory-not-enough-resources-to-open-the-file/">Excel ran out of memory — not enough resources to open the file</a></li>
   <li><a href="/tools/whats-inside-excel-file/how-many-rows-are-in-this-spreadsheet-check-without-opening/">How many rows are in this spreadsheet? Check without opening</a></li>
   <li><a href="/tools/whats-inside-excel-file/how-to-get-a-plain-english-summary-of-an-excel-file/">How to get a plain-English summary of an Excel file</a></li>
@@ -110,6 +128,7 @@
   <li><a href="/tools/whats-inside-excel-file/open-an-excel-file-without-excel-free-online-no-download/">Open an Excel file without Excel — free, online, no download</a></li>
   <li><a href="/tools/whats-inside-excel-file/pivottable-report-cannot-overlap-another-pivottable-report/">A PivotTable report cannot overlap another PivotTable report</a></li>
   <li><a href="/tools/whats-inside-excel-file/preview-an-excel-file-online-before-downloading-it/">Preview an Excel file online before downloading it</a></li>
+  <li><a href="/tools/whats-inside-excel-file/someone-sent-me-an-excel-file-how-to-open-it-without-buying-software/">Someone sent me an Excel file — how to open it without buying software</a></li>
   <li><a href="/tools/whats-inside-excel-file/too-many-columns-for-excel-over-the-16-384-column-limit/">Too many columns for Excel — over the 16,384 column limit</a></li>
   <li><a href="/tools/whats-inside-excel-file/too-many-rows-for-excel-over-the-1-048-576-row-limit/">Too many rows for Excel — over the 1,048,576 row limit</a></li>
   <li><a href="/tools/whats-inside-excel-file/view-an-excel-file-on-your-phone-iphone-android-no-app-needed/">View an Excel file on your phone — iPhone, Android, no app needed</a></li>

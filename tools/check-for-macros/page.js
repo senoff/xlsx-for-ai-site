@@ -134,7 +134,7 @@
     accept: ".xlsx,.xlsm",
     extensions: ["xlsx", "xlsm"],
     reassure:
-      "Free · no signup. Read in memory to check for macros, then discarded — never opened, run, or stored. It reports whether macros are present, not whether they're malicious; an antivirus scanner is the tool for a full verdict.",
+      "Read in memory to check for macros, then discarded — never opened, run, or stored. It reports whether macros are present, not whether they're malicious; an antivirus scanner is the tool for a full verdict.",
     runningLabel: "Checking your file…",
     steps: [
       "Reading your workbook",

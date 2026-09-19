@@ -115,7 +115,7 @@
     accept: ".csv",
     extensions: ["csv"],
     reassure:
-      "Free · no signup. Your export is read in memory to build the Amazon feed, then discarded. Nothing is stored, and your original file is never changed — you download a new feed file.",
+      "Your export is read in memory to build the Amazon feed, then discarded. Nothing is stored, and your original file is never changed — you download a new feed file.",
     runningLabel: "Building your Amazon feed…",
     steps: [
       "Reading your products export",

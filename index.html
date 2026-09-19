@@ -169,6 +169,48 @@
   .demo-step { margin: 0 0 8px; }
   .demo-step .label { font-weight: 600; color: var(--fg); }
 
+  .pricing {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 18px;
+    margin-top: 28px;
+  }
+  .tier {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 22px 20px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+  }
+  .tier.featured {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .tier h3 { font-size: 17px; margin: 0 0 4px; }
+  .tier .price {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 8px 0 4px;
+    letter-spacing: -0.02em;
+  }
+  .tier .price small { font-size: 14px; color: var(--muted); font-weight: 500; }
+  .tier ul { padding-left: 18px; margin: 14px 0 0; color: var(--muted); font-size: 14px; }
+  .tier ul li { margin-bottom: 4px; }
+  .tier .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--accent);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    align-self: flex-start;
+    margin-bottom: 8px;
+  }
+
   .legal h2 { font-size: 22px; margin-top: 32px; }
   .legal h3 { font-size: 16px; margin-top: 18px; }
   .legal p, .legal li { font-size: 14.5px; color: #2c2c2c; }
@@ -309,28 +351,11 @@
   "url": "https://xlsx-for-ai.dev/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
-  "offers": [
-    {
-      "@type": "Offer",
-      "name": "Free",
-      "description": "First 10 uses free; then free for files within our free size limit.",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    {
-      "@type": "Offer",
-      "name": "Paid",
-      "description": "For files above the free size limit.",
-      "price": "25",
-      "priceCurrency": "USD",
-      "priceSpecification": {
-        "@type": "UnitPriceSpecification",
-        "price": "25",
-        "priceCurrency": "USD",
-        "billingDuration": "P1Y"
-      }
-    }
-  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
   "isPartOf": {
     "@type": "WebSite",
     "name": "xlsx-for-ai",
@@ -396,6 +421,12 @@
       <div class="card">
         <h3>Read &amp; describe</h3>
         <p>Parse any .xlsx into LLM-friendly text. Per-column type inference with confidence. Describe, filter, and aggregate.</p>
+      </div>
+      <div class="card">
+        <h3>Reads live Google Sheets</h3>
+        <p>Point <code>xlsx_read</code> at a Google Sheet by id and get the same rendered output as reading the equivalent .xlsx. Read-only, with a read-only Google token you supply — no credential brokering.</p>
+        <p><a href="/google-sheets/">Google Sheets &harr; Excel: what breaks &amp; how we handle it &rarr;</a></p>
+        <p><a href="/google-sheets-to-excel/">Repair a Google Sheet exported to Excel: see &amp; fix the loss &rarr;</a></p>
       </div>
       <div class="card">
         <h3>Structure preserved</h3>
@@ -511,7 +542,7 @@
     </p>
 
     <h3 class="tool-group">Read &amp; explore a workbook</h3>
-    <div class="tool"><p class="name"><code>xlsx_read</code> — Read a workbook and return it as markdown, JSON, or SQL.</p><p class="prompt">"Read reporting-pack-v1.xlsx and show me the Summary sheet, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa <file.xlsx> [--md|--json] [--sheet <name>] [--evaluate]" title="Click to copy"><strong>Or run:</strong> <code>xfa &lt;file.xlsx&gt; [--md|--json] [--sheet &lt;name&gt;] [--evaluate]</code></p></div>
+    <div class="tool"><p class="name"><code>xlsx_read</code> — Read a workbook and return it as markdown, JSON, or SQL. Also reads a live Google Sheet by id (read-only, with a read-only Google token you supply).</p><p class="prompt">"Read reporting-pack-v1.xlsx and show me the Summary sheet, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa <file.xlsx> [--md|--json] [--sheet <name>] [--evaluate]" title="Click to copy"><strong>Or run:</strong> <code>xfa &lt;file.xlsx&gt; [--md|--json] [--sheet &lt;name&gt;] [--evaluate]</code></p></div>
     <div class="tool"><p class="name"><code>xlsx_list_sheets</code> — List sheet names, sizes, and which are hidden.</p><p class="prompt">"What sheets are in reporting-pack-v1.xlsx and how big is each, with xfa?"</p></div>
     <div class="tool"><p class="name"><code>xlsx_describe</code> — Per-column summary: count, nulls, unique, min/max/mean.</p><p class="prompt">"Give me a column-by-column summary of the Transactions sheet in reporting-pack-v1.xlsx, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_schema</code> — Infer each column's type, nullability, and a confidence score.</p><p class="prompt">"What are the column types in the Transactions sheet of reporting-pack-v1.xlsx, with xfa?"</p></div>
@@ -558,10 +589,10 @@
     <div class="tool"><p class="name"><code>xlsx_redact</code> — Detect and redact only the PII; everything else is preserved, with a manifest.</p><p class="prompt">"Redact the PII in reporting-pack-v1.xlsx and give me the audit manifest of what was removed, with xfa."</p></div>
 
     <h3 class="tool-group">Heal broken external references</h3>
-    <div class="tool"><p class="name"><code>xlsx_healer_diagnose</code> — Structured report of broken / at-risk external references.</p><p class="prompt">"Diagnose the external-reference problems in reporting-pack-v1.xlsx, with xfa."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_healer_diagnose</code> — Structured report of repairable damage: broken / at-risk external references, and <a href="/google-sheets-to-excel/">Google-Sheets-to-Excel export damage</a> (dead Sheets-only formulas, oversized used-range, un-compacted formulas).</p><p class="prompt">"Diagnose the external-reference problems in reporting-pack-v1.xlsx, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_healer_simulate</code> — Predict which references will break when you send the file to someone.</p><p class="prompt">"If I send reporting-pack-v1.xlsx to someone who can't see our network share, what breaks, with xfa?"</p></div>
     <div class="tool"><p class="name"><code>xlsx_healer_intent</code> — Describe the goal in plain English; Healer plans and applies the fix.</p><p class="prompt">"Make reporting-pack-v1.xlsx fully self-contained so it works for an outside recipient, with xfa."</p></div>
-    <div class="tool"><p class="name"><code>xlsx_healer_cure</code> — Apply one specific repair operation to a diagnosed workbook.</p><p class="prompt">"Freeze the broken external refs in reporting-pack-v1.xlsx to their last cached values, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa heal <path> [--mode as_copy|in_place] [--out <path>] [--format text|json]" title="Click to copy"><strong>Or run:</strong> <code>xfa heal &lt;path&gt; [--mode as_copy|in_place] [--out &lt;path&gt;] [--format text|json]</code></p></div>
+    <div class="tool"><p class="name"><code>xlsx_healer_cure</code> — Apply one specific repair to a diagnosed workbook: rewrite / freeze / localize external references, or, for a Google Sheets export, flag each dead Sheets-only formula in-cell (it does not recompute — there is no Excel equivalent), trim the used-range, or compact repeated formulas.</p><p class="prompt">"Freeze the broken external refs in reporting-pack-v1.xlsx to their last cached values, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa heal <path> [--mode as_copy|in_place] [--out <path>] [--format text|json]" title="Click to copy"><strong>Or run:</strong> <code>xfa heal &lt;path&gt; [--mode as_copy|in_place] [--out &lt;path&gt;] [--format text|json]</code></p></div>
 
     <h3 class="tool-group">Validate</h3>
     <div class="tool"><p class="name"><code>xlsx_validate</code> — Render the workbook through two independent engines and flag disagreements.</p><p class="prompt">"Render reporting-pack-v1.xlsx through two independent engines and flag any cell where they disagree, with xfa."</p></div>
@@ -711,6 +742,7 @@ xfa path/to/workbook.xlsx</code></pre>
       <a href="/terms/">Terms</a>
       <a href="/privacy/">Privacy</a>
       <a href="/clean-data/">Clean data</a>
+      <a href="/google-sheets/">Google Sheets</a>
       <a href="/developers/">API</a>
       <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
       <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">npm</a>

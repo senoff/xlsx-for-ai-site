@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google Sheets to Excel: problems and fixes — xlsx-for-ai</title>
+<meta name="description" content="Honest, per-problem guides for converting between Google Sheets and Excel — what breaks, why, and how xlsx-for-ai handles it. No signup.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Google Sheets to Excel: problems and fixes — xlsx-for-ai">
+<meta property="og:description" content="Honest, per-problem guides for converting between Google Sheets and Excel — what breaks, why, and how xlsx-for-ai handles it. No signup.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/google-sheets/">
+<meta property="og:type" content="article">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/google-sheets/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #5a5a5a;
+    --bg: #ffffff;
+    --accent: #107c41;
+    --border: #e6e6e6;
+    --code-bg: #f5f5f5;
+    --flag: #c2610c;
+    --flag-soft: #fdf1e5;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, pre {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 16px 0;
+    white-space: pre-wrap;
+  }
+  code { background: var(--code-bg); padding: 2px 5px; border-radius: 3px; }
+  pre code { background: none; padding: 0; }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+  }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; }
+  header .logo { font-weight: 700; font-size: 18px; color: var(--fg); }
+  header .logo .x { color: var(--accent); }
+  header nav a { color: var(--muted); margin-left: 22px; font-size: 14px; }
+  header nav a:hover { color: var(--fg); text-decoration: none; }
+
+  main { padding: 48px 0 96px; }
+  main h1 {
+    font-size: 34px;
+    line-height: 1.2;
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+  }
+  main .lede { font-size: 19px; color: var(--muted); margin: 0 0 12px; }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px;
+    font-weight: 600; color: var(--accent); margin: 0 0 10px;
+  }
+  main h2 {
+    font-size: 22px;
+    margin: 36px 0 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    letter-spacing: -0.01em;
+  }
+  main h2:first-of-type { border-top: 0; padding-top: 0; }
+  main h3 { font-size: 17px; margin: 24px 0 8px; }
+  main ul, main ol { padding-left: 22px; }
+  main li { margin: 8px 0; }
+  main strong { font-weight: 600; }
+  main em { color: var(--muted); }
+
+  .note {
+    background: var(--flag-soft);
+    border: 1px solid #f2d9bf;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 20px 0;
+    font-size: 15px;
+  }
+  .note strong { color: var(--flag); }
+
+  .card-list { list-style: none; padding-left: 0; }
+  .card-list li { margin: 14px 0; }
+  .card-list .q { font-weight: 600; }
+
+  .copy { cursor: pointer; position: relative; }
+  .copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .copy.copied { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .copy::after {
+    content: 'Click to copy';
+    position: absolute; top: 8px; right: 10px;
+    font-size: 11px; color: var(--muted);
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  .copy.copied::after { content: 'Copied \2713'; color: var(--accent); }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  footer a { color: var(--muted); margin-left: 0; }
+  footer .links a { margin-left: 16px; }
+  footer a:hover { color: var(--fg); }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  "name": "Google Sheets \u2194 Excel: problems and fixes",
+  "description": "Honest, per-problem guides for converting between Google Sheets and Excel \u2014 what breaks, why, and how xlsx-for-ai handles it.",
+  "url": "https://xlsx-for-ai.dev/google-sheets/",
+  "isPartOf": { "@type": "WebSite", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" }
+}
+</script>
+</head>
+<body>
+
+<span id="copy-status" class="sr-only" aria-live="polite"></span>
+
+<header>
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/google-sheets/">Google Sheets</a>
+      <a href="/developers/">Developers</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+<div class="eyebrow">Google Sheets &harr; Excel</div>
+<h1>Google Sheets &harr; Excel: what breaks, and how we handle it.</h1>
+<p class="lede">Moving a spreadsheet between Google Sheets and Excel is a well-known source of quiet breakage &mdash; a formula that stops working, a column that collapses, a file that balloons to millions of empty rows.</p>
+<p>These guides are deliberately honest. Each one names a real problem, explains what&rsquo;s actually happening underneath, and says exactly what xlsx-for-ai does about it &mdash; whether that&rsquo;s reading the value correctly, <strong>detecting the problem and telling you rather than guessing</strong>, or flagging a loss so it isn&rsquo;t silent. Where a platform difference can&rsquo;t be prevented, we say so plainly. We&rsquo;d rather leave a guide unwritten than claim to solve something we don&rsquo;t.</p>
+
+<h2>Formulas that don&rsquo;t convert</h2>
+<ul class="card-list">
+  <li><span class="q"><a href="/google-sheets/arrayformula-not-working-in-excel/">ARRAYFORMULA stopped working in Excel</a></span><br>
+    A Sheets-only wrapper with no Excel equivalent &mdash; we detect it and decline to guess rather than serve a wrong column.</li>
+  <li><span class="q"><a href="/google-sheets/dynamic-array-spill-broke-in-excel/">A spilled range (FILTER, SORT, UNIQUE) broke in Excel</a></span><br>
+    Dynamic arrays don&rsquo;t always cross faithfully &mdash; we detect the spill and flag it instead of writing a shorter list.</li>
+  <li><span class="q"><a href="/google-sheets/sheets-only-functions-break-in-excel/">Google-Sheets-only functions break in Excel</a></span><br>
+    <code>GOOGLEFINANCE</code>, <code>IMPORTRANGE</code> and friends &mdash; we catch the cases that leave a tell, and we&rsquo;re open about the one that doesn&rsquo;t.</li>
+  <li><span class="q"><a href="/google-sheets/named-function-error-in-excel/">A named function shows an error in Excel</a></span><br>
+    Custom named functions don&rsquo;t exist in Excel &mdash; you get a visible error, not a silently wrong value.</li>
+</ul>
+
+<h2>Data that looks different</h2>
+<ul class="card-list">
+  <li><span class="q"><a href="/google-sheets/numbers-dates-change-converting-to-excel/">Numbers or dates look different after converting</a></span><br>
+    Usually a display-format shift, not a data change &mdash; we don&rsquo;t silently corrupt the stored value.</li>
+  <li><span class="q"><a href="/google-sheets/notes-comments-lost-converting-to-excel/">Notes and comments when converting to Excel</a></span><br>
+    Two kinds of annotation, stored differently &mdash; we read both and disclose them so neither disappears unseen.</li>
+</ul>
+
+<h2>Files and CSV</h2>
+<ul class="card-list">
+  <li><span class="q"><a href="/google-sheets/huge-empty-rows-columns-in-export/">Huge empty rows or columns in a Sheets export</a></span><br>
+    An inflated used range bloats the file &mdash; we detect the phantom dimensions and flag them.</li>
+  <li><span class="q"><a href="/google-sheets/csv-columns-wrong-semicolon-delimiter/">CSV columns are wrong (semicolons instead of commas)</a></span><br>
+    Some locales export CSV with semicolons &mdash; we detect the delimiter and read the columns correctly.</li>
+</ul>
+
+<h2>How you use these</h2>
+<p>Every guide works the same way: add the xlsx-for-ai connector to Claude once, then either point it at your <strong>live Google Sheet by id</strong> (read-only, with a read-only Google token you supply) or hand it a <strong>downloaded export</strong>. It reads the file with its own engine and tells you what it did &mdash; and what it couldn&rsquo;t carry across. <a href="/developers/">See the setup steps &rarr;</a></p>
+<p class="muted" style="color:var(--muted);font-size:14px;">More guides are on the way as we prove out each case &mdash; we add a problem here only once we actually handle it.</p>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/google-sheets/">Google Sheets</a>
+      <a href="/tools/">Tools</a>
+      <a href="/developers/">Developers</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/copy.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google Sheets to Excel: see what breaks, and repair it — xlsx-for-ai</title>
+<meta name="description" content="Export a Google Sheet to .xlsx and QUERY, ARRAYFORMULA, IMPORTRANGE and GOOGLEFINANCE die silently. xlsx-for-ai flags every dead formula so the loss is visible, and repairs the fixable classes — without pretending Excel can run Sheets-only functions.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Google Sheets to Excel: see what breaks, and repair it — xlsx-for-ai">
+<meta property="og:description" content="Sheets-only functions die silently when you export to Excel. xlsx-for-ai makes the loss visible and repairs the fixable classes — honestly, without pretending Excel can run QUERY or IMPORTRANGE.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/google-sheets-to-excel/">
+<meta property="og:type" content="article">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/google-sheets-to-excel/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #5a5a5a;
+    --bg: #ffffff;
+    --accent: #107c41;
+    --border: #e6e6e6;
+    --code-bg: #f5f5f5;
+    --flag: #c2610c;
+    --flag-soft: #fdf1e5;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, pre {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 16px 0;
+    white-space: pre-wrap;
+  }
+  code { background: var(--code-bg); padding: 2px 5px; border-radius: 3px; }
+  pre code { background: none; padding: 0; }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+  }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; }
+  header .logo { font-weight: 700; font-size: 18px; color: var(--fg); }
+  header .logo .x { color: var(--accent); }
+  header nav a { color: var(--muted); margin-left: 22px; font-size: 14px; }
+  header nav a:hover { color: var(--fg); text-decoration: none; }
+
+  main { padding: 48px 0 96px; }
+  main h1 {
+    font-size: 34px;
+    line-height: 1.2;
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+  }
+  main .lede { font-size: 19px; color: var(--muted); margin: 0 0 12px; }
+  .eyebrow {
+    text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px;
+    font-weight: 600; color: var(--accent); margin: 0 0 10px;
+  }
+  main h2 {
+    font-size: 22px;
+    margin: 36px 0 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    letter-spacing: -0.01em;
+  }
+  main h2:first-of-type { border-top: 0; padding-top: 0; }
+  main h3 { font-size: 17px; margin: 24px 0 8px; }
+  main ul, main ol { padding-left: 22px; }
+  main li { margin: 8px 0; }
+  main strong { font-weight: 600; }
+  main em { color: var(--muted); }
+
+  .note {
+    background: var(--flag-soft);
+    border: 1px solid #f2d9bf;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 20px 0;
+    font-size: 15px;
+  }
+  .note strong { color: var(--flag); }
+
+  .card-list { list-style: none; padding-left: 0; }
+  .card-list li { margin: 14px 0; }
+  .card-list .q { font-weight: 600; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  footer a { color: var(--muted); margin-left: 0; }
+  footer .links a { margin-left: 16px; }
+  footer a:hover { color: var(--fg); }
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Google Sheets to Excel: see what breaks, and repair it — xlsx-for-ai",
+  "description": "Sheets-only functions die silently when you export a Google Sheet to Excel. xlsx-for-ai makes the loss visible and repairs the fixable classes — without pretending Excel can run QUERY or IMPORTRANGE.",
+  "url": "https://xlsx-for-ai.dev/google-sheets-to-excel/",
+  "isPartOf": { "@type": "WebSite", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" },
+  "publisher": { "@type": "Organization", "name": "xlsx-for-ai", "url": "https://xlsx-for-ai.dev/" }
+}
+</script>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/google-sheets/">Google Sheets</a>
+      <a href="/developers/">Developers</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+<div class="eyebrow">Google Sheets &rarr; Excel</div>
+<h1>Google Sheets to Excel: see what breaks, and repair it.</h1>
+<p class="lede">Download a Google Sheet as <code>.xlsx</code> and part of it stops working &mdash; quietly. Formulas that only exist in Sheets arrive dead, and nothing tells you. xlsx-for-ai makes that loss <strong>visible</strong>, and repairs the classes that can be repaired.</p>
+
+<div class="note"><strong>The honest version first.</strong> No tool can run a Google-Sheets-only function inside Excel &mdash; there is no Excel equivalent to compute, so we do <strong>not</strong> claim to &ldquo;make <code>QUERY</code> work in Excel.&rdquo; What has no good fix out there, and what we do, is surface exactly what died on the way over &mdash; instead of shipping a workbook that looks fine and is silently wrong.</div>
+
+<h2>What silently breaks on export</h2>
+<p>When a Google Sheet is exported to <code>.xlsx</code>, functions unique to Sheets have no Excel counterpart. They don&rsquo;t error loudly &mdash; they arrive as dead formula text or a <code>#NAME?</code>, often carrying a last-computed value that now never updates. The usual casualties:</p>
+<ul>
+  <li><code>QUERY</code> &mdash; the SQL-like Sheets function; no Excel equivalent.</li>
+  <li><code>ARRAYFORMULA</code> &mdash; Sheets&rsquo; array-wrapper idiom.</li>
+  <li><code>IMPORTRANGE</code> &mdash; a live cross-spreadsheet link that cannot survive the file boundary.</li>
+  <li><code>GOOGLEFINANCE</code> &mdash; a live market-data feed with no offline counterpart.</li>
+</ul>
+<p>Two structural problems come across too: an <strong>oversized used-range</strong> (a sheet that reports millions of empty cells and bloats the file), and <strong>repeated formulas left un-compacted</strong> (the same formula written row-by-row instead of as one Excel shared formula).</p>
+
+<section data-claim-tier="detect">
+<h2>Step 1 &mdash; see what died: <code>xlsx_healer_diagnose</code></h2>
+<p>Diagnose produces a structured report of the repairable damage in a workbook, keyed to the repairs below. It reports two families: broken or at-risk <strong>external references</strong>, and <strong>Google-Sheets-to-Excel export damage</strong> &mdash; the dead Sheets-only formulas (surfaced as an <em>unverified</em> value to double-check), the oversized used-range, and the un-compacted formulas. Every finding is reported, never altered in place.</p>
+<pre class="copy" role="button" tabindex="0" data-copy="Diagnose what broke when this Google Sheet was exported to sales-export.xlsx, with xfa." title="Click to copy"><code>Diagnose what broke when this Google Sheet was exported to sales-export.xlsx, with xfa.</code></pre>
+</section>
+
+<section data-claim-tier="cure">
+<h2>Step 2 &mdash; repair the fixable classes: <code>xlsx_healer_cure</code></h2>
+<p>Cure applies one specific, named repair to a diagnosed workbook. For the Google-Sheets export damage there are three:</p>
+
+<h3>1. Flag the dead formulas &mdash; <code>sheets_annotate_dead_formula</code></h3>
+<p>Marks each dead Sheets-only formula with an in-cell note so the loss is visible to whoever opens the file. It <strong>does not recompute</strong> the function &mdash; a Sheets-only function has no Excel equivalent to compute. The point is honesty: the value is called out as unverified rather than passing as real.</p>
+
+<h3>2. Trim the bloat &mdash; <code>sheets_trim_dimension_bloat</code></h3>
+<p>Shrinks an oversized used-range back to the region that actually holds data, so the workbook opens fast and reports its true dimensions.</p>
+
+<h3>3. Compact repeated formulas &mdash; <code>sheets_compact_shared_formulas</code></h3>
+<p>Collapses the same formula repeated down a column into Excel&rsquo;s shared-formula form &mdash; smaller file, identical results.</p>
+
+<pre class="copy" role="button" tabindex="0" data-copy="Annotate the dead Google-Sheets formulas in sales-export.xlsx so the losses are visible, with xfa." title="Click to copy"><code>Annotate the dead Google-Sheets formulas in sales-export.xlsx so the losses are visible, with xfa.</code></pre>
+</section>
+
+<h2>Skip the export: read the live Google Sheet</h2>
+<p>Often the cleanest fix is not to fight the exported file at all. Point <code>xlsx_read</code> at a Google Sheet by id and get the same rendered output as reading the equivalent <code>.xlsx</code> &mdash; the same engine, byte-identical. Read-only, with a read-only Google token you supply; no credential brokering. One-time setup is on the <a href="/developers/">developers page</a>.</p>
+<pre class="copy" role="button" tabindex="0" data-copy="Read this Google Sheet and describe its columns, with xfa: https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit" title="Click to copy"><code>Read this Google Sheet and describe its columns, with xfa:
+https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit</code></pre>
+
+<h2>Converting an already-exported file</h2>
+<p><code>xlsx_convert</code> reads a file exported or downloaded from Google Sheets and converts it between formats. It is deterministic and structural &mdash; no LLM guessing. Exact formula and structure preservation holds on the own-engine path only, so the response reports <code>served_engine</code>: if it reads <code>&quot;incumbent&quot;</code>, a compatibility-engine fallback handled the file and may not preserve charts, pivots, or other advanced features. The caveat is surfaced, not hidden.</p>
+
+<section data-claim-tier="diagnose-only">
+<h2>The reverse direction (Excel &rarr; Google Sheets)</h2>
+<p>Going the other way has its own defect classes, and we <strong>catalogue and diagnose</strong> them &mdash; but today that direction is reported, not auto-repaired. We describe exactly what we deliver: a cure exists for the Google-Sheets-to-Excel export damage above; the reverse is diagnosis only. We&rsquo;d rather say that plainly than imply a repair we don&rsquo;t ship.</p>
+</section>
+
+<h2>Using it</h2>
+<p>These are MCP tools &mdash; they work in Claude Code, Cursor, Gemini, ChatGPT and any MCP-compatible host, and from the <code>xfa</code> CLI. Add the connector once (<strong>Settings &rarr; Connectors &rarr; Add custom connector</strong>, paste <code>https://api.xlsx-for-ai.dev/mcp/claude</code>) &mdash; full steps on the <a href="/developers/">developers page</a>. Then diagnose and cure from the CLI:</p>
+<pre class="copy" role="button" tabindex="0" data-copy="xfa heal <path> [--mode as_copy|in_place] [--out <path>] [--format text|json]" title="Click to copy"><code>xfa heal &lt;path&gt; [--mode as_copy|in_place] [--out &lt;path&gt;] [--format text|json]</code></pre>
+<p><a href="/">See the full tool surface on the home page.</a></p>
+
+<h2>What we don&rsquo;t claim</h2>
+<ul>
+  <li>We don&rsquo;t compute Google-Sheets-only functions inside Excel &mdash; nothing can. We make their loss visible.</li>
+  <li>We don&rsquo;t position against Microsoft or Google. The goal is simply to make your file work.</li>
+  <li>Where we only diagnose and don&rsquo;t yet repair (the reverse direction), we say so.</li>
+</ul>
+
+<h2>Symptom-by-symptom guides</h2>
+<p>For a specific error, the <a href="/google-sheets/">Google&nbsp;Sheets&nbsp;&harr;&nbsp;Excel guide hub</a> walks each one:</p>
+<ul class="card-list">
+  <li><span class="q"><a href="/google-sheets/sheets-only-functions-break-in-excel/">Google-Sheets-only functions break in Excel</a></span></li>
+  <li><span class="q"><a href="/google-sheets/arrayformula-not-working-in-excel/">ARRAYFORMULA stopped working in Excel</a></span></li>
+  <li><span class="q"><a href="/google-sheets/dynamic-array-spill-broke-in-excel/">A spilled range (FILTER, SORT, UNIQUE) broke in Excel</a></span></li>
+  <li><span class="q"><a href="/google-sheets/huge-empty-rows-columns-in-export/">Huge empty rows or columns in a Sheets export</a></span></li>
+  <li><span class="q"><a href="/google-sheets/numbers-dates-change-converting-to-excel/">Numbers or dates look different after converting</a></span></li>
+</ul>
+<p style="margin-top:24px;"><a href="/google-sheets/">&rarr; All Google Sheets &harr; Excel guides</a></p>
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/google-sheets/">Google Sheets</a>
+      <a href="/tools/">Tools</a>
+      <a href="/developers/">Developers</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/copy.js"></script>
+
+</body>
+</html>

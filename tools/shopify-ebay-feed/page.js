@@ -271,7 +271,7 @@
       "Preparing your download",
     ],
     reassure:
-      "Free · no signup. Your export is read in memory to build the eBay feed, then discarded. Nothing is stored, and your original file is never changed — you download a new feed file. We read your product types in your browser to build the form below.",
+      "Your export is read in memory to build the eBay feed, then discarded. Nothing is stored, and your original file is never changed — you download a new feed file. We read your product types in your browser to build the form below.",
     discover: discover,
     buildForm: buildForm,
     process: process,

@@ -276,7 +276,7 @@
   window.XFA.mount("#xfa-panel", {
     accept: ".xlsx",
     reassure:
-      "Free · no signup. Your file is read in memory to summarize it, then discarded. Nothing is stored, and your original workbook is never changed — you download a separate .csv summary.",
+      "Your file is read in memory to summarize it, then discarded. Nothing is stored, and your original workbook is never changed — you download a separate .csv summary.",
     runningLabel: "Summarizing your data…",
     steps: ["Reading every value", "Totalling the numbers"],
     process: process,

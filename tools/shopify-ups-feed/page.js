@@ -176,7 +176,7 @@
       "Preparing your download",
     ],
     reassure:
-      "Free · no signup. Your orders export is read in memory to build the WorldShip batch, then discarded. Nothing is stored, and your original file is never changed — you download a new import file. Every field below is optional; leave any blank to use the default.",
+      "Your orders export is read in memory to build the WorldShip batch, then discarded. Nothing is stored, and your original file is never changed — you download a new import file. Every field below is optional; leave any blank to use the default.",
     buildForm: buildForm,
     process: process,
   });

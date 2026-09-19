@@ -16,7 +16,7 @@
     noneHeading: "We couldn’t find any variant metafield columns",
     runningLabel: "Building your variant metafields import…",
     reassure:
-      "Free · no signup. Your file is read in memory to map SKUs and metafield columns to Shopify’s metafield fields, then discarded. Nothing is stored, and your original file is never changed — you download a separate import file.",
+      "Your file is read in memory to map SKUs and metafield columns to Shopify’s metafield fields, then discarded. Nothing is stored, and your original file is never changed — you download a separate import file.",
     steps: ["Mapping your SKUs and metafield columns to Shopify’s metafield fields"],
     noneLead: [
       "We couldn’t find a SKU column and metafield columns to build an import from, ",

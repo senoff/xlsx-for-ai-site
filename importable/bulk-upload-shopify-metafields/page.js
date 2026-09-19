@@ -21,7 +21,7 @@
     noneHeading: "We couldn’t place any of your columns",
     runningLabel: "Reading your column names and mapping them…",
     reassure:
-      "Free · no signup. Your file is read in memory to work out what each column means, then discarded. Nothing is stored, and your original file is never changed — you download a separate import file.",
+      "Your file is read in memory to work out what each column means, then discarded. Nothing is stored, and your original file is never changed — you download a separate import file.",
     steps: ["Reading your column names and mapping them to product metafields"],
     noneLead: [
       "We read your columns but couldn’t confidently place any of them on a product metafield, ",

@@ -49,6 +49,19 @@ jobs:
       - name: Prove the stale-sitemap-URL check can still fail (self-test)
         run: node scripts/dod-sitemap-no-stale-urls.mjs --selftest
 
+      # XLS-1213 publish-gate: its hermetic arms are the pre-merge grade. The
+      # self-test proves MAP/GATE/DRIFT each still redden; --map-only asserts (on
+      # the PR tree, no network) that every shell.js spoke page maps to a serving
+      # tool — no blind spot — and that the 2026-08-30 incident page still maps to
+      # its tool. The LIVE gate (does prod actually carry the route?) is a
+      # POST-DEPLOY arm in deploy-verify-sitemap.yml — it must never couple the
+      # PR's green to live-prod health.
+      - name: Prove the publish-gate can still fail (self-test)
+        run: node scripts/dod-xls1213-publish-gate.mjs --selftest
+
+      - name: Publish-gate — every spoke page maps to a serving tool (no blind spot)
+        run: node scripts/dod-xls1213-publish-gate.mjs --map-only
+
       - name: Validate HTML structure + internal links + referenced assets
         run: node scripts/validate-site.mjs
 

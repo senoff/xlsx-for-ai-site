@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Which columns have missing data in this Excel file? | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="COUNTBLANK, ISBLANK, and a visual scan can all disagree on the same column — because 'missing' can mean truly empty, a formula returning '', or a stray space.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Which columns have missing data in this Excel file? | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="COUNTBLANK, ISBLANK, and a visual scan can all disagree on the same column — because 'missing' can mean truly empty, a formula returning '', or a stray space.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/which-columns-have-missing-data-in-this-excel-file/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Which columns have missing data in this Excel file? | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="COUNTBLANK, ISBLANK, and a visual scan can all disagree on the same column — because 'missing' can mean truly empty, a formula returning '', or a stray space.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/which-columns-have-missing-data-in-this-excel-file/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Which columns have missing data in this Excel file?",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "There are at least three different things \u2018missing data\u2019 can mean in a column: a cell that is truly empty and contains nothing at all; a cell that holds a formula which evaluates to an empty string, which looks blank and is counted as blank by COUNTBLANK, but is NOT treated as blank by ISBLANK(), which only returns TRUE for genuinely empty cells; and a cell that contains a single space character or other whitespace, which looks empty visually but is neither blank to COUNTBLANK nor to ISBLANK, since it technically holds content." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/whats-inside-excel-file/which-columns-have-missing-data-in-this-excel-file/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Blank isn't always the same as empty</div>
     <h1>Which columns have missing data in this Excel file?</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Scrolling down a column to spot the gaps doesn't scale past a few dozen rows, and the usual formula checks don't all agree with each other — COUNTBLANK, a filter for blanks, and your own eyes can each tell you something different about the same column.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why different checks give different answers</h2>
+    <p>COUNTBLANK() counts both genuinely empty cells and cells containing a formula that evaluates to an empty string (""), treating them the same way. ISBLANK(), by contrast, only returns TRUE for cells with absolutely nothing in them — a formula returning "" makes ISBLANK() return FALSE, because the cell technically contains a formula, even though it displays nothing. Run both checks on the same column and you can get two different counts, and neither one catches a cell that contains a single space character, which is neither blank to COUNTBLANK nor to ISBLANK since it holds an actual (invisible) character.</p>
+    <h2>Why this matters beyond a definitional quibble</h2>
+    <p>If you're checking for missing data before an import or a calculation, the distinction is practical, not academic: a column of formula-driven cells that legitimately return "" when there's nothing to show will read as 100% missing under COUNTBLANK, even though every formula is working exactly as intended — and a column that “looks” complete because every cell has a value can still be functionally empty if those values are stray spaces.</p>
+    <h2>Checking a column properly</h2>
+    <p>To find truly empty cells only, use COUNTA() to count non-empty cells and subtract from the total row count, or use ISBLANK() in a helper column. To catch space-only entries too, use <code>=SUMPRODUCT(--(TRIM(A2:A1000)=""))</code>, which catches empty cells, whitespace-only cells, and formula results of "" all in one pass, treating them consistently as missing.</p>
+    <h2>Doing this across every column at once</h2>
+    <p>Checking column by column with formulas doesn't scale to a wide spreadsheet. Upload your file below to get a per-column breakdown of null/missing counts, alongside unique value counts and data types, computed consistently across every column and every sheet in one pass.</p>
 
   </div>
 

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>External links hiding in charts — find and remove them | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Break Links didn't clear the warning because a chart's own data series is still pointing at another workbook — a separate reference Excel's link manager doesn't touch.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="External links hiding in charts — find and remove them | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Break Links didn't clear the warning because a chart's own data series is still pointing at another workbook — a separate reference Excel's link manager doesn't touch.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-broken-links/external-links-hiding-in-charts-find-and-remove-them/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="External links hiding in charts — find and remove them | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Break Links didn't clear the warning because a chart's own data series is still pointing at another workbook — a separate reference Excel's link manager doesn't touch.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-broken-links/external-links-hiding-in-charts-find-and-remove-them/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "External links hiding in charts \u2014 find and remove them",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "A chart's data series carries its own SERIES() formula, visible in the formula bar when you select the chart, and that formula can point directly at another workbook \u2014 for example SERIES(Sheet1!$B$1,[Source.xlsx]Sheet1!$A$2:$A$10,...). Excel's Edit Links / Break Links dialog only manages links inside cell formulas, so a chart built from copied or externally sourced data keeps referencing that other file even after every cell-level link has been broken." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/fix-broken-links/external-links-hiding-in-charts-find-and-remove-them/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Broken links that survive Edit Links</div>
     <h1>External links hiding in charts — find and remove them</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You ran Break Links, maybe more than once, and the warning came back. That&#x27;s because a chart on one of your sheets is still holding its own reference to another workbook — completely separate from the links Excel&#x27;s Edit Links dialog manages for formulas.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why Break Links didn't fix it</h2>
+    <p>Break Links converts external cell formulas to their last calculated values. It does not touch charts. A chart's underlying series formula is a separate object from any cell formula, and Excel stores it independently — so if the chart's data source was ever another workbook, that reference survives Break Links untouched.</p>
+    <h2>How to spot it</h2>
+    <p>Click directly on a data series inside the chart (not the chart border) and look at the formula bar. A normal series formula reads something like <code>=SERIES(Sheet1!$B$1,Sheet1!$A$2:$A$10,Sheet1!$B$2:$B$10,1)</code> — everything local. If instead you see a workbook name in square brackets, e.g. <code>=SERIES(Sheet1!$B$1,[SourceData.xlsx]Sheet1!$A$2:$A$10,...)</code>, that series is still wired to an external file, and Excel keeps prompting to update or warning about broken links even though nothing in your worksheet cells refers to it.</p>
+    <h2>How this usually happens</h2>
+    <p>It's almost always a copy-paste: someone built the chart in a working file, then copied the finished chart (not the data) into the report workbook. Excel preserves the chart's original data range references exactly as they were, pointing back at the file where it was born, rather than automatically re-mapping to your local data.</p>
+    <h2>Fixing it</h2>
+    <p>Right-click the chart → Select Data, then edit each series to point at ranges inside your own workbook, or delete and rebuild the chart from local data. Upload your file below first — it lists every chart series with an external reference so you know exactly which charts to fix before you start clicking through Select Data one series at a time.</p>
 
   </div>
 

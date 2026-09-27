@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Excel changed my SKU numbers and now they don&#x27;t match in Shopify | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Excel silently reformats any all-digit SKU column as a Number the moment you open a CSV — stripping leading zeros and, for long SKUs, permanently rounding digits. The re-uploaded SKU no longer matches Shopify's stored value.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Excel changed my SKU numbers and now they don&#x27;t match in Shopify | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Excel silently reformats any all-digit SKU column as a Number the moment you open a CSV — stripping leading zeros and, for long SKUs, rounding off trailing digits for good.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-inventory/excel-changed-my-sku-numbers-and-now-they-don-t-match-in-shopify/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Excel changed my SKU numbers and now they don&#x27;t match in Shopify | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Opening a SKU-bearing CSV in Excel can silently strip leading zeros or round off digits — before you've touched a thing. Here&#x27;s why, and how to stop it.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-inventory/excel-changed-my-sku-numbers-and-now-they-don-t-match-in-shopify/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Excel changed my SKU numbers and now they don't match in Shopify",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Excel auto-detects any column of digit-only values as a Number the moment you open or paste into a CSV, with no prompt. That silently strips leading zeros (\u201c007421\u201d becomes \u201c7421\u201d) and, because Excel numbers only keep about 15 significant digits of precision, can permanently zero out the trailing digits of a 16-17 digit SKU or barcode. When that altered value is re-uploaded, it no longer matches the SKU string Shopify has stored for the variant, so the update silently fails to match that row." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-inventory/excel-changed-my-sku-numbers-and-now-they-don-t-match-in-shopify/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Excel reformatted your SKU column before you touched it</div>
     <h1>Excel changed my SKU numbers and now they don&#x27;t match in Shopify</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You didn't edit the SKU column. You just opened the file. That's enough — Excel silently converts any all-digit column to a Number the moment the CSV opens, and depending on the SKU's length that can drop leading zeros or permanently round off digits you'll never get back. Drop your file into the free checker below to see whether your SKU column has already been altered before you upload it again.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,19 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>You update an inventory or product CSV in Excel — maybe you just fixed a price in another column — save it, and re-upload. The upload "succeeds," no error appears, but rows that should have updated existing variants either get skipped or show up as brand-new variants with no stock history. Nothing in the SKU column looks obviously wrong to the eye; a SKU like <code>7421</code> instead of <code>007421</code> doesn't jump out unless you're comparing it directly against what Shopify has stored.</p>
+
+    <h2>The root cause: Excel guesses your column type, silently</h2>
+    <p>The moment you open a CSV in Excel — or paste digit-only data into a cell that hasn't been pre-formatted — Excel inspects the column and, if every value looks like a number, converts it to a Number type automatically. There's no dialog, no warning, no undo prompt. This has two distinct consequences for SKUs and barcodes:</p>
+    <p><strong>Leading zeros disappear.</strong> A SKU stored and typed as <code>"007421"</code> becomes the number <code>7421</code>, because leading zeros aren't meaningful in a numeric value. Visually in the cell it may even still show the full string depending on cached formatting, but the underlying value Excel writes back out on save has already lost them.</p>
+    <p><strong>Long numeric SKUs lose precision permanently.</strong> Excel numbers are stored as floating-point values with roughly 15 significant digits of precision. A 16- or 17-digit SKU or barcode — not unusual for GS1/UPC-derived identifiers — can have its trailing digits silently zeroed out the instant the file is opened, before you've made a single edit. This isn't a display quirk; the actual stored value is altered, and saving the file writes the altered value back to disk.</p>
+
+    <h2>Why this breaks the Shopify upload with no error</h2>
+    <p>Shopify's inventory and product import matches rows to existing variants by comparing the SKU column in your upload against the SKU stored on the variant record. If Excel changed <code>"007421"</code> to <code>7421</code> (or rounded a 17-digit value), the string in your file no longer equals the string Shopify has on file. That row simply fails to match anything — Shopify either silently skips the update or, in some import types, creates a new variant rather than updating the existing one. There's no error because, from Shopify's side, nothing is malformed; it's just a SKU it's never seen before.</p>
+
+    <h2>How to fix it</h2>
+    <p>Never open a SKU-bearing CSV by double-clicking it, which lets Excel auto-detect types on the fly. Instead: pre-format the destination column as <strong>Text</strong> before pasting values in, or use <strong>Data → From Text/CSV</strong> and explicitly set the SKU column's type to Text during the import wizard, or edit the file in a plain text editor or in Google Sheets with the column pre-set to Plain text. The free checker above will flag SKU values in your spreadsheet that look like they've already lost leading zeros or precision, so you can catch it before the next upload.</p>
 
   </div>
 

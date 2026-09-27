@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>What&#x27;s the difference between &#x27;On hand (current)&#x27; and &#x27;On hand (new)&#x27; in the Shopify inventory CSV? | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify's inventory export has two "On hand" columns — one is a read-only snapshot, the other is what actually gets written back on upload. Here's which is which.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="What&#x27;s the difference between &#x27;On hand (current)&#x27; and &#x27;On hand (new)&#x27; in the Shopify inventory CSV? | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Shopify's inventory export has two "On hand" columns — one is a read-only snapshot, the other is what actually gets written back on upload. Here's which is which.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-inventory/what-s-the-difference-between-on-hand-current-and-on-hand-new-in-the/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="What&#x27;s the difference between &#x27;On hand (current)&#x27; and &#x27;On hand (new)&#x27; in the Shopify inventory CSV? | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Shopify's inventory export has two "On hand" columns — one is a read-only snapshot, the other is what actually gets written back on upload. Here's which is which.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-inventory/what-s-the-difference-between-on-hand-current-and-on-hand-new-in-the/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "What's the difference between 'On hand (current)' and 'On hand (new)' in the Shopify inventory CSV?",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "'On hand (current)' is a read-only snapshot of what Shopify's records showed at the moment you exported the file \u2014 it's there so you can see the existing count while you edit, but Shopify ignores it completely on upload. 'On hand (new)' is the column Shopify actually reads: whatever number sits in that cell when you upload becomes the new quantity. If you type your updates into 'On hand (current)' instead, by habit or because it's the first column, the import will report success but nothing will change, because the column Shopify checks was never edited." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-inventory/what-s-the-difference-between-on-hand-current-and-on-hand-new-in-the/",
@@ -68,9 +68,10 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Inventory CSV — two similarly-named columns, one is read-only</div>
     <h1>What&#x27;s the difference between &#x27;On hand (current)&#x27; and &#x27;On hand (new)&#x27; in the Shopify inventory CSV?</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Only one of these two columns actually does anything when you upload. Edit the wrong one and your changes will silently vanish — Shopify will look like it
+      accepted the file while your stock counts stay exactly the same.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +84,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why there are two columns at all</h2>
+    <p>When you export inventory from Shopify to edit it offline, the file gives you a before-and-after pair for every SKU/location row: <strong>On hand (current)</strong> shows what Shopify's records said at export time, and <strong>On hand (new)</strong> is the blank-for-editing column where you write the count you actually want. That layout exists so you can see the old number right next to the field you're changing, instead of overwriting a number you can no longer see.</p>
+
+    <h2>Only one of them is read on upload</h2>
+    <p>Shopify reads "On hand (new)" on import and ignores "On hand (current)" entirely — it is display-only, a reference copy of the state at export time, not a live value that gets written back. If you edit "On hand (current)" instead — an easy mistake since it's the first of the two columns and holds a real, currently-accurate number — the upload will still report as successful, because the file is well-formed. It just won't change anything, since the column Shopify actually checks was never touched.</p>
+
+    <h2>A related trap: sorting or filtering between export and upload</h2>
+    <p>Because the two columns sit side by side per row, sorting or filtering the sheet after export (by SKU, by product name, by location) is usually safe as long as whole rows move together. The risk is filtering to a subset, editing "On hand (new)" for the visible rows, then removing the filter and uploading the full sheet — any row that was hidden during editing still carries whatever "On hand (new)" value was already in the file, which may not be what you intended for that SKU.</p>
+
+    <h2>How to check before you upload</h2>
+    <p>Confirm your edits actually landed in the "On hand (new)" column, and use the free checker below to see exactly what values will be written before they reach your store.</p>
 
   </div>
 

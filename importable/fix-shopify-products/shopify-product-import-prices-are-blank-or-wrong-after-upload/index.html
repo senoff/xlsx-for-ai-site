@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify product import: prices are blank or wrong after upload | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify product prices blank or wrong after a CSV import? Variant Price needs a plain decimal number — no currency symbol, no thousands separator, no European decimal comma. Here&#x27;s the fix. Free checker included.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Shopify product import: prices are blank or wrong after upload | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Prices missing or incorrect after importing Shopify products? Variant Price only accepts a plain period-decimal number — text like &quot;$29.99&quot; or a comma-decimal locale setting breaks it silently. Free checker tool included.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/fix-shopify-products/shopify-product-import-prices-are-blank-or-wrong-after-upload/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Shopify product import: prices are blank or wrong after upload | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Blank or wrong prices after a Shopify product import? Check for currency symbols, thousands separators, or a comma-decimal locale in your Variant Price column.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/fix-shopify-products/shopify-product-import-prices-are-blank-or-wrong-after-upload/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Shopify product import: prices are blank or wrong after upload",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's Variant Price and Variant Compare At Price columns only accept plain decimal numbers with a period as the decimal separator, like 29.99 \u2014 no currency symbols, no thousands-separator commas, and no formulas. If a cell contains text like '$29.99' or '1,299.00', or the spreadsheet is set to a European locale that uses a comma as the decimal mark (29,99), the importer can't parse it and the row imports with a blank or zero price. A blank price cell imports as $0.00, which can make a paid product look free." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/fix-shopify-products/shopify-product-import-prices-are-blank-or-wrong-after-upload/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">$0.00 isn't a bug — it's what blank became</div>
     <h1>Shopify product import: prices are blank or wrong after upload</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Some products imported with no price at all, and others came in at $0.00 or a number that's clearly wrong. Shopify didn't reject the file — it just couldn't parse what was in the price cell, or read it as something other than what you meant. Drop your file in below to check it.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What Shopify expects in the price column</h2>
+    <p>The <strong>Variant Price</strong> column (and <strong>Variant Compare At Price</strong>, if you're using it for a strikethrough sale price) only accepts a plain decimal number: digits, an optional period as the decimal separator, and nothing else. <code>29.99</code> is valid. Anything with a currency symbol, a thousands-separator comma, extra whitespace, or a formula reference is not something the importer can turn into a price — it either drops the value, imports the row with a blank price, or in some cases rejects the row entirely depending on how far off the text is from a real number.</p>
+
+    <h2>Breaker 1: currency symbols and thousands separators</h2>
+    <p>This usually happens when the price column was typed or pasted as text rather than entered as a true numeric value — for example typing <code>$29.99</code> directly into the cell, or pasting a price list that includes commas for thousands like <code>1,299.00</code>. Excel will often display a text-formatted cell so it looks identical to a proper number, but the underlying cell content is a string, and Shopify's CSV parser reads that string literally rather than interpreting it as a price. A blank result on import isn't Shopify failing to notice the price — it's Shopify correctly reporting that what it received wasn't a number.</p>
+
+    <h2>Breaker 2: European locale decimal commas</h2>
+    <p>Spreadsheet applications set to a European regional locale use a comma as the decimal separator and a period (or nothing) for thousands — so a price that displays correctly on screen as <code>29,99</code> is, by that locale's own convention, right. But Shopify's CSV import always expects the US/period convention (<code>29.99</code>) regardless of the store's own country or currency settings. When a file built under a comma-decimal locale is exported to CSV, the price cells carry a comma where Shopify expects a period, and the importer can't read the value as intended — leading to a blank price, or in some cases a wildly inflated one if the comma is misread as a thousands separator instead.</p>
+
+    <h2>How to check / fix it</h2>
+    <p>Format the price columns as plain numbers with no currency symbol before exporting, and check your spreadsheet application's regional settings if you're outside the US to confirm whether it's using a comma or a period as the decimal mark. Never leave a price cell blank if the product is meant to be sold at a real price — a blank cell imports as $0.00, not as "unchanged." Upload the file above and the checker will flag any price cell it can't confidently parse as a plain number before anything reaches your store.</p>
 
   </div>
 

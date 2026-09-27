@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>External links hiding in data validation — find and remove them | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="No formula points anywhere external, yet Excel flags a link — because a dropdown's data validation source is set to a range in another workbook.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="External links hiding in data validation — find and remove them | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="No formula points anywhere external, yet Excel flags a link — because a dropdown's data validation source is set to a range in another workbook.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-broken-links/external-links-hiding-in-data-validation-find-and-remove-them/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="External links hiding in data validation — find and remove them | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="No formula points anywhere external, yet Excel flags a link — because a dropdown's data validation source is set to a range in another workbook.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-broken-links/external-links-hiding-in-data-validation-find-and-remove-them/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "External links hiding in data validation \u2014 find and remove them",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Data validation lists can pull their options from a range in another workbook, set in Data \u2192 Data Validation \u2192 Settings \u2192 Source, e.g. =[Products.xlsx]Sheet1!$A$1:$A$50. That source reference lives in the validation rule attached to the cell, not in the cell's formula, so it's invisible to formula search and untouched by Break Links, even though Excel still treats it as an external link when checking the workbook." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/fix-broken-links/external-links-hiding-in-data-validation-find-and-remove-them/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">A dropdown list, not a formula, is the link</div>
     <h1>External links hiding in data validation — find and remove them</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">The cells look clean of anything external — no formula references another file, and Break Links found nothing to break. But a dropdown list on this sheet is sourced from a range in a different workbook, and that's a data validation setting, not a cell formula.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What's different about this kind of link</h2>
+    <p>A dropdown built with Data Validation doesn't put a formula in the cell — the cell just holds whatever value you picked. The list of allowed choices is a separate setting attached to that cell, and its Source can be a literal list, a local range, or a reference to a range in another workbook entirely. That external source is exactly as “live” as a cell formula link, but it's stored somewhere a formula audit never looks.</p>
+    <h2>How to tell if this is what's happening</h2>
+    <p>Click a cell that has a dropdown arrow, open <strong>Data → Data Validation</strong>, and check the Source field on the Settings tab. If it reads something like <code>=[Products.xlsx]Sheet1!$A$1:$A$50</code> instead of a local range or a typed list, that validation rule is pulling from an external workbook, and Excel will keep flagging the file as having external links even though no cell formula does.</p>
+    <h2>Fixing it without breaking the dropdown</h2>
+    <p>Copy the source list's values into a local range in your workbook (a hidden helper sheet works well), then repoint the validation Source to that local range. Repeat for every validated cell — data validation isn't always applied to a single cell, so check whether it's been applied to an entire column. Upload your file below and the tool flags every validation rule with an external source, including ranges applied to whole columns you might not think to check by hand.</p>
 
   </div>
 

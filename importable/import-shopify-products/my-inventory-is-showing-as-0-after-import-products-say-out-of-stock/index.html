@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>&quot;My inventory is showing as 0 after import / products say out of stock&quot; — tracker vs. quantity mismatch | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Products imported fine, but every variant shows 0 in stock. In the product CSV, the tracker and quantity columns have to agree — a blank in one reads as zero.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="&quot;My inventory is showing as 0 after import / products say out of stock&quot; — tracker vs. quantity mismatch | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Products imported fine, but every variant shows 0 in stock. In the product CSV, the tracker and quantity columns have to agree — a blank in one reads as zero.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-products/my-inventory-is-showing-as-0-after-import-products-say-out-of-stock/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="&quot;My inventory is showing as 0 after import / products say out of stock&quot; — tracker vs. quantity mismatch | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Products imported fine, but every variant shows 0 in stock. In the product CSV, the tracker and quantity columns have to agree — a blank in one reads as zero.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-products/my-inventory-is-showing-as-0-after-import-products-say-out-of-stock/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "\"My inventory is showing as 0 after import / products say out of stock\" \u2014 tracker vs. quantity mismatch",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's product CSV holds Variant Inventory Tracker and Variant Inventory Qty on the same row. If the tracker column is set to 'shopify' \u2014 turning tracking on \u2014 but the quantity cell is empty, Shopify reads that blank as zero and creates the variant already out of stock. This is easy to miss because a spreadsheet built product-by-product often has the tracker filled in from a template while the quantity is added later, or is left blank for items you haven't counted yet." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-products/my-inventory-is-showing-as-0-after-import-products-say-out-of-stock/",
@@ -68,9 +68,10 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Product import — tracked variant, empty quantity cell</div>
     <h1>&quot;My inventory is showing as 0 after import / products say out of stock&quot; — tracker vs. quantity mismatch</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">The products themselves imported fine — it's the stock count that came in at zero. In the product CSV, tracking and quantity live in two separate columns
+      on the same row, and a blank in one of them gets read as a hard zero in the other.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +84,16 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>New products show up correctly — title, price, images all fine — but every variant reads 0 in stock and the storefront shows "Sold out." No error mentions inventory anywhere in the import summary.</p>
+
+    <h2>Two columns, one row, and a blank that reads as zero</h2>
+    <p>Unlike the standalone inventory CSV, Shopify's product import CSV carries tracking and quantity as two columns on the very same variant row: <strong>Variant Inventory Tracker</strong> (must be exactly <code>shopify</code> to turn tracking on) and <strong>Variant Inventory Qty</strong> (the actual count). These two only work correctly together. If the tracker says <code>shopify</code> but the quantity cell is empty, Shopify doesn't leave the quantity undefined — it treats the blank as the number zero, and the new variant is created already out of stock.</p>
+
+    <p>This combination shows up constantly in hand-built product spreadsheets: a template or a copied row already has the tracker column filled in, but the actual stock count gets added later, row by row, as counts come in from a warehouse or supplier — and any row uploaded before its count arrives goes live as zero rather than being skipped.</p>
+
+    <h2>How to verify and fix it</h2>
+    <p>Check every row where Variant Inventory Tracker is <code>shopify</code> for a genuinely blank Variant Inventory Qty cell, not just a visually empty one — a cell containing a formula that resolved to an empty string will look the same in Excel but behaves differently on export. Fill in a real number, including an explicit <code>0</code> if the item really is out of stock, before uploading again.</p>
 
   </div>
 

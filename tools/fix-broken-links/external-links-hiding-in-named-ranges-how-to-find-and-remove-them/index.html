@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>External links hiding in named ranges — how to find and remove them | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="No cell formula points anywhere external, yet Excel still lists a link — because a defined name in Name Manager refers straight to another workbook.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="External links hiding in named ranges — how to find and remove them | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="No cell formula points anywhere external, yet Excel still lists a link — because a defined name in Name Manager refers straight to another workbook.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-broken-links/external-links-hiding-in-named-ranges-how-to-find-and-remove-them/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="External links hiding in named ranges — how to find and remove them | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="No cell formula points anywhere external, yet Excel still lists a link — because a defined name in Name Manager refers straight to another workbook.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-broken-links/external-links-hiding-in-named-ranges-how-to-find-and-remove-them/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "External links hiding in named ranges \u2014 how to find and remove them",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "A defined name (visible in Formulas \u2192 Name Manager) can refer to a range in another workbook, e.g. a name called TaxRate with Refers to set to =[Corp2024.xlsx]Rates!$B$2. Any formula that uses that name \u2014 or even a name nobody's formulas currently use \u2014 carries that external reference with it, and it stays in the file even after every visible cell formula has been cleaned up or deleted." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/fix-broken-links/external-links-hiding-in-named-ranges-how-to-find-and-remove-them/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">The link is in Name Manager, not a cell</div>
     <h1>External links hiding in named ranges — how to find and remove them</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">No cell in this workbook shows a formula pointing anywhere external, and yet Excel still lists an external link. Open Name Manager and you&#x27;ll find a defined name whose “Refers To” box points straight at another workbook — invisible until you go looking there specifically.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why the name outlives the formula</h2>
+    <p>Deleting a formula that used a named range does not delete the name itself. The name stays in Name Manager, still pointing at whatever it was originally defined to point at, including another workbook. Excel counts that as an active external link regardless of whether any current formula actually calls the name.</p>
+    <h2>How names pick up external references in the first place</h2>
+    <p>The most common route is copying a sheet between workbooks — Excel brings along every name that sheet's formulas used, refers-to and all, even names you never see referenced on the sheet itself. It's also common in files that started as a copy of a shared template: the template's names, some pointing at a master file, come along for the ride.</p>
+    <h2>Finding and clearing them</h2>
+    <p>Open <strong>Formulas → Name Manager</strong> and look down the “Refers To” column for anything containing a bracketed workbook name, like <code>[Corp2024.xlsx]</code>. Delete names you don't need, or edit Refers To to point at a local range for names you do. Watch for hidden names too — Name Manager shows hidden defined names by default, but scoped names (worksheet-level rather than workbook-level) can be easy to scroll past in a workbook with many sheets. Upload the file below to get the full name list with external references flagged, so nothing gets missed in the scroll.</p>
 
   </div>
 

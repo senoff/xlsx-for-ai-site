@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>VLOOKUP says N/A but the value is right there — hidden spaces cause | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="VLOOKUP throwing #N/A when you can see the value sitting right there in the table? Hidden spaces or a text-versus-number mismatch are breaking the exact match VLOOKUP requires. Here's how to find the invisible difference">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="VLOOKUP says N/A but the value is right there — hidden spaces cause | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="VLOOKUP throwing #N/A when you can see the value sitting right there in the table? Hidden spaces or a text-versus-number mismatch are breaking the exact match VLOOKUP requires. Here's how to find the invisible difference">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/vlookup-says-n-a-but-the-value-is-right-there-hidden-spaces-cause/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="VLOOKUP says N/A but the value is right there — hidden spaces cause | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="VLOOKUP throwing #N/A when you can see the value sitting right there in the table? Hidden spaces or a text-versus-number mismatch are breaking the exact match VLOOKUP requires. Here's how to find the invisible difference">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/vlookup-says-n-a-but-the-value-is-right-there-hidden-spaces-cause/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "VLOOKUP says N/A but the value is right there \u2014 hidden spaces cause",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "VLOOKUP, and its relatives MATCH, HLOOKUP, and XLOOKUP without an approximate-match option, require an exact match between the lookup value and the value in the table. The two most common invisible causes are a trailing or leading space, regular or non-breaking, added during copy-paste or export, and a type mismatch where one side is a real number and the other is the same digits stored as text. Both look identical on screen but fail the comparison every time." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/vlookup-says-n-a-but-the-value-is-right-there-hidden-spaces-cause/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">VLOOKUP #N/A — the match isn't as exact as it looks</div>
     <h1>VLOOKUP says N/A but the value is right there — hidden spaces cause</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">VLOOKUP throwing #N/A when you can see the value sitting right there in the table? Hidden spaces or a text-versus-number mismatch are breaking the exact match VLOOKUP requires. Here's how to find the invisible difference</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why "it looks the same" doesn't mean it matches</h2>
+    <p>VLOOKUP compares the lookup value against the table's first column character by character, and a comparison like that has no tolerance for anything beyond the visible digits or letters — an extra space at the end, or the number 500 sitting in one cell as text and 500 in another as a real number, is enough to make an otherwise identical-looking value fail the exact match completely.</p>
+    <h2>How to isolate which side is wrong</h2>
+    <p>Put <code>=TRIM(A2)=TRIM(B2)</code> in a spare cell comparing the lookup value against the table value — if that returns TRUE, whitespace is the problem, since trimming made them equal. If it still returns FALSE, check <code>=ISNUMBER(A2)</code> against <code>=ISNUMBER(B2)</code>; one coming back TRUE and the other FALSE confirms a text-versus-number mismatch instead. Checking <code>=LEN(A2)</code> against the number of characters you'd expect to see can also flag an invisible extra character even when TRIM alone doesn't fix it, which usually points to a non-breaking space rather than a normal one.</p>
+    <h2>Fixing it for good</h2>
+    <p>For whitespace, use <code>=TRIM(SUBSTITUTE(A2,CHAR(160)," "))</code> on both sides, since that clears regular spaces and non-breaking spaces in one pass. For a type mismatch, convert the text side to a real number with <code>=VALUE(A2)</code>, or convert the number side to text with <code>=TEXT(A2,"0")</code> if text is what the table actually needs — pick one side and make the two consistent rather than patching the lookup formula itself.</p>
 
   </div>
 

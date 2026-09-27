@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>&quot;My images are missing after import&quot; — image URL failure (silent) | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Products imported fine but arrived with no image. Shopify fetches each Image Src URL separately after the row succeeds — and a bad link just leaves it blank.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="&quot;My images are missing after import&quot; — image URL failure (silent) | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Products imported fine but arrived with no image. Shopify fetches each Image Src URL separately after the row succeeds — and a bad link just leaves it blank.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-products/my-images-are-missing-after-import-image-url-failure-silent/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="&quot;My images are missing after import&quot; — image URL failure (silent) | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Products imported fine but arrived with no image. Shopify fetches each Image Src URL separately after the row succeeds — and a bad link just leaves it blank.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-products/my-images-are-missing-after-import-image-url-failure-silent/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "\"My images are missing after import\" \u2014 image URL failure (silent)",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify creates the product from your row first, then tries to fetch the image from the URL in the Image Src column as a separate step. If that URL isn't a direct, publicly reachable link to the image file \u2014 a private Dropbox or Google Drive share link, a page that requires login, or an embedded image with no real URL at all \u2014 the fetch fails and the product is left with no image, without failing the row or flagging it in the main import summary." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-products/my-images-are-missing-after-import-image-url-failure-silent/",
@@ -68,9 +68,10 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Product import — image fetch failed after the row succeeded</div>
     <h1>&quot;My images are missing after import&quot; — image URL failure (silent)</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Your products were created fine — they just came in with no photo. Shopify fetches each Image Src URL after the row is processed, and a URL it can't
+      actually download just leaves the product blank, with nothing in the summary calling it out.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +84,16 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What actually happens on import</h2>
+    <p>Product creation and image fetching are two separate steps. Shopify first creates the product from the row data, then, afterward, tries to download whatever's in the <strong>Image Src</strong> column and attach it. If that second step fails, the product still exists — it's just missing its photo. Nothing about a failed image fetch stops the row from counting as imported.</p>
+
+    <h2>Why the fetch fails</h2>
+    <p>Image Src has to be a direct, publicly reachable URL to the image file itself — no login, no click-through page in between. The links that break this most often look like they should work: a Dropbox "share" link (<code>dropbox.com/s/...</code>) opens a preview page, not the raw file, unless it ends in a direct-download parameter; a Google Drive share link behaves the same way; a URL that's only reachable on your internal network or behind a password is unreachable from Shopify's servers entirely.</p>
+
+    <p>A separate cause produces the same symptom for a different reason: pasting an image directly into a spreadsheet cell (Google Sheets' "Insert image in cell," or an embedded picture in Excel) doesn't put a URL in that cell at all — when the sheet is saved as CSV, that cell exports as blank or as a formula error, because there was never a text URL to begin with, only a picture object layered on top of the grid.</p>
+
+    <h2>How to verify and fix it</h2>
+    <p>Paste a few of your Image Src values directly into a browser address bar — if you see anything other than the raw image (a login screen, a preview page, a 404), that URL will fail on import too. Replace share links with true direct-file URLs from a public host, and never rely on an image pasted into a cell rather than linked as text.</p>
 
   </div>
 

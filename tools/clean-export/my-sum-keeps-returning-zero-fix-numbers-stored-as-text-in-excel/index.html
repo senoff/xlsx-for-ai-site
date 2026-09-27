@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>My SUM keeps returning zero — fix numbers stored as text in Excel | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="SUM returning 0 even though the column is full of numbers? They're stored as text, not numbers, and Excel's SUM silently skips text cells instead of erroring. Here's how to spot it and convert the column back to real numbers">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="My SUM keeps returning zero — fix numbers stored as text in Excel | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="SUM returning 0 even though the column is full of numbers? They're stored as text, not numbers, and Excel's SUM silently skips text cells instead of erroring. Here's how to spot it and convert the column back to real numbers">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/my-sum-keeps-returning-zero-fix-numbers-stored-as-text-in-excel/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="My SUM keeps returning zero — fix numbers stored as text in Excel | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="SUM returning 0 even though the column is full of numbers? They're stored as text, not numbers, and Excel's SUM silently skips text cells instead of erroring. Here's how to spot it and convert the column back to real numbers">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/my-sum-keeps-returning-zero-fix-numbers-stored-as-text-in-excel/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "My SUM keeps returning zero \u2014 fix numbers stored as text in Excel",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "SUM returns 0, or too low, when the values in the range are stored as text instead of numbers, often from a CSV or database export, or a leading apostrophe typed by mistake. Excel's SUM function silently treats text cells as zero rather than raising an error, so the formula looks fine and the total is simply wrong." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/my-sum-keeps-returning-zero-fix-numbers-stored-as-text-in-excel/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">SUM returns 0 — numbers stored as text</div>
     <h1>My SUM keeps returning zero — fix numbers stored as text in Excel</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">SUM returning 0 even though the column is full of numbers? They're stored as text, not numbers, and Excel's SUM silently skips text cells instead of erroring. Here's how to spot it and convert the column back to real numbers</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What SUM is actually doing with those cells</h2>
+    <p>Arithmetic operators like <code>+</code> will throw <code>#VALUE!</code> if you try to add real text to a number, but aggregation functions such as SUM, AVERAGE, and COUNT are built to skip over text silently and keep going. A cell holding the text string "1,204" isn't a number to Excel — it's four characters that happen to look numeric — so SUM adds nothing for that row and moves on. Nothing turns red, nothing pops up; the formula just quietly returns less than it should.</p>
+    <h2>How to tell if this is what's happening to you</h2>
+    <p>Select the exact same range your SUM formula covers and look at the automatic total Excel shows in the status bar at the bottom-right of the window — if that quick sum also comes back lower than expected, the values genuinely aren't being read as numbers by anything, formula or otherwise. Text-stored numbers are also left-aligned by default instead of right-aligned, and you'll often see a small green triangle in the corner of the cell with a warning that reads "Number Stored as Text" when you click it.</p>
+    <h2>Where the text formatting usually comes from</h2>
+    <p>This almost never happens from typing numbers by hand — it comes from data arriving already formatted as text: a CSV or database export where every field is plain text by definition, a copy-paste from a PDF or web table, or a column that was explicitly set to Text format in Excel's Text Import Wizard before the numbers landed in it.</p>
+    <h2>Fixing the column so SUM works again</h2>
+    <p>Select the range, then use Data &gt; Text to Columns and click Finish without changing any options — this forces Excel to re-parse each cell and convert genuine numeric text into real numbers. If that doesn't apply, put 1 in an empty cell, copy it, select your range, and use Paste Special &gt; Multiply, which numerically converts every text-number in place. A helper column with <code>=VALUE(A2)</code> works too if you'd rather keep the original column untouched.</p>
 
   </div>
 

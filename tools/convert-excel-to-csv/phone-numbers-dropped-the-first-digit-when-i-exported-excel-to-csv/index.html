@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Phone numbers dropped the first digit when I exported Excel to CSV | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Phone numbers missing their first digit after exporting to CSV — almost always a lost leading zero, the same digits-versus-text problem that hits zip codes. Here's how to confirm it and keep the whole number intact">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Phone numbers dropped the first digit when I exported Excel to CSV | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Phone numbers missing their first digit after exporting to CSV — almost always a lost leading zero, the same digits-versus-text problem that hits zip codes. Here's how to confirm it and keep the whole number intact">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/convert-excel-to-csv/phone-numbers-dropped-the-first-digit-when-i-exported-excel-to-csv/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Phone numbers dropped the first digit when I exported Excel to CSV | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Phone numbers missing their first digit after exporting to CSV — almost always a lost leading zero, the same digits-versus-text problem that hits zip codes. Here's how to confirm it and keep the whole number intact">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/convert-excel-to-csv/phone-numbers-dropped-the-first-digit-when-i-exported-excel-to-csv/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Phone numbers dropped the first digit when I exported Excel to CSV",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "The most common cause of a phone number losing a digit is a leading zero being dropped, because Excel's General or Number format strips leading zeros from anything it treats as a numeric value, the same mechanism that affects zip codes. This can happen either when the number was first typed or imported into a General-formatted cell, or when the resulting CSV is later reopened by an application that auto-detects the column as numeric. Formatting the phone number column as Text before entry, or explicitly setting it to Text during CSV import, keeps every digit, including the leading zero." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/convert-excel-to-csv/phone-numbers-dropped-the-first-digit-when-i-exported-excel-to-csv/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Phone numbers missing a digit — usually a dropped leading zero</div>
     <h1>Phone numbers dropped the first digit when I exported Excel to CSV</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Phone numbers missing their first digit after exporting to CSV — almost always a lost leading zero, the same digits-versus-text problem that hits zip codes. Here's how to confirm it and keep the whole number intact</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Check whether it's really the leading digit</h2>
+    <p>Look at a handful of the affected numbers: is it consistently the first digit that's missing, and is that digit usually a zero? If so, this is the same leading-zero-stripping mechanism that hits zip codes and account numbers, not random data loss — Excel is treating the phone number column as numeric and numbers don't carry leading zeros.</p>
+    <h2>Why phone numbers are especially exposed to this</h2>
+    <p>Domestic numbers in many countries start with a 0 trunk prefix, which is exactly the digit General format discards. A leading plus sign or surrounding parentheses on an international-format number can also get stripped or cause the whole value to convert to a number in unexpected ways, since Excel's numeric coercion doesn't understand phone number punctuation at all.</p>
+    <h2>Also rule out scientific notation on unusually long numbers</h2>
+    <p>Phone numbers are normally well under Excel's 15-significant-digit floating point limit, so this is a less common cause than the leading zero — but if a field combines a country code, area code, and extension into one long digit string beyond 15 digits, Excel can silently zero out the trailing digits once it converts the value to scientific notation, which produces a similar "digits are missing" symptom for a completely different reason.</p>
+    <h2>Keeping the whole number intact</h2>
+    <p>Format the phone number column as Text before typing or pasting values into it, or prefix entries with a leading apostrophe to force text storage. When re-importing a CSV that already lost the digit, use the Text Import Wizard or Data &gt; From Text/CSV and set that column's type to Text explicitly, rather than opening the CSV file directly and letting Excel guess.</p>
 
   </div>
 

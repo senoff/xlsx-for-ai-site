@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Remove Duplicates Not Working — Extra Spaces | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="'John Smith' and 'John Smith ' look identical but aren't — Remove Duplicates compares exact characters, so a stray trailing space stops a match.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Remove Duplicates Not Working — Extra Spaces | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="'John Smith' and 'John Smith ' look identical but aren't — Remove Duplicates compares exact characters, so a stray trailing space stops a match.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/remove-duplicates/remove-duplicates-not-working-extra-spaces/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Remove Duplicates Not Working — Extra Spaces | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="'John Smith' and 'John Smith ' look identical but aren't — Remove Duplicates compares exact characters, so a stray trailing space stops a match.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/remove-duplicates/remove-duplicates-not-working-extra-spaces/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Remove Duplicates Not Working \u2014 Extra Spaces",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Remove Duplicates compares cell values character for character. A leading or trailing space, a double space where there should be one, or a non-breaking space picked up from a web paste (a different character than a normal space, invisible either way) all make two otherwise-identical-looking values fail to match. TRIM() removes leading and trailing spaces and collapses multiple internal spaces down to one, but it does not remove non-breaking space characters \u2014 those need CLEAN() or a substitution for character code 160 specifically." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/remove-duplicates/remove-duplicates-not-working-extra-spaces/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">A trailing space made them look different</div>
     <h1>Remove Duplicates Not Working — Extra Spaces</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">“John Smith” and “John Smith ” look identical to you, but not to Remove Duplicates — Excel's comparison is an exact character match, and an extra space anywhere in the value, especially at the end, is enough to keep two rows from being recognized as duplicates at all.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why identical-looking text doesn't match</h2>
+    <p>Remove Duplicates does an exact comparison of what's actually stored in the cell, not what you see. A value with a trailing space is a different string from the same value without one, even though both display exactly the same in the cell and in the formula bar unless you click in and look carefully at the cursor position after the last visible character.</p>
+    <h2>Where the extra spaces usually come from</h2>
+    <p>Data pasted from another system, a website, or a PDF-to-text conversion frequently carries stray whitespace: a trailing space left over from a fixed-width export, doubled spaces where a name and title were joined, or non-breaking spaces (a distinct character, code 160, used in web page layouts) that look completely normal but aren't the plain space character Excel expects.</p>
+    <h2>Fixing it before you dedupe</h2>
+    <p>Add a helper column with <code>=TRIM(A2)</code> to strip leading/trailing spaces and collapse internal double-spaces to single. If TRIM alone doesn't fix it, the culprit is likely a non-breaking space — use <code>=SUBSTITUTE(A2,CHAR(160)," ")</code> first, then TRIM. Convert the helper column to values (copy, then Paste Special → Values), delete the original column, and run Remove Duplicates on the cleaned data.</p>
+    <h2>Checking without the manual cleanup</h2>
+    <p>Upload your file below — the tool normalizes whitespace before comparing, so you can see which rows are true duplicates once stray spaces are accounted for, without building and re-checking a helper column by hand first.</p>
 
   </div>
 

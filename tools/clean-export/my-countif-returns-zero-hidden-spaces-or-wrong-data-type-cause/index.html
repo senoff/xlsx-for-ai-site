@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>My COUNTIF returns zero — hidden spaces or wrong data type cause | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="COUNTIF requires an exact match. A hidden trailing space in the range, or a number-vs-text mismatch between the criteria and the data, makes every row fail to match even though the values look identical.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="My COUNTIF returns zero — hidden spaces or wrong data type cause | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="COUNTIF requires an exact match. A hidden trailing space in the range, or a number-vs-text mismatch between the criteria and the data, makes every row fail to match even though the values look identical.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/my-countif-returns-zero-hidden-spaces-or-wrong-data-type-cause/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="My COUNTIF returns zero — hidden spaces or wrong data type cause | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="COUNTIF requires an exact match. A hidden trailing space in the range, or a number-vs-text mismatch between the criteria and the data, makes every row fail to match even though the values look identical.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/my-countif-returns-zero-hidden-spaces-or-wrong-data-type-cause/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "My COUNTIF returns zero \u2014 hidden spaces or wrong data type cause",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "COUNTIF requires an exact match between its criteria and each cell in the range, and two of the most common invisible mismatches are trailing/non-breaking spaces (\u2018Closed\u2019 in the data vs. \u2018Closed\u2019 typed clean as criteria won't match if the data has a hidden space after it) and a number/text type mismatch (COUNTIF(range,100) matching typed numeric criteria against cells that actually hold the text string \u201c100\u201d, imported from a CSV, won't count them, and vice versa). Neither shows up by looking at the cell \u2014 both display identically to a clean value." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/my-countif-returns-zero-hidden-spaces-or-wrong-data-type-cause/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Excel — COUNTIF matching nothing</div>
     <h1>My COUNTIF returns zero — hidden spaces or wrong data type cause</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You can see the matching values with your own eyes, but COUNTIF insists there are none. COUNTIF needs an exact match — a hidden space in the data, or a number stored as text against a numeric criteria (or vice versa), is enough to make every comparison fail even though the cells look identical to your criteria. Drop your file in below to find the mismatch.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>COUNTIF needs an exact match, not a visual one</h2>
+    <p>COUNTIF compares its criteria against the literal value of each cell in the range. If you can read the value and it looks right, that's not the same test COUNTIF runs — it's comparing the underlying character sequence (for text) or numeric value (for numbers), including anything invisible riding along with it.</p>
+
+    <h2>Cause 1: hidden spaces</h2>
+    <p>A trailing space, leading space, or non-breaking space (CHAR(160), common from web-copied or system-exported data) makes <code>"Closed "</code> a different string than <code>"Closed"</code> as far as COUNTIF is concerned, even though both display identically in the cell. Every row carrying that hidden character silently fails to match a cleanly typed criteria string.</p>
+
+    <h2>Cause 2: number vs. text mismatch</h2>
+    <p>If your data column holds numbers imported as text (common from CSV exports, left-aligned in the cell) and your criteria is a real number — <code>=COUNTIF(A:A,100)</code> — the comparison fails, because COUNTIF by default does not coerce text "100" into the number 100 for a numeric criteria. The reverse also happens: numeric data compared against a text criteria like <code>"100"</code> in quotes can behave inconsistently depending on how it's entered. Either direction produces a confident zero with no indication anything's wrong.</p>
+
+    <h2>How to diagnose and fix it</h2>
+    <p>Test with a wildcard version first — <code>=COUNTIF(A:A,"*Closed*")</code> — if that returns a nonzero count where the exact version returned zero, hidden characters are the cause. For the data-type case, check cell alignment (text is left-aligned, numbers right-aligned by default) or use <code>=ISTEXT(A2)</code> against a cell that should be numeric. Upload your file above and the checker will flag hidden whitespace and type mismatches in the range you're trying to count, before you keep tweaking the formula.</p>
 
   </div>
 

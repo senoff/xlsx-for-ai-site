@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Excel formulas showing wrong old numbers — silent broken link | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="A formula linked to another workbook is showing a number that hasn't matched reality in a while, with no error at all. Excel is quietly displaying the last value it cached from that external file. Here's why, and how to check">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Excel formulas showing wrong old numbers — silent broken link | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="A formula linked to another workbook is showing a number that hasn't matched reality in a while, with no error at all. Excel is quietly displaying the last value it cached from that external file. Here's why, and how to check">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-broken-links/excel-formulas-showing-wrong-old-numbers-silent-broken-link/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Excel formulas showing wrong old numbers — silent broken link | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="A formula linked to another workbook is showing a number that hasn't matched reality in a while, with no error at all. Excel is quietly displaying the last value it cached from that external file. Here's why, and how to check">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-broken-links/excel-formulas-showing-wrong-old-numbers-silent-broken-link/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Excel formulas showing wrong old numbers \u2014 silent broken link",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "When a formula references a cell in another workbook, Excel stores a cached copy of the last value it successfully retrieved inside the current file. If that source workbook has since been renamed, moved, or deleted, or is simply not open or reachable, and automatic link updates are disabled, or the file was opened with the setting that skips the update prompt, Excel keeps showing that cached number indefinitely instead of throwing an error, because as far as the formula is concerned it still has a valid last-known value." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/fix-broken-links/excel-formulas-showing-wrong-old-numbers-silent-broken-link/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Formula shows stale numbers — cached external link, not an error</div>
     <h1>Excel formulas showing wrong old numbers — silent broken link</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">A formula linked to another workbook is showing a number that hasn't matched reality in a while, with no error at all. Excel is quietly displaying the last value it cached from that external file. Here's why, and how to check</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why there's no error even though the link is broken</h2>
+    <p>Excel doesn't re-fetch external references every time a workbook opens by default — it caches whatever value it last successfully pulled from the source, and displays that cached number until it's told to update the link again. A missing or moved source file breaks the ability to refresh that value, but it doesn't erase the cache, so the formula keeps confidently showing the last good number rather than switching to an error state.</p>
+    <h2>How to check if this is happening near you</h2>
+    <p>Open Data &gt; Edit Links (called External References in some versions) to see every external reference in the workbook, along with its source path and status — a status of Unknown or an unreachable path is a strong sign that any formula pulling from it is showing stale, cached data rather than a live value. It's also worth checking whether "Don't display the alert and don't update automatic links" is turned on for the workbook, since that setting is exactly what suppresses the prompt that would otherwise warn you a source can't be reached.</p>
+    <h2>Fixing it: reconnect or convert to a static value</h2>
+    <p>If the source file still exists somewhere, use Edit Links &gt; Change Source to point the reference at its new location and force a fresh update, which pulls the current value in place of the cached one. If the source is gone for good, use Edit Links &gt; Break Link to convert every formula that referenced it into a plain static value — just be aware that this locks in whatever the last cached number happened to be, so confirm that number is actually correct before you break the connection permanently.</p>
 
   </div>
 

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify CSV redirect: should I use the full URL or just the path? | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify's redirect CSV treats "Redirect from" and "Redirect to" differently: from must be a relative path on your store, while to may be a path or a full external URL. Using the wrong form breaks the import.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Shopify CSV redirect: should I use the full URL or just the path? | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Shopify's redirect CSV treats "Redirect from" and "Redirect to" differently: from must be a relative path on your store, while to may be a path or a full external URL. Using the wrong form breaks the import.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-redirects/shopify-csv-redirect-should-i-use-the-full-url-or-just-the-path/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Shopify CSV redirect: should I use the full URL or just the path? | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Shopify's redirect CSV treats "Redirect from" and "Redirect to" differently: from must be a relative path on your store, while to may be a path or a full external URL. Using the wrong form breaks the import.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-redirects/shopify-csv-redirect-should-i-use-the-full-url-or-just-the-path/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Shopify CSV redirect: should I use the full URL or just the path?",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Use just the path for \u2018Redirect from\u2019 \u2014 it has to be relative to your own store, like /products/old-mug, never a full https://yourstore.com/... URL, because Shopify is matching an incoming request path on your own domain. \u2018Redirect to\u2019 is more flexible: use a relative path (/products/new-mug) to send visitors to another page on the same store, or a full URL (https://example.com/page) if you're intentionally redirecting to an external site. Putting a full URL in \u2018Redirect from\u2019 is the most common mistake and will either be rejected on import or simply never match anything." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-redirects/shopify-csv-redirect-should-i-use-the-full-url-or-just-the-path/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Shopify URL redirects — path vs. full URL</div>
     <h1>Shopify CSV redirect: should I use the full URL or just the path?</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">The two columns in Shopify's redirect CSV don't follow the same rule. "Redirect from" must always be a relative path on your own store — no domain. "Redirect to" can be a relative path, or a full URL if you're sending traffic somewhere off-store. Mixing that up is why some rows fail or point nowhere. Drop your file in below to check both columns.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>The two columns follow different rules</h2>
+    <p>Shopify's redirect CSV has exactly two columns: <strong>Redirect from</strong> and <strong>Redirect to</strong>. "Redirect from" identifies an incoming request on your own store, so it must be written as a path starting with a forward slash — <code>/products/old-mug</code>, not <code>https://yourstore.com/products/old-mug</code>. Shopify is matching against the part of the URL after your domain; including the domain again either gets rejected during import or never matches a real incoming request, since no browser actually requests a URL with your domain baked in twice.</p>
+
+    <h2>"Redirect to" is allowed to be a full URL</h2>
+    <p>The destination column is more permissive on purpose, because redirects sometimes need to point off-site — to a new domain after a rebrand, a partner site, or a page that no longer lives on Shopify at all. A relative path (<code>/collections/mugs</code>) sends the visitor elsewhere on the same store; a full URL (<code>https://example.com/mugs</code>) sends them to a different domain entirely. Both are valid for this column specifically.</p>
+
+    <h2>What goes wrong when the two get swapped</h2>
+    <p>Putting a full URL in "Redirect from" is the single most common mistake in bulk redirect imports, usually because the list was built from an exported sitemap or crawl report that naturally includes the full domain. Depending on the exact format, Shopify either flags the row during import or accepts it and the rule simply never fires, because nothing a browser sends will ever match a "from" value with a domain embedded in it.</p>
+
+    <h2>How to check your file</h2>
+    <p>Upload your CSV above — the checker inspects both columns separately and flags any "Redirect from" value that includes a scheme or domain, so you can strip it down to a path before uploading to Shopify.</p>
 
   </div>
 

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Dates won&#x27;t sort in the right order in Excel — dates stored as text fix | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Dates imported as text sort alphabetically, not chronologically — so "1/9/2026" can land after "1/10/2026" because Excel is comparing characters, not calendar dates.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Dates won&#x27;t sort in the right order in Excel — dates stored as text fix | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Dates imported as text sort alphabetically, not chronologically — so "1/9/2026" can land after "1/10/2026" because Excel is comparing characters, not calendar dates.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/dates-won-t-sort-in-the-right-order-in-excel-dates-stored-as-text-fix/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Dates won&#x27;t sort in the right order in Excel — dates stored as text fix | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Dates imported as text sort alphabetically, not chronologically — so "1/9/2026" can land after "1/10/2026" because Excel is comparing characters, not calendar dates.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/dates-won-t-sort-in-the-right-order-in-excel-dates-stored-as-text-fix/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Dates won't sort in the right order in Excel \u2014 dates stored as text fix",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "A real Excel date is stored internally as a number \u2014 a count of days since a fixed starting point \u2014 so sorting it sorts by that number, which lines up with the calendar. A date imported as text (common from CSV exports, database dumps, or copy-pasted web tables) has no number behind it; Excel sorts it as a string, comparing characters left to right. That's why \u20181/9/2026\u2019 sorts after \u20181/10/2026\u2019: as text, \u20189\u2019 simply comes after \u20181\u2019 at that character position, calendar order never enters into it. The fix is converting the column to real dates with Text to Columns or DATEVALUE, not re-sorting." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/dates-won-t-sort-in-the-right-order-in-excel-dates-stored-as-text-fix/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Excel — dates stored as text</div>
     <h1>Dates won&#x27;t sort in the right order in Excel — dates stored as text fix</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You sort the date column and January 9th ends up after January 10th. That's not a sort bug — it's Excel sorting the dates as plain text, character by character, because they were never converted into real date values. Drop your file in below to see which date cells are actually text in disguise.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>A real date is a number, not text that looks like one</h2>
+    <p>Under the hood, every genuine Excel date is a serial number — January 1, 1900 is day 1, and everything else counts up from there. What you see (1/9/2026, 09-Jan-26, whatever format) is just a display mask over that number. Sorting compares the numbers, so chronological order and sort order always agree.</p>
+
+    <h2>Why imported dates break this</h2>
+    <p>CSV files, database exports, and copy-pasted tables carry dates as plain text strings, and Excel doesn't always auto-convert them on open or paste — especially if the format is ambiguous (day/month vs. month/day) or inconsistent row to row. A text-stored date is left-aligned and has no serial number behind it at all, even though it displays exactly like a real date.</p>
+
+    <h2>Why the sort order looks scrambled</h2>
+    <p>Sorting a text column compares strings character by character, left to right — not as calendar values. <code>1/9/2026</code> and <code>1/10/2026</code> are compared starting at the third character: <code>9</code> versus <code>1</code>. Since <code>9</code> is "greater" as a character, <code>1/9/2026</code> sorts after <code>1/10/2026</code>, even though January 9th comes first on the calendar. The more dates in the column, the more scrambled this looks.</p>
+
+    <h2>How to convert and fix it</h2>
+    <p>Select the column, go to Data → Text to Columns, click Finish on step 1 (no delimiter changes needed) but set the column data format to <strong>Date</strong> on the final step — Excel will convert the recognized text into real serial-numbered dates in place. Alternatively, a helper column with <code>=DATEVALUE(A1)</code> does the same conversion without touching the original. Upload your file above first to see exactly which date cells are text-formatted before you convert.</p>
 
   </div>
 

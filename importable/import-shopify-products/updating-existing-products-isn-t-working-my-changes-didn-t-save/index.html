@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>&quot;Updating existing products isn&#x27;t working — my changes didn&#x27;t save&quot; — handle-matched update not applying | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify update-imports match existing products by the Handle column only. If your file's handle doesn't exactly match the live product's handle, the update silently fails to apply.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="&quot;Updating existing products isn&#x27;t working — my changes didn&#x27;t save&quot; — handle-matched update not applying | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Shopify update-imports match existing products by the Handle column only. If your file's handle doesn't exactly match the live product's handle, the update silently fails to apply.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-products/updating-existing-products-isn-t-working-my-changes-didn-t-save/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="&quot;Updating existing products isn&#x27;t working — my changes didn&#x27;t save&quot; — handle-matched update not applying | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Shopify update-imports match existing products by the Handle column only. If your file's handle doesn't exactly match the live product's handle, the update silently fails to apply.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-products/updating-existing-products-isn-t-working-my-changes-didn-t-save/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "\"Updating existing products isn't working \u2014 my changes didn't save\" \u2014 handle-matched update not applying",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's product CSV import matches each row to an existing product using the Handle column \u2014 the URL slug, not the title and not the SKU. If the Handle in your file is even slightly different from the product's real handle (different capitalization, an extra character, a handle you typed by guessing at the title instead of exporting it), Shopify treats that row as a new product to create rather than an existing one to update. Depending on your other columns, that can mean either a duplicate product gets created, or the row is skipped \u2014 either way, your intended edits never touch the original product." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-products/updating-existing-products-isn-t-working-my-changes-didn-t-save/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Shopify product import — handle-matched updates</div>
     <h1>&quot;Updating existing products isn&#x27;t working — my changes didn&#x27;t save&quot; — handle-matched update not applying</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You re-uploaded the CSV with your edits, Shopify said the import finished, and the store still shows the old values. Shopify update-imports match rows to existing products by the <strong>Handle</strong> column, and nothing else — not title, not SKU. If the handle in your file doesn't match the live product's handle exactly, your edits land on nothing. Drop your file in below to see which handles actually match.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What Shopify actually matches on</h2>
+    <p>Product import updates work by comparing the <strong>Handle</strong> column in your CSV against the handle already on your store — the exact text that appears at the end of a product's URL, like <code>/products/blue-mug</code>. It is the only field the matcher uses. Title changes don't help it find the right product; SKU doesn't help either, unless you're specifically running a variant-level update by SKU through a different flow. If the Handle column is blank, wrong, or doesn't correspond to a real product, Shopify has no way to know which product you meant to edit.</p>
+
+    <h2>How this handle mismatch actually happens</h2>
+    <p>The most common cause is building the update file by hand instead of exporting it: someone types <code>blue-mug</code> as a handle because that's what the product is called, when the real handle on the store is <code>blue-mug-14oz</code> or <code>blue-mug-1</code> (Shopify appends a number automatically if a handle was already taken when the product was created). A close second is editing a handle's capitalization or hyphenation slightly during a "cleanup" pass in Excel, not realizing the handle itself is the identity key, not just cosmetic text.</p>
+
+    <h2>What happens to the row when it doesn't match</h2>
+    <p>Depending on which columns are filled in, an unmatched Handle either creates a brand-new product (now you have a duplicate sitting in Drafts or Active, and the original is untouched) or gets skipped if required fields like price are missing on that row. Either outcome reports as part of a "successful" import — Shopify counted the row, it just didn't apply it where you expected.</p>
+
+    <h2>How to fix it</h2>
+    <p>Always start an update file from a fresh <strong>Export</strong> of your current products (Products → Export → selected products), edit the values you actually want to change, and leave the Handle column exactly as exported. Upload your file above and the checker will show you which handles in your file don't correspond to anything currently live on the store, before you upload to Shopify itself.</p>
 
   </div>
 

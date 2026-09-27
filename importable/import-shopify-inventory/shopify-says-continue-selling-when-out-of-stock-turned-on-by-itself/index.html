@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify says &#x27;continue selling when out of stock&#x27; turned on by itself — stock went negative | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Continue selling when out of stock turned on for products you never touched in the admin. It comes from a CSV column — usually dragged into rows by accident.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Shopify says &#x27;continue selling when out of stock&#x27; turned on by itself — stock went negative | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Continue selling when out of stock turned on for products you never touched in the admin. It comes from a CSV column — usually dragged into rows by accident.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-says-continue-selling-when-out-of-stock-turned-on-by-itself/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Shopify says &#x27;continue selling when out of stock&#x27; turned on by itself — stock went negative | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Continue selling when out of stock turned on for products you never touched in the admin. It comes from a CSV column — usually dragged into rows by accident.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-says-continue-selling-when-out-of-stock-turned-on-by-itself/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Shopify says 'continue selling when out of stock' turned on by itself \u2014 stock went negative",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "This setting comes from the Variant Inventory Policy column in your import file, which holds either 'deny' (stop selling at zero) or 'continue' (allow overselling into negative stock). It gets set wrong most often when a spreadsheet is built by copying an existing row that had 'continue' set and editing it for a new product, or by using Excel's fill handle to drag a value down a column of otherwise-different products \u2014 both carry the wrong policy into rows it was never meant for." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-says-continue-selling-when-out-of-stock-turned-on-by-itself/",
@@ -68,9 +68,10 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Inventory import — overselling policy changed unexpectedly</div>
     <h1>Shopify says &#x27;continue selling when out of stock&#x27; turned on by itself — stock went negative</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Nobody flipped this switch in the admin — it came from a column in your import file. Here's the setting behind it, and the spreadsheet habit
+      that carries the wrong value into rows that were never meant to have it.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +84,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>A product's inventory drops below zero — customers keep checking out even though the count says there's nothing left. In the admin, the variant's inventory policy shows "Continue selling when out of stock," but no one on your team turned that on.</p>
+
+    <h2>The column behind the setting</h2>
+    <p>This behavior is controlled by the <strong>Variant Inventory Policy</strong> column in Shopify's product/inventory CSV, which accepts two values: <code>deny</code> stops sales the moment stock hits zero; <code>continue</code> lets checkout proceed and the count goes negative. Whatever value is in that column when you import overwrites the current setting for that variant, the same way other inventory columns do.</p>
+
+    <h2>How the wrong value ends up in your file</h2>
+    <p>The most common source is spreadsheet mechanics, not intent. Duplicating an existing row to create a new product row carries over every column's value, including the policy — if the original row was set to "continue" (common for backorder or pre-order items) and you forget to change it back, the new product inherits overselling. Excel's fill handle causes the same problem: dragging a cell down to fill a column of "deny" values will just as easily drag a "continue" value down into product rows that should never have it, since the fill handle doesn't know which rows are which product.</p>
+
+    <h2>How to check and fix it</h2>
+    <p>Scan the Variant Inventory Policy column for any row that shows <code>continue</code> and confirm that's actually intentional for that specific SKU (pre-order items, made-to-order goods). Anywhere it isn't, correct it to <code>deny</code> before re-uploading, and avoid fill-dragging that column across rows belonging to different products.</p>
 
   </div>
 

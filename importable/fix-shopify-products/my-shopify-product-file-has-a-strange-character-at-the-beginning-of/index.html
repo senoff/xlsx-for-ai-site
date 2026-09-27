@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>My Shopify product file has a strange character at the beginning of every description | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="A stray character at the start of every product description — not once at the top of the file — points to pasted formatting or an encoding mismatch, not a byte-order mark. Here&#x27;s how to tell which. Free checker included.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="My Shopify product file has a strange character at the beginning of every description | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="If a strange character shows up at the start of EVERY description — not just once at the top of the file — it&#x27;s a different problem than a byte-order mark. Usually it&#x27;s a pasted formatting artifact or an encoding mismatch that repeats because every row was authored the same way. Here&#x27;s how to tell which, and fix it.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/fix-shopify-products/my-shopify-product-file-has-a-strange-character-at-the-beginning-of/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="My Shopify product file has a strange character at the beginning of every description | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Strange character at the start of EVERY description, not just the file? That&#x27;s a per-row artifact, not a byte-order mark. Here&#x27;s the likely cause.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/fix-shopify-products/my-shopify-product-file-has-a-strange-character-at-the-beginning-of/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "My Shopify product file has a strange character at the beginning of every description",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "This is different from a byte-order mark (BOM), which appears once at the very start of the file. When the artifact repeats at the start of every description field, it's usually because the descriptions were originally typed or pasted from Word or a web page, where a stylized opening quote, dash, or non-breaking space commonly sits at the start of a paragraph. If that text is later saved through a mismatched encoding step, that leading character mis-renders the same way in every row because every row was authored the same way. Check whether it's visible text (an encoding fix) or truly invisible, like a non-breaking space, which needs a Unicode-aware cleanup rather than a simple TRIM." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/fix-shopify-products/my-shopify-product-file-has-a-strange-character-at-the-beginning-of/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Every row, not just the top of the file</div>
     <h1>My Shopify product file has a strange character at the beginning of every description</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">This isn't the single byte-order-mark character that sometimes sits at the very top of a CSV file — this shows up at the start of every single description, row after row. That pattern points somewhere else: pasted formatting artifacts or an encoding mismatch that repeats because every description was written the same way. Drop your file in below and the free checker will show you exactly what's sitting at the start of each field.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>Open the file and look at the Body (HTML) column, which holds each product's description. Every single row starts with the same odd character or short sequence — maybe what looks like a stray quote mark, a dash, a box, or nothing visible at all but a gap that shouldn't be there. It's consistent: row 2 has it, row 50 has it, row 500 has it. The import itself doesn't error; Shopify just stores the description with that character attached, and it shows up at the front of the text on your storefront.</p>
+
+    <h2>Why this is different from a byte-order mark (BOM)</h2>
+    <p>If you've read about a "weird character at the start of a Shopify product file," that's usually describing a byte-order mark — a single invisible marker Excel sometimes writes once, at the very beginning of the entire CSV file, before the header row. That's a file-level issue affecting one position in the whole document. What's described here is a field-level issue: the same artifact repeats at the start of every description cell, which is a different mechanism entirely.</p>
+
+    <h2>The likely mechanism</h2>
+    <p>Per-row repetition like this usually traces back to how the description text was originally written. If descriptions were composed in Word, or copied from a webpage, and pasted into Excel, it's common for a stylized "smart" opening quote, an em dash used as a bullet, or a non-breaking space to sit at the very start of a paragraph — that's a normal habit in word processors and web content, not a spreadsheet problem by itself. The trouble starts when that text later passes through a lossy encoding step — for example, saving through Excel's plain CSV option instead of "CSV UTF-8," or the reverse — and the byte sequence for that one stylized character gets misinterpreted. A curly quote can render as a short garbled sequence like <code>â€œ</code>; a non-breaking space can render as a visible stray box or question mark. Because every description started with the same kind of character, the same mis-render shows up in every row.</p>
+
+    <h2>How to check and fix it</h2>
+    <p>First, check whether the artifact is truly identical across rows and visible in a normal cell view — that points to an encoding problem, and re-saving the file as UTF-8 CSV (or exporting fresh from Google Sheets) usually clears it. Second, don't assume a normal-looking cell is clean: a non-breaking space (Unicode U+00A0) or a zero-width space renders as nothing or as ordinary-looking blank space, and a standard TRIM formula in Excel won't remove it because TRIM only strips regular ASCII spaces. Catching those needs a Unicode-aware cleanup — for instance, a SUBSTITUTE that specifically targets the non-breaking space character before trimming — rather than trusting what the cell looks like at a glance.</p>
 
   </div>
 

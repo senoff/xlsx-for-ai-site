@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Blank rows I can&#x27;t delete in Excel — the spreadsheet scrolls forever | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Excel's "used range" tracks the furthest cell ever touched by formatting or data — clearing cell contents doesn't shrink it. That's why a sheet with only a few real rows can still scroll on for hundreds of thousands.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Blank rows I can&#x27;t delete in Excel — the spreadsheet scrolls forever | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Excel's "used range" tracks the furthest cell ever touched by formatting or data — clearing cell contents doesn't shrink it. That's why a sheet with only a few real rows can still scroll on for hundreds of thousands.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/blank-rows-i-can-t-delete-in-excel-the-spreadsheet-scrolls-forever/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Blank rows I can&#x27;t delete in Excel — the spreadsheet scrolls forever | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Excel's "used range" tracks the furthest cell ever touched by formatting or data — clearing cell contents doesn't shrink it. That's why a sheet with only a few real rows can still scroll on for hundreds of thousands.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/blank-rows-i-can-t-delete-in-excel-the-spreadsheet-scrolls-forever/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Blank rows I can't delete in Excel \u2014 the spreadsheet scrolls forever",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Pressing Delete only clears cell contents \u2014 it doesn't tell Excel to forget that those cells were ever used. Excel tracks a sheet's \u2018used range\u2019 (what Ctrl+End jumps to) based on the furthest row or column that ever held data or formatting, even if that formatting was just a stray fill color, a border, or a pasted blank cell. To actually shrink the file, select the truly unused rows below your data down to the old used-range boundary, right-click and choose Delete (not just press the Delete key), then save the file so Excel recalculates the used range." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/blank-rows-i-can-t-delete-in-excel-the-spreadsheet-scrolls-forever/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Excel — phantom used range</div>
     <h1>Blank rows I can&#x27;t delete in Excel — the spreadsheet scrolls forever</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You delete the blank rows, save the file, and Ctrl+End still jumps down to row 400,000. The rows look empty because they are — but Excel's memory of where your data "used to be" doesn't shrink just because you pressed Delete. Drop your file in below to see how far your sheet's real used range actually extends.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What Ctrl+End is actually telling you</h2>
+    <p>Ctrl+End jumps to the last cell in a sheet's <strong>used range</strong> — the bottom-right corner of everything Excel considers "touched." That's determined by data <em>or formatting</em> that was ever applied, not by what's currently visible. A cell that once had a fill color, a border, a number format, or even just got pasted into and then cleared, still counts. If your real data ends at row 400 but you once selected down to row 100,000 and applied bold or a border by accident, Excel remembers row 100,000 as the edge of the sheet.</p>
+
+    <h2>Why deleting the rows doesn't fix it</h2>
+    <p>The <strong>Delete</strong> key clears cell contents only. It leaves any formatting on those cells untouched, so the used range doesn't shrink — Excel still thinks those rows are "used" because they're still formatted, just with nothing visible in them. This is the single most common reason a spreadsheet keeps scrolling far past its real data even after a thorough-looking cleanup.</p>
+
+    <h2>How to actually reset it</h2>
+    <p>Select the entire row range from just below your real data down to the old used-range boundary (Ctrl+Shift+End finds the far edge), then <strong>right-click and choose Delete</strong> — not the Delete key — which removes the rows themselves, formatting included, rather than just their contents. Save the file afterward; Excel recalculates the used range on save, and Ctrl+End should now land close to your actual last row.</p>
+
+    <h2>How to check before you go looking row by row</h2>
+    <p>Upload your file above and it will report exactly where the real data ends versus where the sheet's used range extends to, so you know how much dead space you're actually clearing before you touch anything.</p>
 
   </div>
 

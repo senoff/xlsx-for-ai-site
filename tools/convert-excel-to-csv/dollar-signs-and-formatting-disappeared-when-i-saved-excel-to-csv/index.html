@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Dollar signs and formatting disappeared when I saved Excel to CSV | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Your prices had dollar signs and bold formatting in Excel, and the CSV has plain numbers with none of it. That's expected — CSV has no concept of cell formatting at all. Here's exactly what gets kept and what doesn't">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Dollar signs and formatting disappeared when I saved Excel to CSV | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Your prices had dollar signs and bold formatting in Excel, and the CSV has plain numbers with none of it. That's expected — CSV has no concept of cell formatting at all. Here's exactly what gets kept and what doesn't">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/convert-excel-to-csv/dollar-signs-and-formatting-disappeared-when-i-saved-excel-to-csv/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Dollar signs and formatting disappeared when I saved Excel to CSV | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Your prices had dollar signs and bold formatting in Excel, and the CSV has plain numbers with none of it. That's expected — CSV has no concept of cell formatting at all. Here's exactly what gets kept and what doesn't">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/convert-excel-to-csv/dollar-signs-and-formatting-disappeared-when-i-saved-excel-to-csv/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Dollar signs and formatting disappeared when I saved Excel to CSV",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "CSV, comma-separated values, stores only raw cell values as plain text — it has no file structure for fonts, colors, borders, or number formats. A cell displaying 19.99 with a dollar sign because a Currency number format was applied over the number will export as just 19.99, with the symbol and formatting stripped. If, instead, the dollar sign was literally typed as part of a text string, that text is the actual value and will be written to the CSV exactly as is, symbol included." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/convert-excel-to-csv/dollar-signs-and-formatting-disappeared-when-i-saved-excel-to-csv/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">CSV export drops $ signs and all formatting, by design</div>
     <h1>Dollar signs and formatting disappeared when I saved Excel to CSV</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Your prices had dollar signs and bold formatting in Excel, and the CSV has plain numbers with none of it. That's expected — CSV has no concept of cell formatting at all. Here's exactly what gets kept and what doesn't</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Formatting and value are two different things — CSV only keeps one</h2>
+    <p>Every cell in Excel has an underlying value and, separately, a set of formatting instructions for how to display it — the number format, the font, the fill color, the borders. Those formatting instructions live in the workbook's styles, not in the cell's value. CSV has no equivalent structure at all; it is nothing more than rows of plain text separated by commas, so when Excel writes a CSV it can only export the raw value, never the styling layered on top of it.</p>
+    <h2>What survives the export and what doesn't</h2>
+    <p>Raw numbers survive, dates survive as whatever text or serial representation the export chose, and literal text strings survive exactly as typed. What doesn't survive: currency symbols and thousands separators that came from a number format rather than being typed directly, bold, italics, colors and borders, conditional formatting rules, and the visual effect of merged cells, which collapses down to just the top-left cell's value.</p>
+    <h2>If you need the formatted look, don't rely on the CSV for it</h2>
+    <p>Systems that consume CSV files, like Shopify, Mailchimp, or a database import, almost always want the plain number rather than a formatted string anyway, so the right move is usually to reapply formatting on the receiving end, not to try to preserve it in the CSV. If a destination genuinely requires the literal dollar sign as part of the value, you'd need to generate that as text intentionally before export — understanding that it will then be text, not a number, for whatever reads it next as well.</p>
 
   </div>
 

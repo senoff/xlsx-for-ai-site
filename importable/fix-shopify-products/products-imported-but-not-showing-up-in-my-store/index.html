@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Products imported but not showing up in my store | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="A Shopify product import can &#x27;succeed&#x27; and the product still never shows up in your store — often because it was never added to the Online Store sales channel, not because it&#x27;s a Draft. Free checker included.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Products imported but not showing up in my store | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Products imported successfully but missing from your storefront? The cause is usually channel publishing, batch-import delay, or collection visibility — not product status. Free checker tool included.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/fix-shopify-products/products-imported-but-not-showing-up-in-my-store/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Products imported but not showing up in my store | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Imported products invisible on your storefront even though Status reads Active? Check Online Store channel publishing, batch-import delay, and collection visibility.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/fix-shopify-products/products-imported-but-not-showing-up-in-my-store/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Products imported but not showing up in my store",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "The product usually isn't a Draft \u2014 it's Active but was never added to the Online Store sales channel, since Shopify tracks publication separately per channel and a CSV import doesn't automatically enable every channel a store uses. Large imports also process in batches, so checking immediately after upload can look like a failure when it's simply still processing. Less often, the theme hides out-of-stock products from collection pages, or a mismatched Handle created an unlinked duplicate." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/fix-shopify-products/products-imported-but-not-showing-up-in-my-store/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Active, imported, still invisible</div>
     <h1>Products imported but not showing up in my store</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">The import finished, the product's Status reads Active, and it's still nowhere on your storefront. That's a different problem than a product landing in Draft — it's almost always about sales channels, batch timing, or collection visibility. Drop your file in below to check it.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,20 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>This isn't the Draft-status problem</h2>
+    <p>There's a separate, narrower failure where Shopify imports products with the Status field literally set to Draft, which hides them everywhere. This is not that. Here, Status reads Active — the product is fully eligible to be sold — and it still doesn't appear on your storefront. That points to one of a few different causes, and they're worth ruling out in order because each one needs a different fix.</p>
+
+    <h2>Cause 1: it was never added to the Online Store channel</h2>
+    <p>Shopify tracks publication per sales channel, not just per product. A product's Status being Active only means it's allowed to be sold somewhere — it says nothing about which channels it's published to. When you import products via CSV, Shopify does not automatically check every channel your store has installed (Online Store, a POS location, a social shop, a wholesale channel, and so on); it can leave new products off channels you didn't explicitly enable for them. If your storefront is served by the Online Store channel and that box isn't checked for the imported rows, the products exist in your admin, are Active, and are still invisible to any customer.</p>
+
+    <h2>Cause 2: large imports finish in batches, not instantly</h2>
+    <p>Beyond a small file, Shopify processes CSV imports asynchronously in the background and emails a completion notice once the batch is done. Depending on file size, that can take anywhere from a couple of minutes to considerably longer. Checking your storefront immediately after clicking upload — before that completion email arrives — can look exactly like a permanent failure, but it resolves itself once the batch finishes processing.</p>
+
+    <h2>Cause 3 and 4: inventory-based visibility and Handle collisions</h2>
+    <p>Some themes are configured to hide out-of-stock products from collection and search pages even though the product page itself still exists and is Active — if the imported rows came in with zero inventory, they can be technically live but absent from the normal browsing paths on your storefront. Separately, if two rows ended up with Handles that differ only by case or trailing whitespace (a common side effect of building the sheet in Excel), Shopify treats them as distinct products — the one you expect to see in a collection or menu may actually be a differently-Handled duplicate that was never linked into that collection or navigation.</p>
+
+    <h2>How to check each one</h2>
+    <p>In Admin → Products, filter to Status: Active and search for the missing product by name. If it's there, open it and check the Sales channels section for whether Online Store is enabled. If you just ran a large import, wait for the completion email before troubleshooting further. Then check your theme's out-of-stock visibility setting, and compare the product's Handle character-by-character against what you expect, watching for extra spaces or inconsistent capitalization.</p>
 
   </div>
 

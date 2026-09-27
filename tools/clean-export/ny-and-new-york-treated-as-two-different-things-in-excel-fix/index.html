@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>&quot;NY&quot; and &quot;New York&quot; treated as two different things in Excel — fix inconsistent values | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Excel isn't merging NY and New York because, to a spreadsheet, they're two completely different text strings, with no built-in synonym matching. Here's how to standardize inconsistent values so they roll up together">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="&quot;NY&quot; and &quot;New York&quot; treated as two different things in Excel — fix inconsistent values | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Excel isn't merging NY and New York because, to a spreadsheet, they're two completely different text strings, with no built-in synonym matching. Here's how to standardize inconsistent values so they roll up together">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/ny-and-new-york-treated-as-two-different-things-in-excel-fix/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="&quot;NY&quot; and &quot;New York&quot; treated as two different things in Excel — fix inconsistent values | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Excel isn't merging NY and New York because, to a spreadsheet, they're two completely different text strings, with no built-in synonym matching. Here's how to standardize inconsistent values so they roll up together">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/ny-and-new-york-treated-as-two-different-things-in-excel-fix/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "\"NY\" and \"New York\" treated as two different things in Excel \u2014 fix inconsistent values",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Excel and Google Sheets compare text literally, character by character. NY and New York are two distinct strings with nothing in common as far as SUMIF, COUNTIF, pivot tables, or FILTER are concerned — there is no built-in geography or synonym awareness in a spreadsheet. To combine them, you standardize the values yourself, usually with Find and Replace, a small lookup table, or Power Query's Replace Values or Merge Queries." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/ny-and-new-york-treated-as-two-different-things-in-excel-fix/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">NY vs New York — inconsistent values, not a bug</div>
     <h1>&quot;NY&quot; and &quot;New York&quot; treated as two different things in Excel — fix inconsistent values</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Excel isn't merging NY and New York because, to a spreadsheet, they're two completely different text strings, with no built-in synonym matching. Here's how to standardize inconsistent values so they roll up together</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why Excel treats them as completely unrelated</h2>
+    <p>Every function that groups or matches text — pivot tables, COUNTIF, SUMIF, FILTER, UNIQUE — works by comparing strings for equality. There's no layer underneath that understands abbreviations, aliases, or real-world entities; NY and New York are simply two different sequences of characters, and no amount of familiarity with U.S. geography changes that for a formula.</p>
+    <h2>Where inconsistent values usually come from</h2>
+    <p>This is almost always a data entry or data-merging problem rather than a software one. It shows up when several people fill in a free-text field with their own habits — one types the two-letter abbreviation, another spells out the city — or when you combine exports from two different systems that each picked their own convention for the same field.</p>
+    <h2>How to standardize before you roll the data up</h2>
+    <p>Build a small two-column mapping table — abbreviation on one side, the canonical name you want to use on the other — and pull a clean version into a new column with VLOOKUP or XLOOKUP against that table, then build your pivot or filter on the clean column instead of the original. Power Query's Replace Values step does the same job if you're already using Query to bring the data in. Remove Duplicates won't help here, since the values genuinely differ character-for-character; a Data Validation dropdown list on the source field is the best way to stop new inconsistent values from being entered going forward.</p>
 
   </div>
 

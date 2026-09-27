@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify inventory update went to the wrong warehouse / wrong location | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Inventory numbers uploaded correctly but landed against the wrong warehouse, or created a brand-new location. Here's how Shopify's per-location CSV columns cause this.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Shopify inventory update went to the wrong warehouse / wrong location | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Inventory numbers uploaded correctly but landed against the wrong warehouse, or created a brand-new location. Here's how Shopify's per-location CSV columns cause this.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-inventory-update-went-to-the-wrong-warehouse-wrong-location/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Shopify inventory update went to the wrong warehouse / wrong location | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Inventory numbers uploaded correctly but landed against the wrong warehouse, or created a brand-new location. Here's how Shopify's per-location CSV columns cause this.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-inventory-update-went-to-the-wrong-warehouse-wrong-location/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Shopify inventory update went to the wrong warehouse / wrong location",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's multi-location inventory CSV has one quantity column per location, and it matches those columns to your store's locations by exact name text, not by position or ID. If a location was renamed in Shopify after you last exported a template, or you hand-typed a location column header that doesn't match character-for-character (including capitalization), the import either writes to the wrong existing location or creates a new one with that exact name and puts the stock there instead." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-inventory-update-went-to-the-wrong-warehouse-wrong-location/",
@@ -68,9 +68,10 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Inventory import — quantities landed on the wrong location</div>
     <h1>Shopify inventory update went to the wrong warehouse / wrong location</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">The numbers uploaded fine, but they show up against the wrong location — or a brand-new location you never created. This comes down to how Shopify's
+      multi-location inventory CSV matches location columns by exact name. Here's what to check.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +84,16 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>Stock counts update without any error, but when you check Settings → Locations, the quantities are sitting against a warehouse that isn't the one you meant — or there's a new location in the list you didn't create, holding the numbers that should have gone to an existing one.</p>
+
+    <h2>Locations are matched by exact name, not position</h2>
+    <p>In a multi-location store, Shopify's inventory CSV has a separate quantity column for every location, and each column's header is the location's name exactly as it appears in Settings → Locations. On import, Shopify matches columns to locations by that text string. It does not go by column order, and it does not fuzzy-match.</p>
+
+    <p>Two common ways this breaks: a location gets renamed in Shopify (say, "Warehouse" becomes "Main Warehouse") after you already had a template downloaded with the old header — re-uploading that old template creates a fresh location called "Warehouse" and puts stock there, next to the renamed one. Or someone builds the file by hand and types a location name that's close but not identical — extra whitespace, a different abbreviation, wrong case — with the same result.</p>
+
+    <h2>How to check and fix it</h2>
+    <p>Compare your file's location column headers against Settings → Locations character for character. If you find a mismatch, the safest fix is to re-download a fresh inventory export from Shopify right before you edit it, rather than reusing an older saved template — that guarantees the headers match your store's current location names.</p>
 
   </div>
 

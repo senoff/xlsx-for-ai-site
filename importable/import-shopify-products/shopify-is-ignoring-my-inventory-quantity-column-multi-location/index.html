@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>&quot;Shopify is ignoring my inventory quantity column&quot; — multi-location stores / wrong CSV file used | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="On multi-location stores, Shopify's inventory CSV needs one quantity column per location, named after that exact location. A generic "Quantity" column or the wrong export template gets silently ignored.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="&quot;Shopify is ignoring my inventory quantity column&quot; — multi-location stores / wrong CSV file used | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="On multi-location stores, Shopify's inventory CSV needs one quantity column per location, named after that exact location. A generic "Quantity" column or the wrong export template gets silently ignored.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-products/shopify-is-ignoring-my-inventory-quantity-column-multi-location/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="&quot;Shopify is ignoring my inventory quantity column&quot; — multi-location stores / wrong CSV file used | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="On multi-location stores, Shopify's inventory CSV needs one quantity column per location, named after that exact location. A generic "Quantity" column or the wrong export template gets silently ignored.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-products/shopify-is-ignoring-my-inventory-quantity-column-multi-location/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "\"Shopify is ignoring my inventory quantity column\" \u2014 multi-location stores / wrong CSV file used",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Once a store has more than one location, Shopify's inventory CSV replaces the single quantity column with one column per location, each headed with that location's exact name (for example \u2018Warehouse\u2019 or \u2018Retail Store\u2019). If your file still has a single generic quantity column, or the location name in the header doesn't match a location that exists on your store exactly, Shopify can't map that column to anything and the values in it are ignored \u2014 no error, no mapping shown, quantities just stay at whatever they were before the upload." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-products/shopify-is-ignoring-my-inventory-quantity-column-multi-location/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Shopify inventory import — multi-location quantity</div>
     <h1>&quot;Shopify is ignoring my inventory quantity column&quot; — multi-location stores / wrong CSV file used</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You filled in a quantity column, uploaded it, and stock didn't move at any location. On a multi-location store, Shopify's inventory CSV doesn't use one generic quantity column — it uses one column per location, named after that location. Drop your file in below to see which location columns it's actually looking for.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,16 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why one location works and the rest silently don't</h2>
+    <p>Shopify's inventory-only import expects the quantity for each location to sit in its own column, and that column's header must be the location's name exactly as it appears in Settings → Locations. A single-location store just has one such column and everything works. Once you add a second location, Shopify's exported template grows a new column per location — but a lot of people keep editing the same single-column file they always used, or rename a header by hand and get the location's display name slightly wrong (extra space, different capitalization, an abbreviation instead of the full name).</p>
+
+    <p>When that happens, Shopify's importer doesn't reject the file or warn you — a column it doesn't recognize as a location is simply not read for inventory purposes. The rest of the import (product match by SKU or handle) can complete "successfully" while every number in that column is discarded.</p>
+
+    <h2>The other common trigger: wrong CSV entirely</h2>
+    <p>Shopify has separate CSV shapes for products vs. inventory. The <em>products</em> export/import includes a single <code>Variant Inventory Qty</code> column that only ever writes to your store's default location. If you're on multi-location and upload a products-format file expecting it to update stock everywhere, it only ever touches the default location — the other locations aren't ignored by a bug, they were never addressed by that file's format in the first place.</p>
+
+    <h2>How to fix it</h2>
+    <p>Re-export your current inventory directly from Shopify (Products → Inventory → Export) so the location column headers are generated by Shopify itself, edit the quantities in place, and re-upload that exact file rather than a hand-built or older template. Upload your file above first and the checker will show you which of its column headers actually match a location on your store, and which ones it can't place anywhere.</p>
 
   </div>
 

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Extra spaces I can&#x27;t get rid of in Excel — TRIM isn&#x27;t fixing them | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="TRIM only strips the regular ASCII space character. A non-breaking space — common in text copied from web pages — looks identical but is a different character entirely, and TRIM leaves it untouched.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Extra spaces I can&#x27;t get rid of in Excel — TRIM isn&#x27;t fixing them | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="TRIM only strips the regular ASCII space character. A non-breaking space — common in text copied from web pages — looks identical but is a different character entirely, and TRIM leaves it untouched.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/extra-spaces-i-can-t-get-rid-of-in-excel-trim-isn-t-fixing-them/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Extra spaces I can&#x27;t get rid of in Excel — TRIM isn&#x27;t fixing them | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="TRIM only strips the regular ASCII space character. A non-breaking space — common in text copied from web pages — looks identical but is a different character entirely, and TRIM leaves it untouched.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/extra-spaces-i-can-t-get-rid-of-in-excel-trim-isn-t-fixing-them/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Extra spaces I can't get rid of in Excel \u2014 TRIM isn't fixing them",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "TRIM removes leading and trailing occurrences of the standard space character (character code 32) and collapses multiple internal standard spaces into one \u2014 but it does nothing to a non-breaking space (Unicode character 160, written as CHAR(160) in a formula), which renders identically to a regular space but is technically a different character. Text copied from web pages or exported from some systems uses non-breaking spaces specifically to prevent line-wrapping, and TRIM alone can't touch them. The fix is nesting TRIM with SUBSTITUTE to convert CHAR(160) to a regular space first: =TRIM(SUBSTITUTE(A1,CHAR(160),\" \"))." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/extra-spaces-i-can-t-get-rid-of-in-excel-trim-isn-t-fixing-them/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Excel — TRIM can't touch non-breaking spaces</div>
     <h1>Extra spaces I can&#x27;t get rid of in Excel — TRIM isn&#x27;t fixing them</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You wrapped the column in TRIM and the extra space is still there. TRIM only removes the regular space character — it has no effect on a non-breaking space, the invisible character web pages and some exports use instead, which looks and behaves like a space but isn't one as far as TRIM is concerned. Drop your file in below to find out which kind you actually have.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>TRIM only knows about one kind of space</h2>
+    <p>Excel's TRIM function is built to remove the standard space character — ASCII/Unicode code point 32, the one your spacebar types — from the start and end of text, and to collapse repeated internal spaces down to single ones. That's the entire scope of what it does. Any other whitespace-looking character is invisible to it.</p>
+
+    <h2>The non-breaking space is the usual suspect</h2>
+    <p>A non-breaking space (code point 160, <code>CHAR(160)</code> in a formula, often written <code>&amp;nbsp;</code> in HTML source) looks and displays exactly like a regular space but is a distinct character, historically used to keep two words from wrapping onto separate lines. Text copied from a website, a PDF, or exported from some line-of-business systems frequently carries these instead of, or mixed in with, regular spaces — and TRIM passes right over them because they don't match code point 32.</p>
+
+    <h2>How to confirm that's what you're dealing with</h2>
+    <p>A formula like <code>=LEN(A1)-LEN(TRIM(A1))</code> returning a number greater than zero after TRIM has already run is the tell — TRIM cleaned the regular spaces it could see, and something else is still adding length. <code>=CODE(RIGHT(A1,1))</code> on a cell with a trailing character will return 160 rather than 32 if it's a non-breaking space.</p>
+
+    <h2>The fix: substitute before you trim</h2>
+    <p>Wrap TRIM around a SUBSTITUTE that converts every non-breaking space to a regular one first, then let TRIM do its normal cleanup: <code>=TRIM(SUBSTITUTE(A1,CHAR(160)," "))</code>. For a one-time cleanup across a whole column rather than a formula, Find & Replace can search for the non-breaking space too — paste one copied from a source cell into the Find box, or use a formula helper column to isolate where they are. Upload your file above and the checker will point out exactly which cells still carry non-breaking spaces after a plain TRIM.</p>
 
   </div>
 

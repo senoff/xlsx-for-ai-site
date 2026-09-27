@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>&quot;My product descriptions / vendor / tags got wiped after import&quot; — blank columns in update CSV overwrite | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Descriptions, vendor, and tags disappeared after a routine update upload. A blank cell in Shopify's update CSV means "clear this field," not "leave it as is."">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="&quot;My product descriptions / vendor / tags got wiped after import&quot; — blank columns in update CSV overwrite | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Descriptions, vendor, and tags disappeared after a routine update upload. A blank cell in Shopify's update CSV means "clear this field," not "leave it as is."">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-products/my-product-descriptions-vendor-tags-got-wiped-after-import-blank/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="&quot;My product descriptions / vendor / tags got wiped after import&quot; — blank columns in update CSV overwrite | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Descriptions, vendor, and tags disappeared after a routine update upload. A blank cell in Shopify's update CSV means "clear this field," not "leave it as is."">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-products/my-product-descriptions-vendor-tags-got-wiped-after-import-blank/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "\"My product descriptions / vendor / tags got wiped after import\" \u2014 blank columns in update CSV overwrite",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's update-by-Handle import writes every recognized column exactly as it appears in your file, including blank cells \u2014 it does not compare against the existing product and skip fields you didn't include. If your update file was built from a partial export (say, just price and inventory from a pricing tool) and lacks the Body (HTML), Vendor, or Tags columns, or has them present but empty, those fields get overwritten with blank on every matched product. The fix is to build updates from a full products export so untouched fields carry their existing values forward." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-products/my-product-descriptions-vendor-tags-got-wiped-after-import-blank/",
@@ -68,9 +68,10 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Product update — blank cells overwrite, they don't skip</div>
     <h1>&quot;My product descriptions / vendor / tags got wiped after import&quot; — blank columns in update CSV overwrite</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">An update file that only includes the fields you meant to change is the exact thing that erases everything else. Shopify writes every
+      recognized column exactly as given — a blank cell means "make this blank," not "leave it alone."</p>
   </div>
 
   <div class="tool">
@@ -83,12 +84,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>You upload a file meant to update just prices or stock counts. It reports success. Then you open a product and the description is gone, the vendor field is empty, or every tag has disappeared — on products you never intended to touch beyond one field.</p>
+
+    <h2>An update file is not a patch</h2>
+    <p>It's natural to assume an "update" import only changes the fields you provide and leaves everything else untouched, the way a database patch would. Shopify's CSV import doesn't work that way: matched by Handle, it writes every column present in the file exactly as given — including a genuinely blank cell, which is written as an empty value. There's no concept of "this column wasn't included, so don't touch that field" versus "this column was included and left blank on purpose."</p>
+
+    <h2>How a partial export causes this</h2>
+    <p>The usual trigger is building the update file from something other than a full Shopify products export — a report from a pricing tool, an inventory feed from a supplier, or a trimmed-down spreadsheet someone keeps for just SKU and price. None of those sources carry the product's description, vendor, or tags, so those columns are either missing (which is safer, since an absent column is sometimes left alone depending on the import path) or present but empty for every row — and an empty cell on a recognized column is what actually causes the wipe.</p>
+
+    <h2>How to avoid it</h2>
+    <p>Start any update from a fresh, full export of your current products, edit only the specific fields you need to change, and leave every other column's existing values in place rather than deleting columns to "simplify" the file. If descriptions, vendor, or tags are already gone, they'll need to be restored manually or from a backup export taken before the bad import ran — Shopify doesn't keep an internal undo for this.</p>
 
   </div>
 

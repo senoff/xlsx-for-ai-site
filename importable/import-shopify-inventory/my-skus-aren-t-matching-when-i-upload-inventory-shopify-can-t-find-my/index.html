@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>My SKUs aren&#x27;t matching when I upload inventory — Shopify can&#x27;t find my products | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify's inventory importer matches rows by exact-text SKU comparison. A trailing space, case difference, hidden character, or a stale export can cause silent non-matches with no error. Free checker included.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="My SKUs aren&#x27;t matching when I upload inventory — Shopify can&#x27;t find my products | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Shopify matches inventory rows to variants by comparing the Variant SKU column as an exact text string — any difference and the row is silently skipped. Here's what actually causes that (beyond numeric corruption) and how to check your file first.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-inventory/my-skus-aren-t-matching-when-i-upload-inventory-shopify-can-t-find-my/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="My SKUs aren&#x27;t matching when I upload inventory — Shopify can&#x27;t find my products | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="No error, no match: Shopify's inventory importer requires an exact-text SKU match. Whitespace, case, hidden characters, or a stale export can all break it silently.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-inventory/my-skus-aren-t-matching-when-i-upload-inventory-shopify-can-t-find-my/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "My SKUs aren't matching when I upload inventory \u2014 Shopify can't find my products",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify matches each row in your inventory CSV to an existing variant by comparing the Variant SKU column as an exact text string against the SKU already stored on that variant \u2014 any difference at all, including case, whitespace, or a hidden character, means no match. Shopify doesn't raise an error for an unmatched row; it simply skips updating it. Common causes besides numeric corruption in Excel or Google Sheets include trailing spaces from copy-paste, case differences, invisible characters carried over from another system, and editing a stale export where SKUs were since renamed directly in Shopify." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-inventory/my-skus-aren-t-matching-when-i-upload-inventory-shopify-can-t-find-my/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Silent SKU mismatch — no error, no update</div>
     <h1>My SKUs aren&#x27;t matching when I upload inventory — Shopify can&#x27;t find my products</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Your upload finished, Shopify said success, but the quantities for some products didn&#x27;t move. That&#x27;s because Shopify&#x27;s inventory importer matches rows to variants by comparing the Variant SKU column as an exact text string — not "close enough," exact. Drop your file into the free checker below to catch a mismatch before you upload again.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,22 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>Some rows in your inventory CSV update fine — but a handful of SKUs don't move at all, and Shopify's import summary doesn't call out which ones. You go check the product page and the quantity you just tried to set is unchanged. There's no red banner and no rejected-rows list; the import step reports success because, technically, it was a success — for every row that matched.</p>
+
+    <h2>The root cause: exact-text matching</h2>
+    <p>Shopify's inventory-update CSV matches each row to an existing product variant by comparing the value in the <strong>Variant SKU</strong> column against the SKU already stored on that variant, as literal text. It isn't a fuzzy or case-insensitive comparison — <code>ABC-123</code> and <code>abc-123</code> are two different strings as far as the importer is concerned, and so are <code>ABC-123</code> and <code>ABC-123 </code> with a trailing space. If the comparison isn't identical character-for-character, Shopify doesn't guess at the closest match; it treats the row as referring to nothing it can find and moves on without updating anything, silently.</p>
+
+    <h2>Three ways this happens (beyond numeric corruption)</h2>
+    <ul>
+      <li><strong>Case or whitespace differences.</strong> A SKU stored as "ABC-123" won't match "abc-123", nor will it match a version with a trailing space introduced by a copy-paste or a stray tab character.</li>
+      <li><strong>A stale reference file.</strong> If the export you're editing was pulled before someone renamed a SKU directly in the Shopify admin — or before a product was deleted and recreated — your file now carries a SKU that no longer exists anywhere in the store.</li>
+      <li><strong>Hidden or invisible characters.</strong> Pasting SKUs out of a PDF, a web page, or another inventory system can carry invisible characters — a non-breaking space, a zero-width character — that look identical to a human eye but are a different string to an exact-match comparison.</li>
+    </ul>
+    <p>If your SKUs are long numeric codes or barcodes, also check whether Excel silently stripped leading zeros or lost precision on save, or whether Google Sheets converted them to scientific notation — those are separate, common causes covered in their own guides (see the related list below), and worth ruling out first if your SKUs are numeric.</p>
+
+    <h2>How to check before you upload</h2>
+    <p>Re-export a fresh copy of your product list from Shopify immediately before editing, rather than reusing a file from last week — that limits how far your SKUs can drift from what's actually stored. For any SKU that isn't matching, compare it character-by-character against what's in the admin, paying special attention to leading or trailing whitespace and case. Or drop the file into the checker above: it reads the SKU column as an exact string the same way Shopify's importer does, and flags rows that won't find a match before you spend an upload cycle finding out the hard way.</p>
 
   </div>
 

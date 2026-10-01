@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>My SUMIF is giving the wrong total — numbers stored as text fix | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="SUMIF finding the right rows but the total comes out too low? The sum_range holds numbers stored as text, so SUMIF matches correctly and then adds zero for every text cell. Here's the fix">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="My SUMIF is giving the wrong total — numbers stored as text fix | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="SUMIF finding the right rows but the total comes out too low? The sum_range holds numbers stored as text, so SUMIF matches correctly and then adds zero for every text cell. Here's the fix">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/my-sumif-is-giving-the-wrong-total-numbers-stored-as-text-fix/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="My SUMIF is giving the wrong total — numbers stored as text fix | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="SUMIF finding the right rows but the total comes out too low? The sum_range holds numbers stored as text, so SUMIF matches correctly and then adds zero for every text cell. Here's the fix">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/my-sumif-is-giving-the-wrong-total-numbers-stored-as-text-fix/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "My SUMIF is giving the wrong total \u2014 numbers stored as text fix",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "SUMIF's criteria matching is forgiving of text-versus-number differences, so it still finds the correct rows even when a criteria cell is formatted oddly. But the actual addition happens over the sum_range argument, and if those cells are stored as text rather than numbers, SUMIF adds zero for each one instead of raising an error — so the row count looks right and the total is simply too low." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/my-sumif-is-giving-the-wrong-total-numbers-stored-as-text-fix/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">SUMIF total is wrong — sum_range stored as text</div>
     <h1>My SUMIF is giving the wrong total — numbers stored as text fix</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">SUMIF finding the right rows but the total comes out too low? The sum_range holds numbers stored as text, so SUMIF matches correctly and then adds zero for every text cell. Here's the fix</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why the match works but the math doesn't</h2>
+    <p>SUMIF's criteria comparison and its summation step are two separate operations under the hood. The criteria comparison tolerates loose matches between text and numbers — "Chicago" matches "Chicago" whether the surrounding cells are text or not — so you can watch it correctly identify every row that should count. The summation of the sum_range column, though, behaves exactly like a plain SUM: any cell holding text instead of a real number contributes zero, with no warning that anything was skipped.</p>
+    <h2>How to confirm this is what's happening</h2>
+    <p>Compare <code>=COUNTIF(range,criteria)</code> against how many rows you'd expect to match — if that count is correct, the matching side is fine and the problem is isolated to the sum_range column. Then check whether the matched rows in sum_range are left-aligned (a sign of text) rather than right-aligned (a sign of real numbers), or select just those cells and see if the status bar's quick sum agrees with SUMIF's answer.</p>
+    <h2>Fixing the sum_range column</h2>
+    <p>Select the sum_range column, run Data &gt; Text to Columns and click Finish to force a re-parse into real numbers, or use the copy-1-then-Paste-Special-Multiply trick to convert the whole column in place without touching the criteria column at all. A quick way to sanity-check before and after: wrap the range in <code>SUMPRODUCT(--sum_range)</code>, which coerces text-numbers to real numbers for the purposes of that one calculation, and see if the total jumps to match what SUMIF should have returned.</p>
 
   </div>
 

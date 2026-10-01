@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify says import was successful but stock didn&#x27;t change | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify reported the inventory import as successful, but the quantities didn't move. "Successful" means the file parsed — it doesn't mean every row found its SKU.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Shopify says import was successful but stock didn&#x27;t change | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Shopify reported the inventory import as successful, but the quantities didn't move. "Successful" means the file parsed — it doesn't mean every row found its SKU.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-says-import-was-successful-but-stock-didn-t-change/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Shopify says import was successful but stock didn&#x27;t change | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Shopify reported the inventory import as successful, but the quantities didn't move. "Successful" means the file parsed — it doesn't mean every row found its SKU.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-says-import-was-successful-but-stock-didn-t-change/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Shopify says import was successful but stock didn't change",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's inventory import matches rows to your existing products by SKU text. If a row's SKU doesn't match exactly \u2014 often because Excel stripped a leading zero, converted a long numeric SKU to scientific notation, or left invisible trailing spaces \u2014 Shopify finds no product to update and simply skips that row, while still reporting the overall import as completed. The same can happen if the SKU is tracked in your store as manual (not shopify) inventory, so the quantity column is ignored even though the SKU matches." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-says-import-was-successful-but-stock-didn-t-change/",
@@ -68,9 +68,10 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Inventory import — rows silently skipped, not applied</div>
     <h1>Shopify says import was successful but stock didn&#x27;t change</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">"Successful" means the file was readable, not that every row matched a product. When a SKU in your file doesn't exactly match the SKU
+      already in Shopify, that row is quietly skipped — and the count stays exactly where it was.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +84,16 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What "successful" actually means</h2>
+    <p>Shopify's import confirmation reports on the file, not the outcome: it tells you the file was well-formed and how many rows it processed. It does not tell you how many of those rows found a matching product. A row with a SKU that doesn't match anything in your store is a completely valid row from the parser's point of view — it just has nothing to update, so nothing changes.</p>
+
+    <h2>Why the SKU stops matching</h2>
+    <p>The most frequent cause is Excel or Google Sheets quietly altering the SKU text before it ever reaches Shopify. A SKU column formatted as a number rather than text can lose leading zeros (<code>00123</code> becomes <code>123</code>) or, for longer numeric SKUs, flip into scientific notation (<code>1.23E+11</code>) when the column is too narrow to display the full digits — either change makes the value no longer match the original SKU in your store. Trailing whitespace from a copy-paste is invisible in the cell but breaks an exact-text match just the same.</p>
+
+    <p>Less commonly, the SKU matches fine but the variant's inventory tracker isn't set to <code>shopify</code> for that item — in that case the quantity column is ignored regardless of whether the SKU matched, because Shopify isn't tracking that variant's count at all.</p>
+
+    <h2>How to verify and fix it</h2>
+    <p>Format the SKU column as Text before entering any values, and re-check a sample of SKUs against your live store for hidden characters or leading-zero loss. Upload the file below first — it reads the raw cell values and will surface a SKU mismatch before you spend another cycle uploading to Shopify itself.</p>
 
   </div>
 

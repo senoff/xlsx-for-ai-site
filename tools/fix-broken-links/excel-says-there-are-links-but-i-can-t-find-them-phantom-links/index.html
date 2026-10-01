@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Excel says there are links but I can&#x27;t find them — phantom links explained | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Excel's Edit Links dialog says external references exist, but you can't find them in any formula. Here's where phantom links actually hide.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Excel says there are links but I can&#x27;t find them — phantom links explained | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Excel's Edit Links dialog says external references exist, but you can't find them in any formula. Here's where phantom links actually hide.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-broken-links/excel-says-there-are-links-but-i-can-t-find-them-phantom-links/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Excel says there are links but I can&#x27;t find them — phantom links explained | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Excel's Edit Links dialog says external references exist, but you can't find them in any formula. Here's where phantom links actually hide.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-broken-links/excel-says-there-are-links-but-i-can-t-find-them-phantom-links/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Excel says there are links but I can't find them \u2014 phantom links explained",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Ctrl+F only searches what's actually inside a cell. External references can be parked in four other places instead: the Name Manager (a defined name whose \u2018Refers to\u2019 box still points at another workbook), a chart's data source, a conditional formatting rule's formula, or a data validation list's source \u2014 none of which a normal formula search will ever surface." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/fix-broken-links/excel-says-there-are-links-but-i-can-t-find-them-phantom-links/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">External references — hidden, not missing</div>
     <h1>Excel says there are links but I can&#x27;t find them — phantom links explained</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Excel isn&#x27;t lying to you. The External Links warning is accurate — there really is a reference to another workbook somewhere in this file. It&#x27;s just not in a cell formula, so searching with Ctrl+F never finds it. Drop your file in below and every reference gets listed, wherever it&#x27;s parked.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why searching your formulas finds nothing</h2>
+    <p>Pressing Ctrl+F and searching “within: Formulas” only checks what's typed into a cell. It has no visibility into four other places Excel stores references: defined names, chart data sources, conditional formatting rules, and data validation lists. Any of these can hold a live pointer to another workbook — <code>[Budget.xlsx]Sheet1!$A$1</code>, for example — without a single cell in your visible grid referencing anything external. Excel's link warning checks all of these, which is why it fires even when your formula search comes up clean.</p>
+    <h2>The usual way this gets into a file</h2>
+    <p>The most common cause is copying a sheet from one workbook into another. Excel doesn't just copy the cells — it copies every named range that sheet used, even ones you never see in a formula. If that source workbook had a name like <code>TaxRate</code> defined as <code>=[Corp2024.xlsx]Rates!$B$2</code>, your new workbook now owns a copy of that name pointing at a file it has never displayed. The same thing happens with pasted charts: the chart keeps its original data-source reference even after you paste it somewhere new.</p>
+    <h2>How to actually find it</h2>
+    <p>Check four places in order: open <strong>Formulas → Name Manager</strong> and scan every “Refers to” value for a bracketed filename; click each chart and look at the formula bar (or Chart Design → Select Data) for an external path in the series formula; open <strong>Home → Conditional Formatting → Manage Rules</strong> and read each rule's formula; and check <strong>Data → Data Validation</strong> on any dropdown cells for a Source field pointing outside the workbook. Upload the file below and the tool checks all four automatically and lists exactly where each reference lives, so you're not clicking through menus one sheet at a time.</p>
 
   </div>
 

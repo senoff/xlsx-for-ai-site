@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify import: variants or sizes missing after upload | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify variants or sizes missing after a CSV import? It&#x27;s almost always a Handle-grouping or Option Name mismatch across rows for the same product. Here&#x27;s how the row structure works and how to fix it. Free checker included.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Shopify import: variants or sizes missing after upload | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Variants or sizes disappearing after a Shopify product CSV import? The cause is usually rows for the same product losing their Handle grouping, or an inconsistent Option Name. Free checker tool included.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/fix-shopify-products/shopify-import-variants-or-sizes-missing-after-upload/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Shopify import: variants or sizes missing after upload | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Missing variants or sizes after a Shopify import? Check that rows sharing a Handle stayed grouped together and that Option Name spelling/case matches exactly across them.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/fix-shopify-products/shopify-import-variants-or-sizes-missing-after-upload/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Shopify import: variants or sizes missing after upload",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify represents one product with multiple variants as several CSV rows sharing the same Handle, where every row needs its own Option1 Value and its own Variant SKU and Price. If those rows get separated \u2014 for example because the finished sheet was sorted alphabetically by Title or SKU \u2014 Shopify can lose track of which rows belong together and drop or misassign the variants. A second common cause is the Option1 Name, like 'Size', being spelled or capitalized inconsistently across rows for the same Handle, which breaks the grouping so only one variant survives." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/fix-shopify-products/shopify-import-variants-or-sizes-missing-after-upload/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Some sizes imported, some vanished</div>
     <h1>Shopify import: variants or sizes missing after upload</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You imported ten sizes and three showed up. Nothing errored — Shopify just silently dropped or merged the rest. This is almost always about how your rows relate to each other, not any single row being wrong on its own. Drop your file in below to check it.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>How Shopify's variant rows actually work</h2>
+    <p>Shopify's product CSV doesn't have a dedicated "variants" section — a product with multiple variants is represented as multiple CSV rows that all share the same <strong>Handle</strong>. Only the first row of that group needs the full product-level fields (Title, Body, Vendor, Type, and so on); every row after it can leave those blank and they'll be inherited from the first row. But that inheritance doesn't apply to the variant-specific fields: every single row, including the first, needs its own <strong>Option1 Value</strong> (and Option2/Option3 Value if the product has a second or third option), plus its own Variant SKU, Variant Price, and other per-variant fields. Miss one of those on a row and that variant either doesn't import or imports with the wrong data.</p>
+
+    <h2>Breaker 1: sorting scrambles the Handle grouping</h2>
+    <p>Shopify's importer expects the rows for one product's variants to be grouped together by Handle. A very common way that breaks: the file is built correctly, then someone sorts or filters the finished sheet — alphabetically by Title, numerically by SKU, or by any column other than Handle — as a cleanup step before exporting to CSV. That reorders the rows so a product's variant rows are no longer contiguous. Depending on exactly how they land, Shopify can end up treating some of them as belonging to a different product, or simply not recognizing them as variants of the one you intended, and those sizes disappear from the import with no warning.</p>
+
+    <h2>Breaker 2: inconsistent Option Name spelling or capitalization</h2>
+    <p>Every row for a given Handle also needs to agree on the <strong>Option1 Name</strong> (for example "Size"). If some rows say "Size", others say "size", and others say "SIZE" — which happens easily when a sheet is built by copy-pasting blocks from different sources — Shopify's importer can fail to recognize them as the same option across the group. When that happens, it typically keeps only one variant from the group as the option grouping breaks, and the rest of the sizes silently don't attach to the product at all.</p>
+
+    <h2>How to check / fix it</h2>
+    <p>Keep every row for one Handle grouped together and physically adjacent in the file — don't sort or re-order the sheet after it's built, and if you must sort for review, sort back to Handle order before exporting. Then check that the Option1 Name (and Option2/Option3 Name, if used) is spelled and capitalized identically on every row belonging to that Handle. Upload the file above and the checker will flag Handle groups whose rows aren't contiguous or whose option names don't match, before anything reaches your store.</p>
 
   </div>
 

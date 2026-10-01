@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Remove Duplicates Not Working — Capital Letters / Uppercase | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Remove Duplicates is case-insensitive by design — 'ABC-100' and 'abc-100' get merged even when your codes need the case difference to mean something.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Remove Duplicates Not Working — Capital Letters / Uppercase | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Remove Duplicates is case-insensitive by design — 'ABC-100' and 'abc-100' get merged even when your codes need the case difference to mean something.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/remove-duplicates/remove-duplicates-not-working-capital-letters-uppercase/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Remove Duplicates Not Working — Capital Letters / Uppercase | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Remove Duplicates is case-insensitive by design — 'ABC-100' and 'abc-100' get merged even when your codes need the case difference to mean something.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/remove-duplicates/remove-duplicates-not-working-capital-letters-uppercase/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Remove Duplicates Not Working \u2014 Capital Letters / Uppercase",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Excel's built-in Remove Duplicates command treats text comparisons as case-insensitive: 'Apple' and 'APPLE' are considered exact duplicates and one gets removed, regardless of capitalization. This is different from the EXACT() function, which is case-sensitive. If your data relies on capitalization to distinguish otherwise-identical values \u2014 product codes, usernames, or abbreviations \u2014 Remove Duplicates will merge them as if the case difference didn't exist, with no option in its dialog to make it case-sensitive." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/remove-duplicates/remove-duplicates-not-working-capital-letters-uppercase/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Case doesn't count — even when you need it to</div>
     <h1>Remove Duplicates Not Working — Capital Letters / Uppercase</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You expected “ABC-100” and “abc-100” to survive as two different codes, because they're supposed to mean different things in your system. Remove Duplicates saw them as identical and merged them anyway — because its comparison ignores letter case entirely.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why this isn't a bug</h2>
+    <p>Remove Duplicates is working exactly as designed — it's just not designed to be case-sensitive, and there's no setting in its dialog to change that. Excel considers “Apple”, “APPLE”, and “apple” to be the same value for the purposes of finding duplicates, full stop. If your data needs case to matter, the built-in command can't do what you need on its own.</p>
+    <h2>Where this actually bites</h2>
+    <p>It's most damaging with identifiers that were designed to be case-sensitive on purpose — SKUs, project codes, or short codes where lowercase and uppercase versions represent genuinely different things. Remove Duplicates collapses them into one row exactly as if they were the same code, silently losing the distinction.</p>
+    <h2>Making the comparison case-sensitive</h2>
+    <p>The built-in dialog can't do it, so you need a helper column: add a column with <code>=EXACT(A2,A1)</code> compared against a sorted list, then filter or sort on that helper column before deciding what to remove. It's manual and easy to get wrong on a large sheet, since you're now doing the duplicate detection yourself instead of relying on the command.</p>
+    <h2>A faster way to check first</h2>
+    <p>Upload your file below and run a duplicate check that respects case, so you can see exactly which rows would collapse under a case-insensitive comparison versus which are genuinely identical, before choosing what — if anything — to remove.</p>
 
   </div>
 

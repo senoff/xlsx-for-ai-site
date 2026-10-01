@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Formula gives a wrong number — Excel not calculating correctly | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="No error, calculation mode is Automatic, and the formula still returns the wrong number — usually because it's silently skipping or missing some of its cells.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Formula gives a wrong number — Excel not calculating correctly | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="No error, calculation mode is Automatic, and the formula still returns the wrong number — usually because it's silently skipping or missing some of its cells.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-formula-errors/formula-gives-a-wrong-number-excel-not-calculating-correctly/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Formula gives a wrong number — Excel not calculating correctly | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="No error, calculation mode is Automatic, and the formula still returns the wrong number — usually because it's silently skipping or missing some of its cells.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-formula-errors/formula-gives-a-wrong-number-excel-not-calculating-correctly/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Formula gives a wrong number \u2014 Excel not calculating correctly",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "When a formula returns a plausible-looking but incorrect number with no error shown, the usual cause is a mismatch between what the formula references and what you intend it to reference: numbers stored as text (left-aligned, sometimes with a green corner flag) get silently skipped by SUM and AVERAGE; a range reference typed as a fixed address rather than a table or dynamic range doesn't expand to include rows inserted later; and mixed relative/absolute references copied across cells can shift which cells a formula actually reads without changing what's shown in the formula bar unless you check each cell individually." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/fix-formula-errors/formula-gives-a-wrong-number-excel-not-calculating-correctly/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">The formula ran fine — it's just pointed at the wrong thing</div>
     <h1>Formula gives a wrong number — Excel not calculating correctly</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">There's no error, no red triangle, no calculation warning — the formula returns a number and Automatic calculation is on. It's just the wrong number, because the formula is quietly reading different cells than you think, or ignoring some of the ones you meant to include.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Confirm the formula is actually the problem</h2>
+    <p>First rule out calculation mode: check <strong>Formulas → Calculation Options</strong> is set to Automatic, and press Ctrl+Alt+F9 to force a full recalculation. If the number changes when you do that, it was a stale-cache issue rather than a wrong formula.</p>
+    <h2>The most common real cause: numbers stored as text</h2>
+    <p>SUM, AVERAGE, and most math functions silently ignore any cell where the number is actually stored as text — left-aligned by default, and often flagged with a small green triangle in the top-left corner. A range that looks like all numbers can have a handful of text-formatted values pasted in from a system export, and the total will be low by exactly those values with no error anywhere. Select the range and check the status bar's Sum/Count at the bottom — if Count is higher than the number of cells you'd expect to be numeric, some are text.</p>
+    <h2>The second cause: a range that didn't grow</h2>
+    <p>A formula like <code>=SUM(A2:A50)</code> stays fixed at row 50 forever. Insert new rows above row 50 and the range updates automatically — but insert them below row 50 (a very common way to add new transactions to the bottom of a list) and they're silently excluded from every formula that referenced the old fixed range. The formula still calculates, still shows a number, and gives no indication that new rows were left out.</p>
+    <h2>How to check without re-deriving every formula by hand</h2>
+    <p>Upload the file below to see the actual cell range each formula reads, alongside the cached result, and re-evaluate it live so you can compare what it currently computes against what it's supposed to include.</p>
 
   </div>
 

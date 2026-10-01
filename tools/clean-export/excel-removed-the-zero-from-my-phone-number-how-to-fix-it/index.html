@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Excel removed the zero from my phone number — how to fix it | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Excel's General format treats a leading-zero entry as a number and drops the zero, because numbers don't carry leading zeros. Phone numbers, zip codes, and ID codes need the column set to Text first.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Excel removed the zero from my phone number — how to fix it | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Excel's General format treats a leading-zero entry as a number and drops the zero, because numbers don't carry leading zeros. Phone numbers, zip codes, and ID codes need the column set to Text first.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/excel-removed-the-zero-from-my-phone-number-how-to-fix-it/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Excel removed the zero from my phone number — how to fix it | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Excel's General format treats a leading-zero entry as a number and drops the zero, because numbers don't carry leading zeros. Phone numbers, zip codes, and ID codes need the column set to Text first.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/excel-removed-the-zero-from-my-phone-number-how-to-fix-it/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Excel removed the zero from my phone number \u2014 how to fix it",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "By default, a cell formatted as General treats any entry that looks like a number as a number, and numbers mathematically don't have leading zeros \u2014 015551234 becomes 15551234 the moment Excel decides it's numeric, whether you typed it, pasted it, or it came in through a CSV import. To keep the zero, the cell or column needs to be Text before the value goes in: either format the column as Text first, type an apostrophe before the digits (\u2018015551234), or, when importing a CSV, use the Text Import Wizard (Data \u2192 From Text/CSV, or the legacy wizard) and explicitly set that column's type to Text rather than letting Excel guess." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/excel-removed-the-zero-from-my-phone-number-how-to-fix-it/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Excel — leading zeros stripped</div>
     <h1>Excel removed the zero from my phone number — how to fix it</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You typed or pasted in a number starting with 0, and Excel quietly turned it into a number without one. That's General formatting doing exactly what it's designed to do — treat anything that looks numeric as a number, and numbers don't have leading zeros. Drop your file in below to see which columns need to be forced to text first.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why the zero disappears</h2>
+    <p>A phone number like <code>0155512345</code> is a string of digits to you, but Excel's default General format looks at any all-digit entry and assumes it's meant to be a number. Numbers don't have leading zeros mathematically — 0155512345 and 155512345 are the same value — so Excel silently drops the zero the instant it decides the cell is numeric. There's no warning, because from Excel's point of view nothing went wrong; it did exactly what General format is supposed to do.</p>
+
+    <h2>The three moments this happens</h2>
+    <p>It happens on direct typing (type digits into a General-formatted cell, hit Enter, zero's gone), on paste (pasting a list of codes into an unformatted column re-triggers the same auto-detection), and — most often for larger files — on CSV import, where Excel's default "Open" behavior guesses each column's type from its contents and picks Number for a column that's actually meant to be text-like identifiers.</p>
+
+    <h2>Why this isn't just phone numbers</h2>
+    <p>The exact same mechanism strips leading zeros from ZIP codes (00501 becomes 501), account numbers, and product or employee codes that happen to start with zero. Any identifier that's digits-only but isn't meant to be used in arithmetic is at risk the moment it lands in a General-formatted cell.</p>
+
+    <h2>How to prevent and fix it</h2>
+    <p>Format the destination column as <strong>Text</strong> before typing or pasting values in, or prefix a manually typed entry with an apostrophe (<code>'0155512345</code>) to force text without changing the column format. For CSV imports specifically, use Data → Get Data → From Text/CSV (or the legacy Text Import Wizard) instead of just double-clicking the file, and set that column's data type to Text in the import dialog — that's the step that prevents the zero from ever being lost in the first place. Upload your file above to see which columns already lost their leading zeros so you know what needs re-entering from the source.</p>
 
   </div>
 

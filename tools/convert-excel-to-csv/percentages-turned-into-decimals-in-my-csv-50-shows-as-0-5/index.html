@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Percentages turned into decimals in my CSV — 50% shows as 0.5 | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="50% became 0.5 in your CSV export? That's the actual stored value — Excel percentages are always stored as the decimal fraction, with the % sign being pure display formatting CSV can't carry. Here's what that means for your export">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Percentages turned into decimals in my CSV — 50% shows as 0.5 | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="50% became 0.5 in your CSV export? That's the actual stored value — Excel percentages are always stored as the decimal fraction, with the % sign being pure display formatting CSV can't carry. Here's what that means for your export">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/convert-excel-to-csv/percentages-turned-into-decimals-in-my-csv-50-shows-as-0-5/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Percentages turned into decimals in my CSV — 50% shows as 0.5 | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="50% became 0.5 in your CSV export? That's the actual stored value — Excel percentages are always stored as the decimal fraction, with the % sign being pure display formatting CSV can't carry. Here's what that means for your export">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/convert-excel-to-csv/percentages-turned-into-decimals-in-my-csv-50-shows-as-0-5/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Percentages turned into decimals in my CSV \u2014 50% shows as 0.5",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Excel's Percentage format doesn't change what's stored in the cell — it stores the plain decimal fraction, 0.5 for 50%, and applies a number format that multiplies the displayed value by 100 and appends a percent sign. That formatting layer only exists in the workbook's styling; CSV has no styling at all, so the export writes the raw stored number, 0.5, with no percent sign attached. To get 50 into the CSV instead, you need to change the underlying value before exporting, not just how it's displayed." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/convert-excel-to-csv/percentages-turned-into-decimals-in-my-csv-50-shows-as-0-5/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Percentages export as decimals — 50% and 0.5 are the same value</div>
     <h1>Percentages turned into decimals in my CSV — 50% shows as 0.5</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">50% became 0.5 in your CSV export? That's the actual stored value — Excel percentages are always stored as the decimal fraction, with the % sign being pure display formatting CSV can't carry. Here's what that means for your export</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>50% and 0.5 aren't two different numbers — they're the same one</h2>
+    <p>When you type 50% into a cell, Excel stores 0.5 and switches the cell's number format to Percentage, which is responsible for both multiplying the displayed figure by 100 and adding the percent sign on screen. The 0.5 has been the real, underlying value the entire time you were looking at 50% — the percentage display was always a formatting trick layered on top of it, never a separate stored figure.</p>
+    <h2>Why the CSV shows the real stored value</h2>
+    <p>Because CSV carries no formatting information whatsoever, any export process can only write out the actual value in the cell. Since that value has always been 0.5, that's exactly what lands in the CSV — the percent sign and the times-100 display simply have nowhere to go in a plain-text format, so they're left behind along with every other formatting instruction.</p>
+    <h2>If the destination system needs a whole-number percent</h2>
+    <p>Add a helper column with <code>=A2*100</code> if the receiving system expects 50 rather than 0.5, or <code>=TEXT(A2,"0%")</code> if it actually needs the literal percent character as part of a text value, and export that helper column instead of the original. Check what the destination, whether it's a database import, an ad platform, or another spreadsheet, actually expects for a percent field before choosing between these, since conventions genuinely differ from one system to the next.</p>
 
   </div>
 

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>My pivot table shows the same city twice — how to fix duplicate entries | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="A pivot table groups rows by the exact source text — a hidden trailing space or inconsistent capitalization creates a second group that looks identical to the first but never gets combined with it.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="My pivot table shows the same city twice — how to fix duplicate entries | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="A pivot table groups rows by the exact source text — a hidden trailing space or inconsistent capitalization creates a second group that looks identical to the first but never gets combined with it.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/my-pivot-table-shows-the-same-city-twice-how-to-fix-duplicate-entries/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="My pivot table shows the same city twice — how to fix duplicate entries | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="A pivot table groups rows by the exact source text — a hidden trailing space or inconsistent capitalization creates a second group that looks identical to the first but never gets combined with it.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/my-pivot-table-shows-the-same-city-twice-how-to-fix-duplicate-entries/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "My pivot table shows the same city twice \u2014 how to fix duplicate entries",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "A pivot table's row and column groups are built from the exact distinct text values in the source column, and Excel's list of \u2018distinct values\u2019 for this purpose is an exact string comparison \u2014 so \u2018Chicago\u2019, \u2018Chicago \u2019 (trailing space), and \u2018chicago\u2019 (different capitalization) can each form their own separate group even though a human reading the sheet would call them the same city. Non-breaking spaces from copied or exported data cause the identical problem and are harder to spot because the two versions look completely identical on screen. The fix is cleaning the source column \u2014 not the pivot table \u2014 then refreshing." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/my-pivot-table-shows-the-same-city-twice-how-to-fix-duplicate-entries/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Excel — pivot table splits one group in two</div>
     <h1>My pivot table shows the same city twice — how to fix duplicate entries</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">"Chicago" shows up as two separate rows in your pivot table instead of one combined total. A pivot table groups by the exact underlying text value in the source data — a trailing space, a stray non-breaking space, or a different capitalization on just a few rows is enough to create a second, separate group that looks identical to the first. Drop your file in below to find which rows don't actually match.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Pivot tables group on the exact string, not the meaning</h2>
+    <p>When you drop a field into a pivot table's Rows or Columns area, Excel builds its group list from every distinct value that appears in the source column — a plain string comparison, cell by cell. It has no concept that "Chicago" and "Chicago " should mean the same place; as far as the grouping logic is concerned, those are two different strings, so they become two different rows in the pivot, each summing only the records that exactly match its own version.</p>
+
+    <h2>The three ways one city becomes two rows</h2>
+    <p>A trailing or leading space on some rows but not others is the most common — often from data entered by hand over time, or merged from two source systems with different habits. A non-breaking space, invisible on screen, causes the identical split but is much harder to catch by looking. Inconsistent capitalization ("Chicago" vs. "chicago" vs. "CHICAGO") is the third — unlike formula functions such as VLOOKUP or COUNTIF, which are case-insensitive, the distinct-values list a pivot table groups by treats different casing as different values.</p>
+
+    <h2>Why this is easy to miss</h2>
+    <p>Nothing about the pivot table looks broken — it built successfully, the numbers in each row add up correctly for what that row actually contains, and it's only when you notice "Chicago" listed twice with two smaller totals instead of once with the combined total that the underlying data issue becomes visible at all.</p>
+
+    <h2>How to fix it</h2>
+    <p>The fix happens in the source data, not the pivot table: run TRIM (nested with a SUBSTITUTE for CHAR(160) if non-breaking spaces are involved) across the column to normalize whitespace, and use UPPER, LOWER, or PROPER consistently — or Find & Replace — to standardize capitalization, then refresh the pivot table (right-click → Refresh). Upload your file above first and the checker will surface which values in the column are near-duplicates of each other by whitespace or case, before you rebuild the pivot.</p>
 
   </div>
 

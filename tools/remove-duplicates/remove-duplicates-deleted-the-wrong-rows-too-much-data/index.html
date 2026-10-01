@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Remove Duplicates Deleted the Wrong Rows / Too Much Data | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Remove Duplicates only compares the columns you leave checked in its dialog — leave one unchecked and it deletes rows that were never actually duplicates.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Remove Duplicates Deleted the Wrong Rows / Too Much Data | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Remove Duplicates only compares the columns you leave checked in its dialog — leave one unchecked and it deletes rows that were never actually duplicates.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/remove-duplicates/remove-duplicates-deleted-the-wrong-rows-too-much-data/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Remove Duplicates Deleted the Wrong Rows / Too Much Data | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Remove Duplicates only compares the columns you leave checked in its dialog — leave one unchecked and it deletes rows that were never actually duplicates.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/remove-duplicates/remove-duplicates-deleted-the-wrong-rows-too-much-data/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Remove Duplicates Deleted the Wrong Rows / Too Much Data",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Excel's Remove Duplicates dialog lists every column and lets you check or uncheck which ones count toward defining a duplicate. If a column is left unchecked \u2014 including by accident, since the dialog remembers your last selection \u2014 two rows that differ only in that column are still treated as exact duplicates and one gets deleted. Remove Duplicates always keeps the first occurrence and deletes every later match; there's no prompt asking which one to keep, and no per-row preview before it commits." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/remove-duplicates/remove-duplicates-deleted-the-wrong-rows-too-much-data/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">It matched on fewer columns than you meant</div>
     <h1>Remove Duplicates Deleted the Wrong Rows / Too Much Data</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Remove Duplicates ran without any error and told you how many duplicate values it found and removed — but it took out rows you needed, because it only compared the columns you had checked in its dialog, not the whole row.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What actually happened</h2>
+    <p>Remove Duplicates compares rows only on the columns you leave checked in its column list. If your data has an Order ID column that was left unchecked, two completely different orders that happen to share the same Customer Name and Date will be treated as duplicates of each other — and Excel deletes all but the first one it encounters, with no warning about what made them match.</p>
+    <h2>Why the dialog is easy to get wrong</h2>
+    <p>Excel remembers which columns were checked or unchecked the last time you used Remove Duplicates on that workbook. If you ran it before on a different, narrower selection of columns, that same narrower selection is what's checked by default the next time — even if your current selection includes more columns you meant to compare on.</p>
+    <h2>Recovering the data</h2>
+    <p>If you catch it immediately, <strong>Ctrl+Z</strong> undoes it completely — Remove Duplicates is a single undoable action. If you've since saved or closed the file, you'll need a backup or an earlier version (AutoRecover, a cloud version history, or an export you ran before) to get the deleted rows back; there's no way to “undelete” from inside the reduced file itself.</p>
+    <h2>Getting it right the next time</h2>
+    <p>Before running Remove Duplicates, identify the column or combination of columns that actually makes a row unique in your data — usually an ID field — and check only those (plus any others you specifically want to require an exact match on). Upload your file below to preview exactly which rows would be treated as duplicates under a chosen set of columns before anything gets deleted.</p>
 
   </div>
 

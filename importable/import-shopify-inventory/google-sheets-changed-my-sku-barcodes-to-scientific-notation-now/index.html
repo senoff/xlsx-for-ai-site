@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Google Sheets changed my SKU barcodes to scientific notation — now Shopify can&#x27;t find my products | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Google Sheets&#x27; Automatic number format turns long UPC/EAN barcodes into scientific notation on paste — and can permanently round the underlying digits, not just the display. Here&#x27;s why that breaks SKU matching in Shopify.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Google Sheets changed my SKU barcodes to scientific notation — now Shopify can&#x27;t find my products | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Google Sheets&#x27; Automatic number format turns long barcodes into scientific notation on paste, and can permanently round the underlying digits — not just how they display.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-inventory/google-sheets-changed-my-sku-barcodes-to-scientific-notation-now/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Google Sheets changed my SKU barcodes to scientific notation — now Shopify can&#x27;t find my products | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="A 12-13 digit barcode pasted into Sheets can come out as 1.23457E+11 — and the underlying value can be rounded for good. Here&#x27;s why, and how to stop it.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-inventory/google-sheets-changed-my-sku-barcodes-to-scientific-notation-now/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Google Sheets changed my SKU barcodes to scientific notation \u2014 now Shopify can't find my products",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Google Sheets applies \u201cAutomatic\u201d number formatting by default, so pasting or importing a long numeral like a 12-13 digit UPC/EAN barcode displays it in scientific notation (e.g. 1.23457E+11). The bigger problem is that the underlying stored value can also lose precision, since floating-point storage can't exactly represent every digit of a long integer \u2014 so exporting back to CSV can write out the rounded value, permanently corrupting the barcode rather than just changing how it looks." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-inventory/google-sheets-changed-my-sku-barcodes-to-scientific-notation-now/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">A display quirk that can quietly become permanent data loss</div>
     <h1>Google Sheets changed my SKU barcodes to scientific notation — now Shopify can&#x27;t find my products</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Your 13-digit barcode now reads as <code>1.23457E+11</code> in the cell. That alone is just a display setting — but if that sheet gets exported back to CSV, the rounded value can get written out for good, and Shopify's SKU matching has no way to know the original digits ever existed. Drop your file into the free checker below to see whether a barcode column has already been affected before you upload it.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,18 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>You paste a column of UPC or EAN barcodes — typically 12 or 13 digits — into Google Sheets, or import a CSV containing them. The cells display something like <code>1.23457E+11</code> instead of the full barcode. If you widen the column or reformat it back to a plain number, sometimes the full value reappears — but sometimes it comes back rounded, with the last few digits replaced by zeros. Later, an inventory update by SKU or barcode silently fails to match the corresponding Shopify variant, with no error from either Sheets or Shopify.</p>
+
+    <h2>The root cause: Automatic formatting plus floating-point storage</h2>
+    <p>Google Sheets applies "Automatic" number formatting to a column by default. When a pasted or imported value looks like a long numeral, Sheets both (1) chooses to display it in scientific notation for readability, and (2) stores the value as a floating-point number rather than as text. The display issue alone is cosmetic and reversible — reformatting the column back to a plain number format will usually show the correct digits, as long as the underlying value itself wasn't altered.</p>
+    <p>The deeper problem is precision. Floating-point numbers can't exactly represent every digit of a 12-13+ digit integer — there are more significant digits in the barcode than floating-point arithmetic reliably preserves. In practice this means the stored value itself, not just its on-screen display, can already be a rounded approximation of the real barcode the moment it's pasted in.</p>
+
+    <h2>Why exporting makes it permanent</h2>
+    <p>If you then export that sheet back to CSV — to re-upload to Shopify, say — Sheets writes out whatever value it currently has stored, which may be the rounded, scientific-notation-derived approximation rather than the original barcode. At that point the corruption isn't a display setting anymore; it's baked into the file. Once that CSV reaches Shopify, the SKU/barcode column in your upload no longer matches the value Shopify has stored for the existing variant, so an inventory update by SKU silently fails to match that row — no error, just a row that doesn't do anything.</p>
+
+    <h2>How to fix it</h2>
+    <p>Before pasting or importing barcode or SKU data into Sheets, select the destination column first and set <strong>Format → Number → Plain text</strong>, so incoming values are stored as text from the start and never get numeric-formatted, displayed in scientific notation, or rounded. If the damage has already happened — meaning you're not sure the current values are the real barcodes — don't try to reconstruct them from the corrupted cells; re-import the column from the original, untouched source file (your POS system, your supplier's file, or Shopify's own export) instead.</p>
 
   </div>
 

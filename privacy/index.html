@@ -168,11 +168,9 @@
 
 <p><strong>Audit log:</strong> we log the following per request: timestamp, client_id, endpoint, file size (bytes), sheet count, structural fingerprints (formula count, sheet dimensions, feature flags like "uses_LAMBDA"), error class (if any), latency, and which hardening checks ran. We do not log cell values, formula text, row data, or any representation of workbook content.</p>
 
-<h2>Local fallback</h2>
+<h2>No local fallback</h2>
 
-<p><code>xlsx_read</code> includes a local fallback path. If the API is unreachable (network down, server error, timeout), the client reads the file using a locally installed engine (<code>@protobi/exceljs</code>, an optional dependency). In this case, nothing leaves your machine. The fallback is automatic and transparent; you can observe it in the client's stderr output.</p>
-
-<p>All other tools (<code>xlsx_diff</code>, <code>xlsx_write</code>, <code>xlsx_redact</code>) require API connectivity and have no local fallback.</p>
+<p>The client has no local parsing path. Every tool, including <code>xlsx_read</code>, sends the file to the API for processing. If the API is unreachable, the call fails with an error rather than reading the file on your machine.</p>
 
 <h2>Anonymous UUID registration</h2>
 

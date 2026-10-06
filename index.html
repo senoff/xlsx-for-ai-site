@@ -433,8 +433,8 @@
         <p>Named ranges, merged cells, formulas, data validations, and conditional formatting are first-class — not collapsed by a naive one-shot read.</p>
       </div>
       <div class="card">
-        <h3>Cross-engine validation</h3>
-        <p>Run a workbook through two independent engines and report divergences. Catches corruption a naive read silently masks.</p>
+        <h3>Soundness validation</h3>
+        <p>Check that a workbook genuinely parses — truncated zips, encrypted containers, missing worksheets and damaged sheet bodies are flagged. Catches corruption a lenient read silently masks.</p>
       </div>
       <div class="card">
         <h3>Hardened by default</h3>
@@ -487,8 +487,8 @@
       <p class="demo-step"><span class="label">Convert formats</span></p>
       <div class="tool"><p class="prompt">"Use xfa to convert reporting-pack-v1.xlsx to CSV / JSON for our pipeline."</p></div>
 
-      <p class="demo-step"><span class="label">Cross-engine validate</span></p>
-      <div class="tool"><p class="prompt">"With xfa, render reporting-pack-v1.xlsx through two independent engines and flag any cell where they disagree."</p></div>
+      <p class="demo-step"><span class="label">Validate</span></p>
+      <div class="tool"><p class="prompt">"With xfa, check that reporting-pack-v1.xlsx loads cleanly and summarize its sheets."</p></div>
 
       <p class="demo-step"><span class="label">Redact PII before sharing</span></p>
       <div class="tool"><p class="prompt">"Using xfa, redact the PII in reporting-pack-v1.xlsx and give me the audit manifest of what was removed."</p></div>
@@ -516,8 +516,8 @@
       can actually parse; dumping a workbook's full structure in one call; inferring each column's
       type and whether it allows blanks; searching, filtering, and sorting across the file; writing
       edits back into cells and ranges; aggregating and grouping the numbers; converting between
-      xlsx, JSON, CSV, and plain text; opening the same file two independent ways and confirming the
-      numbers agree; and posting a finished result straight into Slack or Teams (one-time token
+      xlsx, JSON, CSV, and plain text; checking that a file genuinely parses
+      before you trust it; and posting a finished result straight into Slack or Teams (one-time token
       setup — see <a href="#setup-slack-teams">Setting up Slack &amp; Teams</a>).
     </p>
 
@@ -595,7 +595,7 @@
     <div class="tool"><p class="name"><code>xlsx_healer_cure</code> — Apply one specific repair to a diagnosed workbook: rewrite / freeze / localize external references, or, for a Google Sheets export, flag each dead Sheets-only formula in-cell (it does not recompute — there is no Excel equivalent), trim the used-range, or compact repeated formulas.</p><p class="prompt">"Freeze the broken external refs in reporting-pack-v1.xlsx to their last cached values, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa heal <path> [--mode as_copy|in_place] [--out <path>] [--format text|json]" title="Click to copy"><strong>Or run:</strong> <code>xfa heal &lt;path&gt; [--mode as_copy|in_place] [--out &lt;path&gt;] [--format text|json]</code></p></div>
 
     <h3 class="tool-group">Validate</h3>
-    <div class="tool"><p class="name"><code>xlsx_validate</code> — Render the workbook through two independent engines and flag disagreements.</p><p class="prompt">"Render reporting-pack-v1.xlsx through two independent engines and flag any cell where they disagree, with xfa."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_validate</code> — Check that the workbook parses cleanly and summarize its structure.</p><p class="prompt">"Check that reporting-pack-v1.xlsx loads cleanly and summarize its sheets, with xfa."</p></div>
 
     <h3 class="tool-group">Provenance &amp; integrity</h3>
     <div class="tool"><p class="name"><code>xlsx_stamp</code> — Sign a file with the checks it passed; travels with the file.</p><p class="prompt">"Stamp reporting-pack-v1.xlsx so anyone downstream can confirm it wasn't altered, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa stamp <path> --checks <file.json> [--out <path>] [--exclude <sheet>…]" title="Click to copy"><strong>Or run:</strong> <code>xfa stamp &lt;path&gt; --checks &lt;file.json&gt; [--out &lt;path&gt;] [--exclude &lt;sheet&gt;…]</code></p></div>

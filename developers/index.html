@@ -192,6 +192,10 @@ CFG</code></pre>
   </li>
 </ul>
 
+<h2>Errors and the convert refusal</h2>
+<p>Every error body has the same shape: <code>{ "error": { "code", "message" } }</code>. The <code>code</code> is the stable key to branch on, and the <code>message</code> is the self-correcting detail that says what was wrong and what to change. A few codes add a documented extra field, such as <code>available_sheets</code> when a sheet name is not found, but there is no finer error-subtype field in the response.</p>
+<p>When our own engine cannot produce the output you asked for from an xlsx, xls, csv or json file (most notably <code>to=xlsx</code>), <code>xlsx_convert</code> returns a typed HTTP 501 with the error code <code>capability_gap</code> and does not fall back to a compatibility library. This is not a client error and it is not transient, so retrying the same file does not help. Through the MCP connector the same refusal arrives as a tool result with <code>isError</code> set to true, carrying the same message. Formats such as ods, xlsb, fods and the xls (BIFF8) write target are served by the legacy path and are unaffected.</p>
+
 <h2>Prefer the MCP client?</h2>
 <p>If your agent speaks <a href="https://modelcontextprotocol.io" rel="noopener">MCP</a>, skip the HTTP wiring entirely &mdash; install the client and register it with two commands:</p>
 <div class="cta">

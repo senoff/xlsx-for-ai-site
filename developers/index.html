@@ -139,8 +139,12 @@
 <p class="lede">Every xlsx-for-ai tool is a plain HTTP endpoint you can call from any language &mdash; no SDK, no upload UI.</p>
 <p class="lede">The MCP client is the easy path for Claude, Cursor, and other agents. But if you're integrating directly, the same 50 tools are a versioned HTTP API you can browse and call without a key.</p>
 
-<h2>Anonymous, keyless on-ramp</h2>
-<p>Registration takes no email and no signup. <code>POST https://api.xlsx-for-ai.dev/api/v1/clients</code> (no auth) returns <code>{ client_id, api_key }</code>; then call any tool with an <code>Authorization: Bearer &lt;api_key&gt;</code> header. The free tier is <strong>10,000 calls/month, 10 MB per file</strong> &mdash; no billing.</p>
+<h2 id="login">Sign in first: <code>xlsx-for-ai login</code></h2>
+<p>New installs of the npm client sign in with OAuth (device flow) on first use. Run <code>npm install -g xlsx-for-ai@latest</code>, then <code>xlsx-for-ai login</code>: it prints a short code and a verification URL, you approve it in your browser, and the client stores the key it receives. In CI or any host with no terminal, run <code>xlsx-for-ai login</code> once on a machine you control; non-interactive runs without a key stop with an error that says so rather than hanging.</p>
+<p><strong>Sunset of anonymous keys.</strong> Anonymous keys issued by earlier versions keep working until <strong>2026-11-06</strong>. While they do, API responses carry a <code>Sunset</code> header and an <code>X-XFA-Notice</code> header, and tool responses carry <code>_meta.sunset</code> (the MCP client relays it). After that date, anonymous keys and keyless registration return 401 with the same login instruction. Existing keys need no action before then.</p>
+
+<h2>Anonymous, keyless on-ramp (until 2026-11-06)</h2>
+<p>Until the cutoff above, registration takes no email and no signup. <code>POST https://api.xlsx-for-ai.dev/api/v1/clients</code> (no auth) returns <code>{ client_id, api_key }</code>; then call any tool with an <code>Authorization: Bearer &lt;api_key&gt;</code> header. The free tier is <strong>10,000 calls/month, 10 MB per file</strong> &mdash; no billing.</p>
 <div class="cta">
 <pre class="copy" role="button" tabindex="0" data-copy="# Self-issue a key (no signup), then convert report.xlsx to Markdown.
 # Needs jq, and bash or zsh. The base64 body is passed to curl through a

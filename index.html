@@ -442,7 +442,7 @@
       </div>
       <div class="card">
         <h3>Privacy-aware</h3>
-        <p>Anonymous UUID registration — no email, no name. Per-request strict mode disables any error capture. <a href="/privacy/">Read the policy</a>.</p>
+        <p>Sign-in is OAuth (device flow for the CLI); we store no name. Legacy anonymous keys work until 2026-11-06. Per-request strict mode disables any error capture. <a href="/privacy/">Read the policy</a>.</p>
       </div>
       <div class="card">
         <h3>Works with Claude Code, Cursor, Gemini, ChatGPT, Grok, Cline</h3>
@@ -699,7 +699,7 @@
 <section id="docs">
   <div class="wrap">
     <h2>Quick start</h2>
-    <p style="color: var(--muted);">Install the npm client; it auto-registers an anonymous client_id on first use. No signup form.</p>
+    <p style="color: var(--muted);">Install the npm client and run <code>xlsx-for-ai login</code> once: a short code and a browser approval, no password. Anonymous keys from earlier versions keep working until 2026-11-06.</p>
     <pre class="copy" role="button" tabindex="0" data-copy="npm install -g xlsx-for-ai
 xfa path/to/workbook.xlsx" title="Click to copy"><code>npm install -g xlsx-for-ai
 xfa path/to/workbook.xlsx</code></pre>

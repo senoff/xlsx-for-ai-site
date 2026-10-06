@@ -139,8 +139,12 @@
 <p class="lede">Every xlsx-for-ai tool is a plain HTTP endpoint you can call from any language &mdash; no SDK, no upload UI.</p>
 <p class="lede">The MCP client is the easy path for Claude, Cursor, and other agents. But if you're integrating directly, the same 50 tools are a versioned HTTP API you can browse and call without a key.</p>
 
-<h2>Anonymous, keyless on-ramp</h2>
-<p>Registration takes no email and no signup. <code>POST https://api.xlsx-for-ai.dev/api/v1/clients</code> (no auth) returns <code>{ client_id, api_key }</code>; then call any tool with an <code>Authorization: Bearer &lt;api_key&gt;</code> header. The free tier is <strong>10,000 calls/month, 10 MB per file</strong> &mdash; no billing.</p>
+<h2 id="login">Sign in first: <code>xlsx-for-ai login</code></h2>
+<p>New installs of the npm client sign in with OAuth (device flow) on first use. Run <code>npm install -g xlsx-for-ai@latest</code>, then <code>xlsx-for-ai login</code>: it prints a short code and a verification URL, you approve it in your browser, and the client stores the key it receives. In CI or any host with no terminal, run <code>xlsx-for-ai login</code> once on a machine you control; non-interactive runs without a key stop with an error that says so rather than hanging.</p>
+<p><strong>Sunset of anonymous keys.</strong> Anonymous keys issued by earlier versions keep working until <strong>2026-11-06</strong>. While they do, API responses carry a <code>Sunset</code> header and an <code>X-XFA-Notice</code> header, and tool responses carry <code>_meta.sunset</code> (the MCP client relays it). After that date, anonymous keys and keyless registration return 401 with the same login instruction. Existing keys need no action before then.</p>
+
+<h2>Anonymous, keyless on-ramp (until 2026-11-06)</h2>
+<p>Until the cutoff above, registration takes no email and no signup. <code>POST https://api.xlsx-for-ai.dev/api/v1/clients</code> (no auth) returns <code>{ client_id, api_key }</code>; then call any tool with an <code>Authorization: Bearer &lt;api_key&gt;</code> header. The free tier is <strong>10,000 calls/month, 10 MB per file</strong> &mdash; no billing.</p>
 <div class="cta">
 <pre class="copy" role="button" tabindex="0" data-copy="# Self-issue a key (no signup), then convert report.xlsx to Markdown.
 # Needs jq, and bash or zsh. The base64 body is passed to curl through a
@@ -187,6 +191,10 @@ CFG</code></pre>
     The versioned OpenAPI 3.1 contract, verbatim. Point codegen, Postman, or Scalar/Redoc at it.
   </li>
 </ul>
+
+<h2>Errors and the convert refusal</h2>
+<p>Every error body has the same shape: <code>{ "error": { "code", "message" } }</code>. The <code>code</code> is the stable key to branch on, and the <code>message</code> is the self-correcting detail that says what was wrong and what to change. A few codes add a documented extra field, such as <code>available_sheets</code> when a sheet name is not found, but there is no finer error-subtype field in the response.</p>
+<p>When our own engine cannot produce the output you asked for from an xlsx, xls, csv or json file (most notably <code>to=xlsx</code>), <code>xlsx_convert</code> returns a typed HTTP 501 with the error code <code>capability_gap</code> and does not fall back to a compatibility library. This is not a client error and it is not transient, so retrying the same file does not help. Through the MCP connector the same refusal arrives as a tool result with <code>isError</code> set to true, carrying the same message. Formats such as ods, xlsb, fods and the xls (BIFF8) write target are served by the legacy path and are unaffected.</p>
 
 <h2>Prefer the MCP client?</h2>
 <p>If your agent speaks <a href="https://modelcontextprotocol.io" rel="noopener">MCP</a>, skip the HTTP wiring entirely &mdash; install the client and register it with two commands:</p>

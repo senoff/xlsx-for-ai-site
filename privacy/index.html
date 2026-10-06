@@ -149,14 +149,16 @@
 
 <ul>
   <li>Email address (we never ask for one).</li>
-  <li>Cell content beyond what is in the file bytes during the request (the bytes are not stored after the request completes).</li>
+  <li>Cell content beyond what is in the file bytes during the request (the bytes are not stored after the request completes, except for the one-hour copies described below).</li>
   <li>File metadata beyond size and sheet count, which are captured for telemetry.</li>
   <li>File names or paths — the client sends bytes only; the local path never leaves your machine.</li>
 </ul>
 
 <h2>What happens to the file bytes</h2>
 
-<p>File bytes are processed in memory. In normal (non-error) requests, they are not written to disk on the server, not persisted to a database, and not stored in any cache beyond the duration of a single request.</p>
+<p>File bytes are processed in memory. Except as described in the next paragraph, in normal (non-error) requests they are not written to disk on the server, not persisted to a database, and not stored in any cache beyond the duration of a single request.</p>
+
+<p><strong>Files handed in or out through the MCP connector:</strong> when you upload a file through the one-time upload page, the file is kept under a file handle, and when a tool produces a file, a download copy is kept so you can fetch it. Each is kept for about one hour, per account, and then deleted. A download link serves only the file of the account that produced it. Nothing is kept, and no download link is issued, when the account's consent level is <code>none</code> or the request carries <code>X-XFA-Privacy: strict</code>.</p>
 
 <p><strong>Error-triggered capture (optional, not currently enabled):</strong> when a request results in an error (5xx, hardening rejection, or engine exception), we may retain a redacted copy of the workbook for up to 30 days, solely for debugging and improving the engine. "Redacted" means cell values are stripped before persistence — the same transform that <code>xlsx_redact</code> runs. Structure is preserved (formulas, named ranges, formatting, x14 features) so we can reproduce the failure, but your data is not stored. Captures auto-delete after 30 days via an R2 lifecycle rule.</p>
 

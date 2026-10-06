@@ -76,7 +76,7 @@ We may suspend or terminate access for violations of this section. We will make 
 Data handling is governed by our [Privacy Policy](/privacy). Key points:
 
 - File bytes leave your machine and are processed in memory on our server for non-fallback tool calls.
-- File bytes are not persisted in normal (non-error) operation.
+- File bytes are not persisted in normal (non-error) operation, except that a file uploaded through the MCP connector's upload page and a file produced by a tool are kept for about one hour, per account, then deleted. Nothing is kept for consent level `none` or the `X-XFA-Privacy: strict` header.
 - Error-triggered capture, if enabled, retains redacted copies (cell values stripped, structure preserved) for up to 30 days for engine debugging — not for training, not for third-party sharing.
 - You can opt out of capture per-request, per-session, or globally. See the Privacy Policy for details.
 - Audit logs (request metadata, not workbook content) are retained for 90 days.

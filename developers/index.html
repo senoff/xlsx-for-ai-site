@@ -197,6 +197,38 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 </div>
 <p>Full docs and the complete tool reference are on the <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub repository</a> and the <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">npm package page</a>.</p>
 
+<h2 id="file-handoff">Getting a file in and a result out</h2>
+<p>Two surfaces take a file in and give a result back: the MCP connector at <code>https://api.xlsx-for-ai.dev/mcp</code>, and the REST API at <code>POST /api/v1/tools/&lt;name&gt;</code>.</p>
+
+<h3>MCP connector: getting a file in</h3>
+<p>A chat host does not pass attached files to a connector, so the file reaches the tool one of three ways, in order of preference:</p>
+<ol>
+  <li><strong>A share link.</strong> Pass a Google Sheets, Google Drive, Dropbox or OneDrive share link, or another https link, as <code>file_url</code>. A Google Sheets link must be shared as &ldquo;Anyone with the link&rdquo; (Viewer): the server fetches Google&rsquo;s own .xlsx export and cannot sign in to Google as you. If the sheet is not shared that way, the tool result says so and tells you to change the sharing or to download it as .xlsx and upload it.</li>
+  <li><strong>An upload page.</strong> If there is no link, call <code>xlsx_upload_link</code>. It returns a one-time upload page; you pick the file there, and the returned <code>file_handle</code> can be passed to any tool.</li>
+  <li><strong>The local package, for a large file on your own computer.</strong> The <code>xlsx-for-ai</code> npm package is an MCP server for desktop and coding clients. It reads from disk, so there is no browser upload. Its default limit is 50 MB, adjustable with <code>XFA_MAX_FILE_MB</code>.</li>
+</ol>
+<p>Reading a private Google Sheet through the live Google Sheets API (<code>xlsx_read</code> with <code>source: "gsheets"</code>) needs a Google OAuth access token with the <code>spreadsheets.readonly</code> scope, supplied by the caller.</p>
+<p>A link is read as the sheet stands at that moment, with Google&rsquo;s calculated values. To recalculate after changing inputs, call <code>xlsx_write</code> with the workbook as the base plus the changed cells, then call <code>xlsx_eval</code> on the returned <code>file_handle</code>.</p>
+
+<h3>MCP connector: getting a file back</h3>
+<p>Every tool that produces a file (<code>xlsx_write</code>, <code>xlsx_convert</code>, and the cleaning, redaction, repair, receipt and stamp tools) returns:</p>
+<ul>
+  <li>a download link in its result text;</li>
+  <li>an MCP <code>resource_link</code> content block;</li>
+  <li><code>_meta.download_url</code>, <code>_meta.download_expires_at</code>, <code>_meta.file_name</code> and <code>_meta.file_handle</code>;</li>
+  <li><code>_meta.file_b64</code>, which is still there.</li>
+</ul>
+<p>The link is a signed, unguessable token. It works for about one hour, serves only the file of the account that produced it, and then returns 410. No copy is stored and no link is returned when the account&rsquo;s consent level is <code>none</code> or the request carries the header <code>x-xfa-privacy: strict</code>. <code>GET /download/&lt;token&gt;</code> serves a file produced through the MCP door.</p>
+
+<h3>Exporting a Google Sheet to .xlsx</h3>
+<p><code>xlsx_convert</code> with <code>to: "xlsx"</code> returns the workbook as Google exported it. Google Sheets functions that Excel does not support (for example QUERY, IMPORTRANGE, GOOGLEFINANCE and ARRAYFORMULA) do not stop the export. Those cells keep the value they had in the sheet and do not recalculate in Excel. The result carries a visible line starting &ldquo;Google Sheets notice:&rdquo; and a structured <code>_meta.google_sheets_notice</code> naming each function and where it is used. A workbook with none of them carries no notice.</p>
+
+<h3>Choosing the tool list</h3>
+<p><code>tools/list</code> returns every tool. The main tools come first, in this order: <code>xlsx_read</code>, <code>xlsx_eval</code>, <code>xlsx_write</code>, <code>xlsx_convert</code>, <code>xlsx_list_sheets</code>, <code>xlsx_upload_link</code>. The rest follow by name. A client that wants a short list can send the header <code>x-xfa-toolset: core</code> or connect to <code>/mcp?toolset=core</code>. Every tool stays callable by name.</p>
+
+<h3>REST API</h3>
+<p>The REST API is unchanged. Send <code>file_b64</code> to <code>POST /api/v1/tools/&lt;name&gt;</code> and receive produced bytes in <code>_meta.file_b64</code>.</p>
+
 </div>
 </main>
 

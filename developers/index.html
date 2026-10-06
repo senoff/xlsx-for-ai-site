@@ -226,6 +226,9 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 <h3>Choosing the tool list</h3>
 <p><code>tools/list</code> returns every tool. The main tools come first, in this order: <code>xlsx_read</code>, <code>xlsx_eval</code>, <code>xlsx_write</code>, <code>xlsx_convert</code>, <code>xlsx_list_sheets</code>, <code>xlsx_upload_link</code>. The rest follow by name. A client that wants a short list can send the header <code>x-xfa-toolset: core</code> or connect to <code>/mcp?toolset=core</code>. Every tool stays callable by name.</p>
 
+<h3>Recalculation results, measured</h3>
+<p>A measured run of the recalculation engine against cited expected results, side by side with LibreOffice, is on the <a href="/libreoffice-comparison/">comparison page</a>: method, counts, every difference found, and the limits.</p>
+
 <h3>REST API</h3>
 <p>The REST API is unchanged. Send <code>file_b64</code> to <code>POST /api/v1/tools/&lt;name&gt;</code> and receive produced bytes in <code>_meta.file_b64</code>.</p>
 

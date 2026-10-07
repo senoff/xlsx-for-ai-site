@@ -248,7 +248,10 @@
         if (!findings.length) {
           vm.empty = total === 0
             ? "We didn’t find any formulas in this workbook — nothing to check. If you expected formulas, they may be on a sheet that’s empty or stored as plain values."
-            : "Every formula returns a clean result, and recomputing matches each stored value. Nothing looks broken.";
+            : ctx.eligibleCount > EVAL_CAP
+              ? "No formula returns an error, and recomputing the first " + EVAL_CAP + " of " + ctx.eligibleCount +
+                " formulas matches their stored values. The rest were not recomputed."
+              : "Every formula returns a clean result, and recomputing matches each stored value. Nothing looks broken.";
         }
 
         return vm;

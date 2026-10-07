@@ -249,8 +249,8 @@
           vm.empty = total === 0
             ? "We didn’t find any formulas in this workbook — nothing to check. If you expected formulas, they may be on a sheet that’s empty or stored as plain values."
             : ctx.eligibleCount > EVAL_CAP
-              ? "No formula returns an error, and recomputing the first " + EVAL_CAP + " of " + ctx.eligibleCount +
-                " formulas matches their stored values. The rest were not recomputed."
+              ? "No formula returns an error, and the first " + EVAL_CAP + " of " + ctx.eligibleCount +
+                " formulas recompute to their stored values. The rest were not recomputed."
               : "Every formula returns a clean result, and recomputing matches each stored value. Nothing looks broken.";
         }
 

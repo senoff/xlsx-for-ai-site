@@ -170,7 +170,7 @@
                 why: cachedBlank
                   ? ["This formula returns ", { b: tok[0] }, " — " + tok[1]]
                   : [
-                      "Excel’s stored value looked fine, but recomputing returns",
+                      "Excel’s stored value looked fine, but recomputing returns ",
                       { b: tok[0] }, " — " + tok[1],
                     ],
                 silent: !cachedBlank,

@@ -8,10 +8,10 @@
  *   1. xlsx_formulas (include_results) — locate every formula + its cached
  *      result. Any cached result that is an Excel error token is a broken
  *      formula (rock-solid: the token is literally in the cell).
- *   2. xlsx_eval (cells) — recompute the NON-error formulas with an
- *      independent engine (HyperFormula). Because both routes normalize
- *      results through the SAME renderResult, a numeric string mismatch is a
- *      genuine disagreement, not a formatting artifact. We flag:
+ *   2. xlsx_eval (cells) — recompute the NON-error formulas with the
+ *      server's own engine. Both routes normalize results through the SAME
+ *      renderResult, so a numeric string mismatch is a genuine difference,
+ *      not a formatting artifact. We flag:
  *        (a) a formula that recomputes to an error the cache hid, and
  *        (b) a formula whose recomputed number differs from the stored one
  *            (the "silent-wrong" case — no error token, still wrong).
@@ -170,7 +170,7 @@
                 why: cachedBlank
                   ? ["This formula returns ", { b: tok[0] }, " — " + tok[1]]
                   : [
-                      "Excel’s stored value looked fine, but an independent recompute returns ",
+                      "Excel’s stored value looked fine, but recomputing returns",
                       { b: tok[0] }, " — " + tok[1],
                     ],
                 silent: !cachedBlank,
@@ -187,8 +187,8 @@
                 token: null,
                 formula: f.formula,
                 why: [
-                  "No error shown, but the two engines disagree on the answer: the file stores ",
-                  { b: f.cached }, ", an independent recompute gets ",
+                  "No error shown, but the recomputed answer differs from the stored one: the file stores ",
+                  { b: f.cached }, ", recomputing gets ",
                   { b: got.result }, ". Worth a closer look.",
                 ],
                 silent: true,
@@ -226,8 +226,8 @@
         if (recomputed > 0) {
           did.push(ctx.eligibleCount > EVAL_CAP
             ? ["Recomputed the first ", { b: String(EVAL_CAP) }, " of ", { b: String(ctx.eligibleCount) },
-               " formulas with an independent engine to catch answers that are wrong without showing an error."]
-            : ["Recomputed the formulas with an independent engine to catch answers that are wrong without showing an error."]);
+               " formulas to catch answers that are wrong without showing an error."]
+            : ["Recomputed the formulas to catch answers that are wrong without showing an error."]);
         }
 
         var vm = {
@@ -248,7 +248,7 @@
         if (!findings.length) {
           vm.empty = total === 0
             ? "We didn’t find any formulas in this workbook — nothing to check. If you expected formulas, they may be on a sheet that’s empty or stored as plain values."
-            : "Every formula returns a clean result, and an independent recompute agrees with each one. Nothing looks broken.";
+            : "Every formula returns a clean result, and recomputing matches each stored value. Nothing looks broken.";
         }
 
         return vm;

@@ -121,6 +121,14 @@ const KEY_CACHE = join(ROOT, "node_modules", ".xfa-page-walk-key");
 async function harnessKey() {
   if (process.env.XFA_WEB_KEY) return process.env.XFA_WEB_KEY;
   if (existsSync(KEY_CACHE)) return readFileSync(KEY_CACHE, "utf8").trim();
+  // XLS-3006 (C3-15): this used to POST to the PRODUCTION registration endpoint on
+  // every run that had no cached key, adding a real account each time. It now
+  // refuses to register unless the operator passes --register-prod-key on purpose.
+  if (!process.argv.includes("--register-prod-key")) {
+    die("no harness key. Set XFA_WEB_KEY to a key you already hold, or pass --register-prod-key " +
+      "to create ONE production account on purpose (it is cached in node_modules/.xfa-page-walk-key). " +
+      "Nothing was registered.");
+  }
   const r = await fetch("https://api.xlsx-for-ai.dev/api/v1/clients", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

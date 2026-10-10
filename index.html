@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>xlsx-for-ai — Reliable spreadsheet access for AI agents</title>
-<meta name="description" content="Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free — all 50 tools.">
+<meta name="description" content="Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free to start — all 50 tools.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="xlsx-for-ai">
 <meta property="og:description" content="Reliable spreadsheet access for AI agents.">
@@ -347,7 +347,7 @@
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "xlsx-for-ai",
-  "description": "Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free — all 50 tools.",
+  "description": "Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free to start — all 50 tools.",
   "url": "https://xlsx-for-ai.dev/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
@@ -391,7 +391,7 @@
     <p class="lead">
       A hosted MCP server and npm client that lets LLMs read, write, validate and analyze Excel files
       without losing structure. It live-recalculates formulas and hands back the computed value — not
-      the stale value last saved in the file. Hardened against malformed input. Free — all 50 tools.
+      the stale value last saved in the file. Hardened against malformed input. Free to start — all 50 tools.
     </p>
     <a class="cta" href="#demo">Try the demo</a>
     <button type="button" class="cmd copy" data-copy="npm install -g xlsx-for-ai" aria-label="Copy install command to clipboard"><code class="cmd-text">npm install -g xlsx-for-ai</code><span class="cmd-btn" aria-hidden="true"></span></button>
@@ -442,7 +442,7 @@
       </div>
       <div class="card">
         <h3>Privacy-aware</h3>
-        <p>Sign-in is OAuth (device flow for the CLI); we store no name. Legacy anonymous keys work until 2026-11-06. Per-request strict mode disables any error capture. <a href="/privacy/">Read the policy</a>.</p>
+        <p>Sign-in is with Google only; we store no name. Keys made without signing in still work, and signing in is recommended. Per-request strict mode disables any error capture. <a href="/privacy/">Read the policy</a>.</p>
       </div>
       <div class="card">
         <h3>Works with Claude Code, Cursor, Gemini, ChatGPT, Grok, Cline</h3>
@@ -523,8 +523,10 @@
 
     <p style="color: var(--muted); font-size: 14px; margin-top: 18px;">
       Each one is a single prompt, just like the moves above — nothing to configure (Slack and Teams
-      delivery is the one exception, and it's a one-time setup). A volume cap (10,000 calls / month)
-      keeps the hosted API healthy — that's the only limit.
+      delivery is the one exception, and it's a one-time setup). Plans are counted in files, never in
+      file size: a free plan of 500 files a month for the first 1,000 people who sign in, otherwise a
+      10-file trial and then $25 a year for 10,000 files a month. File-size limits are the same for
+      everyone: .xlsx 100 MB, .csv 200 MB, .xls 100 MB, .xlsb 10 MB, other types 10 MB.
     </p>
   </div>
 </section>
@@ -699,7 +701,8 @@
 <section id="docs">
   <div class="wrap">
     <h2>Quick start</h2>
-    <p style="color: var(--muted);">Install the npm client and run <code>xlsx-for-ai login</code> once: a short code and a browser approval, no password. Anonymous keys from earlier versions keep working until 2026-11-06.</p>
+    <p style="color: var(--muted);">Install the npm client and make your first request: it shows a Google sign-in link right in your assistant, with no second machine and no password. From a terminal you can also run <code>xlsx-for-ai login</code>. Keys made without signing in still work, and signing in is recommended.</p>
+    <p style="color: var(--muted);">Prefer nothing to install? Add the hosted connector at <code>https://api.xlsx-for-ai.dev/mcp</code> (in Claude: Settings &rarr; Connectors &rarr; Add custom connector). Steps are on the <a href="/developers/#connector">developers page</a>.</p>
     <pre class="copy" role="button" tabindex="0" data-copy="npm install -g xlsx-for-ai
 xfa path/to/workbook.xlsx" title="Click to copy"><code>npm install -g xlsx-for-ai
 xfa path/to/workbook.xlsx</code></pre>

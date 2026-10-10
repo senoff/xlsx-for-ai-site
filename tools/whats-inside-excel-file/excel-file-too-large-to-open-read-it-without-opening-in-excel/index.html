@@ -90,7 +90,7 @@
     <p>Opening a workbook means Excel builds a full in-memory model of every cell, style, formula, and dependency across every sheet — not just the bytes on disk. A workbook that's large in row count, column count, or formatting density can blow past what Excel is willing to allocate long before the file size itself feels big, and there's no reliable way to know in advance where that line is.</p>
 
     <h2>What you actually want</h2>
-    <p>Not a working copy of the file in Excel — you want the data out. The sheet names, the columns, the values, maybe a CSV you can hand to something else. xlsx-for-ai reads the workbook directly instead of rebuilding Excel's full in-memory model, so it can extract sheets, columns, and rows from a file Excel won't touch, and convert it to a format you can actually use. (Current size limits for the free tier are on the <a href="/large-files/">large files page</a>.)</p>
+    <p>Not a working copy of the file in Excel — you want the data out. The sheet names, the columns, the values, maybe a CSV you can hand to something else. xlsx-for-ai reads the workbook directly instead of rebuilding Excel's full in-memory model, so it can extract sheets, columns, and rows from a file Excel won't touch, and convert it to a format you can actually use. (Current size limits, the same for everyone, are on the <a href="/large-files/">large files page</a>.)</p>
 
   </div>
 

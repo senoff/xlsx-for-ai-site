@@ -56,7 +56,7 @@ const leaks = [];
 
 // A fresh visitor: empty storage, stand-ins for the two API routes, and a guard
 // that aborts (and records) anything else that tries to leave the machine.
-async function visitor({ clients, tools }) {
+async function visitor({ clients, tools, path = PAGE }) {
   const ctx = await browser.newContext({ acceptDownloads: true });
   await ctx.route(
     (u) => u.hostname !== "127.0.0.1",
@@ -75,7 +75,7 @@ async function visitor({ clients, tools }) {
     route.fulfill(a);
   });
   const page = await ctx.newPage();
-  await page.goto(base + PAGE, { waitUntil: "domcontentloaded" });
+  await page.goto(base + path, { waitUntil: "domcontentloaded" });
   return { ctx, page, hits };
 }
 
@@ -219,6 +219,51 @@ T("C3-5 tool 429 with no readable Retry-After shows the server's own text, not a
   await ctx.close();
 });
 
+// XLS-3015 item 6: a Shopify tool page rides the same shared script, so the new error
+// texts must render there too. No Shopify feature work; the page is only a second host
+// for the shared script, driven with a Shopify export fixture and stand-in answers.
+const SHOPIFY_PAGE = "/tools/shopify-amazon-feed/";
+const SHOPIFY_FIXTURE = join(ROOT, "test/fixtures/pages/shopify-products-feed-golden.csv");
+
+T("XLS-3015-6 Shopify tool page: registration 401 shows the sign-in text and the developers link", async () => {
+  const { ctx, page, hits } = await visitor({
+    path: SHOPIFY_PAGE,
+    clients: [json(401, { error: { code: "unauthorized", message: "Missing or invalid OAuth bearer token" } })],
+    tools: [OK_TOOL],
+  });
+  const r = await dropAndSettle(page, SHOPIFY_FIXTURE);
+  must(r.err || "", /needs you to sign in/, "401 text");
+  mustNot(r.err, /try again in a moment/i, "401 must not say retry");
+  eq(r.href, "/developers/", "401 link");
+  eq(hits.tools, 0, "no tool call without a key");
+  await ctx.close();
+});
+
+T("XLS-3015-6 Shopify tool page: 429 with Retry-After 3000 shows the real wait", async () => {
+  const { ctx, page } = await visitor({
+    path: SHOPIFY_PAGE,
+    clients: [OK_KEY],
+    tools: [json(429, { error: { message: "Per-key limit" } }, { "retry-after": "3000" })],
+  });
+  const r = await dropAndSettle(page, SHOPIFY_FIXTURE);
+  must(r.err || "", /about 50 minutes/, "real wait");
+  mustNot(r.err, /give it a minute/i, "old wait");
+  await ctx.close();
+});
+
+T("XLS-3015-6 Shopify tool page: a 400 shows the server's own reason, not a bare status", async () => {
+  const reason = "This file is password-protected. Remove the password in Excel (File → Info → Protect Workbook) and re-upload.";
+  const { ctx, page } = await visitor({
+    path: SHOPIFY_PAGE,
+    clients: [OK_KEY],
+    tools: [json(400, { error: { code: "encrypted_workbook", message: reason } })],
+  });
+  const r = await dropAndSettle(page, SHOPIFY_FIXTURE);
+  must(r.err || "", /password-protected\. Remove the password in Excel/, "server reason shown");
+  mustNot(r.err, /error 400/i, "no bare status");
+  await ctx.close();
+});
+
 // ---------------------------------------------------------------- page-text cases
 const read = (p) => readFileSync(join(ROOT, p), "utf8");
 const SIZES = [".xlsx", "100 MB", ".csv", "200 MB", ".xls", ".xlsb", "10 MB"];
@@ -300,6 +345,28 @@ T("C3-15 page-walk script does not register a production account unless told to"
   const r = spawnSync(process.execPath, [join(ROOT, "scripts/dod-page-walk.mjs"), "XLS-195"], { env: { PATH: process.env.PATH }, encoding: "utf8", timeout: 30000 });
   eq(r.status, 2, "exit code (did not run)");
   must(r.stderr, /Nothing was registered/, "says nothing was registered");
+});
+
+T("XLS-3015-4 page-walk usage text names the --register-prod-key flag", async () => {
+  const src = read("scripts/dod-page-walk.mjs");
+  must(src, /usage: node scripts\/dod-page-walk\.mjs[^;]*--register-prod-key/, "usage line in source");
+  const r = spawnSync(process.execPath, [join(ROOT, "scripts/dod-page-walk.mjs")], { env: { PATH: process.env.PATH }, encoding: "utf8", timeout: 30000 });
+  eq(r.status, 2, "exit code (did not run)");
+  must(r.stderr, /--register-prod-key/, "usage printed at run time names the flag");
+});
+
+T("XLS-3015-5 shell.js has no per-page maxBytes option; every page still shows the shared 10 MB", async () => {
+  mustNot(read("tools/shell.js"), /cfg\.maxBytes/, "per-page option");
+  const bad = [];
+  for (const f of await siteFiles()) if (/maxBytes\s*:/.test(readFileSync(f, "utf8"))) bad.push(f.replace(ROOT + "/", ""));
+  if (bad.length) throw new Error("a page still sets maxBytes: " + bad.join(", "));
+  const { ctx, page } = await visitor({ clients: [OK_KEY], tools: [OK_TOOL] });
+  must(await page.locator("#xfa-panel").innerText(), /up to 10 MB on this page/, "shared limit shown");
+  await ctx.close();
+});
+
+T("XLS-3015-b the support address on the terms page is the one the server texts use", async () => {
+  must(read("terms/index.html"), /mailto:support@xlsx-for-ai\.dev">support@xlsx-for-ai\.dev</, "terms address");
 });
 
 // ---------------------------------------------------------------- run

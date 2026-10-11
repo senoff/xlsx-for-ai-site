@@ -329,7 +329,7 @@
     var panel = document.querySelector(selector);
     if (!panel) return;
     var accept = cfg.accept || ".xlsx";
-    var maxB = cfg.maxBytes || MAX_BYTES;
+    var maxB = MAX_BYTES;
     // Accepted upload extensions (lowercase, no dot). Default .xlsx-only; a page
     // can widen it — the Shopify import pages take a .csv or .xlsx source file.
     var exts = (cfg.extensions && cfg.extensions.length) ? cfg.extensions : ["xlsx"];

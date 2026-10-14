@@ -198,7 +198,7 @@
   var _registering = null;
   function registerKey() {
     if (_registering) return _registering;
-    _registering = xfetch(API + "/api/v1/clients", {
+    _registering = xfetch(API + "/api/v1/clientz", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ client_version: "web-tools-1.0", platform: "web" })

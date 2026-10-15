@@ -685,7 +685,9 @@
   <div class="wrap">
     <h2>Quick start</h2>
     <p style="color: var(--muted);">Install the npm client and make your first request: it shows a Google sign-in link right in your assistant, with no second machine and no password. From a terminal you can also run <code>xlsx-for-ai login</code>. Keys made without signing in still work, and signing in is recommended.</p>
-    <p style="color: var(--muted);">Prefer nothing to install? Add the hosted connector at <code>https://api.xlsx-for-ai.dev/mcp</code> (in Claude: Settings &rarr; Connectors &rarr; Add custom connector). Steps are on the <a href="/developers/#connector">developers page</a>.</p>
+    <p style="color: var(--muted);">In Claude Code, one command installs the plugin:</p>
+    <pre class="copy" role="button" tabindex="0" data-copy="claude plugin install xlsx-for-ai --marketplace senoff/xlsx-for-ai" title="Click to copy"><code>claude plugin install xlsx-for-ai --marketplace senoff/xlsx-for-ai</code></pre>
+    <p style="color: var(--muted);">In the Claude app on claude.ai, find xlsx-for-ai in the <a href="https://claude.ai/directory" rel="noopener">connector directory</a> and click Connect; nothing to install. Steps for both are on the <a href="/developers/#claude-code-plugin">developers page</a>. Any other MCP client takes the hosted address <code>https://api.xlsx-for-ai.dev/mcp</code>.</p>
     <pre class="copy" role="button" tabindex="0" data-copy="npm install -g xlsx-for-ai
 xfa path/to/workbook.xlsx" title="Click to copy"><code>npm install -g xlsx-for-ai
 xfa path/to/workbook.xlsx</code></pre>

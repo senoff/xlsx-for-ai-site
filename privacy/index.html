@@ -124,7 +124,9 @@
 <div class="wrap">
 
 <h1>Privacy</h1>
-<p class="last-updated"><strong>Last updated:</strong> 2026-05-07</p>
+<p class="last-updated"><strong>Last updated:</strong> 2026-10-14</p>
+
+<p id="data-handling"><strong>A file is held until its upload handle or download link expires (60 minutes; an edit session up to 4 hours). No debugging copy is kept; logs and error reports carry no file contents; no training use.</strong></p>
 
 <p>This document covers how xlsx-for-ai handles your data. It is written for developers who want to audit the data flow before deploying xlsx-for-ai in an agent, and for FP&amp;A teams who need to forward it to legal before using an agent that touches financial spreadsheets.</p>
 
@@ -149,26 +151,42 @@
 
 <ul>
   <li>Email address (we never ask for one).</li>
-  <li>Cell content beyond what is in the file bytes during the request (the bytes are not stored after the request completes, except for the one-hour copies described below).</li>
+  <li>Cell content beyond what is in the file bytes during the request (the bytes are held only as the temporary copies described below).</li>
   <li>File metadata beyond size and sheet count, which are captured for telemetry.</li>
   <li>File names or paths — the client sends bytes only; the local path never leaves your machine.</li>
 </ul>
 
 <h2>What happens to the file bytes</h2>
 
-<p>File bytes are processed in memory. Except as described in the next paragraph, in normal (non-error) requests they are not written to disk on the server, not persisted to a database, and not stored in any cache beyond the duration of a single request.</p>
+<p>File bytes are processed in memory for your request. The only copies of your file are the short-lived ones below, each of which expires automatically when its time runs out. No workbook is captured for debugging or any other purpose, whether a request succeeds or fails.</p>
 
-<p><strong>Files handed in or out through the MCP connector:</strong> when you upload a file through the one-time upload page, the file is kept under a file handle, and when a tool produces a file, a download copy is kept so you can fetch it. Each is kept for about one hour, per account, and then deleted. A download link serves only the file of the account that produced it. Nothing is kept, and no download link is issued, when the account's consent level is <code>none</code> or the request carries <code>X-XFA-Privacy: strict</code>.</p>
+<table>
+  <thead><tr><th>Temporary copy</th><th>When it exists</th><th>Expires after</th></tr></thead>
+  <tbody>
+    <tr><td>Upload handle</td><td>You upload a file through the one-time upload page or upload link (the link itself works for 30 minutes)</td><td>60 minutes</td></tr>
+    <tr><td>Download link</td><td>A tool produces a file for you to fetch. A link serves only the account that produced it.</td><td>60 minutes</td></tr>
+    <tr><td>Edit session</td><td>You open a workbook edit session</td><td>30 minutes after its last use, and never more than 4 hours</td></tr>
+    <tr><td>API cache handle</td><td>An API caller uploads a workbook once to reuse it across calls</td><td>60 minutes by default; at most 24 hours if the caller asks</td></tr>
+    <tr><td>In-memory parse cache</td><td>A repeat call on the same file within minutes</td><td>5 minutes, held in memory only</td></tr>
+  </tbody>
+</table>
 
-<p><strong>Error-triggered capture (optional, not currently enabled):</strong> when a request results in an error (5xx, hardening rejection, or engine exception), we may retain a redacted copy of the workbook for up to 30 days, solely for debugging and improving the engine. "Redacted" means cell values are stripped before persistence — the same transform that <code>xlsx_redact</code> runs. Structure is preserved (formulas, named ranges, formatting, x14 features) so we can reproduce the failure, but your data is not stored. Captures auto-delete after 30 days via an R2 lifecycle rule.</p>
+<p>When the account's consent level is <code>none</code> or the request carries <code>X-XFA-Privacy: strict</code>, no download copy is kept and no download link is issued, cache handles are cut to 60 seconds, and the in-memory parse cache is skipped. Use the CLI flag <code>--privacy=strict</code> to add this header to every request from a CLI session, or set the environment variable <code>XFA_PRIVACY=strict</code>.</p>
 
-<p>This capture feature is <strong>not currently enabled</strong>. We will document the activation date in the project changelog when it is provisioned.</p>
+<p><strong>No capture.</strong> We do not keep copies of workbooks, redacted or not, when a request fails or succeeds. Error reports sent to our error tracker carry the error type and our own code's stack trace, never the error message text, because that text could contain values from your file.</p>
 
-<p><strong>Opt out of capture:</strong> add the request header <code>X-XFA-Privacy: strict</code> to disable capture for a specific request. Use the CLI flag <code>--privacy=strict</code> to add this header to all requests from a CLI session, or set the environment variable <code>XFA_PRIVACY=strict</code> to opt out globally across all requests.</p>
+<p><strong>No training.</strong> Your files and their contents are not used to train models.</p>
 
-<p>Captures are never used to train language models, never shared with third parties, and never used for any purpose other than diagnosing production errors.</p>
+<p><strong>When part of a file goes to an AI model.</strong> A few tools ask an AI model (Anthropic's Claude API) for help, and send it only the part of the file that job needs:</p>
 
-<p><strong>Audit log:</strong> we log the following per request: timestamp, client_id, endpoint, file size (bytes), sheet count, structural fingerprints (formula count, sheet dimensions, feature flags like "uses_LAMBDA"), error class (if any), latency, and which hardening checks ran. We do not log cell values, formula text, row data, or any representation of workbook content.</p>
+<ul>
+  <li><code>xlsx_pii_scan</code> and <code>xlsx_redact</code> send short candidate text strings from the file, to find names and addresses.</li>
+  <li>The Shopify import tools and the import converter send the column headers and a few sample values from each column, to match columns to the target format.</li>
+</ul>
+
+<p>No other tool sends file contents to anyone. Tools you point at a destination, such as <code>xlsx_post_slack</code> or <code>xlsx_post_teams</code>, send what you ask them to send.</p>
+
+<p><strong>Audit log:</strong> we log the following per request: timestamp, client_id, endpoint, file size (bytes), sheet count, structural fingerprints (formula count, sheet dimensions, built-in function names, feature flags like "uses_LAMBDA"), error class and error literal type (if any, for example <code>#DIV/0!</code>), latency, and which hardening checks ran. We do not log cell values, formula text, row data, file names, or any representation of workbook content.</p>
 
 <h2>No local fallback</h2>
 
@@ -200,24 +218,9 @@ xlsx-for-ai --telemetry-status    # check current setting</code></pre>
 
 <p>Server-side audit logs (request metadata, not workbook content) are retained for <strong>90 days</strong>, then deleted. This is our current policy; we will update this document if the retention period changes.</p>
 
-<h2>Capture consent levels</h2>
+<h2>Consent level</h2>
 
-<p>By default, captured workbook bytes are auto-redacted before persistence (cell values stripped, structure preserved — same transform as <code>xlsx_redact</code>). This is the <code>redacted_only</code> consent level.</p>
-
-<p>Authenticated clients can change their consent level via <code>PATCH /api/v1/clients/me/consent</code>:</p>
-
-<table>
-  <thead><tr><th>Level</th><th>Description</th><th>Who can set it</th></tr></thead>
-  <tbody>
-    <tr><td><code>redacted_only</code></td><td>Default. Auto-redact before any capture.</td><td>Everyone</td></tr>
-    <tr><td><code>none</code></td><td>Opt out of all captures entirely. Equivalent to always sending <code>X-XFA-Privacy: strict</code>.</td><td>Everyone</td></tr>
-    <tr><td><code>full_bytes</code></td><td>Capture raw (non-redacted) bytes. Richer test fixtures; real cell values included.</td><td>Pro/Ultra tier (Phase 5)</td></tr>
-  </tbody>
-</table>
-
-<p><strong><code>full_bytes</code> is not yet activatable</strong> — the Pro tier is not available until Phase 5. The endpoint wiring exists now so that when tiers ship, consent activates immediately. Any request to set <code>full_bytes</code> before Phase 5 returns HTTP 402 with <code>tier_upgrade_required</code>.</p>
-
-<p>Full-bytes captures carry the same privacy guarantees as redacted captures: 30-day TTL, no training use, no third-party sharing.</p>
+<p>Workbook capture is off for every account, whatever its consent level. The consent level now controls one thing. Setting it to <code>none</code> through <code>PATCH /api/v1/clients/me/consent</code> is the same as sending <code>X-XFA-Privacy: strict</code> on every request: no download copies, 60-second cache handles, and no in-memory parse cache.</p>
 
 <h2>Compliance posture</h2>
 

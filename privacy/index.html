@@ -126,7 +126,7 @@
 <h1>Privacy</h1>
 <p class="last-updated"><strong>Last updated:</strong> 2026-10-14</p>
 
-<p id="data-handling"><strong>Files are processed for your request and not stored; upload handles and download links expire after 60 minutes; file contents are not logged or used for training.</strong></p>
+<p id="data-handling"><strong>A file is held until its upload handle or download link expires (60 minutes; an edit session up to 4 hours). No debugging copy is kept; logs and error reports carry no file contents; no training use.</strong></p>
 
 <p>This document covers how xlsx-for-ai handles your data. It is written for developers who want to audit the data flow before deploying xlsx-for-ai in an agent, and for FP&amp;A teams who need to forward it to legal before using an agent that touches financial spreadsheets.</p>
 
@@ -151,17 +151,17 @@
 
 <ul>
   <li>Email address (we never ask for one).</li>
-  <li>Cell content beyond what is in the file bytes during the request (the bytes are not stored after the request completes, except for the temporary copies described below).</li>
+  <li>Cell content beyond what is in the file bytes during the request (the bytes are held only as the temporary copies described below).</li>
   <li>File metadata beyond size and sheet count, which are captured for telemetry.</li>
   <li>File names or paths — the client sends bytes only; the local path never leaves your machine.</li>
 </ul>
 
 <h2>What happens to the file bytes</h2>
 
-<p>File bytes are processed in memory for your request. We do not keep a copy of your file: it is not kept in our database or in object storage, and no workbook is captured for debugging or any other purpose. The only copies are the short-lived ones below, each deleted automatically when its time runs out.</p>
+<p>File bytes are processed in memory for your request. The only copies of your file are the short-lived ones below, each of which expires automatically when its time runs out. No workbook is captured for debugging or any other purpose, whether a request succeeds or fails.</p>
 
 <table>
-  <thead><tr><th>Temporary copy</th><th>When it exists</th><th>Deleted after</th></tr></thead>
+  <thead><tr><th>Temporary copy</th><th>When it exists</th><th>Expires after</th></tr></thead>
   <tbody>
     <tr><td>Upload handle</td><td>You upload a file through the one-time upload page or upload link (the link itself works for 30 minutes)</td><td>60 minutes</td></tr>
     <tr><td>Download link</td><td>A tool produces a file for you to fetch. A link serves only the account that produced it.</td><td>60 minutes</td></tr>

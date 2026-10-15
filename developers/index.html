@@ -147,8 +147,16 @@
 <p>There are two plans, and both are counted in <strong>files</strong>, never in file size. The free plan is <strong>500 files a month</strong> for the first 1,000 people who sign in. Otherwise you get a <strong>10-file trial</strong>, then <strong>$25 a year for 10,000 files a month</strong>.</p>
 <p>File-size limits are the same for everyone and are not something you can buy: <strong>.xlsx 100 MB, .csv 200 MB, .xls 100 MB, .xlsb 10 MB, any other type 10 MB</strong>. For a file over its limit, split it or convert it; the <a href="/large-files/">large-files page</a> says how.</p>
 
-<h2 id="connector">Hosted connector (nothing to install)</h2>
-<p>The hosted connector address is <code>https://api.xlsx-for-ai.dev/mcp</code>. In Claude, open <strong>Settings &rarr; Connectors &rarr; Add custom connector</strong> and paste that address. In any other MCP client that accepts a server address, add the same address as a remote server. Sign in with Google when asked.</p>
+<h2 id="claude-code-plugin">Claude Code plugin (one command)</h2>
+<p>In Claude Code 2.1.292 or later, one command adds the plugin and installs it. The plugin tells Claude what the hosted xlsx-for-ai tools do and when they fit: when the answer depends on formula results, on whether saved values are current, or on handing back a working spreadsheet file.</p>
+<div class="cta">
+<pre class="copy" role="button" tabindex="0" data-copy="claude plugin install xlsx-for-ai --marketplace senoff/xlsx-for-ai" title="Click to copy"><code>claude plugin install xlsx-for-ai --marketplace senoff/xlsx-for-ai</code></pre>
+</div>
+<p>Then run <code>/reload-plugins</code> (or restart Claude Code), open <code>/mcp</code>, choose <code>plugin:xlsx-for-ai:spreadsheets</code> and sign in with Google once. If your Claude Code is older, run <code>claude update</code> first.</p>
+
+<h2 id="connector">Claude app on claude.ai (nothing to install)</h2>
+<p>xlsx-for-ai is listed in the Claude connector directory. Open the <a href="https://claude.ai/directory" rel="noopener">directory</a>, find <strong>xlsx-for-ai</strong>, click <strong>Connect</strong>, and sign in with Google when asked.</p>
+<p>Any other MCP client that accepts a server address can add the hosted address <code>https://api.xlsx-for-ai.dev/mcp</code> as a remote server.</p>
 <div class="cta">
 <pre class="copy" role="button" tabindex="0" data-copy="https://api.xlsx-for-ai.dev/mcp" title="Click to copy"><code>https://api.xlsx-for-ai.dev/mcp</code></pre>
 </div>

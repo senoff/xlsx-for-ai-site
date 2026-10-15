@@ -327,7 +327,11 @@ T("XLS-3006-7 no page carries the 2026-11-06 date; notice-before-change is state
 
 T("XLS-3006-8 hosted connector address is on developers and home; no page uses /mcp/claude", async () => {
   must(read("developers/index.html"), /https:\/\/api\.xlsx-for-ai\.dev\/mcp<\/code>/, "developers address");
-  must(read("developers/index.html"), /Add custom connector/, "developers steps");
+  must(read("developers/index.html"), /claude\.ai\/directory/, "developers directory path");
+  mustNot(read("developers/index.html"), /Add custom connector/, "developers no custom-connector main path");
+  const cmd = /claude plugin install xlsx-for-ai --marketplace senoff\/xlsx-for-ai/;
+  must(read("developers/index.html"), cmd, "developers one-command plugin install");
+  must(read("index.html"), cmd, "home one-command plugin install");
   must(read("index.html"), /https:\/\/api\.xlsx-for-ai\.dev\/mcp<\/code>/, "home pointer");
   must(read("google-sheets-to-excel/index.html"), /https:\/\/api\.xlsx-for-ai\.dev\/mcp<\/code>/, "google-sheets-to-excel address");
   const bad = [];

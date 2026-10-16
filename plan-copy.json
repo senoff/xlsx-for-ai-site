@@ -10,8 +10,8 @@
   "paidOffer": "$25 a year for 10,000 files a month",
   "toolCount": 54,
   "sessionTools": ["xlsx_read_handle", "xlsx_session_set_validations"],
-  "functionCount": 369,
-  "sheetsOnlyCount": 8,
+  "functionCount": 371,
+  "sheetsOnlyCount": 17,
   "retired": [
     "all 50 tools",
     "50 tools",

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Products got overwritten after import — existing products changed or disappeared | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify CSV imports match existing products by the Handle column and overwrite matched fields with whatever's in the row — including blanks. Here&#x27;s why products vanish or change after a re-upload. Free checker included.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Products got overwritten after import — existing products changed or disappeared | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="A Shopify CSV import isn't a patch — it matches existing products by the Handle column and treats every value in a matched row as the new authoritative value, including blanks. Here&#x27;s exactly how that erases descriptions, images, or entire products, and how to avoid it.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/fix-shopify-products/products-got-overwritten-after-import-existing-products-changed-or/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Products got overwritten after import — existing products changed or disappeared | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Shopify imports match by Handle and overwrite with whatever's in the row, blanks included. That&#x27;s usually why products changed or vanished.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/fix-shopify-products/products-got-overwritten-after-import-existing-products-changed-or/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Products got overwritten after import \u2014 existing products changed or disappeared",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's product CSV import matches rows to existing products primarily by the Handle column, along with variant option values and SKU. It is not a patch: for any row it matches, it treats every value in that row as the new authoritative value for those fields, including blanks. If you re-uploaded a file that was missing or blanked-out columns \u2014 for example after trimming an export down to just the fields you meant to change \u2014 Shopify can overwrite live descriptions, images, or tags with those blanks. A second common trigger is two different products ending up with the same Handle, which causes one upload to overwrite the wrong product entirely." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/fix-shopify-products/products-got-overwritten-after-import-existing-products-changed-or/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Imports match by Handle — and overwrite, not merge</div>
     <h1>Products got overwritten after import — existing products changed or disappeared</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You uploaded a CSV to make one small change, and now other fields on those products are blank, wrong, or gone — or a completely different product changed instead of the one you meant. Shopify's import matched your rows to existing products and replaced their data with exactly what was in the file, including anything you left out. Drop your file in below and the free checker will show you what it will actually overwrite before you upload it.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>The import completes with no error message. Afterward, some products are missing a description, images, tags, or other fields that definitely existed before — or, less commonly, a product you never touched has changed, while the one you meant to edit looks untouched. Nothing in Shopify's import summary calls this out as a problem, because from the importer's point of view nothing went wrong: it matched your rows to existing products and wrote exactly what those rows contained.</p>
+
+    <h2>The root cause: imports match by Handle, not by intent</h2>
+    <p>Shopify's product CSV importer decides which existing product a row belongs to primarily using the <strong>Handle</strong> column — the URL slug for the product — together with the variant's option values (like Size or Color) and SKU within that handle. Critically, a CSV import is not a partial update or a "patch." For every row Shopify matches to an existing product, it treats the values in that row as the complete, new, authoritative values for those fields going forward. There's no concept of "leave this field alone because the column wasn't included with new data" — a blank cell in a matched column is written as a blank, replacing whatever was there.</p>
+
+    <h2>The two common triggers</h2>
+    <p>The first is re-importing a trimmed file. If you exported your products, then deleted columns you didn't think you needed to touch, edited a couple of fields, and re-uploaded, Shopify still matches those rows by Handle — but now the Body (HTML) description, Image Src, or Tags columns you removed are simply blank in the file, and if they weren't removed but just left empty, the result is the same: the live product loses that data. The second trigger is duplicate or colliding Handles: if two different products end up with the same Handle — from copy-pasted rows, or handles that were auto-generated from very similar product titles — uploading one row can overwrite the other product's data instead of, or in addition to, the one you intended.</p>
+
+    <h2>How to check before you re-upload</h2>
+    <p>Always re-import using the full current export of your products rather than a version stripped down to just the columns you're intentionally changing — that way, fields you're not touching are re-written with their own correct current values instead of being left blank. Before uploading, verify Handle values are unique per product, especially if any were typed or copied by hand. Use the checker above to see, in plain language, what the file will actually write to each matched product, and consider testing with a single row first when you're not sure how a change will land.</p>
 
   </div>
 

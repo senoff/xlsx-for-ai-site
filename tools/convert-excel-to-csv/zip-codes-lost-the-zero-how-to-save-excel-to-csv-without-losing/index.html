@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Zip codes lost the zero — how to save Excel to CSV without losing leading zeros | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Want to save an Excel column of zip codes to CSV without the leading zero disappearing? The fix has to happen before you save — once the cell is a number, the zero is already gone. Here's the exact sequence that keeps it">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Zip codes lost the zero — how to save Excel to CSV without losing leading zeros | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Want to save an Excel column of zip codes to CSV without the leading zero disappearing? The fix has to happen before you save — once the cell is a number, the zero is already gone. Here's the exact sequence that keeps it">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/convert-excel-to-csv/zip-codes-lost-the-zero-how-to-save-excel-to-csv-without-losing/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Zip codes lost the zero — how to save Excel to CSV without losing leading zeros | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Want to save an Excel column of zip codes to CSV without the leading zero disappearing? The fix has to happen before you save — once the cell is a number, the zero is already gone. Here's the exact sequence that keeps it">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/convert-excel-to-csv/zip-codes-lost-the-zero-how-to-save-excel-to-csv-without-losing/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Zip codes lost the zero \u2014 how to save Excel to CSV without losing leading zeros",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "To keep a leading zero through a CSV export, the source Excel column must be formatted as Text, or use a custom numeric format like 00000, before the zip codes are entered or imported — the CSV export simply writes out whatever string or number is already sitting in the cell, so if the zero was already stripped by Excel's General number format, there is nothing left for the export to preserve. Selecting the column, setting Format Cells to Text, and re-entering or re-importing the values, with the CSV or Text import wizard's column type explicitly set to Text, is what actually keeps it." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/convert-excel-to-csv/zip-codes-lost-the-zero-how-to-save-excel-to-csv-without-losing/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Saving zip codes to CSV without losing the leading zero</div>
     <h1>Zip codes lost the zero — how to save Excel to CSV without losing leading zeros</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Want to save an Excel column of zip codes to CSV without the leading zero disappearing? The fix has to happen before you save — once the cell is a number, the zero is already gone. Here's the exact sequence that keeps it</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>The save step can't fix what's already broken</h2>
+    <p>Save As CSV writes out exactly what's already in the cells — it doesn't inspect the data or apply any judgment about zip codes specifically. If the leading zero was already dropped when the value was typed or imported as a number, the export step has nothing left to preserve; the fix has to happen upstream of the save, not during it.</p>
+    <h2>Preparing the column before you type or import</h2>
+    <p>Select the destination column and set Format Cells to Text before entering any zip codes, so each one is stored as a literal string of characters rather than being interpreted as a number. The custom format 00000 is a workable alternative for standard five-digit zip codes, padding a stored number back out to five digits for display and for export, but it breaks down for a ZIP+4 code with a dash in it, where Text format is the safer general-purpose choice.</p>
+    <h2>If you're re-importing from another CSV first</h2>
+    <p>Use Data &gt; Get Data / From Text rather than double-clicking the file to open it — the wizard lets you set the zip code column's type to Text explicitly, so Excel's automatic type detection never gets a chance to convert it to a number. Re-save to CSV only after confirming, by checking left-alignment in the cells, that the column genuinely holds text.</p>
 
   </div>
 

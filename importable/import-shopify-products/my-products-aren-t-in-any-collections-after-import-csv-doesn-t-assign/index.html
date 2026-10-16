@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>&quot;My products aren&#x27;t in any collections after import&quot; — CSV doesn&#x27;t assign collections | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="New products imported with no collection assigned, and no column let you set one. Shopify's product CSV has no collection field — that's handled separately.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="&quot;My products aren&#x27;t in any collections after import&quot; — CSV doesn&#x27;t assign collections | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="New products imported with no collection assigned, and no column let you set one. Shopify's product CSV has no collection field — that's handled separately.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-products/my-products-aren-t-in-any-collections-after-import-csv-doesn-t-assign/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="&quot;My products aren&#x27;t in any collections after import&quot; — CSV doesn&#x27;t assign collections | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="New products imported with no collection assigned, and no column let you set one. Shopify's product CSV has no collection field — that's handled separately.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-products/my-products-aren-t-in-any-collections-after-import-csv-doesn-t-assign/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "\"My products aren't in any collections after import\" \u2014 CSV doesn't assign collections",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's standard product import CSV has no Collection column, so there's nothing to fill in on the product upload itself \u2014 any column you added yourself with that name is simply ignored as an unrecognized header. Collection membership is assigned one of two ways after the products exist: automatically, by setting up a smart collection with a rule (like matching a product tag, vendor, or type) so imported products fall into it based on data you did include, such as Tags; or manually, or via a separate collections-specific import, added afterward." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-products/my-products-aren-t-in-any-collections-after-import-csv-doesn-t-assign/",
@@ -68,9 +68,10 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Product import — collections aren't part of this file format</div>
     <h1>&quot;My products aren&#x27;t in any collections after import&quot; — CSV doesn&#x27;t assign collections</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">This isn't a mistake in your file — the standard Shopify product CSV has no column for collections at all. Assigning products to
+      collections is a separate step, done through tags-and-rules or a dedicated collections import, not the product upload.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +84,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>There's no Collection column to fill in</h2>
+    <p>This is a genuine gap in the standard product CSV format, not a mistake on your end. Shopify's product import recognizes a fixed set of headers — Handle, Title, Vendor, Tags, Variant Price, Image Src, and so on — and Collection isn't one of them. If you added a column called "Collection" yourself hoping it would work like Tags or Vendor, the import simply doesn't recognize that header and ignores the column entirely, without any warning that it did.</p>
+
+    <h2>How collections actually get assigned</h2>
+    <p>Shopify has two mechanisms for putting a product into a collection, and neither runs during the product CSV upload. A <strong>smart (automated) collection</strong> uses a rule you set up once — "product tag is equal to summer-sale," for example — and Shopify automatically pulls in any product, imported or not, that matches. A <strong>manual collection</strong> requires adding products to it explicitly, either by hand in the admin or through a separate import made specifically for collection membership rather than the product catalog itself.</p>
+
+    <h2>How to actually get this working</h2>
+    <p>If your goal is to have newly imported products land in the right collection automatically, put a distinguishing value in the <strong>Tags</strong>, <strong>Product Type</strong>, or <strong>Vendor</strong> column during the product import — those columns do exist and do get set — then create or edit a smart collection with a rule matching that value. For a one-off batch assignment instead, use Shopify's separate collections import (Products → Collections) once the products already exist.</p>
 
   </div>
 

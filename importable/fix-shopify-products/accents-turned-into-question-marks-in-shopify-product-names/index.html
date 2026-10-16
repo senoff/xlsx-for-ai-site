@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Accents turned into question marks in Shopify product names | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="É, ñ, and ü showing up as a literal &#x27;?&#x27; in your Shopify product names is a character-encoding mismatch — usually Excel&#x27;s plain CSV export. Here&#x27;s the exact cause and the fix. Free checker included.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Accents turned into question marks in Shopify product names | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Accented characters like é, ñ, or ü turning into a literal &#x27;?&#x27; in your Shopify product names isn&#x27;t random corruption — it&#x27;s a character-encoding mismatch, most often from Excel&#x27;s plain CSV export option. Here&#x27;s exactly why, and how to fix it.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/fix-shopify-products/accents-turned-into-question-marks-in-shopify-product-names/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Accents turned into question marks in Shopify product names | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="É, ñ, ü showing up as &#x27;?&#x27; in Shopify product names is an encoding mismatch, usually Excel&#x27;s plain CSV export. Here&#x27;s the fix.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/fix-shopify-products/accents-turned-into-question-marks-in-shopify-product-names/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Accents turned into question marks in Shopify product names",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's importer expects a UTF-8 encoded CSV. If the file was saved with Excel's plain 'CSV (Comma delimited)' option instead of 'CSV UTF-8 (Comma delimited)', Excel typically writes it using the older Windows-1252 codepage instead. Accented characters like \u00e9, \u00f1, and \u00fc don't have a matching byte sequence when the file is then read back as UTF-8, so the importer substitutes a literal question mark for each one it can't map. Re-saving with Excel's 'CSV UTF-8' option, or exporting from Google Sheets (which writes UTF-8 by default), fixes it." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/fix-shopify-products/accents-turned-into-question-marks-in-shopify-product-names/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">A character-encoding mismatch, not corruption</div>
     <h1>Accents turned into question marks in Shopify product names</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You typed café, José, or Über correctly. Shopify shows caf?, Jos?, or ?ber instead — a literal question mark standing in for every accented letter. That's not random damage; it's what happens when a file gets written in one text encoding and read back in another. Drop your file in below and the free checker will flag every affected cell before you upload again.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
+    <h2>What you'll see</h2>
+    <p>Every accented letter in a product title or description — é, ñ, ü, ç, and similar characters — shows up as a plain question mark: <code>caf?</code> instead of <code>café</code>, <code>Jos?</code> instead of <code>José</code>. The import itself completes with no error. Shopify accepts the row and creates or updates the product; it just stores the wrong character. Note that this is different from garbled multi-character sequences like <code>Ã©</code> or <code>â€™</code> in place of a single accent — that's a related but separate encoding failure (bytes misread through the wrong codepage rather than replaced outright). Here, one bad character becomes exactly one question mark, because "?" is the standard fallback substitution character used when a byte can't be mapped during a lossy text conversion.</p>
+
+    <h2>The root cause (plain language)</h2>
+    <p>Shopify's product CSV importer expects the file to be encoded as UTF-8 — the character encoding that can represent essentially any letter, in any language, using one to four bytes per character. Excel has two different "save as CSV" options that look nearly identical but behave very differently: <strong>CSV (Comma delimited)</strong>, the plain option, and <strong>CSV UTF-8 (Comma delimited)</strong>, added in Excel 2016. The plain option typically writes the file using your operating system's legacy codepage — Windows-1252 on most English-language Windows installs. Windows-1252 can represent é, ñ, and ü just fine, but it represents them with different byte values than UTF-8 does. When Shopify's importer reads that file and interprets every byte as UTF-8 (because that's what it's told to expect, correctly or not), the accented character's byte sequence doesn't correspond to anything renderable, so it gets replaced with a question mark.</p>
+
     <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <p>Upload your file to the checker above. It reads the actual bytes in your product Title, Body (HTML), and other text columns and flags every cell where a question mark has replaced what was almost certainly an accented character, before anything reaches Shopify.</p>
+
+    <h2>How to fix it</h2>
+    <p>Re-open your original file — not the one that already shows question marks, since that data is already lost — and re-export it using Excel's <strong>File → Save As → CSV UTF-8 (Comma delimited)</strong> option specifically, not the plain "CSV (Comma delimited)" option just above it in the list. If you're not sure which one you used last time, or you no longer have the original with correct accents, editing and exporting the file from Google Sheets is a safe alternative — Sheets writes UTF-8 by default and doesn't have this dual-option trap. Re-check the accented names before re-uploading, since a question mark that's already been imported into Shopify won't fix itself on the next successful-looking upload unless the source data is corrected first.</p>
 
   </div>
 

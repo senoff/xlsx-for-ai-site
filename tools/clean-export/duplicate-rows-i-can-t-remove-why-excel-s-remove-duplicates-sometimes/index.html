@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Duplicate rows I can&#x27;t remove — why Excel&#x27;s Remove Duplicates sometimes misses them | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Remove Duplicates compares the exact underlying value in each cell. A hidden trailing space or a number-as-text vs. a real number is invisible on screen but enough to make two identical-looking rows count as different.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Duplicate rows I can&#x27;t remove — why Excel&#x27;s Remove Duplicates sometimes misses them | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Remove Duplicates compares the exact underlying value in each cell. A hidden trailing space or a number-as-text vs. a real number is invisible on screen but enough to make two identical-looking rows count as different.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/duplicate-rows-i-can-t-remove-why-excel-s-remove-duplicates-sometimes/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Duplicate rows I can&#x27;t remove — why Excel&#x27;s Remove Duplicates sometimes misses them | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Remove Duplicates compares the exact underlying value in each cell. A hidden trailing space or a number-as-text vs. a real number is invisible on screen but enough to make two identical-looking rows count as different.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/duplicate-rows-i-can-t-remove-why-excel-s-remove-duplicates-sometimes/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Duplicate rows I can't remove \u2014 why Excel's Remove Duplicates sometimes misses them",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Remove Duplicates compares the literal underlying value in every selected column, not the way it looks on screen. Two rows that display identically can still differ by a trailing or leading space (including an invisible non-breaking space), or by one cell holding a number stored as text (\u2018100\u2019 the string) while the matching cell in the other row holds a real number (100 the value) \u2014 same display, different underlying value, so Excel keeps both rows. It also compares text case-insensitively by default, so \u2018Yes\u2019 and \u2018YES\u2019 are treated as the same and would be removed \u2014 the surviving surprise duplicates are almost always a whitespace or data-type mismatch, not a casing one." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/duplicate-rows-i-can-t-remove-why-excel-s-remove-duplicates-sometimes/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Excel — Remove Duplicates misses rows</div>
     <h1>Duplicate rows I can&#x27;t remove — why Excel&#x27;s Remove Duplicates sometimes misses them</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You run Remove Duplicates, and rows that look absolutely identical are both still there afterward. Excel's Remove Duplicates compares the underlying value of every cell exactly — an invisible trailing space or a number stored as text is enough to make two "identical" rows count as different. Drop your file in below to see what's actually different between them.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Remove Duplicates checks the value, not the appearance</h2>
+    <p>When Excel evaluates whether two rows are duplicates across your chosen columns, it compares each cell's actual stored value — the same thing a formula like <code>=A2=A3</code> would compare. Two cells can render identically on screen and still fail that test, because whitespace and data type are both part of the underlying value even though neither is visible in the cell.</p>
+
+    <h2>The two usual culprits</h2>
+    <p>The most common is a trailing space: <code>"Chicago"</code> and <code>"Chicago "</code> look identical in the grid but are different strings. The second is a mismatched data type carrying the same apparent number: one row's quantity came in as a real number, the other's came in as text (often from a CSV import or a VLOOKUP result formatted differently) — <code>100</code> and <code>"100"</code> are equal in a loose formula comparison but not in Remove Duplicates' exact match. Non-breaking spaces (character 160, common in text copied from web pages) cause the same problem as regular trailing spaces but are even harder to spot by eye.</p>
+
+    <h2>What Remove Duplicates does NOT care about</h2>
+    <p>It's worth knowing this isn't a capitalization issue — Excel's duplicate comparison is case-insensitive by default, so "Chicago" and "CHICAGO" are correctly treated as duplicates and one gets removed. If rows are surviving that you expect to be case-based duplicates too, the cause is elsewhere.</p>
+
+    <h2>How to find and fix the mismatch</h2>
+    <p>Run TRIM and CLEAN across the suspect columns (or TRIM nested with a SUBSTITUTE for CHAR(160)) to strip whitespace before running Remove Duplicates again, and use Text to Columns to force any text-stored numbers back to real numbers. Upload your file above and the checker will point out exactly which "duplicate" rows differ by whitespace or type, so you're not hunting for an invisible character by eye.</p>
 
   </div>
 

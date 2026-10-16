@@ -5,6 +5,7 @@
   "type": "module",
   "description": "Static site for xlsx-for-ai. The npm toolchain is dev-only: it builds the site's own maintenance scripts (sitemap) and the page-DoD walk that drives the live web-tool pages in a real browser. Nothing here is served.",
   "scripts": {
+    "test": "node scripts/validate-site.mjs --selftest && node scripts/validate-site.mjs && node test/pages/privacy-sentence.test.mjs && node test/pages/front-door.test.mjs",
     "sitemap": "node scripts/gen-sitemap.mjs",
     "internal-links": "node scripts/gen-internal-links.mjs",
     "shopify-stubs": "node scripts/gen-shopify-redirect-stubs.mjs",

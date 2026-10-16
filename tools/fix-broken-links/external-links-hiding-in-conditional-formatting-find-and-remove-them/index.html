@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>External links hiding in conditional formatting — find and remove them | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Every visible formula is clean and Break Links found nothing — because a conditional formatting rule's own formula is what's still pointing at another workbook.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="External links hiding in conditional formatting — find and remove them | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Every visible formula is clean and Break Links found nothing — because a conditional formatting rule's own formula is what's still pointing at another workbook.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-broken-links/external-links-hiding-in-conditional-formatting-find-and-remove-them/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="External links hiding in conditional formatting — find and remove them | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Every visible formula is clean and Break Links found nothing — because a conditional formatting rule's own formula is what's still pointing at another workbook.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-broken-links/external-links-hiding-in-conditional-formatting-find-and-remove-them/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "External links hiding in conditional formatting \u2014 find and remove them",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Conditional formatting rules that use a formula (Home \u2192 Conditional Formatting \u2192 New Rule \u2192 \u2018Use a formula to determine which cells to format\u2019) can reference any range, including a range in another open or closed workbook, e.g. =A1>[Budget.xlsx]Sheet1!$B$1. That formula isn't shown anywhere except inside Manage Rules, so it won't turn up in a normal search and won't be cleared by Break Links, which only affects cell formulas." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/fix-broken-links/external-links-hiding-in-conditional-formatting-find-and-remove-them/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">A CF rule, not a cell, is holding the link</div>
     <h1>External links hiding in conditional formatting — find and remove them</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Every visible formula in this workbook is clean, and Break Links still didn&#x27;t clear the warning. That&#x27;s because one of your conditional formatting rules contains a formula that references another workbook — and Manage Rules is the only place that formula is visible.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Where this formula actually lives</h2>
+    <p>A formula-based conditional formatting rule is stored with the rule itself, not in any cell. You can format an entire range so every cell in it turns red when some condition is true, and that condition can reference a completely different workbook. Nothing about the formatting — the red fill, the bold text — tells you where the underlying comparison is pointing.</p>
+    <h2>Why it's easy to miss</h2>
+    <p>Searching with Ctrl+F, even set to search formulas, never reaches conditional formatting rules — they aren't cell content. Break Links and Edit Links manage external references inside worksheet cells; a rule's comparison formula sits in a completely separate part of the file structure, so it keeps its external pointer no matter how many times you break links elsewhere.</p>
+    <h2>How to find the specific rule</h2>
+    <p>Open <strong>Home → Conditional Formatting → Manage Rules</strong>, and set “Show formatting rules for” to “This Worksheet” — then repeat per sheet, since rules are sheet-scoped. Read the Applies to range and the rule's formula for each entry; any formula containing a bracketed filename like <code>[Budget.xlsx]</code> is your culprit. Delete the rule, rebuild it referencing a local range, or copy the external values in first. Upload the file below to get every conditional formatting rule's formula listed in one pass, across every sheet, instead of opening Manage Rules sheet by sheet.</p>
 
   </div>
 

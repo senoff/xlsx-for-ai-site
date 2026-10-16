@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify inventory shows a dash instead of a number after import — product not selling | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="A dash instead of a number in the Inventory column means Shopify isn&#x27;t tracking that variant at all — not that it&#x27;s out of stock. Here&#x27;s what actually turns tracking off during import.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Shopify inventory shows a dash instead of a number after import — product not selling | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="A dash instead of a number in the Inventory column means Shopify isn&#x27;t tracking that variant at all — not that it&#x27;s out of stock. Here&#x27;s what actually turns tracking off during import.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-inventory-shows-a-dash-instead-of-a-number-after-import/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Shopify inventory shows a dash instead of a number after import — product not selling | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="A dash instead of a number in the Inventory column means Shopify isn&#x27;t tracking that variant at all — not that it&#x27;s out of stock. Here&#x27;s what actually turns tracking off during import.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-inventory-shows-a-dash-instead-of-a-number-after-import/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Shopify inventory shows a dash instead of a number after import \u2014 product not selling",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "A dash means the variant isn't tracked, not that it's out of stock. Shopify uses the Variant Inventory Tracker column to decide whether to track a variant's quantity at all. If that column is blank, misspelled, or missing from your file, the variant is left untracked \u2014 and untracked variants show a dash in the admin because there's no quantity to report. Untracked variants are also always available for sale regardless of quantity, so if the product genuinely isn't selling, check its price and published status separately \u2014 that's a different problem from the dash." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-inventory-shows-a-dash-instead-of-a-number-after-import/",
@@ -68,9 +68,10 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Inventory import — untracked variant, not an error</div>
     <h1>Shopify inventory shows a dash instead of a number after import — product not selling</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Instead of a quantity, the Inventory column just shows a dash. That's not a display bug — it means Shopify stopped tracking stock for that variant during the import.
+      Here's the column that controls it, and why "not selling" and "dash" are usually two separate problems.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +84,19 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What the dash actually means</h2>
+    <p>In the Shopify admin, a product or variant's Inventory column normally shows a number — how many units are on hand. A dash (<code>—</code>) replaces that number when Shopify has no quantity to report at all, because the variant isn't being tracked. It is a different state from "0 in stock": zero means Shopify is watching the count and it happens to be empty; a dash means Shopify isn't watching the count in the first place.</p>
+
+    <h2>The column that controls tracking</h2>
+    <p>Whether a variant is tracked comes from the <strong>Variant Inventory Tracker</strong> column in Shopify's inventory or product CSV. The only value that turns tracking on is the exact string <code>shopify</code>. If that cell is blank, contains a different value (some exports use "manual" or leave it for third-party fulfillment), or the column is missing entirely from a partial re-upload, Shopify treats the variant as untracked — even if it was tracked before the import ran.</p>
+
+    <p>This is easy to trigger by accident: deleting a column you thought was unused before re-saving a spreadsheet, or uploading a CSV that only has SKU and price columns because it came from a different report, will silently drop tracking for every row it touches.</p>
+
+    <h2>Why "not selling" is probably a separate issue</h2>
+    <p>Untracked variants don't block sales — Shopify treats them as infinitely available, since there's no count to check against. So if the product is genuinely failing to sell, the dash is unlikely to be the cause. Check the variant's <strong>Price</strong> (blank or zero prices block checkout) and the product's <strong>Published</strong> / status field (a product stuck as "draft" won't appear on the storefront regardless of its inventory state) before assuming the two symptoms are connected.</p>
+
+    <h2>How to fix it</h2>
+    <p>Re-open your import file and confirm the Variant Inventory Tracker column contains exactly <code>shopify</code>, in lowercase, for every row that should be tracked — watch for trailing spaces, which look identical in a spreadsheet cell but don't match on import. Upload the corrected file below to check before it reaches your store.</p>
 
   </div>
 

@@ -20,6 +20,9 @@
  *
  * Usage:  node scripts/dod-page-walk.mjs <case-id>        # e.g. XLS-195
  *         node scripts/dod-page-walk.mjs --list
+ *         node scripts/dod-page-walk.mjs <case-id> --register-prod-key   # first run only, no key held:
+ *                                                  # creates ONE production account on purpose and caches its key
+ *         XFA_WEB_KEY=<a key you already hold> node scripts/dod-page-walk.mjs <case-id>   # no account created
  *         BASE_URL=http://localhost:8000 node scripts/dod-page-walk.mjs XLS-195
  *
  * Exit 0 = PASS · 1 = FAIL · 2 = DID NOT RUN (never a green).
@@ -50,7 +53,8 @@ if (arg === "--list") {
   for (const [id, c] of Object.entries(CASES)) console.log(`${id}\t${c.path}\t${c.what}`);
   process.exit(0);
 }
-if (!arg) die("usage: node scripts/dod-page-walk.mjs <case-id> [--red-arm] | --list");
+if (!arg) die("usage: node scripts/dod-page-walk.mjs <case-id> [--red-arm] [--register-prod-key] | --list " +
+  "(--register-prod-key creates ONE production account on purpose when no key is set in XFA_WEB_KEY or cached)");
 
 // The existence assertion. A case-id we don't know is a DID-NOT-RUN, not a pass.
 const kase = CASES[arg];
@@ -121,6 +125,14 @@ const KEY_CACHE = join(ROOT, "node_modules", ".xfa-page-walk-key");
 async function harnessKey() {
   if (process.env.XFA_WEB_KEY) return process.env.XFA_WEB_KEY;
   if (existsSync(KEY_CACHE)) return readFileSync(KEY_CACHE, "utf8").trim();
+  // XLS-3006 (C3-15): this used to POST to the PRODUCTION registration endpoint on
+  // every run that had no cached key, adding a real account each time. It now
+  // refuses to register unless the operator passes --register-prod-key on purpose.
+  if (!process.argv.includes("--register-prod-key")) {
+    die("no harness key. Set XFA_WEB_KEY to a key you already hold, or pass --register-prod-key " +
+      "to create ONE production account on purpose (it is cached in node_modules/.xfa-page-walk-key). " +
+      "Nothing was registered.");
+  }
   const r = await fetch("https://api.xlsx-for-ai.dev/api/v1/clients", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

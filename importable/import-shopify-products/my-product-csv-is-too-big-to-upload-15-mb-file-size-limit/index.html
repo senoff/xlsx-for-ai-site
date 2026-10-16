@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>&quot;My product CSV is too big to upload&quot; — 15 MB file size limit | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify's product CSV importer has roughly a 15 MB file size ceiling. Here's what actually makes a plain-text CSV that large, and how to split it safely.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="&quot;My product CSV is too big to upload&quot; — 15 MB file size limit | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Shopify's product CSV importer has roughly a 15 MB file size ceiling. Here's what actually makes a plain-text CSV that large, and how to split it safely.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-products/my-product-csv-is-too-big-to-upload-15-mb-file-size-limit/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="&quot;My product CSV is too big to upload&quot; — 15 MB file size limit | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Shopify's product CSV importer has roughly a 15 MB file size ceiling. Here's what actually makes a plain-text CSV that large, and how to split it safely.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-products/my-product-csv-is-too-big-to-upload-15-mb-file-size-limit/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "\"My product CSV is too big to upload\" \u2014 15 MB file size limit",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's product CSV format repeats the full set of product-level fields (title, vendor, type, tags, description) on every single variant row, rather than storing them once per product \u2014 so a catalog with many size/color variants per item, or long HTML-formatted descriptions copied from a Word document or webpage, can produce a plain-text CSV well past 15 MB even with a modest number of distinct products. Splitting the file into several smaller CSVs and uploading them one at a time works, because Shopify's import adds to or updates existing products rather than requiring the entire catalog in one file." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-products/my-product-csv-is-too-big-to-upload-15-mb-file-size-limit/",
@@ -68,9 +68,10 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Product import — hitting Shopify's 15 MB CSV ceiling</div>
     <h1>&quot;My product CSV is too big to upload&quot; — 15 MB file size limit</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Shopify's product importer caps CSV uploads at roughly 15 MB, and a catalog doesn't need to be huge to hit it — because every variant repeats
+      its full product record on its own row. Here's what actually inflates the file, and how to split it.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +84,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why a plain-text CSV gets this big</h2>
+    <p>A CSV has no formatting, images, or styling to bloat it — it's just text — so a file crossing 15 MB usually means a large amount of actual text data, not accidental cruft. The biggest contributor in Shopify's format specifically is that <strong>every variant row repeats the entire product record</strong>: title, vendor, product type, tags, and the full Body (HTML) description are written out again on each size/color row rather than stored once per product. A product with 20 SKU variants carries its description 20 times over.</p>
+
+    <h2>Where the text itself piles up</h2>
+    <p>Descriptions are the other major factor. Pasting formatted text from a Word document or a webpage into the Body (HTML) field often brings along a large amount of inline styling markup that a browser never shows you but that still counts as text — a paragraph that looks like a few sentences can carry several kilobytes of wrapping tags and inline styles. Multiply that by thousands of variant rows and the file grows fast.</p>
+
+    <h2>How to get under the limit</h2>
+    <p>Split the catalog into multiple smaller CSV files and upload them one after another — Shopify's product import adds or updates products by Handle, so it doesn't need your entire catalog in a single file. Separately, clean up Body (HTML) fields to strip unnecessary pasted markup down to simple text or minimal HTML; that alone can shrink a heavily-formatted file substantially without touching a single product's data.</p>
 
   </div>
 

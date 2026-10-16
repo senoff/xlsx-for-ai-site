@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Prices with dollar signs won&#x27;t add up in Excel — fix currency stored as text | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Prices like $19.99 refusing to SUM in Excel? If the dollar sign was typed or imported as a literal character, the cell holds text, not a number formatted as currency. Here's how to tell the difference and fix it">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Prices with dollar signs won&#x27;t add up in Excel — fix currency stored as text | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Prices like $19.99 refusing to SUM in Excel? If the dollar sign was typed or imported as a literal character, the cell holds text, not a number formatted as currency. Here's how to tell the difference and fix it">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/prices-with-dollar-signs-won-t-add-up-in-excel-fix-currency-stored-as/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Prices with dollar signs won&#x27;t add up in Excel — fix currency stored as text | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Prices like $19.99 refusing to SUM in Excel? If the dollar sign was typed or imported as a literal character, the cell holds text, not a number formatted as currency. Here's how to tell the difference and fix it">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/prices-with-dollar-signs-won-t-add-up-in-excel-fix-currency-stored-as/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Prices with dollar signs won't add up in Excel \u2014 fix currency stored as text",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "In Excel, a properly formatted currency cell stores the plain number, 19.99, and only displays the dollar sign and decimals as formatting — the symbol is never part of the actual value. If instead the dollar sign was typed directly or arrived from a CSV or system export where the whole price was written out as the literal text 19.99 with a dollar sign in front of it, the cell holds text, not a number, and SUM either returns 0, ignoring it, or #VALUE!, if it's used in a direct addition. Stripping the symbol and converting to a real number fixes it." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/prices-with-dollar-signs-won-t-add-up-in-excel-fix-currency-stored-as/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Prices with $ won't add up — currency stored as text</div>
     <h1>Prices with dollar signs won&#x27;t add up in Excel — fix currency stored as text</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Prices like $19.99 refusing to SUM in Excel? If the dollar sign was typed or imported as a literal character, the cell holds text, not a number formatted as currency. Here's how to tell the difference and fix it</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Two different things that both look like a priced value</h2>
+    <p>Formatting and value are separate concepts in Excel. Type 19.99 into a cell and apply the Currency number format, and Excel stores 19.99 while displaying it with a dollar sign — the symbol lives entirely in the formatting layer. But paste in a value from a system that writes prices as literal text strings, and there's no formatting layer at all; the dollar sign is just the first character of a piece of text, and arithmetic functions can't do math on text.</p>
+    <h2>How to check which one you actually have</h2>
+    <p>Numbers right-align in a cell by default; text left-aligns. If your priced column is left-aligned even though it displays a dollar sign, that's a strong sign you're looking at text. Try summing a small range directly — if SUM returns 0 for cells that clearly have values in them, or #VALUE! appears when you add two of them with a plus sign, the text diagnosis is confirmed.</p>
+    <h2>Removing the symbol and converting back to real numbers</h2>
+    <p>Use Find and Replace to remove the dollar sign (and any thousands-separator commas) from the column, which leaves a plain numeric-looking string behind. Then run Data &gt; Text to Columns and click Finish, or wrap the values in a helper column with <code>=VALUE(A2)</code>, to convert that string into a genuine number. Only after that's done should you apply Excel's Currency number format, so the dollar sign comes back as display formatting rather than as a literal character stuck to the front of text.</p>
 
   </div>
 

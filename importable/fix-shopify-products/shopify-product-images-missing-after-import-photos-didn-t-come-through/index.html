@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify product images missing after import — photos didn&#x27;t come through | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify product images missing after import? The Image Src column needs a direct, publicly reachable image URL — a Google Drive or Dropbox share link won&#x27;t work. Here&#x27;s how to fix it. Free checker included.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Shopify product images missing after import — photos didn&#x27;t come through | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Photos didn&#x27;t come through on a Shopify product import? Shopify fetches Image Src as a URL at import time — share links, private links, and hyperlink-text mismatches all fail silently. Free checker tool included.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/fix-shopify-products/shopify-product-images-missing-after-import-photos-didn-t-come-through/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Shopify product images missing after import — photos didn&#x27;t come through | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Missing product photos after a Shopify CSV import? Check that Image Src holds a direct public image URL, not a Drive/Dropbox share link or a stale hyperlink display text.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/fix-shopify-products/shopify-product-images-missing-after-import-photos-didn-t-come-through/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Shopify product images missing after import \u2014 photos didn't come through",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "The Image Src column has to contain a fully-qualified, publicly reachable URL that Shopify can fetch directly at import time \u2014 it can't read a local file path, and a 'share' link from Google Drive or Dropbox returns an HTML preview page rather than the image itself, so the fetch silently fails. It can also fail if the link requires a login, or if Excel converted a typed URL into a hyperlink and someone later edited the visible text without updating the underlying link, so the exported CSV wrote the display text instead of the real URL." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/fix-shopify-products/shopify-product-images-missing-after-import-photos-didn-t-come-through/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">No broken-image icon, just nothing</div>
     <h1>Shopify product images missing after import — photos didn&#x27;t come through</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">The import completed, the product exists, and the photo slot is just empty — no broken-image icon, no line in the import summary. That's because Shopify's image import works by fetching a URL, and a small number of specific things can make that fetch fail invisibly. Drop your file in below to check it.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What Shopify actually does with Image Src</h2>
+    <p>The <strong>Image Src</strong> column in a Shopify product CSV isn't a file attachment — it's a URL. At import time, Shopify visits that URL and fetches whatever bytes come back, then stores them as the product's image. That means the value in the cell has to be a fully-qualified, publicly reachable http/https address pointing directly at an image file. Shopify cannot read a local file path like <code>C:\Users\you\Desktop\photo.jpg</code>, and it can't open anything that isn't the raw image itself. When the fetch fails for any reason, the row still imports — the product is created, just without a picture — and nothing in the import summary calls that out.</p>
+
+    <h2>Breaker 1: share links instead of direct image URLs</h2>
+    <p>The single most common cause is pasting a "share" link copied from Google Drive or Dropbox instead of a direct link to the file. A share link is designed to open a preview page in a browser — when Shopify's importer requests that URL, what comes back is an HTML page with a viewer around the image, not the image bytes themselves. Shopify can't extract a picture out of a webpage, so the fetch effectively returns nothing usable, and the import proceeds with a blank image field. The same failure mode applies to any link that sits behind a login or an expiring/private URL — Shopify's fetch has no credentials and can't get past it.</p>
+
+    <h2>Breaker 2: Excel hyperlink display text drifting from the real link</h2>
+    <p>A subtler version of the same problem happens entirely inside the spreadsheet. Excel automatically converts a typed URL into a clickable hyperlink object, separate from the text that's displayed in the cell. If someone later shortens or edits that visible text for readability — turning a long URL into something like "photo1.jpg" — without realizing the underlying hyperlink still points somewhere else, the CSV export can end up writing the visible display text into the cell rather than the actual link target. The cell looks fine on screen, but the value Shopify actually reads is not a URL at all.</p>
+
+    <h2>Multiple images and how to check</h2>
+    <p>A product with more than one photo needs one CSV row per image, all sharing the same Handle, with an <strong>Image Position</strong> column controlling the display order. To verify any Image Src value before uploading, paste it into a fresh, logged-out browser tab: it should load only the image itself, filling the tab, not a webpage with a preview or a login prompt around it. Upload the file above and the checker will flag any Image Src cell that isn't a direct, fetchable URL before it reaches your store.</p>
 
   </div>
 

@@ -15,6 +15,8 @@ name: build-validate
 on:
   pull_request:
     types: [opened, reopened, ready_for_review, synchronize]
+  push:
+    branches: [main]
 
 permissions:
   contents: read
@@ -22,9 +24,9 @@ permissions:
 jobs:
   validate:
     name: HTML + links + sitemap
-    if: github.event.pull_request.draft == false
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -48,6 +50,19 @@ jobs:
       # detector that cannot redden is not a detector.
       - name: Prove the stale-sitemap-URL check can still fail (self-test)
         run: node scripts/dod-sitemap-no-stale-urls.mjs --selftest
+
+      # XLS-1213 publish-gate: its hermetic arms are the pre-merge grade. The
+      # self-test proves MAP/GATE/DRIFT each still redden; --map-only asserts (on
+      # the PR tree, no network) that every shell.js spoke page maps to a serving
+      # tool — no blind spot — and that the 2026-08-30 incident page still maps to
+      # its tool. The LIVE gate (does prod actually carry the route?) is a
+      # POST-DEPLOY arm in deploy-verify-sitemap.yml — it must never couple the
+      # PR's green to live-prod health.
+      - name: Prove the publish-gate can still fail (self-test)
+        run: node scripts/dod-xls1213-publish-gate.mjs --selftest
+
+      - name: Publish-gate — every spoke page maps to a serving tool (no blind spot)
+        run: node scripts/dod-xls1213-publish-gate.mjs --map-only
 
       - name: Validate HTML structure + internal links + referenced assets
         run: node scripts/validate-site.mjs
@@ -101,3 +116,16 @@ jobs:
       # direction (it only proves disk ⊆ sitemap, not sitemap ⊆ disk).
       - name: Sitemap has no stale (disk-orphaned) URLs
         run: node scripts/dod-sitemap-no-stale-urls.mjs
+
+      # XLS-4524 (audit C3-1, C3-16): the tool-page end-to-end test (XLS-3006).
+      # Hermetic — local static server, headless chromium, stand-in API answers;
+      # any request to the production API fails the run. Its first case is "the
+      # shared script starts a session and runs one tool", so a change that breaks
+      # every tool page now reddens this required check instead of passing it.
+      - name: Install dev dependencies and headless chromium
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+
+      - name: Tool pages work end to end (front-door.test.mjs)
+        run: node test/pages/front-door.test.mjs

@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Can&#x27;t sort this column in Excel — hidden spaces and text-numbers cause | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Excel sorts numbers and text-formatted numbers as separate groups, always placing text-numbers after real numbers regardless of value. Hidden spaces compound the problem by changing how cells compare.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Can&#x27;t sort this column in Excel — hidden spaces and text-numbers cause | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Excel sorts numbers and text-formatted numbers as separate groups, always placing text-numbers after real numbers regardless of value. Hidden spaces compound the problem by changing how cells compare.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/can-t-sort-this-column-in-excel-hidden-spaces-and-text-numbers-cause/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Can&#x27;t sort this column in Excel — hidden spaces and text-numbers cause | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Excel sorts numbers and text-formatted numbers as separate groups, always placing text-numbers after real numbers regardless of value. Hidden spaces compound the problem by changing how cells compare.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/can-t-sort-this-column-in-excel-hidden-spaces-and-text-numbers-cause/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Can't sort this column in Excel \u2014 hidden spaces and text-numbers cause",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "In an ascending sort, Excel places true numeric values first (smallest to largest), then text \u2014 and a number stored as text (left-aligned, sometimes marked with a small green triangle) counts as text, not a number, so it sorts as a block after every real number regardless of its actual value. A cell with a leading or trailing space \u2014 including an invisible non-breaking space \u2014 is also compared as text character by character, which can push it out of the order you'd expect even among otherwise-text values." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/can-t-sort-this-column-in-excel-hidden-spaces-and-text-numbers-cause/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Excel — mixed text/number sorting</div>
     <h1>Can&#x27;t sort this column in Excel — hidden spaces and text-numbers cause</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You sort the column and some values land in the wrong order, or all the way at the bottom regardless of their size. Excel sorts numbers and text-that-looks-like-numbers as two separate groups — and a leading or trailing space changes which group a value falls into. Drop your file in below to see which cells are the odd ones out.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Excel sorts by data type first, value second</h2>
+    <p>An ascending sort in Excel doesn't just compare values — it groups by type first: numbers, then text, then logical values, then errors, always in that order (descending just reverses each group's internal order, but numbers still cluster separately from text). A column that looks like a clean list of numbers can actually be a mix of real numbers (right-aligned by default) and numbers stored as text (left-aligned, often flagged with a small green triangle in the corner). Sort it, and every text-number sinks to the bottom of the column — or the top of a descending sort — as a block, regardless of its numeric value.</p>
+
+    <h2>Where the text-numbers come from</h2>
+    <p>This almost always traces back to how the data arrived: values pasted from a web page or PDF, imported from a CSV where a column had a leading zero or a plus sign that made Excel default it to text, or entered with a leading apostrophe at some point to "protect" the formatting. Once a cell is text, typing a formula-visible number into it doesn't convert it — the underlying type stays text until it's explicitly converted.</p>
+
+    <h2>The hidden-space complication</h2>
+    <p>Even among genuinely text values, a cell with a trailing space — a regular space or, more stubbornly, a non-breaking space (Unicode character 160, common in data copied from websites) — sorts differently than the same text without it, because sorting compares strings character by character and a space is a real character in that comparison.</p>
+
+    <h2>How to fix it</h2>
+    <p>Select the column, use Data → Text to Columns → Finish (with no delimiter changes) to force text-numbers back into real numbers in one pass, and separately run TRIM/CLEAN or Find & Replace to strip stray spaces. Upload your file above first and the checker will flag exactly which cells in the column are text-typed versus numeric, and which carry leading or trailing whitespace.</p>
 
   </div>
 

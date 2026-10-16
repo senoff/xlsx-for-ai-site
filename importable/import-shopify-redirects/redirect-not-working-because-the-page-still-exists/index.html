@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Redirect not working because the page still exists | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify redirects only trigger on a 404. If a page still exists at the path you're trying to redirect from, Shopify serves that live page and the redirect rule is never consulted.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Redirect not working because the page still exists | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Shopify redirects only trigger on a 404. If a page still exists at the path you're trying to redirect from, Shopify serves that live page and the redirect rule is never consulted.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-redirects/redirect-not-working-because-the-page-still-exists/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Redirect not working because the page still exists | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Shopify redirects only trigger on a 404. If a page still exists at the path you're trying to redirect from, Shopify serves that live page and the redirect rule is never consulted.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-redirects/redirect-not-working-because-the-page-still-exists/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Redirect not working because the page still exists",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify only follows a URL redirect when the requested path would otherwise return a 404 Not Found. If a product, page, blog post, or collection is still published at that exact path \u2014 even one you meant to replace \u2014 Shopify serves that live content first and never checks your redirect list. This is a routing order issue, not a broken redirect: the redirect rule you set up is entirely correct, it's just never reached because the URL isn't actually missing yet." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-redirects/redirect-not-working-because-the-page-still-exists/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Shopify URL redirects — page still live</div>
     <h1>Redirect not working because the page still exists</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You set up the redirect, but visiting the old URL still shows the old page instead of forwarding anywhere. Shopify redirects only ever fire on a 404 — if a page, product, or collection still exists at that exact path, Shopify serves it and never consults your redirect list. Drop your file in below to check which "old" URLs are still actually live.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Redirects are a fallback for 404s, not an override</h2>
+    <p>Shopify's routing checks for a matching live resource first — a product, page, collection, blog article, or theme route at that exact path. Only when none exists does it fall through to the URL Redirects table and check whether that path is registered there. A redirect rule sitting on top of a page that still resolves normally simply never gets consulted; the live page always wins.</p>
+
+    <h2>How this happens in practice</h2>
+    <p>The usual case is a product or collection that was unpublished, moved, or renamed on the surface (title, handle in the URL) but the old resource technically still exists under a slightly different path, or a duplicate/legacy version of it is still published somewhere. Another common one: you added a redirect from <code>/products/old-handle</code> to a new page, but the product still exists at that handle because it was never actually deleted or unpublished — only its listing or menu link was removed.</p>
+
+    <h2>How to tell this is your problem</h2>
+    <p>Visit the "old" URL directly in an incognito window. If it loads a real page — even one that looks outdated or unlinked from your navigation — rather than Shopify's 404 page, the redirect can't be the issue, because it was never given the chance to run. Compare that against your redirect CSV's "Redirect from" column for the same path.</p>
+
+    <h2>How to fix it</h2>
+    <p>Unpublish, delete, or genuinely remove the old resource so the path returns a real 404 — then the existing redirect will take over automatically; you don't need to re-import it. Upload your redirects file above first to confirm the paths and format are otherwise correct, so once the old page is gone, the redirect is ready to go immediately.</p>
 
   </div>
 

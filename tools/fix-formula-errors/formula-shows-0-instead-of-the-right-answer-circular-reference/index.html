@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Formula shows 0 instead of the right answer — circular reference | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="A formula stuck at 0 with a circular reference warning means it refers back to its own cell, directly or through others — here's how to trace and fix the loop.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Formula shows 0 instead of the right answer — circular reference | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="A formula stuck at 0 with a circular reference warning means it refers back to its own cell, directly or through others — here's how to trace and fix the loop.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-formula-errors/formula-shows-0-instead-of-the-right-answer-circular-reference/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Formula shows 0 instead of the right answer — circular reference | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="A formula stuck at 0 with a circular reference warning means it refers back to its own cell, directly or through others — here's how to trace and fix the loop.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-formula-errors/formula-shows-0-instead-of-the-right-answer-circular-reference/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Formula shows 0 instead of the right answer \u2014 circular reference",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "A circular reference happens when a formula's calculation path eventually refers back to its own cell \u2014 directly (A1 contains a formula that includes A1) or indirectly (A1 depends on B1, which depends on C1, which depends on A1). With iterative calculation turned off (the default), Excel can't resolve that loop and shows a warning plus a result of 0 in the affected cell. With iterative calculation turned on but capped at too few iterations or too loose a maximum change, the loop can also settle on 0 instead of converging on a meaningful value." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/fix-formula-errors/formula-shows-0-instead-of-the-right-answer-circular-reference/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Excel can't solve the loop, so it shows zero</div>
     <h1>Formula shows 0 instead of the right answer — circular reference</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">The formula isn't broken — it's stuck. A cell somewhere in this chain refers back to itself, directly or through a few other cells, and Excel's response to that unsolvable loop is to display 0 rather than an answer.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>How to find the actual loop</h2>
+    <p>Excel usually shows a Circular Reference warning dialog when you first create the loop, and lists the cell under <strong>Formulas → Error Checking → Circular References</strong> afterward — but that menu only shows the cell where Excel detected the loop, not necessarily every cell involved in it. Click into that cell and use <strong>Formulas → Trace Precedents</strong> to follow the chain backward until you find where it doubles back on itself.</p>
+    <h2>Why it's showing 0 specifically</h2>
+    <p>Without iterative calculation enabled (<strong>File → Options → Formulas → “Enable iterative calculation”</strong> unchecked, which is Excel's default), a circular formula simply can't be evaluated, and Excel substitutes 0 as a placeholder rather than leaving the cell blank. If iterative calculation is enabled but Maximum Iterations is set very low (the default is 100) or Maximum Change is too tight, the calculation can also settle at 0 without actually converging on the value you intended.</p>
+    <h2>Two different fixes, for two different intents</h2>
+    <p>If the circular reference is a mistake — a formula that should reference a different cell but accidentally includes its own — fix the reference and the loop disappears. If the circularity is intentional (some financial models legitimately need a self-referencing calculation, like interest that depends on a balance that includes prior interest), turn on iterative calculation and raise Maximum Iterations until the value stabilizes rather than resetting to 0 each time.</p>
+    <h2>Checking your file</h2>
+    <p>Upload it below to see every formula and its live recomputed result — a formula stuck at 0 due to an unresolved circular reference will show up clearly next to what it should be evaluating.</p>
 
   </div>
 

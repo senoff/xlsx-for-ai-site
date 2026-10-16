@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Excel only saved one sheet when I exported to CSV — where are my other tabs? | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Saved a multi-tab workbook as CSV and only one sheet came out? CSV can only ever hold a single flat table, so Excel exports just the sheet you had open, with no warning. Here's where your other tabs actually went">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Excel only saved one sheet when I exported to CSV — where are my other tabs? | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Saved a multi-tab workbook as CSV and only one sheet came out? CSV can only ever hold a single flat table, so Excel exports just the sheet you had open, with no warning. Here's where your other tabs actually went">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/convert-excel-to-csv/excel-only-saved-one-sheet-when-i-exported-to-csv-where-are-my-other/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Excel only saved one sheet when I exported to CSV — where are my other tabs? | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Saved a multi-tab workbook as CSV and only one sheet came out? CSV can only ever hold a single flat table, so Excel exports just the sheet you had open, with no warning. Here's where your other tabs actually went">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/convert-excel-to-csv/excel-only-saved-one-sheet-when-i-exported-to-csv-where-are-my-other/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Excel only saved one sheet when I exported to CSV \u2014 where are my other tabs?",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "A CSV file can only represent one flat table — the format has no concept of multiple sheets or tabs at all. When you choose File, Save As, CSV in Excel, it silently exports only the currently active worksheet and leaves the rest of the workbook untouched; your original .xlsx file with every tab is still intact, nothing was deleted. To get every tab out, you switch to each sheet and save it as its own CSV file, or use a tool that loops through all of them automatically." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/convert-excel-to-csv/excel-only-saved-one-sheet-when-i-exported-to-csv-where-are-my-other/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">CSV export keeps only the active sheet</div>
     <h1>Excel only saved one sheet when I exported to CSV — where are my other tabs?</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Saved a multi-tab workbook as CSV and only one sheet came out? CSV can only ever hold a single flat table, so Excel exports just the sheet you had open, with no warning. Here's where your other tabs actually went</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Your other tabs aren't lost — they're still in the .xlsx</h2>
+    <p>Saving as CSV never touches the source workbook. Open the original .xlsx file again and every tab you had before is exactly where you left it — the export process reads from the workbook, it doesn't modify or remove anything from it. What you're missing is only in the new CSV file, not in your data.</p>
+    <h2>Why CSV can only ever have one sheet</h2>
+    <p>A CSV file is nothing more than rows of comma-separated text — there is no header section, no metadata, no way to mark "this block of rows is Sheet2." The format simply has no vocabulary for a workbook with multiple tabs, so any tool writing a CSV from a multi-sheet source has to pick exactly one sheet to represent, and Excel's built-in exporter picks whichever sheet is currently active.</p>
+    <h2>Getting every sheet out as its own file</h2>
+    <p>Click each tab in turn, use Save As, choose CSV, and give each one a distinct filename before saving the next — Excel will happily let you overwrite the same filename repeatedly if you're not paying attention, which is the other common way people end up thinking a sheet "disappeared." If you need this done routinely rather than as a one-off, a tool or macro that loops through every sheet and exports each as its own CSV saves you the repetitive manual steps.</p>
 
   </div>
 

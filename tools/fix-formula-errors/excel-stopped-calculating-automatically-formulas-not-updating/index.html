@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Excel stopped calculating automatically — formulas not updating | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Formulas stopped updating when inputs change? Excel's calculation mode is probably set to Manual — here's how that happens and how to force a recalc.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Excel stopped calculating automatically — formulas not updating | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Formulas stopped updating when inputs change? Excel's calculation mode is probably set to Manual — here's how that happens and how to force a recalc.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-formula-errors/excel-stopped-calculating-automatically-formulas-not-updating/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Excel stopped calculating automatically — formulas not updating | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Formulas stopped updating when inputs change? Excel's calculation mode is probably set to Manual — here's how that happens and how to force a recalc.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-formula-errors/excel-stopped-calculating-automatically-formulas-not-updating/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Excel stopped calculating automatically \u2014 formulas not updating",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Excel has two calculation modes, Automatic and Manual, set at Formulas \u2192 Calculation Options. In Manual mode, formulas only recalculate when you explicitly trigger it \u2014 pressing F9, Shift+F9, Ctrl+Alt+F9, or saving the file. Calculation mode is stored inside the workbook file itself, and Excel applies whichever mode the most recently opened workbook specifies to the whole application, so opening a file someone else saved in Manual mode can silently switch your other open workbooks to Manual too." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/fix-formula-errors/excel-stopped-calculating-automatically-formulas-not-updating/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Calculation mode is set to Manual</div>
     <h1>Excel stopped calculating automatically — formulas not updating</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You change an input cell and the formula that depends on it doesn't move — not until you save the file, or press F9. That's not a bug in your formula. Excel's calculation mode for this workbook has been switched to Manual, and every dependent formula is frozen until you force a recalculation.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
+    <h2>How to tell this is what's happening</h2>
+    <p>Change a number in a clearly-referenced input cell — nothing recalculates immediately, though the status bar along the bottom may briefly show “Calculate” to indicate pending work. Open <strong>Formulas → Calculation Options</strong> and check whether Manual is selected instead of Automatic. If it is, you've found it.</p>
     <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <p>Calculation mode isn't an Excel-wide setting — it's saved inside each workbook, and it applies per Excel session across every open workbook, not per file. If you open a large model that someone deliberately set to Manual (often done to stop huge files from recalculating on every keystroke), Excel switches your whole session to Manual, including files you had open before that were previously calculating fine.</p>
+    <h2>Fixing it and forcing a recalculation</h2>
+    <p>Switch back with <strong>Formulas → Calculation Options → Automatic</strong>. If values still look stale immediately after switching, it's because Automatic mode only recalculates cells Excel thinks have changed since the last calculation — press <strong>Ctrl+Alt+F9</strong> to force a full recalculation of every formula in every open workbook, ignoring Excel's dependency cache. Use plain <strong>F9</strong> for a normal recalc of all open workbooks, or <strong>Shift+F9</strong> to recalculate only the active sheet.</p>
+    <h2>Making sure it doesn't happen again</h2>
+    <p>If you routinely receive files from someone else, check calculation mode right after opening any unfamiliar workbook, before you start relying on its numbers. Upload your file below to check its saved calculation mode and get a live recalculation of every formula, so you can see whether values were actually current before you go any further.</p>
 
   </div>
 

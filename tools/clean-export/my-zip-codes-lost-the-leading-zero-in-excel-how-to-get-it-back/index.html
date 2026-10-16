@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>My zip codes lost the leading zero in Excel — how to get it back | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Zip codes like 02138 showing as 2138 in Excel? The General number format silently drops leading zeros because Excel decided the column is numeric. Here's why, and how to get the zero back">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="My zip codes lost the leading zero in Excel — how to get it back | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Zip codes like 02138 showing as 2138 in Excel? The General number format silently drops leading zeros because Excel decided the column is numeric. Here's why, and how to get the zero back">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/my-zip-codes-lost-the-leading-zero-in-excel-how-to-get-it-back/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="My zip codes lost the leading zero in Excel — how to get it back | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Zip codes like 02138 showing as 2138 in Excel? The General number format silently drops leading zeros because Excel decided the column is numeric. Here's why, and how to get the zero back">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/my-zip-codes-lost-the-leading-zero-in-excel-how-to-get-it-back/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "My zip codes lost the leading zero in Excel \u2014 how to get it back",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Excel's default General format treats any cell that looks numeric as a number, and numbers have no leading zeros, so 02138 is stored and displayed as 2138. This happens the moment you type it into a General-formatted cell, or the moment a CSV import auto-detects the column as numeric. Formatting the column as Text, or applying a custom number format like 00000, before entering or importing the data keeps the zero." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/my-zip-codes-lost-the-leading-zero-in-excel-how-to-get-it-back/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Leading zero dropped from zip codes</div>
     <h1>My zip codes lost the leading zero in Excel — how to get it back</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Zip codes like 02138 showing as 2138 in Excel? The General number format silently drops leading zeros because Excel decided the column is numeric. Here's why, and how to get the zero back</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What Excel is actually doing to the value</h2>
+    <p>Under General format, Excel checks whether what you typed looks like a number, and if it does, it stores it as a true numeric value rather than as text. A true number in Excel — like in ordinary arithmetic — simply has no concept of a leading zero: 02138 and 2138 are the same quantity, so Excel keeps the one without the zero. This isn't a display glitch; the zero is genuinely not part of the stored value anymore.</p>
+    <h2>The two moments this happens</h2>
+    <p>It can happen the instant you type a zip code into a General-formatted cell — Excel converts it to a number on entry, before you've even pressed Enter on the next cell. It can also happen during a CSV import: Excel's importer inspects each column and, if every value looks numeric, converts the whole column to numbers on the way in, even if the source file had the zero written out as a plain character.</p>
+    <h2>How to get the zero back — and keep it</h2>
+    <p>If the zero is already gone from cells that are now storing real numbers, reformatting the column afterward won't restore missing digits — you need to re-enter or re-import the original zip codes into cells that are already prepared to receive them as text. Format the destination column as Text (Format Cells &gt; Text) before typing or pasting, or apply the custom number format <code>00000</code>, which pads a stored number back out to five digits for display and for anything reading the cell as text. For CSV re-imports, use Data &gt; Get Data / From Text and explicitly set that column's type to Text in the wizard rather than letting Excel auto-detect it. Note that a custom 00000 format only helps standard five-digit zips — it won't correctly represent a ZIP+4 code with a dash, which needs the Text approach instead.</p>
 
   </div>
 

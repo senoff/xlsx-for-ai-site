@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify created a new mystery location I didn&#x27;t want when I imported inventory | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Stock showing up at a Shopify location you didn't set up? It's usually a location-name mismatch in your inventory CSV's column headers, not a bug. Here's what causes it and how to check before you import.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Shopify created a new mystery location I didn&#x27;t want when I imported inventory | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Shopify's inventory CSV needs one quantity column per fulfillment location, and each header must match an existing Location name exactly. A typo, different capitalization, or a template built for another store can send quantities somewhere unexpected.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-created-a-new-mystery-location-i-didn-t-want-when-i-imported/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Shopify created a new mystery location I didn&#x27;t want when I imported inventory | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="A mismatched location-name header in your Shopify inventory CSV can send stock somewhere you didn't set up. Here's how to verify your location names before importing.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-created-a-new-mystery-location-i-didn-t-want-when-i-imported/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Shopify created a new mystery location I didn't want when I imported inventory",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's inventory CSV has one quantity column per fulfillment location, and each column's header must exactly match the name of a Location already set up in Settings \u2192 Locations. If a header in your file doesn't match any existing location name \u2014 because of a typo, different capitalization, a trailing space, or because the headers came from a different store's export or an older template \u2014 the importer can't reliably attribute that column's quantities to the location you intended. The visible result is stock appearing at, or tracked under, an unfamiliar location rather than the one you meant to update, with no error shown during import." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-created-a-new-mystery-location-i-didn-t-want-when-i-imported/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Inventory landed at the wrong location — no error</div>
     <h1>Shopify created a new mystery location I didn&#x27;t want when I imported inventory</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You imported an inventory update and now there's stock sitting at a location you don't remember creating, while the location you meant to update didn't change. Shopify's inventory CSV assigns quantities by matching your file's location column headers against the Locations already configured in your store — and that match has to be exact. Drop your file into the free checker below to confirm your headers line up with real locations before you import again.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,22 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>You open Products → Inventory after an import and there's a location listed that you don't recognize, carrying stock you meant to put somewhere else — while the location you actually wanted to update still shows the old numbers. Nothing in the import flow flagged this; the file uploaded and Shopify reported success.</p>
+
+    <h2>The root cause: location names are matched by header text</h2>
+    <p>Shopify's inventory CSV format reserves one column per fulfillment location for that location's quantity, and the header of each of those columns is expected to be the literal name of a Location as it's configured in your store, under <strong>Settings → Locations</strong>. When you build or edit that file in Excel or Google Sheets, the header row is just text like any other cell — nothing stops you from typing, pasting, or autocorrecting it into something that no longer matches a real Location name character-for-character.</p>
+    <p>The precise internal handling of a header that doesn't match an existing location isn't something to overstate here, so treat it plainly: the importer can't confidently attribute that column's quantities to the location you meant. The result merchants consistently report is stock landing at, or being tracked under, an unfamiliar location rather than the one they expected — not a rejected file, just a quiet mismatch.</p>
+
+    <h2>How this typically gets introduced</h2>
+    <ul>
+      <li>Retyping location headers by hand instead of copying them, introducing a typo or different capitalization.</li>
+      <li>Reusing a template file that was originally built for a different store, or pulled from an older export, where the location names don't match your current store's setup.</li>
+      <li>A trailing space picked up from copy-pasting a location name out of an email, a doc, or a prior spreadsheet.</li>
+    </ul>
+
+    <h2>How to check before you import</h2>
+    <p>Before importing, open Settings → Locations in your Shopify admin and copy the exact location name(s) as Shopify has them stored — don't retype them. Use those exact strings as the column headers in your inventory CSV. After importing, check Products → Inventory, filtered or grouped by location, to confirm quantities landed where you expected rather than assuming success from the "import complete" message alone. The checker above will also flag columns whose header text doesn't look like it corresponds to a location you're using.</p>
 
   </div>
 

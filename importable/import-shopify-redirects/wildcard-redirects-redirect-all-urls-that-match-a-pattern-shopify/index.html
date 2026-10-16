@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Wildcard redirects — redirect all URLs that match a pattern (Shopify limitation) | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify's native URL redirects match exact, literal paths only — there's no wildcard or pattern syntax. Redirecting an entire old section requires listing every individual URL as its own row.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Wildcard redirects — redirect all URLs that match a pattern (Shopify limitation) | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Shopify's native URL redirects match exact, literal paths only — there's no wildcard or pattern syntax. Redirecting an entire old section requires listing every individual URL as its own row.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-redirects/wildcard-redirects-redirect-all-urls-that-match-a-pattern-shopify/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Wildcard redirects — redirect all URLs that match a pattern (Shopify limitation) | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Shopify's native URL redirects match exact, literal paths only — there's no wildcard or pattern syntax. Redirecting an entire old section requires listing every individual URL as its own row.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-redirects/wildcard-redirects-redirect-all-urls-that-match-a-pattern-shopify/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Wildcard redirects \u2014 redirect all URLs that match a pattern (Shopify limitation)",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "No \u2014 Shopify's built-in URL Redirects tool (and its CSV import) only supports exact, literal path matches. There's no asterisk, regex, or prefix-matching syntax for \u2018redirect everything under /old-collection/ to /new-collection/\u2019 in one rule. If you need that behavior, the practical workaround is generating one explicit redirect row per old URL \u2014 which a spreadsheet handles well for hundreds of rows \u2014 or using a third-party redirect app that adds pattern matching on top of Shopify." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-redirects/wildcard-redirects-redirect-all-urls-that-match-a-pattern-shopify/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Shopify URL redirects — no wildcard matching</div>
     <h1>Wildcard redirects — redirect all URLs that match a pattern (Shopify limitation)</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You want everything under an old path to forward to one new place, in a single rule. Shopify's built-in redirects don't support that — every "Redirect from" is an exact, literal path, not a pattern or a wildcard. Here's what that means for a bulk URL change, and how to still get it done from a spreadsheet.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why there's no wildcard option</h2>
+    <p>Shopify's URL Redirects feature — in the admin UI and in its CSV import — treats every "Redirect from" value as a literal string to match against the incoming request path. There's no support for <code>/old-blog/*</code>, regular expressions, or prefix matching that would catch every URL under a given path in one rule. This is a genuine platform limitation, not a setup mistake: you can't configure your way around it within Shopify's native tool.</p>
+
+    <h2>What this means for a bulk URL change</h2>
+    <p>If you're retiring an entire old blog, a discontinued collection structure, or a whole subfolder of pages, you can't write one rule and be done. Each individual old URL that should redirect needs its own row, with its own specific destination — even if every one of them is going to the same new landing page. For a few dozen URLs this is tedious by hand; for a few hundred, it's the difference between a spreadsheet job and a manual one.</p>
+
+    <h2>How to build the list without doing it one by one</h2>
+    <p>Pull the full list of old URLs — from an old sitemap, a crawl export, or Google Search Console's list of URLs that now 404 — into one column, and put the single destination URL in a second column for every row. That's exactly the shape Shopify's redirect import expects: one "Redirect from" / "Redirect to" pair per row, however many old URLs are mapping to the same new page.</p>
+
+    <h2>If you truly need pattern matching</h2>
+    <p>A handful of Shopify apps add prefix or wildcard redirect rules on top of the platform for cases where the URL structure is genuinely unpredictable (user-generated paths, for example). For most store migrations, though, the URL list is finite and knowable — upload it above and it'll be formatted into the row-per-URL shape Shopify's importer needs.</p>
 
   </div>
 

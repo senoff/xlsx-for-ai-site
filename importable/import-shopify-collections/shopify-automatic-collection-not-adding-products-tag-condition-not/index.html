@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify Automatic Collection Not Adding Products — Tag Condition Not Working | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="A product has the right tag, but your automated collection still won&#x27;t add it. The rule matches the literal Tags field — a stray space, a casing mismatch, or a semicolon from a spreadsheet import can all break the match with no error shown.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Shopify Automatic Collection Not Adding Products — Tag Condition Not Working | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="A product has the right tag, but your automated collection still won&#x27;t add it. The rule matches the literal Tags field — a stray space, casing mismatch, or a semicolon from a spreadsheet import can break the match silently.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-collections/shopify-automatic-collection-not-adding-products-tag-condition-not/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Shopify Automatic Collection Not Adding Products — Tag Condition Not Working | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Tag looks right, but the automated collection rule still won&#x27;t add the product. Here&#x27;s why the match is stricter than it looks — and how to check it.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-collections/shopify-automatic-collection-not-adding-products-tag-condition-not/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Shopify Automatic Collection Not Adding Products \u2014 Tag Condition Not Working",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's automated collection rule matches your tag condition against the literal Tags field on the product \u2014 a comma-separated string, compared exactly as saved. A leading space, a casing difference (\u201csummer\u201d vs \u201cSummer\u201d), or tags that got joined with semicolons or pipes instead of commas during a spreadsheet import can all produce a value that looks right but doesn't match. A collection whose rule is set to match \u201call\u201d conditions instead of \u201cany\u201d (or the reverse) will also silently exclude products that only satisfy some of the conditions." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-collections/shopify-automatic-collection-not-adding-products-tag-condition-not/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Tag condition — matching the literal string, not what you meant</div>
     <h1>Shopify Automatic Collection Not Adding Products — Tag Condition Not Working</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">The tag is right there on the product. The collection rule says it should match. Nothing gets added — no error, no warning, nothing in the collection's status. The free checker below reads your product tags the same literal way Shopify's rule engine does, so you can catch the mismatch before you go looking for it product by product.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,18 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>You add a tag to a product — either by hand in the admin or through a bulk edit — and the product still doesn't show up in the automated collection whose rule is supposedly built around that exact tag. The collection page doesn't show an error and Shopify never tells you a condition failed to match. It just quietly doesn't add the product, and everything else about the store looks fine.</p>
+
+    <h2>The root cause: exact-string matching, not "close enough"</h2>
+    <p>An automated collection's tag condition ("Product tag is equal to X") is evaluated against the literal value stored in the product's <strong>Tags</strong> field — a single comma-separated string, compared character for character. Shopify does not trim whitespace or normalize case before comparing. That means a tag saved as <code>" Summer"</code> (with a leading space) or <code>"summer"</code> will not satisfy a condition written as <code>Summer</code>, even though it reads the same to a human glancing at the product page.</p>
+
+    <h2>How a spreadsheet import creates this exact problem</h2>
+    <p>If tags were built in Excel or Google Sheets and then pasted or imported into a product's Tags field, the delimiter used in the spreadsheet matters. Shopify's product import expects tags separated by commas. If your source data used semicolons or pipes instead — a common pattern when tags were concatenated from multiple columns with a formula — Shopify can read the entire string as <strong>one tag</strong> (for example <code>"Summer;Sale"</code>) rather than two separate tags (<code>"Summer"</code> and <code>"Sale"</code>). Neither the "Summer" condition nor the "Sale" condition will match, because neither tag actually exists on its own — only the combined string does. Trailing spaces introduced by a spreadsheet's autocomplete or a copy-paste from a merged cell cause the same failure.</p>
+    <p>A second, unrelated cause is rule logic rather than tag formatting: if the automated collection has more than one condition and is set to match <strong>all</strong> conditions rather than <strong>any</strong> of them (or the reverse of what you intended), products that satisfy only some of the conditions will never be added — which looks identical to "the tag isn't working" from the outside.</p>
+
+    <h2>How to check it</h2>
+    <p>Open the product in Shopify admin and look at the Tags field exactly as saved — not as you typed it in the source spreadsheet — for a leading/trailing space or unexpected casing. Then open the collection's rule builder and confirm both the exact tag text and whether it's set to match "all" or "any" conditions. The free checker above reads your spreadsheet's tag column the same literal way Shopify does, so you can see delimiter and whitespace problems before they reach a product record.</p>
 
   </div>
 

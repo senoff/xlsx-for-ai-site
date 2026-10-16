@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Products imported as drafts — hidden from store after upload | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Products imported fine but aren&#x27;t showing on your storefront? Check the Published or Status column in your CSV — a blank, FALSE, or missing value imports products as invisible drafts. Free checker included.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Products imported as drafts — hidden from store after upload | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="A Shopify products CSV has a Published or Status column that controls storefront visibility. Leave it blank, set it to FALSE, or omit it, and the import succeeds but the product lands as an invisible draft. Here&#x27;s exactly what to check, plus the sales-channel wrinkle that trips people up next.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/fix-shopify-products/products-imported-as-drafts-hidden-from-store-after-upload/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Products imported as drafts — hidden from store after upload | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Blank or FALSE in the Published/Status column imports products as invisible drafts. Here&#x27;s what to check and fix.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/fix-shopify-products/products-imported-as-drafts-hidden-from-store-after-upload/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Products imported as drafts \u2014 hidden from store after upload",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's product CSV has a Published column (TRUE/FALSE in the older export format) or a Status column (active/draft/archived in the current format). If that column is blank, set to FALSE or 'draft', or simply omitted from the file entirely, the product imports without any error but sits in the store as a draft, invisible to customers. Even a product marked active also needs to be available on the Online Store sales channel, which a bulk import doesn't automatically grant to new products. Check Admin \u2192 Products filtered by 'Draft' after any import to catch these." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/fix-shopify-products/products-imported-as-drafts-hidden-from-store-after-upload/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">The Published/Status column decided this, not Shopify</div>
     <h1>Products imported as drafts — hidden from store after upload</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">The import said it worked, and technically it did — the products exist in your Shopify admin. They just aren't visible anywhere on your actual storefront. That's almost always the Published or Status column in your CSV, not a real import failure. Drop your file in below and the free checker will flag every row that's set to land as a hidden draft before you upload it.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,20 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>The import finishes with no error. The products show up in your Shopify admin product list, and if you open one it looks basically fine. But your storefront doesn't show it, it's excluded from collections and search, and customers can't find it by browsing. Open the product in the admin and look near the top: it'll say <strong>Draft</strong> instead of <strong>Active</strong>.</p>
+
+    <h2>The root cause: the Published and Status columns</h2>
+    <p>Shopify's products CSV controls storefront visibility through one of two columns depending on the export format. Older-style exports use a <strong>Published</strong> column holding <code>TRUE</code> or <code>FALSE</code>. Newer exports use a <strong>Status</strong> column holding <code>active</code>, <code>draft</code>, or <code>archived</code>. If that column is blank, explicitly set to <code>FALSE</code> or <code>draft</code>, or — importantly — simply left out of your CSV entirely, Shopify treats new products as unpublished by default. The import doesn't fail or warn you; it just creates a correctly-formed product that happens to be a draft.</p>
+
+    <h2>A spreadsheet wrinkle worth checking</h2>
+    <p>Boolean-looking columns don't always survive a spreadsheet round-trip cleanly. A column with a mix of <code>TRUE</code>, <code>True</code>, <code>true</code>, or blank cells across different rows — common after copying data from multiple sources or exports — doesn't reliably get read as the same value by Shopify's importer every time. If some rows published correctly and others didn't, inconsistent capitalization or stray blanks in that column is a likely culprit worth checking before you blame anything else.</p>
+
+    <h2>A second wrinkle: sales channels</h2>
+    <p>Even after a product's Status is correctly set to Active, Shopify tracks availability separately per <strong>sales channel</strong> — Online Store, POS, and any others you have connected. A bulk product import does not automatically add newly created products to every sales channel; a product can be fully "Active" and still be missing from the Online Store channel specifically, which produces the exact same symptom of an active-looking product that customers can't find.</p>
+
+    <h2>How to check and fix it</h2>
+    <p>Before importing, confirm every row has the Published or Status column set the way you intend — use the checker above to catch blank or draft-valued rows across the whole file at once. After any import, go to Admin → Products and filter by <strong>Draft</strong> to see everything that landed there, whether from this cause or something else. Bulk-select and publish the ones that should be live, then double-check the Online Store channel is enabled for that batch of products.</p>
 
   </div>
 

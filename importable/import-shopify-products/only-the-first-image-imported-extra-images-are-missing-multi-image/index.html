@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>&quot;Only the first image imported, extra images are missing&quot; — multi-image row structure | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Shopify's product CSV allows one image URL per row. If extra photos are packed into a single cell instead of added as separate rows, only the first image imports and the rest are silently dropped.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="&quot;Only the first image imported, extra images are missing&quot; — multi-image row structure | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Shopify's product CSV allows one image URL per row. If extra photos are packed into a single cell instead of added as separate rows, only the first image imports and the rest are silently dropped.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-products/only-the-first-image-imported-extra-images-are-missing-multi-image/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="&quot;Only the first image imported, extra images are missing&quot; — multi-image row structure | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Shopify's product CSV allows one image URL per row. If extra photos are packed into a single cell instead of added as separate rows, only the first image imports and the rest are silently dropped.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-products/only-the-first-image-imported-extra-images-are-missing-multi-image/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "\"Only the first image imported, extra images are missing\" \u2014 multi-image row structure",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's product CSV allows exactly one image URL per row, in the Image Src column. Extra photos for the same product need their own additional row underneath \u2014 same Handle, every other column left blank, just a new URL in Image Src. If all your image URLs were typed into one cell (comma-separated, or stacked in extra columns like \u2018Image Src 2\u2019), Shopify only reads the first one on the product's main row. There's no error for this \u2014 the import just quietly imports one photo per product." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-products/only-the-first-image-imported-extra-images-are-missing-multi-image/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Shopify product import — multi-image rows</div>
     <h1>&quot;Only the first image imported, extra images are missing&quot; — multi-image row structure</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Your product landed with one photo, and the rest never showed up — no error, no warning email. This almost always comes down to how the extra image URLs were placed in the spreadsheet. Shopify's CSV wants one image per <em>row</em>, not several stacked into one cell or column. Drop your file in below to see which products are missing their image rows.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,20 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What actually happened to your images</h2>
+    <p>Shopify's product import CSV has a single <strong>Image Src</strong> column, and it accepts exactly one image URL per row. The first image imports fine because it rides along on the product's main row — the same row that carries Title, Vendor, Type, and the first variant. Every additional photo needs its own row underneath, with the <strong>same Handle</strong> as the product and almost every other column left blank — Title, Body (HTML), Vendor and the rest only need values on that first row.</p>
+
+    <p>If the extra image URLs never got their own rows — because they were typed into the same cell separated by commas, or added in extra columns like <code>Image Src 2</code> and <code>Image Src 3</code> that Shopify's importer doesn't recognize — the importer sees one valid image and nothing else to do with the rest of that cell's text.</p>
+
+    <h2>Why this doesn't throw an error</h2>
+    <p>Shopify validates that Image Src is either blank or looks like a single reachable URL. A comma-separated string of three URLs technically still "looks like" a URL up to the first comma, or fails silently as an unreachable link and gets skipped — either way, nothing in the import summary tells you a product was supposed to have four photos and got one. The product itself imports as a success.</p>
+
+    <h2>How to structure multi-image rows correctly</h2>
+    <p>For a product with three photos, your CSV needs three rows that share one Handle:</p>
+    <p><code>blue-mug, Blue Mug, ..., Image Src: mug-front.jpg</code><br>
+    <code>blue-mug, (blank), (blank)..., Image Src: mug-side.jpg</code><br>
+    <code>blue-mug, (blank), (blank)..., Image Src: mug-back.jpg</code></p>
+    <p>The optional <strong>Image Position</strong> column controls display order if you need it to differ from row order. Upload your file above and the checker will flag any Handle that has more image URLs bundled into one cell than it has actual image rows, so you know exactly which products need extra rows added before you import again.</p>
 
   </div>
 

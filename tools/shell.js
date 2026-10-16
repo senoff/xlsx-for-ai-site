@@ -33,14 +33,93 @@
 
   var API = "https://api.xlsx-for-ai.dev";
   var KEY_STORE = "xfa_web_key";
-  var MAX_BYTES = 10 * 1024 * 1024; // FREE_TIER_MAX_FILE_BYTES on the server
+  // This page's own browser-side ceiling. It is a choice made here, LOWER than the
+  // server's: the service itself takes .xlsx 100 MB, .csv 200 MB, .xls 100 MB,
+  // .xlsb 10 MB, other 10 MB, the same for everyone, and no plan changes that.
+  var MAX_BYTES = 10 * 1024 * 1024;
+  var LIMITS_TEXT = ".xlsx 100 MB, .csv 200 MB, .xls 100 MB, .xlsb 10 MB, other types 10 MB";
+  // The only places an error may link to (renderError writes an href from these).
+  var LARGE_FILES_HREF = "/large-files/";
+  var DEV_HREF = "/developers/";
+  var SUPPORT_HREF = "mailto:support@xlsx-for-ai.dev";
   var TIMEOUT_MS = 90000;           // formula eval on a big workbook can be slow
   var MAX_GRID_ROWS = 500;          // preview-grid DOM ceiling (XLS-217)
   var XFETCH_MAX_ATTEMPTS = 3;      // total xfetch tries (1 + 2 retries) — XLS-227
   var XFETCH_RETRY_BASE_MS = 300;   // exponential backoff base: 300ms, 600ms
 
-  function XfaError(message) { this.name = "XfaError"; this.message = message; }
+  // href/linkText (optional) become a link under the error text, so a failure the
+  // visitor can see always carries a next step that works from this page.
+  function XfaError(message, href, linkText) {
+    this.name = "XfaError"; this.message = message;
+    this.href = href || null; this.linkText = linkText || null;
+  }
   XfaError.prototype = Object.create(Error.prototype);
+
+  // The server's own reason, from the error body ({error:{message}} or a flat
+  // {message}); "" when it sent none. A bare error code is not a reason.
+  function serverReason(r) {
+    return r.text().then(function (t) {
+      var j = null;
+      try { j = JSON.parse(t); } catch (_) { j = null; }
+      var m = j && ((j.error && typeof j.error === "object" && j.error.message) || j.message);
+      return (typeof m === "string" && m.trim()) ? m.trim().slice(0, 600) : "";
+    }, function () { return ""; });
+  }
+  function retryAfterSeconds(r) {
+    var h = r.headers && r.headers.get ? r.headers.get("Retry-After") : null;
+    var n = h ? parseInt(h, 10) : NaN;
+    return (isFinite(n) && n > 0) ? n : 0;
+  }
+  function humanWait(s) {
+    if (s < 90) return s + " second" + (s === 1 ? "" : "s");
+    if (s < 5400) return Math.ceil(s / 60) + " minutes";
+    return Math.ceil(s / 3600) + " hours";
+  }
+  function tooLargeError(reason) {
+    return new XfaError(
+      (reason || "That file is over the size limit for its type (" + LIMITS_TEXT + ").") +
+      " Split it into smaller files or save it as .csv, then try again.",
+      LARGE_FILES_HREF, "What to do with a larger file");
+  }
+
+  // Registration refused or failed: say what happened and a step that works here.
+  function registrationFailure(r) {
+    return serverReason(r).then(function (reason) {
+      var s = r.status;
+      if (s === 401) {
+        throw new XfaError("This page needs you to sign in, and sign-in is not available on this page yet, so trying again will not help. You can still use xlsx-for-ai through the API, the npm package or the assistant connector.", DEV_HREF, "How to connect (developers page)");
+      }
+      if (s === 429) {
+        var w = retryAfterSeconds(r);
+        throw new XfaError("Too many sessions have been started from your network address recently. " +
+          (w ? "Try again in about " + humanWait(w) + "." : "Try again in up to an hour.") +
+          " Or use the API or the assistant connector, which do not need this page.", DEV_HREF, "Developers page");
+      }
+      if (s >= 500) {
+        throw new XfaError("Our service had a problem starting your session (it answered " + s + "), and a few automatic retries did not clear it. Wait a minute and drop your file again. If it keeps happening, email us.", SUPPORT_HREF, "Email support@xlsx-for-ai.dev");
+      }
+      throw new XfaError((reason || "The service would not start a session (status " + s + ").") + " You can still use xlsx-for-ai through the API or the assistant connector.", DEV_HREF, "Developers page");
+    });
+  }
+
+  // A tool call that came back not-ok: show the server's own reason.
+  function toolFailure(r) {
+    return serverReason(r).then(function (reason) {
+      var s = r.status;
+      if (s === 413) throw tooLargeError(reason);
+      if (s === 429) {
+        var w = retryAfterSeconds(r);
+        throw new XfaError(w ? "Too many requests right now. Try again in about " + humanWait(w) + "." : (reason || "Too many requests right now. Wait a little and try again."));
+      }
+      if (s >= 500) {
+        throw new XfaError((reason || "Our service had a problem processing that file.") + " Wait a minute and try again. If it keeps happening, email us.", SUPPORT_HREF, "Email support@xlsx-for-ai.dev");
+      }
+      if (s === 401) {
+        throw new XfaError(reason || "The service did not accept this session. Reload the page and try again.");
+      }
+      throw new XfaError(reason || "The tool couldn’t process that file (status " + s + "). Check that it opens in Excel, or save it again as .xlsx or .csv and try again.");
+    });
+  }
 
   // fetch with an AbortController deadline so a hung request can't spin the UI
   // forever, plus a small transient-retry (XLS-227): a network glitch or a 5xx
@@ -124,10 +203,10 @@
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ client_version: "web-tools-1.0", platform: "web" })
     }).then(function (r) {
-      if (!r.ok) throw new XfaError("Couldn't start a session. Please try again in a moment.");
+      if (!r.ok) return registrationFailure(r);
       return r.json();
     }).then(function (j) {
-      if (!j || !j.api_key) throw new XfaError("Couldn't start a session. Please try again in a moment.");
+      if (!j || !j.api_key) throw new XfaError("The service answered without a key, so the session could not start. Wait a minute and try again. If it keeps happening, email us.", SUPPORT_HREF, "Email support@xlsx-for-ai.dev");
       try { localStorage.setItem(KEY_STORE, j.api_key); } catch (_) { /* private mode: fall back to memory */ }
       _memKey = j.api_key;
       return j.api_key;
@@ -165,9 +244,7 @@
       });
     }).then(function (r) {
       if (r.status === 401 && !_retried) { clearKey(); return runTool(name, body, true); }
-      if (r.status === 413) throw new XfaError("That file is over the 10 MB limit for the free web tool.");
-      if (r.status === 429) throw new XfaError("Too many requests right now — give it a minute and try again.");
-      if (!r.ok) throw new XfaError("The tool couldn't process that file (error " + r.status + ").");
+      if (!r.ok) return toolFailure(r);
       return r.json();
     });
   }
@@ -252,7 +329,7 @@
     var panel = document.querySelector(selector);
     if (!panel) return;
     var accept = cfg.accept || ".xlsx";
-    var maxB = cfg.maxBytes || MAX_BYTES;
+    var maxB = MAX_BYTES;
     // Accepted upload extensions (lowercase, no dot). Default .xlsx-only; a page
     // can widen it — the Shopify import pages take a .csv or .xlsx source file.
     var exts = (cfg.extensions && cfg.extensions.length) ? cfg.extensions : ["xlsx"];
@@ -278,6 +355,19 @@
 
     function validXlsx(name) { return extRe.test(name || ""); }
 
+    function mbOf(bytes) { return Math.round(bytes / (1024 * 1024)); }
+    // Plain statement of the page's own ceiling vs. the service's, with the route
+    // for bigger files. Static text; no user input.
+    function sizeNote() {
+      return '<div class="reassure">This page takes files up to ' + mbOf(maxB) + ' MB. The service itself takes larger ones (' +
+        esc(LIMITS_TEXT) + '); for those, use the API or the assistant connector. <a href="' + LARGE_FILES_HREF + '">Options for larger files</a>.</div>';
+    }
+    function overPageLimit(name) {
+      return new XfaError("“" + name + "” is over the " + mbOf(maxB) + " MB this page accepts. The service itself takes larger files (" +
+        LIMITS_TEXT + "), so use the API or the assistant connector for it, or split it into smaller files.",
+        LARGE_FILES_HREF, "Options for larger files");
+    }
+
     // Attach picker + drag/drop wiring to a dropzone element, routing the
     // chosen file to onFile. Shared by both the single and dual paths.
     function wireDrop(drop, onFile) {
@@ -299,10 +389,11 @@
         '<div class="dropzone" id="xfa-drop" role="button" tabindex="0" aria-label="Choose a spreadsheet">' +
           '<div class="icon">↑</div>' +
           '<div class="big">Drop your spreadsheet here</div>' +
-          '<div class="small">or <span class="pick">choose a file</span> · ' + esc(extLabel()) + ' up to 10 MB</div>' +
+          '<div class="small">or <span class="pick">choose a file</span> · ' + esc(extLabel()) + ' up to ' + mbOf(maxB) + ' MB on this page</div>' +
           '<input type="file" id="xfa-file" accept="' + esc(accept) + '" />' +
         '</div>' +
-        '<div class="reassure">' + esc(reassure(cfg.reassure)) + '</div>';
+        '<div class="reassure">' + esc(reassure(cfg.reassure)) + '</div>' +
+        sizeNote();
       wireDrop(panel.querySelector("#xfa-drop"), start);
     }
 
@@ -334,6 +425,7 @@
       panel.innerHTML =
         '<div class="dual">' + dualZone("xfa-drop-a", labelA) + dualZone("xfa-drop-b", labelB) + '</div>' +
         '<div class="reassure">' + esc(reassure(cfg.reassure, "Your files are processed in memory and never stored.")) + '</div>' +
+        sizeNote() +
         '<div class="actions"><button class="btn primary" id="xfa-compare" disabled>' + esc(cfg.actionLabel || "Compare") + '</button></div>';
       var dropA = panel.querySelector("#xfa-drop-a");
       var dropB = panel.querySelector("#xfa-drop-b");
@@ -364,9 +456,13 @@
       if (m) m.textContent = state === "done" ? "✓" : (state === "on" ? "→" : "·");
     }
 
-    function renderError(message) {
+    // err (optional XfaError) may carry a next-step link; href is only ever one of
+    // the constants above, never page or server text.
+    function renderError(message, err) {
+      var link = (err && err.href && err.linkText)
+        ? ' <a href="' + esc(err.href) + '">' + esc(err.linkText) + '</a>' : "";
       panel.innerHTML =
-        '<div class="notice err"><b>Couldn’t finish.</b> ' + esc(message) + '</div>' +
+        '<div class="notice err"><b>Couldn’t finish.</b> ' + esc(message) + link + '</div>' +
         '<div class="actions"><button class="btn primary" id="xfa-retry">Try another file</button></div>';
       panel.querySelector("#xfa-retry").addEventListener("click", renderIdle);
     }
@@ -609,7 +705,7 @@
         }).then(function (vm) {
           renderResult(vm || {});
         }).catch(function (err) {
-          renderError(err && err.message ? err.message : "Something went wrong. Please try again.");
+          renderError(err && err.message ? err.message : "Something went wrong. Please try again.", err);
         });
       });
     }
@@ -625,20 +721,20 @@
         var fields = cfg.buildForm ? cfg.buildForm(lastDiscovered, {}) : [];
         renderParams(fields, b64, name);
       }).catch(function (err) {
-        renderError(err && err.message ? err.message : "Couldn’t read that file. Please try again.");
+        renderError(err && err.message ? err.message : "Couldn’t read that file. Please try again.", err);
       });
     }
 
     function start(file) {
       var name = file.name || "workbook.xlsx";
       if (!extRe.test(name)) { renderError("This tool reads " + extLabel() + " files. Please choose a " + extLabel() + " file."); return; }
-      if (file.size > (cfg.maxBytes || MAX_BYTES)) { renderError("That file is over the 10 MB limit for the free web tool."); return; }
+      if (file.size > maxB) { var oe = overPageLimit(name); renderError(oe.message, oe); return; }
       renderRunning(name);
       fileToBase64(file).then(function (b64) {
         if (params) return startParams(name, b64);
         return cfg.process(b64, toolApi(name)).then(function (vm) { renderResult(vm || {}); });
       }).catch(function (err) {
-        renderError(err && err.message ? err.message : "Something went wrong. Please try again.");
+        renderError(err && err.message ? err.message : "Something went wrong. Please try again.", err);
       });
     }
 
@@ -651,7 +747,7 @@
       for (var i = 0; i < pair.length; i++) {
         var f = pair[i].f, nm = f.name || "workbook.xlsx";
         if (!validXlsx(nm)) { renderError("Both files must be Excel .xlsx workbooks. “" + nm + "” isn’t one."); return; }
-        if (f.size > maxB) { renderError("“" + nm + "” is over the 10 MB limit for the free web tool."); return; }
+        if (f.size > maxB) { var oe = overPageLimit(nm); renderError(oe.message, oe); return; }
       }
       renderRunning((a.name || "file A") + "  ↔  " + (b.name || "file B"));
       Promise.all([fileToBase64(a), fileToBase64(b)]).then(function (b64s) {
@@ -662,7 +758,7 @@
       }).then(function (vm) {
         renderResult(vm || {});
       }).catch(function (err) {
-        renderError(err && err.message ? err.message : "Something went wrong. Please try again.");
+        renderError(err && err.message ? err.message : "Something went wrong. Please try again.", err);
       });
     }
 

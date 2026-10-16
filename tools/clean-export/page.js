@@ -15,9 +15,8 @@
  *      Cleaned bytes come back as _meta.file_b64 (base64 .xlsx) ONLY when at
  *      least one fix was applied; a file with nothing safe to fix returns a
  *      null file_b64, which we render as "nothing to clean / left for review".
- *   3. xlsx_validate      — cross-engine check on the CLEANED bytes (the
- *      "after" confirmation): engines_agree === true means two independent
- *      engines open the result identically.
+ *   3. xlsx_validate      — open check on the CLEANED bytes (the "after"
+ *      confirmation) with the server's own engine.
  *
  * Read-only for the source: this produces a NEW file and never touches the
  * uploaded workbook.
@@ -258,9 +257,6 @@
         ]);
       }
     });
-    if (ctx.valMeta && ctx.valMeta.engines_agree === true) {
-      kept.push("Double-checked the cleaned file opens the same in two independent spreadsheet engines.");
-    }
     kept.push("Didn’t store your file — it’s read in memory and discarded.");
     if (healthNotes.length > 0) {
       kept.push(healthLine(healthNotes));

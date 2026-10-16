@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Non-breaking spaces hiding in my Excel data — why TRIM doesn&#x27;t work | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="TRIM() isn't fixing your spacing problem because the character isn't a regular space — it's a non-breaking space, invisible and untouched by TRIM. Here's how to actually remove it">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Non-breaking spaces hiding in my Excel data — why TRIM doesn&#x27;t work | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="TRIM() isn't fixing your spacing problem because the character isn't a regular space — it's a non-breaking space, invisible and untouched by TRIM. Here's how to actually remove it">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/non-breaking-spaces-hiding-in-my-excel-data-why-trim-doesn-t-work/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Non-breaking spaces hiding in my Excel data — why TRIM doesn&#x27;t work | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="TRIM() isn't fixing your spacing problem because the character isn't a regular space — it's a non-breaking space, invisible and untouched by TRIM. Here's how to actually remove it">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/non-breaking-spaces-hiding-in-my-excel-data-why-trim-doesn-t-work/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Non-breaking spaces hiding in my Excel data \u2014 why TRIM doesn't work",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "TRIM() in Excel and Google Sheets only strips the standard space character, Unicode code point 32, along with extra runs of it. A non-breaking space is a different character entirely, Unicode code point 160, commonly pasted in from web pages that use it to keep text from wrapping. TRIM does not recognize it, so it stays in the cell and keeps exact-match formulas from lining up. You have to substitute it out explicitly before trimming." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/non-breaking-spaces-hiding-in-my-excel-data-why-trim-doesn-t-work/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Non-breaking spaces — invisible to TRIM</div>
     <h1>Non-breaking spaces hiding in my Excel data — why TRIM doesn&#x27;t work</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">TRIM() isn't fixing your spacing problem because the character isn't a regular space — it's a non-breaking space, invisible and untouched by TRIM. Here's how to actually remove it</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>Why TRIM looks like it's doing nothing</h2>
+    <p>TRIM was designed to clean up ordinary typing mistakes — extra spaces from double-tapping the spacebar, or a stray space left at the end of a cell. It was never built to recognize every kind of whitespace-like character in Unicode, and a non-breaking space is exactly that: a different character with a different code point that happens to render as blank, so the cell looks identical to a normal one whether or not TRIM has run.</p>
+    <h2>Where non-breaking spaces come from</h2>
+    <p>The most common source is copying data out of a web page — many sites insert a non-breaking space between words or numbers specifically so browsers won't wrap a line in the wrong place, and that character comes along for the ride when you paste into Excel. Some point-of-sale and ERP system exports do the same thing, and a handful of PDF-to-spreadsheet converters introduce it as an artifact of how they reconstruct text layout.</p>
+    <h2>The fix: substitute it out, then trim</h2>
+    <p>The reliable formula is <code>=TRIM(SUBSTITUTE(A2,CHAR(160)," "))</code> — SUBSTITUTE swaps every non-breaking space (character code 160) for a regular space first, and then TRIM can do its normal job of collapsing and removing them. It's worth knowing that CLEAN() won't help here either: CLEAN only removes the first 32 non-printable control characters, and a non-breaking space at code 160 is outside that range entirely, so it passes straight through CLEAN untouched as well.</p>
 
   </div>
 

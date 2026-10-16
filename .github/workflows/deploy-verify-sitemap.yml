@@ -61,3 +61,20 @@ jobs:
         run: node scripts/dod-deploy-verify-sitemap.mjs
         env:
           BASE_URL: https://xlsx-for-ai.dev
+
+      # XLS-1213 publish-gate (option 1) + drift monitor (option 3), the POST-DEPLOY
+      # live arms of the deploy-ordering gate. The site/server seam that caused the
+      # 2026-08-30 outage: a spoke page went 200-live while prod api did NOT carry
+      # its POST /api/v1/tools/<tool> (404). Here — after publish, and every 6h —
+      # for every tool a live page references we assert the route answers non-404,
+      # and we ALERT if prod's build_sha serves a surface a live page front-runs.
+      # This is the deploy-COUPLED counterpart to the pre-merge --map-only arm; it
+      # belongs here (post-deploy), never in build-validate, so a PR's green is
+      # never hostage to prod's deploy state.
+      - name: Prove the publish-gate can still fail (self-test)
+        run: node scripts/dod-xls1213-publish-gate.mjs --selftest
+
+      - name: Publish-gate + drift — every live-referenced tool route is deployed
+        run: node scripts/dod-xls1213-publish-gate.mjs
+        env:
+          API_BASE: https://api.xlsx-for-ai.dev

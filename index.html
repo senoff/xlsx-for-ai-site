@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>xlsx-for-ai — Reliable spreadsheet access for AI agents</title>
-<meta name="description" content="Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free — all 50 tools.">
+<meta name="description" content="Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free to start — all 50 tools.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="xlsx-for-ai">
 <meta property="og:description" content="Reliable spreadsheet access for AI agents.">
@@ -347,7 +347,7 @@
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "xlsx-for-ai",
-  "description": "Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free — all 50 tools.",
+  "description": "Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free to start — all 50 tools.",
   "url": "https://xlsx-for-ai.dev/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
@@ -391,7 +391,7 @@
     <p class="lead">
       A hosted MCP server and npm client that lets LLMs read, write, validate and analyze Excel files
       without losing structure. It live-recalculates formulas and hands back the computed value — not
-      the stale value last saved in the file. Hardened against malformed input. Free — all 50 tools.
+      the stale value last saved in the file. Hardened against malformed input. Free to start — all 50 tools.
     </p>
     <a class="cta" href="#demo">Try the demo</a>
     <button type="button" class="cmd copy" data-copy="npm install -g xlsx-for-ai" aria-label="Copy install command to clipboard"><code class="cmd-text">npm install -g xlsx-for-ai</code><span class="cmd-btn" aria-hidden="true"></span></button>
@@ -433,8 +433,8 @@
         <p>Named ranges, merged cells, formulas, data validations, and conditional formatting are first-class — not collapsed by a naive one-shot read.</p>
       </div>
       <div class="card">
-        <h3>Cross-engine validation</h3>
-        <p>Run a workbook through two independent engines and report divergences. Catches corruption a naive read silently masks.</p>
+        <h3>Soundness validation</h3>
+        <p>Check that a workbook genuinely parses — truncated zips, encrypted containers, missing worksheets and damaged sheet bodies are flagged. Catches corruption a lenient read silently masks.</p>
       </div>
       <div class="card">
         <h3>Hardened by default</h3>
@@ -442,7 +442,7 @@
       </div>
       <div class="card">
         <h3>Privacy-aware</h3>
-        <p>Anonymous UUID registration — no email, no name. Per-request strict mode disables any error capture. <a href="/privacy/">Read the policy</a>.</p>
+        <p>Sign-in is with Google only; we store no name. Keys made without signing in still work, and signing in is recommended. Per-request strict mode disables any error capture. <a href="/privacy/">Read the policy</a>.</p>
       </div>
       <div class="card">
         <h3>Works with Claude Code, Cursor, Gemini, ChatGPT, Grok, Cline</h3>
@@ -487,8 +487,8 @@
       <p class="demo-step"><span class="label">Convert formats</span></p>
       <div class="tool"><p class="prompt">"Use xfa to convert reporting-pack-v1.xlsx to CSV / JSON for our pipeline."</p></div>
 
-      <p class="demo-step"><span class="label">Cross-engine validate</span></p>
-      <div class="tool"><p class="prompt">"With xfa, render reporting-pack-v1.xlsx through two independent engines and flag any cell where they disagree."</p></div>
+      <p class="demo-step"><span class="label">Validate</span></p>
+      <div class="tool"><p class="prompt">"With xfa, check that reporting-pack-v1.xlsx loads cleanly and summarize its sheets."</p></div>
 
       <p class="demo-step"><span class="label">Redact PII before sharing</span></p>
       <div class="tool"><p class="prompt">"Using xfa, redact the PII in reporting-pack-v1.xlsx and give me the audit manifest of what was removed."</p></div>
@@ -516,15 +516,17 @@
       can actually parse; dumping a workbook's full structure in one call; inferring each column's
       type and whether it allows blanks; searching, filtering, and sorting across the file; writing
       edits back into cells and ranges; aggregating and grouping the numbers; converting between
-      xlsx, JSON, CSV, and plain text; opening the same file two independent ways and confirming the
-      numbers agree; and posting a finished result straight into Slack or Teams (one-time token
+      xlsx, JSON, CSV, and plain text; checking that a file genuinely parses
+      before you trust it; and posting a finished result straight into Slack or Teams (one-time token
       setup — see <a href="#setup-slack-teams">Setting up Slack &amp; Teams</a>).
     </p>
 
     <p style="color: var(--muted); font-size: 14px; margin-top: 18px;">
       Each one is a single prompt, just like the moves above — nothing to configure (Slack and Teams
-      delivery is the one exception, and it's a one-time setup). A volume cap (10,000 calls / month)
-      keeps the hosted API healthy — that's the only limit.
+      delivery is the one exception, and it's a one-time setup). Plans are counted in files, never in
+      file size: a free plan of 500 files a month for the first 1,000 people who sign in, otherwise a
+      10-file trial and then $25 a year for 10,000 files a month. File-size limits are the same for
+      everyone: .xlsx 100 MB, .csv 200 MB, .xls 100 MB, .xlsb 10 MB, other types 10 MB.
     </p>
   </div>
 </section>
@@ -595,7 +597,7 @@
     <div class="tool"><p class="name"><code>xlsx_healer_cure</code> — Apply one specific repair to a diagnosed workbook: rewrite / freeze / localize external references, or, for a Google Sheets export, flag each dead Sheets-only formula in-cell (it does not recompute — there is no Excel equivalent), trim the used-range, or compact repeated formulas.</p><p class="prompt">"Freeze the broken external refs in reporting-pack-v1.xlsx to their last cached values, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa heal <path> [--mode as_copy|in_place] [--out <path>] [--format text|json]" title="Click to copy"><strong>Or run:</strong> <code>xfa heal &lt;path&gt; [--mode as_copy|in_place] [--out &lt;path&gt;] [--format text|json]</code></p></div>
 
     <h3 class="tool-group">Validate</h3>
-    <div class="tool"><p class="name"><code>xlsx_validate</code> — Render the workbook through two independent engines and flag disagreements.</p><p class="prompt">"Render reporting-pack-v1.xlsx through two independent engines and flag any cell where they disagree, with xfa."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_validate</code> — Check that the workbook parses cleanly and summarize its structure.</p><p class="prompt">"Check that reporting-pack-v1.xlsx loads cleanly and summarize its sheets, with xfa."</p></div>
 
     <h3 class="tool-group">Provenance &amp; integrity</h3>
     <div class="tool"><p class="name"><code>xlsx_stamp</code> — Sign a file with the checks it passed; travels with the file.</p><p class="prompt">"Stamp reporting-pack-v1.xlsx so anyone downstream can confirm it wasn't altered, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa stamp <path> --checks <file.json> [--out <path>] [--exclude <sheet>…]" title="Click to copy"><strong>Or run:</strong> <code>xfa stamp &lt;path&gt; --checks &lt;file.json&gt; [--out &lt;path&gt;] [--exclude &lt;sheet&gt;…]</code></p></div>
@@ -618,7 +620,7 @@
     <h2>Functions</h2>
     <p style="color: var(--muted); max-width: 660px;">
       <code>xlsx_eval</code> recalculates formulas for
-      <strong>382 Excel functions</strong>. The engine has no <code>INDIRECT</code>, <code>WEBSERVICE</code>, <code>RTD</code>, <code>DDE</code>:
+      <strong>369 Excel functions</strong> (plus 8 Google Sheets-only). The engine has no <code>INDIRECT</code>, <code>WEBSERVICE</code>, <code>RTD</code>, <code>DDE</code>:
       there is no dynamic-reference, network, or external-data function in the set, so a recalc can’t reach off-workbook.
       The absent functions are the sandbox boundary.
     </p>
@@ -699,7 +701,10 @@
 <section id="docs">
   <div class="wrap">
     <h2>Quick start</h2>
-    <p style="color: var(--muted);">Install the npm client; it auto-registers an anonymous client_id on first use. No signup form.</p>
+    <p style="color: var(--muted);">Install the npm client and make your first request: it shows a Google sign-in link right in your assistant, with no second machine and no password. From a terminal you can also run <code>xlsx-for-ai login</code>. Keys made without signing in still work, and signing in is recommended.</p>
+    <p style="color: var(--muted);">In Claude Code, one command installs the plugin:</p>
+    <pre class="copy" role="button" tabindex="0" data-copy="claude plugin install xlsx-for-ai --marketplace senoff/xlsx-for-ai" title="Click to copy"><code>claude plugin install xlsx-for-ai --marketplace senoff/xlsx-for-ai</code></pre>
+    <p style="color: var(--muted);">In the Claude app on claude.ai, find xlsx-for-ai in the <a href="https://claude.ai/directory" rel="noopener">connector directory</a> and click Connect; nothing to install. Steps for both are on the <a href="/developers/#claude-code-plugin">developers page</a>. Any other MCP client takes the hosted address <code>https://api.xlsx-for-ai.dev/mcp</code>.</p>
     <pre class="copy" role="button" tabindex="0" data-copy="npm install -g xlsx-for-ai
 xfa path/to/workbook.xlsx" title="Click to copy"><code>npm install -g xlsx-for-ai
 xfa path/to/workbook.xlsx</code></pre>

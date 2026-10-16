@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>My leading zeros disappeared when I saved Excel as CSV | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Leading zeros gone after saving as CSV, but the loss might not be in the save step at all. Here's the two-stage way Excel actually destroys leading zeros around a CSV round-trip, and how to stop it at the right stage">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="My leading zeros disappeared when I saved Excel as CSV | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Leading zeros gone after saving as CSV, but the loss might not be in the save step at all. Here's the two-stage way Excel actually destroys leading zeros around a CSV round-trip, and how to stop it at the right stage">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/convert-excel-to-csv/my-leading-zeros-disappeared-when-i-saved-excel-as-csv/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="My leading zeros disappeared when I saved Excel as CSV | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Leading zeros gone after saving as CSV, but the loss might not be in the save step at all. Here's the two-stage way Excel actually destroys leading zeros around a CSV round-trip, and how to stop it at the right stage">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/convert-excel-to-csv/my-leading-zeros-disappeared-when-i-saved-excel-as-csv/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "My leading zeros disappeared when I saved Excel as CSV",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Leading zeros disappear at one of two points. First, if the Excel cell was in General or Number format when the digits were entered, Excel already dropped the zero the moment it stored the value, and the CSV export is just faithfully writing what's already broken. Second, even if the Excel cell correctly held the text 00123, CSV has no per-column type information, so whatever application later opens that CSV, including Excel itself, has to guess column types, and a column of digit strings often gets auto-detected as numeric on the way back in, stripping the zeros during that import rather than during the original save." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/convert-excel-to-csv/my-leading-zeros-disappeared-when-i-saved-excel-as-csv/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Leading zeros lost around a CSV save</div>
     <h1>My leading zeros disappeared when I saved Excel as CSV</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Leading zeros gone after saving as CSV, but the loss might not be in the save step at all. Here's the two-stage way Excel actually destroys leading zeros around a CSV round-trip, and how to stop it at the right stage</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>It might already be broken before you ever save as CSV</h2>
+    <p>Open the source workbook and check the actual cells, not the CSV. If the codes are right-aligned, Excel is already storing them as numbers and the zero was lost the moment they were entered or imported, long before Save As CSV was ever chosen. If they're left-aligned, the source cells are genuinely text and still have the zero — which means the loss is happening somewhere else.</p>
+    <h2>Or it can get lost on the way back in</h2>
+    <p>CSV has no way to mark a column as text versus number — every value in the file is just a string of characters, with no metadata attached. That means the zero-stripping frequently happens not when the CSV is written, but when it's reopened: double-clicking a CSV file lets Excel's own auto-detection decide each column's type, and a column that looks purely numeric gets converted to numbers on the way in, even though the CSV file on disk still has the zero written out correctly.</p>
+    <h2>Where to actually fix it</h2>
+    <p>If the source cells were already broken, reformat that column as Text, or apply the custom format 00000, and re-enter or re-import the codes from their original source before saving to CSV again. If the loss happens on reopen, avoid double-clicking the CSV to open it — instead use Data &gt; From Text/CSV (or the Text Import Wizard) and explicitly set that column's type to Text during the import step, which stops Excel's auto-detection from touching it.</p>
 
   </div>
 

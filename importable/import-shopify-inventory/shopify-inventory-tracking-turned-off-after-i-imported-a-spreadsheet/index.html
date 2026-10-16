@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify inventory tracking turned off after I imported a spreadsheet | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Inventory tracking that was working fine turned itself off after your last spreadsheet upload. Here's the column Shopify reads to decide, and how a partial re-export flips it.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="Shopify inventory tracking turned off after I imported a spreadsheet | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Inventory tracking that was working fine turned itself off after your last spreadsheet upload. Here's the column Shopify reads to decide, and how a partial re-export flips it.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-inventory-tracking-turned-off-after-i-imported-a-spreadsheet/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Shopify inventory tracking turned off after I imported a spreadsheet | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Inventory tracking that was working fine turned itself off after your last spreadsheet upload. Here's the column Shopify reads to decide, and how a partial re-export flips it.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-inventory-tracking-turned-off-after-i-imported-a-spreadsheet/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "Shopify inventory tracking turned off after I imported a spreadsheet",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "This happens when the Variant Inventory Tracker column in your upload is blank for products that were previously tracked. Shopify writes whatever that column says on every import, including updates \u2014 it does not preserve the existing setting for a variant if the new file leaves the cell empty. The usual cause is starting your update from a partial export (a report or another system's file) that never included that column, rather than from a full products export." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-inventory/shopify-inventory-tracking-turned-off-after-i-imported-a-spreadsheet/",
@@ -68,9 +68,10 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Inventory import — tracking disabled on existing variants</div>
     <h1>Shopify inventory tracking turned off after I imported a spreadsheet</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Products that were tracking stock correctly stopped being tracked right after your upload — no warning, no error. It's almost always a re-export that carried a blank
+      tracker column back into Shopify. Here's how that happens and how to check for it before your next upload.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +84,16 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>A product that used to show a real stock count now shows a dash, and the "Track quantity" toggle on that variant is off in the admin. Nothing in your import confirmation email calls this out as a problem — it just reports rows processed.</p>
+
+    <h2>Imports overwrite the setting, they don't preserve it</h2>
+    <p>Shopify's inventory and product import both read a column called <strong>Variant Inventory Tracker</strong>. When it contains the exact value <code>shopify</code>, tracking is turned on; when it's blank, tracking is turned off — for that upload, regardless of what the variant's setting was a moment before. An import is not a "patch" that only changes the columns you touched; every recognized column is written as given, blank included.</p>
+
+    <p>This matters because it's common to build an "update" file by exporting from somewhere other than a full Shopify products export — a fulfillment report, a POS system, or a trimmed-down spreadsheet someone keeps for pricing. None of those sources know about the tracker column, so it's absent or blank, and re-importing that file switches tracking off for every row it matches.</p>
+
+    <h2>How to confirm and fix it</h2>
+    <p>Open your import file and check the Variant Inventory Tracker column. If it's missing or blank for the affected SKUs, the fix is to rebuild the file starting from a fresh full products or inventory export from Shopify itself — which carries the current tracker value forward — rather than layering a partial file on top of your store.</p>
 
   </div>
 

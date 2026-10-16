@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>&quot;Yes,&quot; &quot;yes,&quot; and &quot;YES&quot; are counting separately in my filter — how to standardize | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Yes, yes, and YES showing up as separate groups in a filter or count? Standard Excel and Sheets comparisons are actually case-insensitive, so the real culprit is usually a case-sensitive tool in the chain. Here's how to standardize the values">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="&quot;Yes,&quot; &quot;yes,&quot; and &quot;YES&quot; are counting separately in my filter — how to standardize | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Yes, yes, and YES showing up as separate groups in a filter or count? Standard Excel and Sheets comparisons are actually case-insensitive, so the real culprit is usually a case-sensitive tool in the chain. Here's how to standardize the values">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/yes-yes-and-yes-are-counting-separately-in-my-filter-how-to/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="&quot;Yes,&quot; &quot;yes,&quot; and &quot;YES&quot; are counting separately in my filter — how to standardize | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Yes, yes, and YES showing up as separate groups in a filter or count? Standard Excel and Sheets comparisons are actually case-insensitive, so the real culprit is usually a case-sensitive tool in the chain. Here's how to standardize the values">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/yes-yes-and-yes-are-counting-separately-in-my-filter-how-to/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "\"Yes,\" \"yes,\" and \"YES\" are counting separately in my filter \u2014 how to standardize",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Excel and Google Sheets' standard comparison operator, and most functions built on it, including COUNTIF, VLOOKUP, and FILTER's default equality check, are case-insensitive, so Yes, yes, and YES should normally be treated as the same value. When they still count separately, it's usually one of three things: the data went through Power Query, whose Group By and Remove Duplicates steps are case-sensitive by default; the formula uses the EXACT() function, which is deliberately case-sensitive; or the entries differ by more than just case, such as a trailing space riding along on one of them." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/yes-yes-and-yes-are-counting-separately-in-my-filter-how-to/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Yes / yes / YES counting as different values</div>
     <h1>&quot;Yes,&quot; &quot;yes,&quot; and &quot;YES&quot; are counting separately in my filter — how to standardize</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Yes, yes, and YES showing up as separate groups in a filter or count? Standard Excel and Sheets comparisons are actually case-insensitive, so the real culprit is usually a case-sensitive tool in the chain. Here's how to standardize the values</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,12 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>The part that's counter-intuitive: Excel isn't case-sensitive by default</h2>
+    <p>Most people assume "Yes" and "yes" are different to a computer, but Excel's core text comparison, the plain equals sign, treats letter case as irrelevant. COUNTIF("Yes") counts cells containing yes, Yes, and YES all together, and FILTER's default equality check works the same way. So if your results are splitting by case, the ordinary comparison isn't what's doing it.</p>
+    <h2>Where case-sensitivity actually sneaks in</h2>
+    <p>Power Query is the most common source — its Group By and Remove Duplicates transformations compare text case-sensitively, unlike Excel's native formulas, so a query built on inconsistently-cased data will produce separate groups even though a plain COUNTIF on the same column wouldn't. The EXACT() function is another route in, since it's specifically built to be case-sensitive and some more elaborate FILTER or SUMPRODUCT formulas use it on purpose without the author realizing the side effect. In Google Sheets, the QUERY() function's SQL-style WHERE clause on text is also case-sensitive, unlike a plain FILTER condition.</p>
+    <h2>Standardizing the values so this can't happen again</h2>
+    <p>Add a helper column with <code>=UPPER(A2)</code> or <code>=LOWER(A2)</code> and build your grouping or filtering logic on that normalized column instead of the raw one — this sidesteps the issue regardless of which case-sensitive tool is causing it. If the source data itself should be consistent, Find and Replace can standardize it directly, and a Data Validation dropdown list on the entry field prevents new case variants from being typed in going forward.</p>
 
   </div>
 

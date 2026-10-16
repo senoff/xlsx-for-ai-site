@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>My formula shows the formula text instead of the result — cell formatted as text | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="When a cell is formatted as Text before a formula is typed into it, Excel stores the formula as a literal string instead of calculating it — the fix requires re-entering the formula after changing the format, not just reformatting.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="My formula shows the formula text instead of the result — cell formatted as text | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="When a cell is formatted as Text before a formula is typed into it, Excel stores the formula as a literal string instead of calculating it — the fix requires re-entering the formula after changing the format, not just reformatting.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/clean-export/my-formula-shows-the-formula-text-instead-of-the-result-cell/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="My formula shows the formula text instead of the result — cell formatted as text | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="When a cell is formatted as Text before a formula is typed into it, Excel stores the formula as a literal string instead of calculating it — the fix requires re-entering the formula after changing the format, not just reformatting.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/clean-export/my-formula-shows-the-formula-text-instead-of-the-result-cell/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "My formula shows the formula text instead of the result \u2014 cell formatted as text",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "If a cell's number format was set to Text before you typed a formula into it, Excel treats everything you type \u2014 including the leading equals sign \u2014 as a literal string rather than something to calculate, so it displays exactly what you typed: the formula text itself. Changing the cell's format back to General afterward does not fix already-entered formulas, because the stored content is still a text string; you have to re-enter the formula (select the cell, press F2 then Enter, or retype it) after changing the format for Excel to actually evaluate it." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/clean-export/my-formula-shows-the-formula-text-instead-of-the-result-cell/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Excel — formula displayed as text</div>
     <h1>My formula shows the formula text instead of the result — cell formatted as text</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You type =A1+A2, hit Enter, and the cell literally shows "=A1+A2" instead of a number. That's not a calculation setting — the cell was formatted as Text before you typed the formula, so Excel stored your entry as a text string rather than something to evaluate. Drop your file in below to see which cells this affects.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,17 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What's actually going on in the cell</h2>
+    <p>Excel decides how to interpret what you type based on the cell's number format <em>at the moment you type it</em>. If that format is Text, an entry like <code>=A1+A2</code> is stored character-for-character as a string, equals sign included, and displayed exactly as typed — left-aligned, like any other text. Excel isn't ignoring the formula or refusing to calculate it; as far as the cell's stored content is concerned, there is no formula, just a string that happens to start with an equals sign.</p>
+
+    <h2>Why reformatting the cell after typing doesn't fix it</h2>
+    <p>Switching the cell's format from Text to General or Number after the fact changes how a <em>new</em> entry would be interpreted, but it does not retroactively reinterpret content that's already sitting in the cell. The stored value is still the literal text string — Excel needs to actually re-parse the entry, which only happens when you re-enter it.</p>
+
+    <h2>Where the Text formatting usually comes from</h2>
+    <p>This is common in columns that were deliberately set to Text earlier to preserve leading zeros or prevent auto-formatting (see: phone numbers, ZIP codes, SKUs), and then later reused for a calculation without anyone changing the format back first. It also happens after pasting data from a CSV where the whole column import type was set to Text.</p>
+
+    <h2>How to fix it</h2>
+    <p>Select the affected cell or column, change the number format to General (or Number), then for each already-typed formula, click into the cell and press F2 followed by Enter — this forces Excel to re-parse and evaluate it under the new format. For a whole column at once, Data → Text to Columns → Finish also forces re-evaluation without retyping each formula individually. Upload your file above to see which cells are currently text-formatted so you know exactly which ones need re-entering.</p>
 
   </div>
 

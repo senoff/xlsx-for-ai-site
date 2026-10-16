@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>How to see what sheets/tabs are hidden in an Excel file | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Right-click Unhide doesn't show every hidden sheet — Excel's 'very hidden' state is invisible to that dialog and needs the VBA editor to reveal.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="How to see what sheets/tabs are hidden in an Excel file | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Right-click Unhide doesn't show every hidden sheet — Excel's 'very hidden' state is invisible to that dialog and needs the VBA editor to reveal.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/how-to-see-what-sheets-tabs-are-hidden-in-an-excel-file/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="How to see what sheets/tabs are hidden in an Excel file | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Right-click Unhide doesn't show every hidden sheet — Excel's 'very hidden' state is invisible to that dialog and needs the VBA editor to reveal.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/whats-inside-excel-file/how-to-see-what-sheets-tabs-are-hidden-in-an-excel-file/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "How to see what sheets/tabs are hidden in an Excel file",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Excel supports two distinct hidden states for a sheet. A normally hidden sheet appears in the list when you right-click any visible tab and choose Unhide, and can be restored with one click. A \u2018very hidden\u2019 sheet (set programmatically via VBA as xlSheetVeryHidden) does not appear in that Unhide dialog at all \u2014 it's designed to be hidden from the standard UI entirely, and can only be revealed by opening the VBA editor (Alt+F11), selecting the sheet in the Project Explorer, and changing its Visible property back to xlSheetVisible." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/whats-inside-excel-file/how-to-see-what-sheets-tabs-are-hidden-in-an-excel-file/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Right-click Unhide won't catch all of them</div>
     <h1>How to see what sheets/tabs are hidden in an Excel file</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">You right-clicked a tab, chose Unhide, and the list that popped up didn&#x27;t include every sheet you know is in this file. That&#x27;s because Excel has a second, stricter level of hidden that the normal Unhide dialog can't even see.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>The Unhide dialog only shows you half the picture</h2>
+    <p>Right-click any visible sheet tab and choose Unhide, and you'll get a list — but that list only includes sheets in the ordinary Hidden state. It's a genuinely incomplete inventory if the workbook also contains “very hidden” sheets, which don't appear in that dialog no matter how many hidden sheets it lists.</p>
+    <h2>Why very-hidden sheets exist</h2>
+    <p>Very hidden is a state that can only be set through VBA (setting a worksheet's <code>Visible</code> property to <code>xlSheetVeryHidden</code> rather than <code>xlSheetHidden</code>), and it's commonly used deliberately — to hide a calculation or lookup sheet that a workbook's formulas depend on, but that isn't meant to be casually unhidden by whoever opens the file. It's a real design pattern, not a corruption or an error, but it does mean the sheet is genuinely invisible to someone who only knows the normal right-click Unhide route.</p>
+    <h2>How to reveal a very hidden sheet</h2>
+    <p>Press <strong>Alt+F11</strong> to open the VBA editor, find the sheet in the Project Explorer panel on the left (it will be listed even though it's very hidden), click it, and in the Properties panel below, change the <strong>Visible</strong> property from <code>2 - xlSheetVeryHidden</code> to <code>-1 - xlSheetVisible</code>. If the VBA editor itself is disabled or the workbook is protected, you won't be able to do this from the Excel UI at all.</p>
+    <h2>Checking without opening the VBA editor</h2>
+    <p>A sheet's visibility state is stored as a plain attribute in the workbook's underlying XML, readable without running any macro or touching VBA at all. Upload your file below to see every sheet regardless of its visibility state — normal, hidden, or very hidden — listed together with its name and dimensions.</p>
 
   </div>
 

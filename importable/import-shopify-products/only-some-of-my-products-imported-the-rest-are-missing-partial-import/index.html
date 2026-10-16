@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>&quot;Only some of my products imported, the rest are missing&quot; — partial import, rows silently dropped | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="Some products imported, others just never showed up. Shopify processes each row independently, so a few bad rows get skipped while the rest succeed silently.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="&quot;Only some of my products imported, the rest are missing&quot; — partial import, rows silently dropped | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="Some products imported, others just never showed up. Shopify processes each row independently, so a few bad rows get skipped while the rest succeed silently.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/importable/import-shopify-products/only-some-of-my-products-imported-the-rest-are-missing-partial-import/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="&quot;Only some of my products imported, the rest are missing&quot; — partial import, rows silently dropped | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="Some products imported, others just never showed up. Shopify processes each row independently, so a few bad rows get skipped while the rest succeed silently.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/importable/import-shopify-products/only-some-of-my-products-imported-the-rest-are-missing-partial-import/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "\"Only some of my products imported, the rest are missing\" \u2014 partial import, rows silently dropped",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "Shopify's CSV import validates and processes rows individually rather than rejecting the whole file over one bad row \u2014 a row missing a required field like Handle or Price, or a first-row-per-Handle that's blank in a required column, gets skipped while every other row still goes through. The overall summary reports rows processed, not rows successfully created, so the only place that lists exactly which rows were skipped and why is the detailed import results report Shopify generates, which most people never open." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/importable/import-shopify-products/only-some-of-my-products-imported-the-rest-are-missing-partial-import/",
@@ -68,9 +68,10 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">Product import — row-by-row, not all-or-nothing</div>
     <h1>&quot;Only some of my products imported, the rest are missing&quot; — partial import, rows silently dropped</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">Shopify's importer processes each row independently — a handful of bad rows don't stop the good ones from going through, and don't stop
+      the summary from reading as a success. The list of what got skipped is usually sitting in a report you didn't open.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +84,16 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>What you'll see</h2>
+    <p>You upload a file with, say, 200 products. Shopify tells you the import completed. When you check your catalog, only 160 are there — no error dialog told you which 40 were missing or why.</p>
+
+    <h2>Row-level failure, not file-level failure</h2>
+    <p>Shopify's product importer validates and creates products row by row. A row that's missing a required field — an empty Handle, a blank Price on a first-variant row, a duplicate SKU that collides with an existing product — fails on its own without stopping the rows around it. This is generally the right behavior (nobody wants one typo to block 199 good products), but it means "import completed" only ever describes the file's overall processing, not a guarantee that every row became a product.</p>
+
+    <p>Two specific patterns cause a cluster of rows to disappear rather than one at a time: a product's <em>first</em> row for its Handle — the one carrying the full product record — failing validation takes the whole product down with it, even if its variant rows below look fine on their own; and two genuinely different products accidentally sharing the same Handle (both auto-generated from similar titles) causes the second one to be merged into the first as an extra variant instead of appearing as its own product, which looks identical to "missing."</p>
+
+    <h2>Where to actually find out what was skipped</h2>
+    <p>Shopify emails a results report, or makes one downloadable from the import history, that lists precisely which rows failed and the reason — that's the artifact to check, not the summary count on the confirmation screen. Cross-reference it against your file, fix the flagged rows (usually a blank required field or a duplicate handle), and re-upload just those.</p>
 
   </div>
 

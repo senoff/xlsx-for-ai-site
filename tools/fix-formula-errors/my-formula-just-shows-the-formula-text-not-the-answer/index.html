@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1"><title>My formula just shows the formula text, not the answer | xlsx-for-ai</title>
-<meta name="description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="description" content="A cell showing =A1+B1 instead of a number is either the Show Formulas view toggle, or the cell was formatted as Text before you typed the formula in.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="My formula just shows the formula text, not the answer | xlsx-for-ai">
-<meta property="og:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta property="og:description" content="A cell showing =A1+B1 instead of a number is either the Show Formulas view toggle, or the cell was formatted as Text before you typed the formula in.">
 <meta property="og:url" content="https://xlsx-for-ai.dev/tools/fix-formula-errors/my-formula-just-shows-the-formula-text-not-the-answer/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
@@ -15,7 +15,7 @@
 <meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="My formula just shows the formula text, not the answer | xlsx-for-ai">
-<meta name="twitter:description" content="There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it">
+<meta name="twitter:description" content="A cell showing =A1+B1 instead of a number is either the Show Formulas view toggle, or the cell was formatted as Text before you typed the formula in.">
 <meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://api.xlsx-for-ai.dev; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/tools/fix-formula-errors/my-formula-just-shows-the-formula-text-not-the-answer/">
@@ -29,7 +29,7 @@
     {
       "@type": "Question",
       "name": "My formula just shows the formula text, not the answer",
-      "acceptedAnswer": { "@type": "Answer", "text": "You won't get an error. The file imports or opens \u201csuccessfully,\u201d but the result isn't what you expected \u2014 which is exactly why this slips through unnoticed." }
+      "acceptedAnswer": { "@type": "Answer", "text": "This happens for one of two reasons. Either the cell was formatted as Text before the formula was typed into it, so Excel stores the exact characters you entered \u2014 including the leading = \u2014 as a literal string rather than evaluating them, and reformatting the cell afterward doesn't fix formulas already entered; you have to re-enter them. Or Show Formulas mode is switched on for the whole sheet (toggled with Ctrl+` , the grave-accent key), which displays every formula's text instead of its calculated result across the entire sheet, not just one cell." }
     }
   ],
   "url": "https://xlsx-for-ai.dev/tools/fix-formula-errors/my-formula-just-shows-the-formula-text-not-the-answer/",
@@ -68,9 +68,9 @@
 <!-- XLS-1616:breadcrumb:end -->
 
   <div class="hero">
-    <div class="eyebrow">No error — but the result is wrong</div>
+    <div class="eyebrow">The cell is showing you the recipe, not the result</div>
     <h1>My formula just shows the formula text, not the answer</h1>
-    <p class="lede">There&#x27;s no error message here, which is exactly what makes this one frustrating. Here&#x27;s how to tell it happened — and how to catch it before it bites. Drop your file in below to check.</p>
+    <p class="lede">The formula is right there in the cell, exactly as you typed it — starting with the equals sign — instead of the number or text it should calculate. Excel is treating it as literal text, not as something to evaluate.</p>
   </div>
 
   <div class="tool">
@@ -83,12 +83,14 @@
 
   <div class="prose">
 
-    <h2>What you'll see (and what you won't)</h2>
-    <p>You won't get an error. The file imports or opens “successfully,” but the result isn't what you expected — which is exactly why this slips through unnoticed.</p>
-    <h2>Why it happens</h2>
-    <p>A value in the wrong format, a blank where the system expected a number, or a column the software quietly ignored — small things that don't trip an error but change the outcome.</p>
-    <h2>How to check</h2>
-    <p>Upload the file above. The tool reads what's actually in it — not what you meant — so you can see the mismatch before it reaches your store or your report.</p>
+    <h2>First, check if it's every cell or just one</h2>
+    <p>If every formula on the sheet is showing its text instead of its result, this is almost certainly the <strong>Show Formulas</strong> view toggle, not a per-cell formatting issue. Press <strong>Ctrl+`</strong> (the grave accent key, usually above Tab) to switch it off; you can also find it at <strong>Formulas → Show Formulas</strong>. It's a display setting for the whole sheet, and it's easy to hit by accident since it shares a key with the tilde.</p>
+    <h2>If it's only one or a few specific cells</h2>
+    <p>That's the Text-formatting problem. If a cell's number format was set to Text before you typed the formula into it, Excel stores exactly what you typed as a literal string — the equals sign included — and never evaluates it as a formula at all. You'll see the formula left-aligned, exactly as typed, with no calculated result ever appearing.</p>
+    <h2>Why reformatting the cell alone doesn't fix it</h2>
+    <p>Changing the cell's format from Text back to General or Number only affects how future entries are treated — it does not retroactively re-evaluate content that's already sitting in the cell as text. You have to force Excel to re-read the content: select the cell, press F2 to enter edit mode, then press Enter without changing anything, and Excel will re-parse it as a formula now that the format allows it. For many cells at once, select them, reformat to General, then use <strong>Data → Text to Columns → Finish</strong> (with no delimiters changed) as a quick way to force re-parsing across the whole selection.</p>
+    <h2>Checking which case you're in</h2>
+    <p>Upload your file below to see every formula's actual cell content and its live recomputed value side by side — a cell stuck as literal text will show no evaluated result at all, distinct from a cell just displaying its formula text under Show Formulas.</p>
 
   </div>
 

@@ -58,7 +58,11 @@ check("home states the tool count", home.includes(`${COPY.toolCount} tools`));
 check("developers page states the same tool count", dev.includes(`${COPY.toolCount} tools`));
 check(
   "home states the function count",
-  home.includes(`${COPY.functionCount} Excel functions`) && home.includes(`${COPY.sheetsOnlyCount} Google Sheets-only`),
+  home.includes(COPY.functionClaim) && home.includes(COPY.sheetsOnlyClaim),
+);
+check(
+  "home states no exact function count",
+  !/(?<!over )\b\d{3} Excel functions\b/.test(home) && !/\b\d+ Google Sheets-only\b/.test(home) && !/\b(521|282)\b/.test(home),
 );
 const listed = new Set(
   [...readFileSync(join(ROOT, "index.html"), "utf8").matchAll(/<p class="name"><code>([a-z_0-9]+)<\/code>/g)].map((m) => m[1]),

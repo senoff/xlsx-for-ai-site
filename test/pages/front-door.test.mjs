@@ -168,7 +168,7 @@ T("C3-3 tool 402 shows the server's explanation", async () => {
   const msg = "Your 10-file trial is used up. Subscribe to Xlsx Pro ($25 a year) for 10,000 files a month.";
   const { ctx, page } = await visitor({ clients: [OK_KEY], tools: [json(402, { error: { code: "upgrade_required", message: msg } })] });
   const r = await dropAndSettle(page);
-  must(r.err || "", /subscribe to Xlsx Pro/, "402 reason");
+  must(r.err || "", /Subscribe to Xlsx Pro \(\$25 a year\) for 10,000 files a month/, "402 reason");
   await ctx.close();
 });
 

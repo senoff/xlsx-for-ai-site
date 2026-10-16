@@ -535,7 +535,8 @@
   <div class="wrap">
     <h2>Tools</h2>
     <p style="color: var(--muted); max-width: 660px;">
-      All 54 tools, grouped by what you're trying to do. Each one has a paste-ready example prompt
+      All 54 tools, grouped by what you're trying to do, plus the 2 documented session tools at the end
+      (<code>xlsx_read_handle</code> and <code>xlsx_session_set_validations</code>). Each one has a paste-ready example prompt
       that runs against the workbooks from <code>xfa samples</code> above.
     </p>
     <p style="color: var(--muted); max-width: 660px; font-size: 14px;">
@@ -611,11 +612,14 @@
     <div class="tool"><p class="name"><code>xlsx_post_slack</code> — Upload a workbook to a Slack channel.</p><p class="prompt">"Post reporting-pack-v1.xlsx to our #reporting Slack channel, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_post_teams</code> — Upload a workbook to a Microsoft Teams channel.</p><p class="prompt">"Post reporting-pack-v1.xlsx to our finance Teams channel, with xfa."</p></div>
 
-    <h3 class="tool-group">Personal data &amp; hidden content</h3>
-    <div class="tool"><p class="name"><code>xlsx_pii_scan</code> — Scan a spreadsheet for personal or sensitive data.</p><p class="prompt">"Scan reporting-pack-v1.xlsx for personal or sensitive data, with xfa."</p></div>
+    <h3 class="tool-group">Personal data &amp; hidden content</h3>    <div class="tool"><p class="name"><code>xlsx_pii_scan</code> — Scan a spreadsheet for personal or sensitive data.</p><p class="prompt">"Scan reporting-pack-v1.xlsx for personal or sensitive data, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_pii_clean</code> — Redact personal or sensitive data from a spreadsheet.</p><p class="prompt">"Redact the personal data in reporting-pack-v1.xlsx and give me the cleaned copy, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_vault_scan</code> — Scan a spreadsheet for hidden or risky content (macros, external links, embedded objects).</p><p class="prompt">"Scan reporting-pack-v1.xlsx for hidden or risky content, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_vault_cure</code> — Clean hidden or risky content out of a spreadsheet.</p><p class="prompt">"Clean the hidden or risky content out of reporting-pack-v1.xlsx, with xfa."</p></div>
+
+    <h3 class="tool-group">Sessions &amp; advanced (not in the 54)</h3>
+    <div class="tool"><p class="name"><code>xlsx_read_handle</code> — Re-read an already-uploaded workbook by handle, without re-sending bytes.</p><p class="prompt">"Read the workbook I uploaded earlier again, by its handle, with xfa."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_session_set_validations</code> — Set validation rules the server enforces for the rest of a session.</p><p class="prompt">"For this session, require every row in Transactions to have an Entity and a positive Revenue, with xfa."</p></div>
   </div>
 </section>
 

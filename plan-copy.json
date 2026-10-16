@@ -1,5 +1,5 @@
 {
-  "_note": "XLS-2048. The one list of plan names, limits, price and counts the public pages state. test/pages/plan-wording.test.mjs fails if the home page, developers page or terms page drift from it. The server writes the 402 text from the same phrases (xlsx-for-ai-server src/lib/plan-copy.ts), and the prod proof p-xls2048-pricing-wording.py compares the live pages with the live 402 text. toolCount is the number of public-stable tools in the server's /api/v1/tools/list; functionCount is the Excel function count the engine serves.",
+  "_note": "XLS-2048. The one list of plan names, limits, price and counts the public pages state. test/pages/plan-wording.test.mjs fails if the home page, developers page or terms page drift from it. The server writes the 402 text from the same phrases (xlsx-for-ai-server src/lib/plan-copy.ts), and the prod proof p-xls2048-pricing-wording.py compares the live pages with the live 402 text. toolCount is the number of public-stable tools in the server's /api/v1/tools/list; sessionTools are the 2 documented stateful tools listed next to them (the public REST reference lists toolCount + 2 paths, same as the server's OpenAPI); functionCount is the Excel function count the engine serves.",
   "freePlanName": "Xlsx Pro Free",
   "paidPlanName": "Xlsx Pro",
   "price": "$25 a year",
@@ -9,6 +9,7 @@
   "paidLimit": "10,000 files a month",
   "paidOffer": "$25 a year for 10,000 files a month",
   "toolCount": 54,
+  "sessionTools": ["xlsx_read_handle", "xlsx_session_set_validations"],
   "functionCount": 369,
   "sheetsOnlyCount": 8,
   "retired": [

@@ -63,7 +63,16 @@ check(
 const listed = new Set(
   [...readFileSync(join(ROOT, "index.html"), "utf8").matchAll(/<p class="name"><code>([a-z_0-9]+)<\/code>/g)].map((m) => m[1]),
 );
-check(`home lists exactly ${COPY.toolCount} tools`, listed.size === COPY.toolCount, `lists ${listed.size}`);
+const session = COPY.sessionTools;
+check(
+  `home lists the ${COPY.toolCount} public tools plus the ${session.length} documented session tools (${COPY.toolCount + session.length} in all)`,
+  listed.size === COPY.toolCount + session.length && session.every((n) => listed.has(n)),
+  `lists ${listed.size}; missing session tools: ${session.filter((n) => !listed.has(n)).join(", ") || "none"}`,
+);
+check("session tools are two named tools", session.length === 2 && session.includes("xlsx_read_handle") && session.includes("xlsx_session_set_validations"));
+// Negative control: a list without the session tools must be reported (the 54-only list this replaces).
+const withoutSession = new Set([...listed].filter((n) => !session.includes(n)));
+check("negative control: a 54-only list is caught", !(withoutSession.size === COPY.toolCount + session.length && session.every((n) => withoutSession.has(n))));
 
 // Negative control: the text that was live before this fix must be reported.
 const stale =

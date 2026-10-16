@@ -165,7 +165,7 @@ T("C3-3 tool 400 with no reason: a plain sentence with a step, never 'error N' a
 });
 
 T("C3-3 tool 402 shows the server's explanation", async () => {
-  const msg = "You've used your 10 free files — subscribe to Xlsx Pro ($25/yr) for 10,000 files/month.";
+  const msg = "Your 10-file trial is used up. Subscribe to Xlsx Pro ($25 a year) for 10,000 files a month.";
   const { ctx, page } = await visitor({ clients: [OK_KEY], tools: [json(402, { error: { code: "upgrade_required", message: msg } })] });
   const r = await dropAndSettle(page);
   must(r.err || "", /subscribe to Xlsx Pro/, "402 reason");
@@ -281,7 +281,7 @@ T("C3-12 terms section 5 describes files, not size, and sells no size", async ()
   must(s5, /500 files a month/, "free count");
   must(s5, /first 1,000 people who sign in/, "free cohort");
   must(s5, /10-file trial/, "trial");
-  must(s5, /\$25 per year[^.]*10,000 files a month/, "paid");
+  must(s5, /\$25 a year for 10,000 files a month/, "paid");
   must(s5, /never by file size/, "not by size");
   must(s5, /not sold/, "size not sold");
   mustNot(s5, /larger than those free limits|covers larger files|within our free size limits/, "retired model");

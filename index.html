@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>xlsx-for-ai — Reliable spreadsheet access for AI agents</title>
-<meta name="description" content="Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free to start — all 50 tools.">
+<meta name="description" content="Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free to start: 500 files a month on Xlsx Pro Free, 54 tools.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="xlsx-for-ai">
 <meta property="og:description" content="Reliable spreadsheet access for AI agents.">
@@ -347,7 +347,7 @@
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "xlsx-for-ai",
-  "description": "Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free to start — all 50 tools.",
+  "description": "Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free to start: 500 files a month on Xlsx Pro Free, 54 tools.",
   "url": "https://xlsx-for-ai.dev/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
@@ -391,7 +391,7 @@
     <p class="lead">
       A hosted MCP server and npm client that lets LLMs read, write, validate and analyze Excel files
       without losing structure. It live-recalculates formulas and hands back the computed value — not
-      the stale value last saved in the file. Hardened against malformed input. Free to start — all 50 tools.
+      the stale value last saved in the file. Hardened against malformed input. Free to start: 500 files a month on Xlsx Pro Free, 54 tools.
     </p>
     <a class="cta" href="#demo">Try the demo</a>
     <button type="button" class="cmd copy" data-copy="npm install -g xlsx-for-ai" aria-label="Copy install command to clipboard"><code class="cmd-text">npm install -g xlsx-for-ai</code><span class="cmd-btn" aria-hidden="true"></span></button>
@@ -468,7 +468,7 @@
       <pre class="copy" role="button" tabindex="0" data-copy="xfa samples" title="Click to copy"><code>xfa samples</code></pre>
 
       <p class="demo-step"><span class="label">Confirm it's wired</span> — ask Claude:</p>
-      <div class="tool"><p class="prompt">"What xfa tools do you have? (you should see <a href="#tools">~50</a>)"</p></div>
+      <div class="tool"><p class="prompt">"What xfa tools do you have? (you should see <a href="#tools">54</a>)"</p></div>
 
       <p class="demo-step" style="margin-top: 18px;">Then ask Claude — the interesting stuff first, each is one prompt vs. the usual Excel work:</p>
 
@@ -511,7 +511,7 @@
 
     <p style="color: var(--muted); max-width: 660px; margin-top: 22px;">
       Those are some of the headline moves, but they're only part of the surface — there are
-      currently <a href="#tools">50 tools</a> in all. The rest handle the everyday spreadsheet work
+      currently <a href="#tools">54 tools</a> in all. The rest handle the everyday spreadsheet work
       you'd otherwise do by hand: reading any sheet, range, or single cell as clean text the model
       can actually parse; dumping a workbook's full structure in one call; inferring each column's
       type and whether it allows blanks; searching, filtering, and sorting across the file; writing
@@ -524,8 +524,8 @@
     <p style="color: var(--muted); font-size: 14px; margin-top: 18px;">
       Each one is a single prompt, just like the moves above — nothing to configure (Slack and Teams
       delivery is the one exception, and it's a one-time setup). Plans are counted in files, never in
-      file size: a free plan of 500 files a month for the first 1,000 people who sign in, otherwise a
-      10-file trial and then $25 a year for 10,000 files a month. File-size limits are the same for
+      file size: Xlsx Pro Free is 500 files a month for the first 1,000 people who sign in. Otherwise
+      you get a 10-file trial, then Xlsx Pro at $25 a year for 10,000 files a month. File-size limits are the same for
       everyone: .xlsx 100 MB, .csv 200 MB, .xls 100 MB, .xlsb 10 MB, other types 10 MB.
     </p>
   </div>
@@ -535,7 +535,7 @@
   <div class="wrap">
     <h2>Tools</h2>
     <p style="color: var(--muted); max-width: 660px;">
-      All 50 tools, grouped by what you're trying to do. Each one has a paste-ready example prompt
+      All 54 tools, grouped by what you're trying to do. Each one has a paste-ready example prompt
       that runs against the workbooks from <code>xfa samples</code> above.
     </p>
     <p style="color: var(--muted); max-width: 660px; font-size: 14px;">
@@ -598,6 +598,8 @@
 
     <h3 class="tool-group">Validate</h3>
     <div class="tool"><p class="name"><code>xlsx_validate</code> — Check that the workbook parses cleanly and summarize its structure.</p><p class="prompt">"Check that reporting-pack-v1.xlsx loads cleanly and summarize its sheets, with xfa."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_check</code> — Verify a workbook: structural validity, error cells, and stale cached values.</p><p class="prompt">"Check reporting-pack-v1.xlsx for error cells and stale values, with xfa."</p></div>
+    <div class="tool"><p class="name"><code>csv_check</code> — Verify CSV structure and injection safety before it is imported anywhere else.</p><p class="prompt">"Check this CSV for structure problems and injection risk before I import it, with xfa."</p></div>
 
     <h3 class="tool-group">Provenance &amp; integrity</h3>
     <div class="tool"><p class="name"><code>xlsx_stamp</code> — Sign a file with the checks it passed; travels with the file.</p><p class="prompt">"Stamp reporting-pack-v1.xlsx so anyone downstream can confirm it wasn't altered, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa stamp <path> --checks <file.json> [--out <path>] [--exclude <sheet>…]" title="Click to copy"><strong>Or run:</strong> <code>xfa stamp &lt;path&gt; --checks &lt;file.json&gt; [--out &lt;path&gt;] [--exclude &lt;sheet&gt;…]</code></p></div>
@@ -609,9 +611,11 @@
     <div class="tool"><p class="name"><code>xlsx_post_slack</code> — Upload a workbook to a Slack channel.</p><p class="prompt">"Post reporting-pack-v1.xlsx to our #reporting Slack channel, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_post_teams</code> — Upload a workbook to a Microsoft Teams channel.</p><p class="prompt">"Post reporting-pack-v1.xlsx to our finance Teams channel, with xfa."</p></div>
 
-    <h3 class="tool-group">Sessions &amp; advanced</h3>
-    <div class="tool"><p class="name"><code>xlsx_read_handle</code> — Re-read an already-uploaded workbook by handle, without re-sending bytes.</p><p class="prompt">"Read the workbook I uploaded earlier again, by its handle, with xfa."</p></div>
-    <div class="tool"><p class="name"><code>xlsx_session_set_validations</code> — Set validation rules the server enforces for the rest of a session.</p><p class="prompt">"For this session, require every row in Transactions to have an Entity and a positive Revenue, with xfa."</p></div>
+    <h3 class="tool-group">Personal data &amp; hidden content</h3>
+    <div class="tool"><p class="name"><code>xlsx_pii_scan</code> — Scan a spreadsheet for personal or sensitive data.</p><p class="prompt">"Scan reporting-pack-v1.xlsx for personal or sensitive data, with xfa."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_pii_clean</code> — Redact personal or sensitive data from a spreadsheet.</p><p class="prompt">"Redact the personal data in reporting-pack-v1.xlsx and give me the cleaned copy, with xfa."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_vault_scan</code> — Scan a spreadsheet for hidden or risky content (macros, external links, embedded objects).</p><p class="prompt">"Scan reporting-pack-v1.xlsx for hidden or risky content, with xfa."</p></div>
+    <div class="tool"><p class="name"><code>xlsx_vault_cure</code> — Clean hidden or risky content out of a spreadsheet.</p><p class="prompt">"Clean the hidden or risky content out of reporting-pack-v1.xlsx, with xfa."</p></div>
   </div>
 </section>
 

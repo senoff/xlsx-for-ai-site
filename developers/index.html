@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Using the raw HTTP API — xlsx-for-ai</title>
-<meta name="description" content="Call every xlsx-for-ai tool over plain HTTP from any language — no SDK. Google sign-in, plans counted in files (500 a month free, or $25 a year for 10,000), the same size limits for everyone. Browse the reference and OpenAPI contract without a key.">
+<meta name="description" content="Call every xlsx-for-ai tool over plain HTTP from any language — no SDK. Google sign-in, plans counted in files (Xlsx Pro Free is 500 files a month; Xlsx Pro is $25 a year for 10,000 files a month), the same size limits for everyone. Browse the reference and OpenAPI contract without a key.">
 <meta name="author" content="xlsx-for-ai">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="canonical" href="https://xlsx-for-ai.dev/developers/">
@@ -137,14 +137,14 @@
 
 <h1>Using the raw HTTP API.</h1>
 <p class="lede">Every xlsx-for-ai tool is a plain HTTP endpoint you can call from any language &mdash; no SDK, no upload UI.</p>
-<p class="lede">The MCP client is the easy path for Claude, Cursor, and other agents. But if you're integrating directly, the same 50 tools are a versioned HTTP API. You can browse the reference without a key; calling a tool needs a key, and the section below shows how to get one.</p>
+<p class="lede">The MCP client is the easy path for Claude, Cursor, and other agents. But if you're integrating directly, the same 54 tools are a versioned HTTP API. You can browse the reference without a key; calling a tool needs a key, and the section below shows how to get one.</p>
 
 <h2 id="login">Signing in</h2>
 <p>Sign-in is with Google only. In an assistant or editor, install the package (<code>npm install -g xlsx-for-ai@latest</code>, version 4.2.1 or later) and make your first request. The package answers with a sign-in link shown right there in the assistant: open it, sign in with Google, then ask again. This works the same in a desktop app or editor with no terminal, and nothing needs a second machine. From a terminal you can also run <code>xlsx-for-ai login</code>, which prints a short code and a verification address to approve in your browser. Either way the client stores the key it receives.</p>
 <p>Keys made without signing in (by earlier versions, or by registering with no credentials) still work. Signing in is recommended, and we will give notice before anything about those keys changes.</p>
 
 <h2 id="plans">Plans and limits</h2>
-<p>There are two plans, and both are counted in <strong>files</strong>, never in file size. The free plan is <strong>500 files a month</strong> for the first 1,000 people who sign in. Otherwise you get a <strong>10-file trial</strong>, then <strong>$25 a year for 10,000 files a month</strong>.</p>
+<p>There are two plans, and both are counted in <strong>files</strong>, never in file size. <strong>Xlsx Pro Free</strong> is <strong>500 files a month</strong> for the first 1,000 people who sign in. Otherwise you get a <strong>10-file trial</strong>, then <strong>Xlsx Pro</strong> at <strong>$25 a year for 10,000 files a month</strong>.</p>
 <p>File-size limits are the same for everyone and are not something you can buy: <strong>.xlsx 100 MB, .csv 200 MB, .xls 100 MB, .xlsb 10 MB, any other type 10 MB</strong>. For a file over its limit, split it or convert it; the <a href="/large-files/">large-files page</a> says how.</p>
 
 <h2 id="claude-code-plugin">Claude Code plugin (one command)</h2>
@@ -202,7 +202,7 @@ CFG</code></pre>
 <ul class="routes">
   <li>
     <span class="path"><a href="https://api.xlsx-for-ai.dev/api/v1/reference" rel="noopener">GET /api/v1/reference</a></span><br>
-    A self-contained human HTML reference for all 50 public-stable tools, including the on-ramp above.
+    A self-contained human HTML reference for all 54 public-stable tools plus the 2 documented session tools (xlsx_read_handle, xlsx_session_set_validations), including the on-ramp above.
   </li>
   <li>
     <span class="path"><a href="https://api.xlsx-for-ai.dev/api/v1/openapi.json" rel="noopener">GET /api/v1/openapi.json</a></span><br>

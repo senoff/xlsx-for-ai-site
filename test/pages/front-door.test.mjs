@@ -275,12 +275,9 @@ T("C3-10 developers page does not send no-terminal hosts to another machine; des
   must(t, /nothing needs a second machine/, "no second machine");
 });
 
-T("C3-12 terms fees section describes files, not size, and sells no size", async () => {
+T("C3-12 terms section 5 describes files, not size, and sells no size", async () => {
   const t = read("terms/index.html");
-  // Found by its heading, not its number, so renumbering the terms cannot empty the slice.
-  const at = t.search(/<h2>\d+\. (Plans, fees, and billing|Fees)<\/h2>/);
-  if (at < 0) throw new Error("terms page has no fees section heading");
-  const s5 = t.slice(at, t.indexOf("<h2>", at + 4));
+  const s5 = t.slice(t.indexOf("<h2>5. Fees</h2>"), t.indexOf("<h2>6."));
   must(s5, /500 files a month/, "free count");
   must(s5, /first 1,000 people who sign in/, "free cohort");
   must(s5, /10-file trial/, "trial");

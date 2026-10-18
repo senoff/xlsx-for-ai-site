@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Terms of Service — xlsx-for-ai</title>
-<meta name="description" content="Terms of Service for the xlsx-for-ai npm package and hosted API.">
+<meta name="description" content="Terms of Service for xlsx-for-ai: the hosted API, the Claude connector and plugin, the npm client, and the paid plans.">
 <meta name="author" content="xlsx-for-ai">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
@@ -101,52 +101,80 @@
 <div class="wrap">
 
 <h1>Terms of Service</h1>
-<p class="last-updated"><strong>Effective date:</strong> 2026-10-10</p>
+<p class="last-updated"><strong>Effective date:</strong> 2026-10-18</p>
 
-<p>These Terms of Service ("Terms") govern your access to and use of the xlsx-for-ai client and the hosted xlsx-for-ai service (together, the "Service"). By installing, accessing, or using the Service, you agree to these Terms. If you do not agree, do not use the Service.</p>
+<h2>1. Who we are and what these Terms cover</h2>
+<p>xlsx-for-ai is provided by Fremen Works ("we", "us"). These Terms of Service ("Terms") are an agreement between Fremen Works and you. They govern your access to and use of the hosted xlsx-for-ai API at <code>api.xlsx-for-ai.dev</code>, the xlsx-for-ai connector for Claude (MCP), the Claude Code plugin, the npm client, this website, and the paid plans (together, the "Service"). By signing in to, installing, accessing, or using the Service, you agree to these Terms. If you use the Service for a business, you confirm you can bind that business, and "you" includes it. If you do not agree, do not use the Service. Our <a href="/privacy/">Privacy Policy</a> explains how we handle data and is part of these Terms.</p>
 
-<h2>1. The Service</h2>
-<p>xlsx-for-ai is a tool that makes spreadsheet files readable to AI agents and applications. The client sends spreadsheet bytes to a hosted API, which reads and analyzes the file and returns the result (for example: sheet listings, column-type inference, summary statistics, rendered tables, recalculated values, and format conversions). How your file data is handled is described in our <a href="/privacy/">Privacy Policy</a>.</p>
+<h2>2. The Service</h2>
+<p>xlsx-for-ai is a hosted spreadsheet engine that makes spreadsheet files readable and writable for AI agents and applications. The connector, plugin, client, or your own program sends the file to the hosted API, which reads, checks, recalculates, converts, or writes it and returns the result (for example: sheet listings, column-type inference, summary statistics, rendered tables, recalculated values, and format conversions). We may change, improve, or stop offering features over time.</p>
 
-<h2>2. Eligibility and age</h2>
+<h2>3. Eligibility and age</h2>
 <p>You must be at least 13 years old to use the Service. The Service is not directed to children under 13, and we do not knowingly collect information from them. If you are between 13 and the age of majority in your jurisdiction, you may use the Service only with the involvement of a parent or guardian.</p>
 
-<h2>3. Acceptable use</h2>
+<h2>4. Accounts and API keys</h2>
+<p>You can sign in with Google, or the npm client can register an anonymous client and receive an API key. You are responsible for keeping your API keys and sign-in secret and for all use made with them. If you think a key has been exposed, replace it and tell us at <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a>. One person or business should not use several accounts to get around a plan limit.</p>
+
+<h2>5. Acceptable use</h2>
 <p>You agree not to:</p>
 <ul>
-  <li>Use the Service for any unlawful purpose or to process content you do not have the right to process.</li>
+  <li>Use the Service for any unlawful purpose or to process content you do not have the right to process, including personal data you have no lawful basis to process.</li>
+  <li>Upload malware or files built to harm a system.</li>
   <li>Attempt to disrupt, overload, or circumvent the rate or volume limits of the hosted API, or otherwise interfere with its operation or other users.</li>
   <li>Probe, scan, or attempt to breach the security of the Service, or access it by any means other than the published client and interfaces.</li>
-  <li>Resell or redistribute the hosted Service as your own without authorization.</li>
+  <li>Copy, reverse-engineer, or resell the hosted Service, or redistribute it as your own, without our written permission.</li>
 </ul>
 <p>The hosted Service applies usage limits. We may adjust these limits to protect the Service.</p>
 
-<h2>4. Your content</h2>
-<p>You retain all rights to the files and data you submit. You are responsible for the content you process and for ensuring you have the right to process it. The Service reads your file to produce a result and does not persist your file beyond what is described in the Privacy Policy.</p>
+<h2>6. Plans, fees, and billing</h2>
+<p>The Service has two plans, and both are measured by the number of files you process, never by file size. Xlsx Pro Free is 500 files a month for the first 1,000 people who sign in. Otherwise you get a 10-file trial, then Xlsx Pro at $25 a year for 10,000 files a month, billed annually. File-size limits are the same for everyone and are not sold: .xlsx files up to 100 MB, .csv files up to 200 MB, .xls files up to 100 MB, .xlsb files up to 10 MB, and other file types up to 10 MB. A file that fails with an error does not count against your plan.</p>
+<p>When you reach your plan's limit, further files are refused until the limit resets at the start of the next month (UTC) or, on the free plan or trial, until you subscribe.</p>
+<p><strong>Payment.</strong> Xlsx Pro is paid in advance through our payment processor's hosted checkout. Applicable taxes are calculated at checkout, and you are responsible for them.</p>
+<p><strong>Renewal and cancellation.</strong> Xlsx Pro is an annual subscription that renews each year until it is cancelled. To cancel, email <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a> from the address you paid with; cancelling stops the plan from renewing. If a payment is disputed or the subscription ends, the account returns to the free terms.</p>
+<p><strong>Refunds.</strong> If you believe you were charged in error, email us and we will review it. Where the law gives you a right to a refund, we honor it.</p>
+<p><strong>Price changes.</strong> We may change pricing or plan structure in the future; any change is made prospectively and does not affect a term you have already paid for.</p>
 
-<h2>5. Fees</h2>
-<p>The Service has two plans, and both are measured by the number of files you process, never by file size. Xlsx Pro Free is 500 files a month for the first 1,000 people who sign in. Otherwise you get a 10-file trial, then Xlsx Pro at $25 a year for 10,000 files a month, billed annually. File-size limits are the same for everyone and are not sold: .xlsx files up to 100 MB, .csv files up to 200 MB, .xls files up to 100 MB, .xlsb files up to 10 MB, and other file types up to 10 MB. Payments are processed by our payment provider, which acts as merchant of record. We may change pricing or plan structure in the future; any change is made prospectively and does not affect a term you have already paid for. Where required, fees are stated exclusive of taxes, which you are responsible for.</p>
+<h2>7. Your content and output</h2>
+<p>You retain all rights to the files and data you submit and to the results the Service returns to you. You give us permission to process your files only to provide the Service to you, as described in the Privacy Policy. You are responsible for the content you process and for ensuring you have the right to process it.</p>
 
-<h2>6. Intellectual property</h2>
-<p>The xlsx-for-ai client is made available under its open-source license (see the LICENSE file in the project repository). All other rights in the Service, including the hosted software and the xlsx-for-ai name and branding, are reserved by us. These Terms grant you no rights in our trademarks.</p>
+<h2>8. Computed results and AI-assisted tools</h2>
+<p>Recalculated values come from our spreadsheet engine, which computes them from the formulas in your file. A few tools also ask an AI model for help: the personal-data scan and redaction tools, and the Shopify import tools and import converter when they match columns. The Privacy Policy lists what each sends. Spreadsheet software differs in edge cases, a function the engine does not support is reported as unsupported rather than given a computed value, and AI-assisted results can be wrong. Review results before you rely on them, especially for financial, legal, or regulatory decisions.</p>
 
-<h2>7. No warranty</h2>
-<p>THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY, OR NON-INFRINGEMENT. The Service analyzes and transforms data programmatically; we do not warrant that its output is complete, accurate, or error-free, and you are responsible for reviewing and verifying any output before relying on it.</p>
+<h2>9. Third-party services</h2>
+<p>You may use the Service through, or point it at, products we do not run, such as Claude, Google Sheets, Shopify, Slack, or Microsoft Teams. Their own terms govern your use of them, and we are not responsible for them.</p>
 
-<h2>8. Limitation of liability</h2>
-<p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF DATA, PROFITS, OR BUSINESS, ARISING OUT OF OR RELATED TO YOUR USE OF THE SERVICE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. OUR TOTAL LIABILITY FOR ANY CLAIM RELATED TO THE SERVICE WILL NOT EXCEED ONE HUNDRED U.S. DOLLARS (US $100).</p>
+<h2>10. Intellectual property</h2>
+<p>The xlsx-for-ai npm client is made available under the MIT License (see the LICENSE file in the project repository). All other rights in the Service, including the hosted software and the xlsx-for-ai name and branding, are reserved by us. These Terms grant you no rights in our trademarks. If you send us feedback, we may use it without obligation to you.</p>
 
-<h2>9. Availability and changes</h2>
-<p>We may modify, suspend, or discontinue any part of the Service at any time. We may also update these Terms; when we do, we will revise the effective date above, and your continued use of the Service constitutes acceptance of the updated Terms.</p>
+<h2>11. Availability</h2>
+<p>We work to keep the Service available but do not promise any level of uptime. We may modify, suspend, or discontinue any part of the Service at any time, including for maintenance or security.</p>
 
-<h2>10. Termination</h2>
-<p>We may suspend or terminate your access to the hosted Service if you violate these Terms or use the Service in a way that risks harm to the Service or others.</p>
+<h2>12. Suspension and termination</h2>
+<p>You can stop using the Service at any time. We may suspend or terminate your access to the hosted Service if you violate these Terms, if your use risks harm to the Service or others, if payment fails, or if we stop offering the Service. Sections 7, 8, and 10 to 19 survive the end of these Terms.</p>
 
-<h2>11. Governing law</h2>
-<p>These Terms are governed by the laws of the State of Texas, United States, without regard to its conflict-of-laws rules.</p>
+<h2>13. No warranty</h2>
+<p>THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE," WITHOUT WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, ACCURACY, OR NON-INFRINGEMENT, OR THAT THE SERVICE WILL BE UNINTERRUPTED OR ERROR-FREE. The Service analyzes and transforms data programmatically; we do not warrant that its output is complete, accurate, or error-free, and you are responsible for reviewing and verifying any output before relying on it.</p>
 
-<h2>12. Contact</h2>
-<p>Questions about these Terms: <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a>.</p>
+<h2>14. Limitation of liability</h2>
+<p>TO THE MAXIMUM EXTENT PERMITTED BY LAW, FREMEN WORKS WILL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF DATA, PROFITS, REVENUE, OR GOODWILL, ARISING OUT OF OR RELATED TO YOUR USE OF THE SERVICE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. OUR TOTAL LIABILITY FOR ALL CLAIMS RELATED TO THE SERVICE IS LIMITED TO THE FEES YOU PAID US FOR THE SERVICE IN THE 12 MONTHS BEFORE THE EVENT GIVING RISE TO THE CLAIM. For free use, that means our liability is capped at the amount you paid us, which is zero. These limits do not apply where the law does not allow them.</p>
+
+<h2>15. Indemnity</h2>
+<p>You will defend and hold Fremen Works harmless against third-party claims arising from the content you process with the Service or from your breach of these Terms.</p>
+
+<h2>16. Export controls and sanctions</h2>
+<p>You may not use the Service in violation of U.S. export-control or sanctions laws, including from a sanctioned country or region or if you are on a U.S. government restricted-party list.</p>
+
+<h2>17. Governing law and disputes</h2>
+<p>These Terms are governed by the laws of the State of Texas, without regard to its conflict-of-laws rules. Any dispute arising out of or relating to these Terms or the Service will be brought in the state or federal courts located in Texas, and you and we consent to their jurisdiction.</p>
+
+<h2>18. Changes to these Terms</h2>
+<p>We may update these Terms. When we do, we will revise the effective date above before the change takes effect, and for a material change we will also say so on this page. Your continued use of the Service after that means you accept the updated Terms.</p>
+
+<h2>19. General</h2>
+<p>These Terms, with the Privacy Policy, are the entire agreement between you and us about the Service. If a provision is found unenforceable, the rest stays in effect. Our not enforcing a provision is not a waiver of it. You may not assign these Terms without our consent; we may assign them to a successor to the Service. We may send notices to the email address on your account, where we have one, or post them on this site; you can send notices to us at the address below.</p>
+
+<h2>20. Contact</h2>
+<p>Questions about these Terms: Fremen Works, <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a>.</p>
 
 </div>
 </main>
@@ -160,10 +188,11 @@
       <a href="/importable/import-shopify-redirects/">Shopify: import redirects</a>
       <a href="/importable/fix-shopify-products/">Shopify: fix products CSV</a>
     </nav>
-    <div>&copy; xlsx-for-ai</div>
+    <div>&copy; Fremen Works</div>
     <div>
       <a href="/">Home</a> &middot;
       <a href="/privacy/">Privacy</a> &middot;
+      <a href="/terms/">Terms</a> &middot;
       <a href="https://github.com/senoff/xlsx-for-ai">GitHub</a>
     </div>
   </div>

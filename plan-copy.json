@@ -1,5 +1,5 @@
 {
-  "_note": "XLS-2048. The one list of plan names, limits, price and counts the public pages state. test/pages/plan-wording.test.mjs fails if the home page, developers page or terms page drift from it. The server writes the 402 text from the same phrases (xlsx-for-ai-server src/lib/plan-copy.ts), and the prod proof p-xls2048-pricing-wording.py compares the live pages with the live 402 text. toolCount is the number of public-stable tools in the server's /api/v1/tools/list; sessionTools are the 2 documented stateful tools listed next to them (the public REST reference lists toolCount + 2 paths, same as the server's OpenAPI); functionCount is the Excel function count the engine serves.",
+  "_note": "XLS-2048. The one list of plan names, limits, price and counts the public pages state. test/pages/plan-wording.test.mjs fails if the home page, developers page or terms page drift from it. The server writes the 402 text from the same phrases (xlsx-for-ai-server src/lib/plan-copy.ts), and the prod proof p-xls2048-pricing-wording.py compares the live pages with the live 402 text. toolCount is the number of public-stable tools in the server's /api/v1/tools/list; sessionTools are the 2 documented stateful tools listed next to them (the public REST reference lists toolCount + 2 paths, same as the server's OpenAPI); functionClaim is the one function-count phrase the public pages state: the rounded floor, never an exact count (owner ruling 2026-10-16); it must never exceed the prod-measured served count. sheetsOnlyClaim is the Sheets-only wording, with no number.",
   "freePlanName": "Xlsx Pro Free",
   "paidPlanName": "Xlsx Pro",
   "price": "$25 a year",
@@ -10,8 +10,8 @@
   "paidOffer": "$25 a year for 10,000 files a month",
   "toolCount": 54,
   "sessionTools": ["xlsx_read_handle", "xlsx_session_set_validations"],
-  "functionCount": 371,
-  "sheetsOnlyCount": 17,
+  "functionClaim": "over 350 Excel functions",
+  "sheetsOnlyClaim": "the functions only Google Sheets has",
   "retired": [
     "all 50 tools",
     "50 tools",
@@ -20,6 +20,10 @@
     "free files",
     "per year",
     "521",
-    "282"
+    "282",
+    "371 Excel functions",
+    "369 Excel functions",
+    "17 Google Sheets-only",
+    "8 Google Sheets-only"
   ]
 }

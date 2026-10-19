@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Shopify metafield not showing on the product page — why, and how to fix it | xlsx-for-ai</title>
+<meta name="description" content="Metafield set, values entered, product page still blank? It's a theme-display problem. The four real causes and the fix for each, in plain language.">
+<meta name="author" content="xlsx-for-ai">
+<meta property="og:title" content="Shopify metafield not showing on the product page — why, and how to fix it | xlsx-for-ai">
+<meta property="og:description" content="Metafield set, values entered, product page still blank? It's a theme-display problem. The four real causes and the fix for each, in plain language.">
+<meta property="og:url" content="https://xlsx-for-ai.dev/importable/shopify-metafield-not-showing-on-product-page/">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://xlsx-for-ai.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="xlsx-for-ai — free tools for your Excel files">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shopify metafield not showing on the product page — why, and how to fix it">
+<meta name="twitter:description" content="Metafield set, values entered, product page still blank? It's a theme-display problem. The four real causes and the fix for each, in plain language.">
+<meta name="twitter:image" content="https://xlsx-for-ai.dev/og.png">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="canonical" href="https://xlsx-for-ai.dev/importable/shopify-metafield-not-showing-on-product-page/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="/tools/shell.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Shopify metafield not showing on the product page — why, and how to fix it",
+  "description": "Metafield set, values entered, product page still blank? It's a theme-display problem. The four real causes and the fix for each, in plain language.",
+  "url": "https://xlsx-for-ai.dev/importable/shopify-metafield-not-showing-on-product-page/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "xlsx-for-ai",
+    "url": "https://xlsx-for-ai.dev/"
+  }
+}
+</script>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <div class="hero">
+    <div class="eyebrow">Shopify theme display · plain-language explainer</div>
+    <h1>You set up a metafield, entered the values — and nothing shows on the product page.</h1>
+    <p class="lede">You are not doing it wrong, and the data is almost certainly fine. Storing a metafield
+      value and <em>showing</em> it are two separate acts in Shopify, and only the first one happens in the
+      admin. The second happens in your theme, and it does not happen by itself.</p>
+    <p class="lede">There are four reasons a correctly-filled metafield stays invisible. This page names all
+      four, tells you how to work out which one is yours in about a minute, and walks the real fix for each
+      — in the theme editor, in plain language.</p>
+    <div class="free-pill">Explainer · nothing to upload · nothing to install</div>
+  </div>
+
+  <div class="prose">
+
+    <h2>The one thing nobody says out loud</h2>
+    <p>In Shopify, a metafield is <strong>storage</strong>. You create a definition under
+      <strong>Settings &rarr; Custom data</strong>, you type a value into it on a product, and that value is
+      now saved against that product. Every part of that is finished and correct — and none of it puts a
+      single pixel on your storefront.</p>
+    <p>Displaying it is a second, separate job that belongs to your <strong>theme</strong>. Somewhere in the
+      product template, something has to say &ldquo;print the value of <code>custom.material</code> here.&rdquo;
+      Until something says that, the value sits in the database being perfectly correct and completely
+      invisible. Shopify does not warn you about this, because from its point of view nothing has gone wrong.</p>
+    <p>So the question is never &ldquo;why is my metafield broken?&rdquo; It is: <em>why can't my theme print
+      it?</em> There are four answers.</p>
+
+    <h2>Sixty-second triage: which of the four is yours?</h2>
+    <p>Open <strong>Online Store &rarr; Themes &rarr; Customize</strong>. In the dropdown at the top of the
+      editor, switch from the home page to <strong>Products &rarr; Default product</strong>. Now look:</p>
+    <ul>
+      <li><strong>There is no &ldquo;Add block&rdquo; anywhere under the product information area, and the
+        left panel only really lets you change colours and fonts.</strong> Your theme is vintage — that is
+        <a href="#cause-1">cause 1</a>.</li>
+      <li><strong>You can add blocks, you added one, and the little dynamic-source icon next to its text
+        field doesn't list your metafield.</strong> The block's type and the metafield's type don't match —
+        <a href="#cause-2">cause 2</a> — unless the metafield is a URL, which is
+        <a href="#cause-4">cause 4</a>.</li>
+      <li><strong>You added the block, you connected the metafield, the editor shows no error, and the block
+        renders as nothing at all.</strong> The metafield is almost certainly empty on the product you're
+        looking at — <a href="#cause-3">cause 3</a>.</li>
+    </ul>
+    <p class="muted">Shopify changes the theme editor regularly and themes differ in what they name things.
+      The wording below describes what most merchants see today; if your theme labels a panel differently,
+      the mechanic underneath is still the same.</p>
+
+    <h2 id="cause-1">Cause 1 — your theme is vintage (not Online Store 2.0)</h2>
+    <p>This is the most common cause and the most frustrating one, because nothing about it looks like an
+      error. Themes built before Online Store 2.0 have no dynamic sources at all. There is no connector, no
+      metafield picker, no &ldquo;insert dynamic source&rdquo; icon anywhere in the editor — the feature that
+      binds a metafield to a block simply does not exist in that theme. You can create a hundred perfect
+      metafield definitions and a vintage theme will never offer you one.</p>
+    <p><strong>How to confirm it.</strong> In <strong>Customize</strong>, switch the top dropdown to
+      <strong>Products &rarr; Default product</strong>. An Online Store 2.0 theme lets you add and reorder
+      blocks inside the product information section, and the settings for those blocks have a small
+      dynamic-source icon beside them. A vintage theme gives you a fixed product page you can style but not
+      restructure: no block list, no <strong>Add block</strong>, no connector icon. If you never see that
+      icon on <em>any</em> setting, that is your answer.</p>
+    <p><strong>What actually fixes it.</strong> Two honest options, and they are genuinely different sizes
+      of job:</p>
+    <ul>
+      <li><strong>Move to an Online Store 2.0 theme.</strong> Every theme in the Shopify Theme Store today
+        is OS 2.0. This is the option that gets you a metafield on the page without anyone writing code —
+        but it is a theme change, so treat it like one: install the new theme as an unpublished draft,
+        rebuild your pages in it, and preview thoroughly before you publish. Nothing about your metafield
+        <em>data</em> is affected either way; it is stored against your products, not against your theme.</li>
+      <li><strong>Have a developer add the Liquid.</strong> A vintage theme can still print a metafield if
+        someone edits the product template directly and adds the line that outputs it. That is a code change
+        in your theme files, and it is a developer's job — we are not going to walk you through writing
+        Liquid on this page, because a half-explained theme edit is how storefronts break. If you have a
+        developer, this is a small task for them: they need to know the metafield's namespace and key (from
+        Settings &rarr; Custom data) and where on the page you want it.</li>
+    </ul>
+
+    <h2 id="cause-2">Cause 2 — the block you added can't hold that kind of metafield</h2>
+    <p>You're on an OS 2.0 theme, you hit <strong>Add block</strong>, and you picked <strong>Text</strong>
+      because text is what you want. Then you clicked the dynamic-source icon on its content field and your
+      metafield wasn't in the list — or a different metafield was, but not the one you wanted.</p>
+    <p>That list is filtered. The theme editor only offers you metafields whose <em>type</em> the setting can
+      actually render. A text setting will show you text metafields. It will not show you a file, an image,
+      a product reference, or in many themes a list-typed metafield, because a text setting has no idea what
+      to do with any of those. Nothing is broken; the picker is refusing to connect two things that don't fit
+      together, and it does that silently by just not listing them.</p>
+    <p><strong>The mismatch, concretely.</strong> The type you chose in
+      <strong>Settings &rarr; Custom data</strong> decides which blocks can display it:</p>
+    <ul>
+      <li><strong>Single line text</strong> or <strong>Multi-line text</strong> &rarr; a Text block, or the
+        theme's own metafield/custom-content block. This is the easy case.</li>
+      <li><strong>Rich text</strong> &rarr; a Text or rich-text block. Themes vary in how much of the
+        formatting they honour.</li>
+      <li><strong>File</strong> or <strong>Image</strong> &rarr; an Image block, not a Text block. A text
+        setting will never list a file metafield.</li>
+      <li><strong>Any <code>list.</code> type</strong> (a list of text values, a list of products) &rarr; a
+        block or section that is built to iterate a list. A plain text setting usually won't take one, and
+        this catches people out constantly, because <code>list.single_line_text_field</code> feels like it
+        should just be text.</li>
+      <li><strong>Product, file or metaobject references</strong> &rarr; these point at another object rather
+        than holding a value, so they need a block designed for that object — a related-products or
+        featured-collection style block, not a text field.</li>
+    </ul>
+    <p><strong>What actually fixes it.</strong> Either add the block that matches the type — delete the Text
+      block, add an Image block for an image metafield — or, if what you really wanted was text all along,
+      change the definition's type in <strong>Settings &rarr; Custom data</strong> to a text type and re-enter
+      the values. Changing a definition's type is not free: Shopify will not silently convert your existing
+      values, so plan on re-entering them. Many themes also ship a general-purpose
+      <strong>Metafield</strong> or <strong>Custom content</strong> block precisely for this; check your
+      theme's block list before you conclude the type is wrong.</p>
+
+    <h2 id="cause-3">Cause 3 — it's connected, there's no error, and it still renders nothing</h2>
+    <p>This one feels like the worst of the four and is nearly always the easiest. An OS 2.0 theme, the block
+      is there, the dynamic source is connected, the editor is perfectly happy — and the product page shows
+      an empty gap where your text should be.</p>
+    <p>A dynamic source that resolves to an empty value renders <em>nothing</em>. Not a placeholder, not an
+      error, not a warning: nothing. It looks identical to a broken binding, but the binding is fine. The
+      metafield has no value on that particular product.</p>
+    <p><strong>How to confirm it, in order:</strong></p>
+    <ol>
+      <li><strong>Check which product you're previewing.</strong> The theme editor previews one specific
+        product, and by default it's whichever one it picked — not necessarily the one you filled in. Use the
+        product selector at the top of the editor to preview a product you know has a value.</li>
+      <li><strong>Open that product in the admin.</strong> <strong>Products</strong> &rarr; the product &rarr;
+        scroll to the bottom. The <strong>Metafields</strong> card lists the definitions that apply to it;
+        click through to see all of them. An empty field here is your answer.</li>
+      <li><strong>Check it's the same definition.</strong> If you have two similar definitions — say
+        <code>custom.material</code> and <code>custom.materials</code>, or one you made and one an app made —
+        it is very easy to fill in one and bind the other. Compare the namespace and key on the product
+        against the one the block is connected to.</li>
+      <li><strong>Check the value is on the product, not the variant.</strong> Product metafields and variant
+        metafields are different fields with different owners. A value entered on a variant will not appear
+        in a block bound to the product-level metafield, and the reverse is equally true.</li>
+    </ol>
+    <p>If the value really is missing on most of your products, that is a data-entry problem rather than a
+      display problem, and it's the one place where a spreadsheet is genuinely the right tool — see
+      <a href="#not-this">below</a> for where that line sits.</p>
+
+    <h2 id="cause-4">Cause 4 — it's a URL-type metafield</h2>
+    <p>URL metafields are a real, current gap. If you defined a metafield with the <strong>URL</strong> type,
+      the theme editor's dynamic-source picker generally will not offer it on a standard block — not on text
+      settings (a URL isn't text as far as the picker is concerned) and not reliably on link settings either.
+      You can spend a long time hunting for the block that takes it, and the honest answer is that there
+      usually isn't one.</p>
+    <p>This is a platform limitation, not something you've misconfigured, and it is the one cause on this page
+      where no amount of clicking in the theme editor will get you there.</p>
+    <p><strong>The two real ways out:</strong></p>
+    <ul>
+      <li><strong>Use a different type, if a URL isn't strictly required.</strong> If what you actually want
+        is a visible link, a <strong>rich text</strong> metafield holding a hyperlink is bindable in most
+        themes and renders as a working link. If you just need the address shown, <strong>single line
+        text</strong> works and displays fine. Both mean redefining the field and re-entering the values —
+        Shopify won't convert them for you — so it is worth deciding this before you have five hundred
+        products filled in.</li>
+      <li><strong>Have a developer output it in Liquid.</strong> A URL metafield is perfectly readable from
+        theme code; it's only the no-code connector that can't reach it. A developer can add a short snippet
+        to the product template that prints it as a link. Again, this is a theme code change and a
+        developer's task, and we are deliberately not walking you through it here.</li>
+    </ul>
+    <p class="muted">Shopify does change what dynamic sources accept. If you are reading this some time after
+      it was written, it is worth re-opening the picker and checking before you redefine anything.</p>
+
+    <h2 id="not-this">What this page is — and what it isn't</h2>
+    <p>This is an explainer. We build spreadsheet-to-Shopify import tools, and it is worth being blunt about
+      the boundary, because it is the exact thing a page like this could be tempted to blur.</p>
+    <p>An import tool writes metafield <em>values</em> — it puts data into the fields you defined, in bulk,
+      from a spreadsheet. Whether those values then appear on your storefront is decided entirely by your
+      theme, and nothing outside your theme can change that. No import tool, ours included, can make a
+      metafield appear on a product page. If your theme has no dynamic source connected to that metafield,
+      the value will be sitting there perfectly stored and just as invisible after any import as before it.</p>
+    <p>So there is nothing to upload on this page, and no tool of ours to point you at for this problem. The
+      four fixes above happen in your theme editor or in your theme's code, and that is where they have to
+      happen. We'd rather say that clearly than sell you a step that wouldn't help.</p>
+
+    <h2>Where a spreadsheet <em>does</em> help: getting the values in</h2>
+    <p>The one thing on this list a spreadsheet solves is <a href="#cause-3">cause 3</a> at scale — the
+      metafield is bound correctly but empty across a lot of products. Filling hundreds of metafields by hand
+      in the admin is the work people avoid, which is why so many definitions sit empty. These pages are
+      about that half of the problem, and only that half:</p>
+    <ul>
+      <li><a href="/importable/bulk-upload-shopify-metafields/">Bulk-upload product metafields</a> — material,
+        care, sizing, ingredients and specs from the product sheet you already keep, without renaming your
+        columns to match a template.</li>
+      <li><a href="/importable/import-shopify-variant-metafields/">Bulk-edit variant metafields</a> — per-SKU
+        values that Shopify's own CSV import ignores entirely, with no error.</li>
+      <li><a href="/importable/shopify-metafield-hard-types/">Reference &amp; file metafields</a> — the exact
+        working format for product references, file references and metaobject references, the same types that
+        cause <a href="#cause-2">block mismatches</a> above.</li>
+      <li><a href="/importable/import-shopify-metafields/">Safe metafields re-import</a> — what your edited
+        export would actually do before you upload it, including the blank cells that wipe values and the
+        type changes that get rejected.</li>
+      <li><a href="/importable/metafields-store-move-references/">Metafield references across stores</a> — why
+        cloning or migrating a store nulls every reference metafield, and the handle-based fix.</li>
+    </ul>
+    <p class="muted">Every one of those is about getting correct values into your metafields. None of them
+      touches your theme, and none of them changes what your product page renders.</p>
+
+    <h2>Quick recap</h2>
+    <ul>
+      <li><strong>No connector icon anywhere in the theme editor</strong> &rarr; vintage theme. Move to an
+        Online Store 2.0 theme, or have a developer add the Liquid.</li>
+      <li><strong>Connector icon exists, your metafield isn't in its list</strong> &rarr; block type and
+        metafield type don't match. Use the block that fits the type, or change the type.</li>
+      <li><strong>Connected, no error, renders nothing</strong> &rarr; the metafield is empty on the product
+        you're previewing, or you filled in a different definition, or you put the value on the variant
+        instead of the product.</li>
+      <li><strong>It's a URL metafield</strong> &rarr; the picker can't reach it. Use rich text or plain text
+        instead, or have a developer print it in Liquid.</li>
+    </ul>
+    <p class="muted">Working through a Shopify catalogue in a spreadsheet with an AI agent instead? Install
+      <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">xlsx-for-ai</a> and ask Claude or
+      Cursor to check which of your products are missing metafield values — which is the data half of this
+      problem, not the display half.</p>
+  </div>
+
+</div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <nav class="links" aria-label="Shopify import tools">
+      <a href="/importable/import-shopify-products/">Shopify: import products</a>
+      <a href="/importable/import-shopify-collections/">Shopify: import collections</a>
+      <a href="/importable/import-shopify-inventory/">Shopify: update inventory</a>
+      <a href="/importable/import-shopify-redirects/">Shopify: import redirects</a>
+      <a href="/importable/bulk-upload-shopify-metafields/">Shopify: product metafields</a>
+      <a href="/importable/import-shopify-variant-metafields/">Shopify: variant metafields</a>
+      <a href="/importable/fix-shopify-products/">Shopify: fix products CSV</a>
+    </nav>
+    <div>&copy; 2026 xlsx-for-ai. All rights reserved.</div>
+    <div class="links">
+      <a href="/">Home</a>
+      <a href="/tools/">Tools</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/tools/shell.js"></script>
+
+</body>
+</html>

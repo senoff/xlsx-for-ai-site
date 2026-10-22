@@ -9,6 +9,8 @@ site favicon and for connector-directory submissions.
 |---|---|
 | `xlsx-for-ai-square.svg` | Square mark — green rounded square with white `x` glyph. Color: brand green `#107c41`. Primary brand asset. |
 | `xlsx-for-ai-outline.svg` | Outline variant — white stroke + white `x` on transparent background. For dark surfaces and the MSFT M365 store outline-icon requirement. |
+| `xfa-grid-logo.svg` | Plugin-directory logo: spreadsheet-grid mark plus the letters "xfa" (drawn as paths, no font needed) on `#107c41`. 512 x 512 viewBox. |
+| `xfa-grid-logo-1024.png` | The same logo as a 1024 x 1024 PNG with transparent corners (square, under 5 MiB), for the ChatGPT Plugin Directory listing. |
 
 ## Specs
 

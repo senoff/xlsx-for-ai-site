@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support — xlsx-for-ai</title>
+<meta name="description" content="How xlsx-for-ai handles your data. Plain-English privacy policy for developers and FP&A reviewers.">
+<meta name="author" content="xlsx-for-ai">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23107c41'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='sans-serif' font-weight='700' font-size='28' fill='white'%3Ex%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --fg: #1a1a1a;
+    --muted: #5a5a5a;
+    --bg: #ffffff;
+    --accent: #107c41;
+    --border: #e6e6e6;
+    --code-bg: #f5f5f5;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    color: var(--fg);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, pre {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+  code { background: var(--code-bg); padding: 2px 5px; border-radius: 3px; }
+  pre code { background: none; padding: 0; }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 0;
+  }
+  header .wrap { display: flex; align-items: center; justify-content: space-between; }
+  header .logo { font-weight: 700; font-size: 18px; color: var(--fg); }
+  header .logo .x { color: var(--accent); }
+  header nav a {
+    color: var(--muted);
+    margin-left: 22px;
+    font-size: 14px;
+  }
+  header nav a:hover { color: var(--fg); text-decoration: none; }
+
+  main { padding: 48px 0 96px; }
+  main h1 {
+    font-size: 38px;
+    line-height: 1.2;
+    margin: 0 0 12px;
+    letter-spacing: -0.02em;
+  }
+  main .last-updated {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0 0 32px;
+  }
+  main h2 {
+    font-size: 22px;
+    margin: 36px 0 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 28px;
+    letter-spacing: -0.01em;
+  }
+  main h2:first-of-type { border-top: 0; padding-top: 0; }
+  main h3 { font-size: 17px; margin: 24px 0 8px; }
+  main ul, main ol { padding-left: 22px; }
+  main li { margin: 6px 0; }
+  main table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  main th, main td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  main th { background: #fafafa; font-weight: 600; }
+  main strong { font-weight: 600; }
+  main em { color: var(--muted); }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 0;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--fg); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo"><span class="x">x</span>lsx-for-ai</div>
+    <nav>
+      <a href="/">Home</a>
+      <a href="https://github.com/senoff/xlsx-for-ai">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+<h1>Support</h1>
+
+<p>Need help with xlsx-for-ai? Email <a href="mailto:support@xlsx-for-ai.dev">support@xlsx-for-ai.dev</a>. A person reads every message.</p>
+
+<h2>What to include</h2>
+
+<ul>
+  <li>What you asked the tool to do, in a sentence or two.</li>
+  <li>The tool name (for example <code>xlsx_check</code> or <code>xlsx_eval</code>) and the app you used it from.</li>
+  <li>The time you tried it, with your time zone, and the exact error text you saw.</li>
+  <li>Please do not attach a confidential workbook. A small example that shows the same problem is enough.</li>
+</ul>
+
+<h2>Before you write</h2>
+
+<ul>
+  <li>If a tool says a function is not supported, that is reported as it is: xlsx-for-ai says so instead of guessing a value.</li>
+  <li>If a download link has stopped working, ask for the file again. Links expire after 60 minutes.</li>
+  <li>How files and data are handled is described on the <a href="/privacy/">privacy page</a>, and the rules for using the service are on the <a href="/terms/">terms page</a>.</li>
+</ul>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>&copy; xlsx-for-ai</div>
+    <div>
+      <a href="/">Home</a> &middot;
+      <a href="/privacy/">Privacy</a> &middot;
+      <a href="/terms/">Terms</a> &middot;
+      <a href="https://github.com/senoff/xlsx-for-ai">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -246,6 +246,9 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 </ul>
 <p>The link is a signed, unguessable token. It works for about one hour, serves only the file of the account that produced it, and then returns 410. No copy is stored and no link is returned when the account&rsquo;s consent level is <code>none</code> or the request carries the header <code>x-xfa-privacy: strict</code>. <code>GET /download/&lt;token&gt;</code> serves a file produced through the MCP door.</p>
 
+<h3>Writing a formula with its cached value</h3>
+<p>In an <code>xlsx_write</code> spec, a cell may carry a <code>value</code> beside its <code>formula</code>. The value is written as the formula&rsquo;s cached result, so a reader that does not recalculate (a preview, a viewer, a CSV export) shows it, and Excel recalculates on open as usual. The value may be a string, a finite number, a boolean or null; any other value is a 400. The cell&rsquo;s <code>style</code> is kept too. The reply counts these cells in <code>_meta.cached_formula_cells</code>.</p>
+
 <h3>Exporting a Google Sheet to .xlsx</h3>
 <p><code>xlsx_convert</code> with <code>to: "xlsx"</code> returns the workbook as Google exported it. Google Sheets functions that Excel does not support (for example QUERY, IMPORTRANGE, GOOGLEFINANCE and ARRAYFORMULA) do not stop the export. Those cells keep the value they had in the sheet and do not recalculate in Excel. The result carries a visible line starting &ldquo;Google Sheets notice:&rdquo; and a structured <code>_meta.google_sheets_notice</code> naming each function and where it is used. A workbook with none of them carries no notice.</p>
 

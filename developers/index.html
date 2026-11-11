@@ -235,6 +235,7 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 </ol>
 <p>Reading a private Google Sheet through the live Google Sheets API (<code>xlsx_read</code> with <code>source: "gsheets"</code>) needs a Google OAuth access token with the <code>spreadsheets.readonly</code> scope, supplied by the caller.</p>
 <p>A link is read as the sheet stands at that moment, with Google&rsquo;s calculated values. To recalculate after changing inputs, call <code>xlsx_write</code> with the workbook as the base plus the changed cells, then call <code>xlsx_eval</code> on the returned <code>file_handle</code>.</p>
+<p><code>xlsx_read</code> with <code>options.format: "json"</code> returns one object per row keyed by column letter. Add <code>options.header_row: true</code> to key each row by the header row&rsquo;s values instead, for example <code>{"row": 2, "email": "a@b.co", "name": "Ann"}</code>. The header row is left out of the rows, so <code>offset</code> and <code>maxRows</code> count data rows. Duplicate or blank headers get unique names: a repeat becomes <code>Name_2</code>, <code>Name_3</code> (compared without case, after trimming), and a blank header becomes its column letter. The default is false.</p>
 
 <h3>MCP connector: getting a file back</h3>
 <p>Every tool that produces a file (<code>xlsx_write</code>, <code>xlsx_convert</code>, and the cleaning, redaction, repair, receipt and stamp tools) returns:</p>

@@ -124,7 +124,7 @@
 <div class="wrap">
 
 <h1>Privacy</h1>
-<p class="last-updated"><strong>Last updated:</strong> 2026-10-14</p>
+<p class="last-updated"><strong>Last updated:</strong> 2026-11-12</p>
 
 <p id="data-handling"><strong>A file is held until its upload handle or download link expires (60 minutes; an edit session up to 4 hours). No debugging copy is kept; logs and error reports carry no file contents; no training use.</strong></p>
 
@@ -232,6 +232,46 @@ xlsx-for-ai --telemetry-status    # check current setting</code></pre>
 <h2>Data deletion requests</h2>
 
 <p>To request deletion of your audit log records: email <code>hello@xlsx-for-ai.dev</code> with your client_id (found in <code>~/.xlsx-for-ai/config.json</code>) and "privacy request" in the subject line. We will delete all audit log entries for that client_id within 30 days and confirm by reply.</p>
+
+<h2>Datastash and skillstash (saved data and saved AI skills)</h2>
+
+<p>Two companion services at x.xlsx-for-ai.dev work differently from the spreadsheet tools above: they keep what you save, because that's what they're for.</p>
+
+<ul>
+  <li><strong>Datastash</strong> stores lists and tables you or your AI save (for example leads or orders), so your AI can add to them, look things up, and work with them later. Spreadsheet calculations are done by the xlsx-for-ai engine described above.</li>
+  <li><strong>Skillstash</strong> stores AI skills: written instructions your AI follows. It keeps every version, and shares a skill only with the people you choose.</li>
+</ul>
+
+<p>One account and one sign-in cover both. They are free during the pilot.</p>
+
+<p><strong>What we collect</strong></p>
+
+<ul>
+  <li>Your email address, from Google sign-in, to identify your account and so others can share skills with you by email.</li>
+  <li>What you save: rows and columns in datastash; skill names, text and every earlier version in skillstash; who changed what, and when.</li>
+  <li>Sharing settings in skillstash: the people, groups or team you shared with.</li>
+  <li>Which AI app connected (for example Grok, Claude or ChatGPT), to make sure each one works.</li>
+  <li>Short notes your AI may send when it couldn't do something you asked, to learn what to build next. They carry no account details.</li>
+  <li>Service logs and error reports. They record which tool ran and whether it worked, never what you saved.</li>
+</ul>
+
+<p><strong>How it is used and protected</strong></p>
+
+<ul>
+  <li>Only to run the service: store, version, share and return what you saved. We never sell it, use it for advertising, or use it to train AI models.</li>
+  <li>Private by default. A skill is visible only to you until you share it. Columns you mark private stay encrypted, and are shown only to your own signed-in account.</li>
+  <li>Our staff don't read what you save, except when you ask us to help with a problem or the law requires it.</li>
+  <li>Stored on our servers at Hetzner (Germany, EU), encrypted in transit; nightly backups are encrypted before they leave our servers.</li>
+</ul>
+
+<p><strong>Keeping and deleting</strong></p>
+
+<ul>
+  <li>What you save stays until you delete it or your account. Delete it through your AI, or email hello@xlsx-for-ai.dev with "privacy request" in the subject.</li>
+  <li>Deleted data is gone from our servers right away, and from encrypted backups within 30 days.</li>
+  <li>Service logs are kept up to 90 days, as above.</li>
+  <li>If you're in the EU, UK or California you have rights of access, correction, deletion, portability and objection. Email us and we'll act within the time the law requires.</li>
+</ul>
 
 <h2>Changes to this document</h2>
 

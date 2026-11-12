@@ -128,7 +128,7 @@
 
 <p id="data-handling"><strong>A file is held until its upload handle or download link expires (60 minutes; an edit session up to 4 hours). No debugging copy is kept; logs and error reports carry no file contents; no training use.</strong></p>
 
-<p>This document covers how xlsx-for-ai handles your data. It is written for developers who want to audit the data flow before deploying xlsx-for-ai in an agent, and for FP&amp;A teams who need to forward it to legal before using an agent that touches financial spreadsheets.</p>
+<p>This document covers how xlsx-for-ai handles your data. It is written for developers who want to audit the data flow before deploying xlsx-for-ai in an agent, and for FP&amp;A teams who need to forward it to legal before using an agent that touches financial spreadsheets. This applies to the spreadsheet tools; datastash and skillstash, described below, keep what you save.</p>
 
 <h2>Architecture</h2>
 
@@ -261,14 +261,14 @@ xlsx-for-ai --telemetry-status    # check current setting</code></pre>
   <li>Only to run the service: store, version, share and return what you saved. We never sell it, use it for advertising, or use it to train AI models.</li>
   <li>Private by default. A skill is visible only to you until you share it. Columns you mark private stay encrypted, and are shown only to your own signed-in account.</li>
   <li>Our staff don't read what you save, except when you ask us to help with a problem or the law requires it.</li>
-  <li>Stored on our servers at Hetzner (Germany, EU), encrypted in transit; nightly backups are encrypted before they leave our servers.</li>
+  <li>Stored on our servers at Hetzner (Germany, EU), encrypted in transit; nightly backups are encrypted before they leave our servers and are stored with Cloudflare R2.</li>
 </ul>
 
 <p><strong>Keeping and deleting</strong></p>
 
 <ul>
-  <li>What you save stays until you delete it or your account. Delete it through your AI, or email hello@xlsx-for-ai.dev with "privacy request" in the subject.</li>
-  <li>Deleted data is gone from our servers right away, and from encrypted backups within 30 days.</li>
+  <li>What you save stays until you delete it or your account. Delete workbooks, tabs and rows through your AI. To delete a skill or your whole account, ask your AI or email hello@xlsx-for-ai.dev with "privacy request" in the subject.</li>
+  <li>Deleted data is removed from our servers right away. We keep only a bare record that a workbook existed, with its name and contents removed, for billing history. It is also gone from encrypted backups within 30 days.</li>
   <li>Service logs are kept up to 90 days, as above.</li>
   <li>If you're in the EU, UK or California you have rights of access, correction, deletion, portability and objection. Email us and we'll act within the time the law requires.</li>
 </ul>

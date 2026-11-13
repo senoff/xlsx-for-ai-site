@@ -244,6 +244,8 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
   <li><strong>When there is no handle:</strong> a read that fits on one page returns none, and nothing is kept when the request carries <code>X-XFA-Privacy: strict</code> or the key&rsquo;s consent level is <code>none</code>.</li>
 </ul>
 
+<p><strong>Recalculating from a handle.</strong> <code>xlsx_eval</code> takes the same handle as its workbook source: send <code>cache_handle</code> on the API (<code>file_handle</code> on the MCP connector) with <code>formulas</code> and/or <code>cells</code>, and the answers match sending the file itself, without uploading it again. Send one workbook source only. An expired or unknown handle, or one from another key, is refused with 400 &ldquo;cache_handle not found or expired&rdquo;.</p>
+
 <h3>MCP connector: getting a file back</h3>
 <p>Every tool that produces a file (<code>xlsx_write</code>, <code>xlsx_convert</code>, and the cleaning, redaction, repair, receipt and stamp tools) returns:</p>
 <ul>

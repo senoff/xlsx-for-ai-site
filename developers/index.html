@@ -236,6 +236,9 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 <p>Reading a private Google Sheet through the live Google Sheets API (<code>xlsx_read</code> with <code>source: "gsheets"</code>) needs a Google OAuth access token with the <code>spreadsheets.readonly</code> scope, supplied by the caller.</p>
 <p>A link is read as the sheet stands at that moment, with Google&rsquo;s calculated values. To recalculate after changing inputs, call <code>xlsx_write</code> with the workbook as the base plus the changed cells, then call <code>xlsx_eval</code> on the returned <code>file_handle</code>.</p>
 
+<h3>Reading a large file from a link in pages</h3>
+<p>When <code>xlsx_read</code> is given a <code>file_url</code> and the answer is cut short, the server keeps the file it fetched so later pages never download the link again. On the REST API the reply carries <code>_meta.cache_handle</code> (with <code>_meta.cache_handle_expires_at</code>); on the Claude connector the same handle is <code>_meta.file_handle</code>. <code>_meta.next_call</code> already names it: send it as <code>cache_handle</code> on the REST API, or as <code>file_handle</code> on the connector, with the next <code>options.offset</code>. Every page then comes from the same copy of the file, even if the link changes in the meantime. The handle expires after about an hour; if it has, read the link again for a fresh one. When the account&rsquo;s consent level is <code>none</code> or the request carries <code>x-xfa-privacy: strict</code>, no copy is kept: the reply has no handle and a warning says that reading the link again may show a newer version.</p>
+
 <h3>MCP connector: getting a file back</h3>
 <p>Every tool that produces a file (<code>xlsx_write</code>, <code>xlsx_convert</code>, and the cleaning, redaction, repair, receipt and stamp tools) returns:</p>
 <ul>

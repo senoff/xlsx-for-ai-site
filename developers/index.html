@@ -236,6 +236,14 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 <p>Reading a private Google Sheet through the live Google Sheets API (<code>xlsx_read</code> with <code>source: "gsheets"</code>) needs a Google OAuth access token with the <code>spreadsheets.readonly</code> scope, supplied by the caller.</p>
 <p>A link is read as the sheet stands at that moment, with Google&rsquo;s calculated values. To recalculate after changing inputs, call <code>xlsx_write</code> with the workbook as the base plus the changed cells, then call <code>xlsx_eval</code> on the returned <code>file_handle</code>.</p>
 
+<p><strong>Paging a big link without fetching it again.</strong> When a link read with <code>xlsx_read</code> is cut (there is a next page), the server keeps the file it fetched and hands back a handle, so every later page reads the same copy: no second download, and no mixed versions if the sheet is edited while you page.</p>
+<ul>
+  <li><strong>API:</strong> the reply carries <code>_meta.cache_handle</code> (with <code>_meta.cache_handle_expires_at</code> and <code>_meta.cache_handle_size_bytes</code>), and <code>_meta.next_call</code> already holds it. Send it as <code>cache_handle</code>, with <code>options.offset</code>, for each following page.</li>
+  <li><strong>MCP connector:</strong> the same handle is returned as <code>file_handle</code>. Pass it as <code>file_handle</code> for each following page; the cut page&rsquo;s <code>next_call</code> carries it.</li>
+  <li><strong>Lifetime:</strong> the handle works like an uploaded file&rsquo;s handle. It expires after one hour, only the client that made the read can use it, and it counts against that client&rsquo;s storage quota. An expired or unknown handle is refused with 400; read the link again to start over, which returns the current version of the file.</li>
+  <li><strong>When there is no handle:</strong> a read that fits on one page returns none, and nothing is kept when the request carries <code>X-XFA-Privacy: strict</code> or the key&rsquo;s consent level is <code>none</code>.</li>
+</ul>
+
 <h3>MCP connector: getting a file back</h3>
 <p>Every tool that produces a file (<code>xlsx_write</code>, <code>xlsx_convert</code>, and the cleaning, redaction, repair, receipt and stamp tools) returns:</p>
 <ul>

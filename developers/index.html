@@ -251,6 +251,7 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
   <li><strong><code>xlsx_eval</code>:</strong> each evaluated cell comes back typed in <code>_meta.cell_values</code>: numbers as numbers, booleans, strings, and error codes. A date is a serial number plus its <code>numFmt</code>. <code>value_format</code> is <code>"typed"</code> by default for eval; send <code>"text"</code> for display text.</li>
   <li><strong><code>xlsx_read</code>:</strong> send <code>options.value_format: "typed"</code> (the default is <code>"text"</code>) to get typed JSON rows: numbers, <code>true</code>/<code>false</code>, ISO dates, <code>null</code> for blanks, and long numbers and ids with leading zeros kept as exact strings.</li>
 </ul>
+<p><strong>Header row.</strong> With JSON output, <code>options.header_row</code> keys each row by its header text. Send <code>true</code> for row 1, a row number such as <code>3</code> when row 3 is the header (data starts on row 4), or <code>"auto"</code> to let the engine find the real header row in an export with a title row, blank rows or merged cells above it. It uses the same detector as <code>xlsx_data_clean</code>. The row used comes back in <code>_meta.header_row_used</code>. Keys are the header text exactly as written, and a duplicate gets a suffix (<code>City_2</code>).</p>
 
 <h3>MCP connector: getting a file back</h3>
 <p>Every tool that produces a file (<code>xlsx_write</code>, <code>xlsx_convert</code>, and the cleaning, redaction, repair, receipt and stamp tools) returns:</p>

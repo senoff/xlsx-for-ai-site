@@ -246,6 +246,12 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 
 <p><strong>Recalculating from a handle.</strong> <code>xlsx_eval</code> takes the same handle as its workbook source: send <code>cache_handle</code> on the API (<code>file_handle</code> on the MCP connector) with <code>formulas</code> and/or <code>cells</code>, and the answers match sending the file itself, without uploading it again. Send one workbook source only. An expired or unknown handle, or one from another key, is refused with 400 &ldquo;cache_handle not found or expired&rdquo;.</p>
 
+<p><strong>Typed results.</strong> Both tools can return real types instead of display text, chosen with <code>options.value_format</code>.</p>
+<ul>
+  <li><strong><code>xlsx_eval</code>:</strong> each evaluated cell comes back typed in <code>_meta.cell_values</code>: numbers as numbers, booleans, strings, and error codes. A date is a serial number plus its <code>numFmt</code>. <code>value_format</code> is <code>"typed"</code> by default for eval; send <code>"text"</code> for display text.</li>
+  <li><strong><code>xlsx_read</code>:</strong> send <code>options.value_format: "typed"</code> (the default is <code>"text"</code>) to get typed JSON rows: numbers, <code>true</code>/<code>false</code>, ISO dates, <code>null</code> for blanks, and long numbers and ids with leading zeros kept as exact strings.</li>
+</ul>
+
 <h3>MCP connector: getting a file back</h3>
 <p>Every tool that produces a file (<code>xlsx_write</code>, <code>xlsx_convert</code>, and the cleaning, redaction, repair, receipt and stamp tools) returns:</p>
 <ul>

@@ -253,6 +253,8 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 </ul>
 <p><strong>Header row.</strong> With JSON output, <code>options.header_row</code> keys each row by its header text. Send <code>true</code> for row 1, a row number such as <code>3</code> when row 3 is the header (data starts on row 4), or <code>"auto"</code> to let the engine find the real header row in an export with a title row, blank rows or merged cells above it. It uses the same detector as <code>xlsx_data_clean</code>. The row used comes back in <code>_meta.header_row_used</code>. Keys are the header text exactly as written, and a duplicate gets a suffix (<code>City_2</code>).</p>
 
+<p><strong>Per-cell formulas.</strong> <code>xlsx_read</code> with <code>options.formulas: true</code> and JSON output returns each returned row&rsquo;s formulas in <code>formulas_by_cell</code>, keyed by cell address. It covers the returned page only, and pages taken with <code>offset</code> and <code>maxRows</code> do not overlap.</p>
+
 <h3>MCP connector: getting a file back</h3>
 <p>Every tool that produces a file (<code>xlsx_write</code>, <code>xlsx_convert</code>, and the cleaning, redaction, repair, receipt and stamp tools) returns:</p>
 <ul>

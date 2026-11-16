@@ -285,6 +285,14 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 <h3>REST API</h3>
 <p>The REST API is unchanged. Send <code>file_b64</code> to <code>POST /api/v1/tools/&lt;name&gt;</code> and receive produced bytes in <code>_meta.file_b64</code>.</p>
 
+<h3 id="chunk-resume">REST API: sending a big file in chunks, and resuming</h3>
+<p>With a key, a big file can go up in chunks. Pick a handle, then send each chunk to <code>POST /api/v1/cache/upload-chunk</code> as <code>{"handle", "chunk_index", "total_chunks", "chunk_b64"}</code>, with <code>chunk_index</code> from 0. Each reply is <code>{"handle", "received", "total", "complete", "received_indices"}</code>. <code>received_indices</code> is the sorted list of chunk indices stored so far. When <code>complete</code> is true, call <code>POST /api/v1/cache/finalize</code> with <code>{"handle"}</code> and pass the handle to any tool.</p>
+<ul>
+  <li><strong>Resuming after a dropped connection:</strong> send any chunk again, or read the last reply, then resend only the indices missing from <code>received_indices</code>.</li>
+  <li><strong>Sending a chunk twice:</strong> the same bytes again are accepted (200) and change nothing. Different bytes for an index already stored are refused with 409 <code>chunk_mismatch</code>, and nothing is written.</li>
+  <li><strong>Lifetime:</strong> an unfinished upload is kept for 30 minutes after its last chunk.</li>
+</ul>
+
 <h3>Formula cells with a saved value</h3>
 <p>In <code>xlsx_write</code>, a cell can carry both <code>formula</code> and <code>value</code>, for example <code>{"address": "A1", "formula": "1+2", "value": 3}</code>. The value is written as the formula's saved result, so the file opens in Excel showing it without recalculating. The reply's <code>_meta.cached_formula_cells</code> counts the formula cells written with a value; through the MCP connector the reply says "N formula cells with a cached value". The value must be a number, text or TRUE/FALSE; any other value on a formula cell is refused with 400 <code>bad_request</code>. Style on a formula cell is written too.</p>
 

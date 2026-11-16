@@ -8,7 +8,7 @@
   "trial": "10-file trial",
   "paidLimit": "10,000 files a month",
   "paidOffer": "$25 a year for 10,000 files a month",
-  "toolCount": 54,
+  "toolCount": 55,
   "sessionTools": ["xlsx_read_handle", "xlsx_session_set_validations"],
   "functionClaim": "over 350 Excel functions",
   "sheetsOnlyClaim": "the functions only Google Sheets has",

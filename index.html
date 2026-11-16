@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>xlsx-for-ai — Reliable spreadsheet access for AI agents</title>
-<meta name="description" content="Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free to start: 500 files a month on Xlsx Pro Free, 54 tools.">
+<meta name="description" content="Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free to start: 500 files a month on Xlsx Pro Free, 55 tools.">
 <meta name="author" content="xlsx-for-ai">
 <meta property="og:title" content="xlsx-for-ai">
 <meta property="og:description" content="Reliable spreadsheet access for AI agents.">
@@ -347,7 +347,7 @@
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
   "name": "xlsx-for-ai",
-  "description": "Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free to start: 500 files a month on Xlsx Pro Free, 54 tools.",
+  "description": "Hosted MCP server and npm client that gives LLM agents reliable, hardened access to Excel (.xlsx) files. Free to start: 500 files a month on Xlsx Pro Free, 55 tools.",
   "url": "https://xlsx-for-ai.dev/",
   "applicationCategory": "DeveloperApplication",
   "operatingSystem": "Web",
@@ -391,7 +391,7 @@
     <p class="lead">
       A hosted MCP server and npm client that lets LLMs read, write, validate and analyze Excel files
       without losing structure. It live-recalculates formulas and hands back the computed value — not
-      the stale value last saved in the file. Hardened against malformed input. Free to start: 500 files a month on Xlsx Pro Free, 54 tools.
+      the stale value last saved in the file. Hardened against malformed input. Free to start: 500 files a month on Xlsx Pro Free, 55 tools.
     </p>
     <a class="cta" href="#demo">Try the demo</a>
     <button type="button" class="cmd copy" data-copy="npm install -g xlsx-for-ai" aria-label="Copy install command to clipboard"><code class="cmd-text">npm install -g xlsx-for-ai</code><span class="cmd-btn" aria-hidden="true"></span></button>
@@ -468,7 +468,7 @@
       <pre class="copy" role="button" tabindex="0" data-copy="xfa samples" title="Click to copy"><code>xfa samples</code></pre>
 
       <p class="demo-step"><span class="label">Confirm it's wired</span> — ask Claude:</p>
-      <div class="tool"><p class="prompt">"What xfa tools do you have? (you should see <a href="#tools">54</a>)"</p></div>
+      <div class="tool"><p class="prompt">"What xfa tools do you have? (you should see <a href="#tools">55</a>)"</p></div>
 
       <p class="demo-step" style="margin-top: 18px;">Then ask Claude — the interesting stuff first, each is one prompt vs. the usual Excel work:</p>
 
@@ -511,7 +511,7 @@
 
     <p style="color: var(--muted); max-width: 660px; margin-top: 22px;">
       Those are some of the headline moves, but they're only part of the surface — there are
-      currently <a href="#tools">54 tools</a> in all. The rest handle the everyday spreadsheet work
+      currently <a href="#tools">55 tools</a> in all. The rest handle the everyday spreadsheet work
       you'd otherwise do by hand: reading any sheet, range, or single cell as clean text the model
       can actually parse; dumping a workbook's full structure in one call; inferring each column's
       type and whether it allows blanks; searching, filtering, and sorting across the file; writing
@@ -535,7 +535,7 @@
   <div class="wrap">
     <h2>Tools</h2>
     <p style="color: var(--muted); max-width: 660px;">
-      All 54 tools, grouped by what you're trying to do, plus the 2 documented session tools at the end
+      All 55 tools, grouped by what you're trying to do, plus the 2 documented session tools at the end
       (<code>xlsx_read_handle</code> and <code>xlsx_session_set_validations</code>). Each one has a paste-ready example prompt
       that runs against the workbooks from <code>xfa samples</code> above.
     </p>
@@ -547,6 +547,7 @@
     <h3 class="tool-group">Read &amp; explore a workbook</h3>
     <div class="tool"><p class="name"><code>xlsx_read</code> — Read a workbook and return it as markdown, JSON, or SQL. Also reads a live Google Sheet by id (read-only, with a read-only Google token you supply).</p><p class="prompt">"Read reporting-pack-v1.xlsx and show me the Summary sheet, with xfa."</p><p class="run copy" role="button" tabindex="0" data-copy="xfa <file.xlsx> [--md|--json] [--sheet <name>] [--evaluate]" title="Click to copy"><strong>Or run:</strong> <code>xfa &lt;file.xlsx&gt; [--md|--json] [--sheet &lt;name&gt;] [--evaluate]</code></p></div>
     <div class="tool"><p class="name"><code>xlsx_list_sheets</code> — List sheet names, sizes, and which are hidden.</p><p class="prompt">"What sheets are in reporting-pack-v1.xlsx and how big is each, with xfa?"</p></div>
+    <div class="tool"><p class="name"><code>xlsx_upload_link</code> — Get a one-time upload link for a file, sent in one request or in resumable parts; the returned handle works with every tool.</p><p class="prompt">"Give me an upload link for my 200 MB workbook, then list its sheets with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_describe</code> — Per-column summary: count, nulls, unique, min/max/mean.</p><p class="prompt">"Give me a column-by-column summary of the Transactions sheet in reporting-pack-v1.xlsx, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_schema</code> — Infer each column's type, nullability, and a confidence score.</p><p class="prompt">"What are the column types in the Transactions sheet of reporting-pack-v1.xlsx, with xfa?"</p></div>
     <div class="tool"><p class="name"><code>xlsx_topology</code> — One-call map of the whole workbook: sheets, formulas, names, tables, flags.</p><p class="prompt">"Give me the full topology of reporting-pack-v1.xlsx in one shot, with xfa."</p></div>
@@ -617,7 +618,7 @@
     <div class="tool"><p class="name"><code>xlsx_vault_scan</code> — Scan a spreadsheet for hidden or risky content (macros, external links, embedded objects).</p><p class="prompt">"Scan reporting-pack-v1.xlsx for hidden or risky content, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_vault_cure</code> — Clean hidden or risky content out of a spreadsheet.</p><p class="prompt">"Clean the hidden or risky content out of reporting-pack-v1.xlsx, with xfa."</p></div>
 
-    <h3 class="tool-group">Sessions &amp; advanced (not in the 54)</h3>
+    <h3 class="tool-group">Sessions &amp; advanced (not in the 55)</h3>
     <div class="tool"><p class="name"><code>xlsx_read_handle</code> — Re-read an already-uploaded workbook by handle, without re-sending bytes.</p><p class="prompt">"Read the workbook I uploaded earlier again, by its handle, with xfa."</p></div>
     <div class="tool"><p class="name"><code>xlsx_session_set_validations</code> — Set validation rules the server enforces for the rest of a session.</p><p class="prompt">"For this session, require every row in Transactions to have an Entity and a positive Revenue, with xfa."</p></div>
   </div>

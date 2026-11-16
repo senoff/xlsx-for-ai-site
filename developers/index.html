@@ -288,6 +288,41 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 <h3>Formula cells with a saved value</h3>
 <p>In <code>xlsx_write</code>, a cell can carry both <code>formula</code> and <code>value</code>, for example <code>{"address": "A1", "formula": "1+2", "value": 3}</code>. The value is written as the formula's saved result, so the file opens in Excel showing it without recalculating. The reply's <code>_meta.cached_formula_cells</code> counts the formula cells written with a value; through the MCP connector the reply says "N formula cells with a cached value". The value must be a number, text or TRUE/FALSE; any other value on a formula cell is refused with 400 <code>bad_request</code>. Style on a formula cell is written too.</p>
 
+<h2 id="resumable-uploads">Resumable uploads</h2>
+<p>An app can send its user&rsquo;s file straight to xlsx-for-ai through a one-time upload link, in one request or in parts that resume after a dropped connection.</p>
+
+<h3>Get a link</h3>
+<p><code>POST /api/v1/tools/xlsx_upload_link</code> with your API key (<code>Authorization: Bearer &lt;api_key&gt;</code>). The body is optional JSON with one field, <code>purpose</code>, a short note of up to 200 characters shown on the upload page. Minting stores no file and does not count against your allowance; the file counts when a tool processes it.</p>
+<pre><code>curl -sS -X POST https://api.xlsx-for-ai.dev/api/v1/tools/xlsx_upload_link \
+  -H "Authorization: Bearer $XFA_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"purpose":"Q3 sales workbook"}'</code></pre>
+<p>The reply is <code>{ "content": [{ "type": "text", "text": "..." }], "_meta": { "upload_url", "file_handle", "expires_at" } }</code>. The text is the how-to for the link. <code>_meta.upload_url</code> is the link, <code>_meta.file_handle</code> is the handle to pass to any tool once the file has arrived (<code>cache_handle</code> on the API), and <code>_meta.expires_at</code> is when the link expires, 30 minutes after it was made. Only the key that made the link can use its handle.</p>
+
+<h3>Send the file</h3>
+<ul>
+  <li><strong>One request.</strong> <code>PUT</code> the whole file to the link. This works exactly as before.</li>
+  <li><strong>In parts.</strong> <code>PUT</code> each part to the link with the header <code>Content-Range: bytes &lt;first&gt;-&lt;last&gt;/&lt;total&gt;</code>, for example <code>Content-Range: bytes 0-16777215/52428800</code>. Any part size works, and about 16 MB a part is a good size; send the parts in order. The first part fixes the total size. A part that repeats bytes already received is accepted when the bytes are identical.</li>
+  <li><strong>Resuming.</strong> <code>HEAD</code> the link. The reply carries <code>Upload-Offset</code>, the number of bytes received so far. Send the rest from that offset. A part cut off by a dropped connection keeps the bytes that arrived.</li>
+</ul>
+<pre><code>curl -sS -I "$UPLOAD_URL"   # reads Upload-Offset
+curl -sS -X PUT -H "Content-Range: bytes 0-16777215/52428800" \
+  --data-binary @part1 "$UPLOAD_URL"</code></pre>
+<p>Each part&rsquo;s reply is <code>{ "ok": true, "complete": false, "offset": &lt;bytes received&gt;, "total": &lt;total&gt; }</code> with the <code>Upload-Offset</code> header. The upload finishes when the last byte arrives: that reply has <code>"complete": true</code>, and <code>file_handle</code> then works with every tool, the same as after a one-request upload.</p>
+
+<h3>Errors</h3>
+<ul>
+  <li><strong>416</strong> <code>range_gap</code>: the part starts past the bytes received. The reply carries <code>Upload-Offset</code>; resend from there.</li>
+  <li><strong>409</strong> <code>range_mismatch</code>: bytes already received differ from the bytes you sent. Nothing is written.</li>
+  <li><strong>409</strong> <code>total_mismatch</code>: the total size differs from the one the first part declared.</li>
+  <li><strong>409</strong> <code>upload_incomplete</code>: some received bytes were lost before the upload finished. The reply carries the true <code>Upload-Offset</code>; resend from there.</li>
+  <li><strong>409</strong> <code>upload_in_progress</code>: a whole-file <code>PUT</code> was sent while parts are still arriving.</li>
+  <li><strong>410</strong>: the link expired before any part arrived, or the partial upload expired. Ask for a new link.</li>
+</ul>
+
+<h3>How long it is kept</h3>
+<p>A partial upload is kept for 30 minutes from the last part. While it is kept, the link keeps taking parts and answering <code>HEAD</code>, even after the link&rsquo;s own 30 minutes.</p>
+
 </div>
 </main>
 

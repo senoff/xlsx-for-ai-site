@@ -170,6 +170,8 @@
   </tbody>
 </table>
 
+<p id="upload-retention">Upload pages and upload links say it the same way: <strong>We keep this uploaded copy for up to an hour, then remove it. Your original file is not touched.</strong> Only the copy you send us is removed when its time runs out; nothing on your own device or storage is read, changed or deleted.</p>
+
 <p>When the account's consent level is <code>none</code> or the request carries <code>X-XFA-Privacy: strict</code>, no download copy is kept and no download link is issued, cache handles are cut to 60 seconds, and the in-memory parse cache is skipped. Use the CLI flag <code>--privacy=strict</code> to add this header to every request from a CLI session, or set the environment variable <code>XFA_PRIVACY=strict</code>.</p>
 
 <p><strong>No capture.</strong> We do not keep copies of workbooks, redacted or not, when a request fails or succeeds. Error reports sent to our error tracker carry the error type and our own code's stack trace, never the error message text, because that text could contain values from your file.</p>

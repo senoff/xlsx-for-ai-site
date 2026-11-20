@@ -294,6 +294,15 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
   <li><strong>Lifetime:</strong> an unfinished upload is kept for 30 minutes after its last chunk.</li>
 </ul>
 
+<h3 id="pii-deferred">Scanning for personal data without waiting for names and addresses</h3>
+<p><code>xlsx_pii_scan</code> normally waits for its name and address check. An app that scans on every save can send <code>"ner": "deferred"</code> (REST <code>POST /api/v1/tools/xlsx_pii_scan</code>, or the same argument on MCP). The answer then comes back at once with every other finding, plus <code>_meta.ner_status</code> and <code>_meta.ner_job_id</code>. The fast answer does not include names and addresses until the job is done.</p>
+<ul>
+  <li><strong><code>ner_status: "done"</code>, <code>ner_job_id: null</code>:</strong> nothing needed checking; this is the full answer.</li>
+  <li><strong><code>ner_status: "pending"</code>:</strong> fetch the names and addresses with <code>xlsx_pii_job_status</code> and <code>{"ner_job_id"}</code> (REST <code>POST /api/v1/tools/xlsx_pii_job_status</code>, or the MCP tool) before you share, export or copy the file. It answers <code>pending</code>, <code>done</code> (the findings, in the scan&rsquo;s finding shape without an excerpt) or <code>failed</code> (a plain reason; scan again).</li>
+  <li><strong>Privacy:</strong> only the account that ran the scan can read its job. Results are kept 60 minutes after the scan and hold no cell text. Polls do not count against your monthly calls.</li>
+</ul>
+<p>Without <code>ner</code>, nothing changes: the scan waits and returns everything in one answer.</p>
+
 <h3>Formula cells with a saved value</h3>
 <p>In <code>xlsx_write</code>, a cell can carry both <code>formula</code> and <code>value</code>, for example <code>{"address": "A1", "formula": "1+2", "value": 3}</code>. The value is written as the formula's saved result, so the file opens in Excel showing it without recalculating. The reply's <code>_meta.cached_formula_cells</code> counts the formula cells written with a value; through the MCP connector the reply says "N formula cells with a cached value". The value must be a number, text or TRUE/FALSE; any other value on a formula cell is refused with 400 <code>bad_request</code>. Style on a formula cell is written too.</p>
 

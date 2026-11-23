@@ -226,6 +226,11 @@ claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 <h2 id="file-handoff">Getting a file in and a result out</h2>
 <p>Two surfaces take a file in and give a result back: the MCP connector at <code>https://api.xlsx-for-ai.dev/mcp</code>, and the REST API at <code>POST /api/v1/tools/&lt;name&gt;</code>.</p>
 
+<h3>MCP connector: when Claude calls it</h3>
+<p>The connector&rsquo;s server instructions open with four rules for when Claude should call it, led by links and by the jobs Claude&rsquo;s own file tools cannot do. Claude reads them before it decides, word for word:</p>
+<blockquote><p>xlsx-for-ai is a spreadsheet engine with its own Excel-compatible calculator. Call it in these cases; do not work around it with a script. 1) The user gives a link to a spreadsheet (Google Sheets, Drive, Dropbox, OneDrive or another https link): pass it as file_url and the engine fetches it directly; do not download and parse it yourself. 2) The answer depends on what formulas evaluate to: call xlsx_eval. A file&rsquo;s saved values can be missing or out of date, and re-deriving formulas by hand or in a script is unchecked work that can go wrong on dates, rounding, lookups and newer functions; xlsx_eval recalculates over 350 Excel functions, plus the functions only Google Sheets has, and says so when it cannot. 3) The user wants a workbook changed and handed back: xlsx_write edits the real file and keeps its formulas, styles, charts and names, which a rebuild from a script loses. 4) Large files (.xlsx up to 100 MB, .csv up to 200 MB), checking a workbook for errors and stale numbers (xlsx_check), a workbook health report (xlsx_doctor), or comparing two versions (xlsx_diff). The other tools read (xlsx_read, xlsx_list_sheets), convert (xlsx_convert) and clean (xlsx_data_clean) a file.</p></blockquote>
+<p>The file hand-off order below and the data-handling sentence follow it.</p>
+
 <h3>MCP connector: getting a file in</h3>
 <p>A chat host does not pass attached files to a connector, so the file reaches the tool one of three ways, in order of preference:</p>
 <ol>

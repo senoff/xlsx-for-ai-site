@@ -343,10 +343,11 @@ T("XLS-11638 developers and home give the Claude Code first-run steps", async ()
   const next = /Restart Claude Code, then ask it about a spreadsheet/;
   for (const f of ["developers/index.html", "index.html"]) {
     must(read(f), next, f + " restart then ask");
-    must(read(f), /plugin:xlsx-for-ai:spreadsheets/, f + " names the /mcp server");
+    must(read(f), /claude plugin update xlsx-for-ai@xlsx-for-ai/, f + " gives the update command");
+    mustNot(read(f), /choose (<strong>)?Authenticate/, f + " no /mcp Authenticate step");
     mustNot(read(f), /no extra step/, f + " no 'no extra step'");
   }
-  must(read("developers/index.html"), /do not appear until you sign in/, "developers says tools are hidden before sign-in");
+  must(read("developers/index.html"), /sign in through the link/, "developers says to sign in through the first request's link");
   must(read("developers/index.html"), /id="claude-code-npm"/, "developers npm route steps");
 });
 

@@ -155,10 +155,10 @@
 <p>Then, once:</p>
 <ol>
 <li>Restart Claude Code (quit it and start it again), so it loads the plugin.</li>
-<li>Run <code>/mcp</code>, choose <code>plugin:xlsx-for-ai:spreadsheets</code>, choose <strong>Authenticate</strong> and sign in with Google in the browser. The xlsx-for-ai tools do not appear until you sign in, so Claude cannot offer the sign-in itself.</li>
-<li>Ask Claude about a spreadsheet.</li>
+<li>Ask Claude about a spreadsheet. The first request answers with a sign-in link and a short code: sign in through the link, check the code, approve, then ask again. There is no <code>/mcp</code> step.</li>
 </ol>
-<p>In short: restart Claude Code, sign in through <code>/mcp</code>, then ask it about a spreadsheet. If your Claude Code is older than 2.1.292, run <code>claude update</code> first.</p>
+<p>In short: Restart Claude Code, then ask it about a spreadsheet. If your Claude Code is older than 2.1.292, run <code>claude update</code> first.</p>
+<p>If you installed before Nov 27, update the plugin with <code>claude plugin update xlsx-for-ai@xlsx-for-ai</code> (or in a session: <code>/plugin</code>, then Installed, then xlsx-for-ai, then Update now), then start a new session. Plugins from a third-party marketplace do not update on their own.</p>
 
 <h3 id="claude-code-npm">Claude Code with the npm package</h3>
 <div class="cta">

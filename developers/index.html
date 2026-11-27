@@ -152,7 +152,24 @@
 <div class="cta">
 <pre class="copy" role="button" tabindex="0" data-copy="claude plugin install xlsx-for-ai --marketplace senoff/xlsx-for-ai" title="Click to copy"><code>claude plugin install xlsx-for-ai --marketplace senoff/xlsx-for-ai</code></pre>
 </div>
-<p>Then run <code>/reload-plugins</code> (or restart Claude Code), open <code>/mcp</code>, choose <code>plugin:xlsx-for-ai:spreadsheets</code> and sign in with Google once. If your Claude Code is older, run <code>claude update</code> first.</p>
+<p>Then, once:</p>
+<ol>
+<li>Restart Claude Code (quit it and start it again), so it loads the plugin.</li>
+<li>Run <code>/mcp</code>, choose <code>plugin:xlsx-for-ai:spreadsheets</code>, choose <strong>Authenticate</strong> and sign in with Google in the browser. The xlsx-for-ai tools do not appear until you sign in, so Claude cannot offer the sign-in itself.</li>
+<li>Ask Claude about a spreadsheet.</li>
+</ol>
+<p>In short: restart Claude Code, sign in through <code>/mcp</code>, then ask it about a spreadsheet. If your Claude Code is older than 2.1.292, run <code>claude update</code> first.</p>
+
+<h3 id="claude-code-npm">Claude Code with the npm package</h3>
+<div class="cta">
+<pre class="copy" role="button" tabindex="0" data-copy="npm install -g xlsx-for-ai" title="Click to copy"><code>npm install -g xlsx-for-ai</code></pre>
+</div>
+<ol>
+<li>The install adds a server named <code>xfa</code> to Claude Code for you. npm hides the install script's output, so it prints nothing about this.</li>
+<li>Restart Claude Code (quit it and start it again). A session that was already open does not see the new server.</li>
+<li>Ask Claude about a spreadsheet. The first request answers with a sign-in link and a short code: open the link, check the code, approve, then ask again. No second restart is needed.</li>
+</ol>
+<p>In short: Restart Claude Code, then ask it about a spreadsheet.</p>
 
 <h2 id="connector">Claude app on claude.ai (nothing to install)</h2>
 <p>xlsx-for-ai is listed in the Claude connector directory. Open the <a href="https://claude.ai/directory" rel="noopener">directory</a>, find <strong>xlsx-for-ai</strong>, click <strong>Connect</strong>, and sign in with Google when asked.</p>
@@ -224,6 +241,7 @@ CFG</code></pre>
 claude mcp add xfa -- xlsx-for-ai-mcp" title="Click to copy"><code>npm install -g xlsx-for-ai
 claude mcp add xfa -- xlsx-for-ai-mcp</code></pre>
 </div>
+<p>The second command is only needed when the install skipped its scripts; the install normally adds the server itself. In Claude Code, restart Claude Code, then ask it about a spreadsheet, and approve the sign-in link the first request gives, then ask again.</p>
 <p>Set-up steps for each AI app (Claude Code, Claude Desktop, Cursor, Codex, Gemini CLI, VS Code with GitHub Copilot, Cline, Zed and more) are in the <a href="https://github.com/senoff/xlsx-for-ai#mcp-configuration" rel="noopener">MCP configuration section of the README</a>. Full docs and the complete tool reference are on the <a href="https://github.com/senoff/xlsx-for-ai" rel="noopener">GitHub repository</a> and the <a href="https://www.npmjs.com/package/xlsx-for-ai" rel="noopener">npm package page</a>.</p>
 
 <h2 id="file-handoff">Getting a file in and a result out</h2>

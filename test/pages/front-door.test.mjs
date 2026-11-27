@@ -339,6 +339,17 @@ T("XLS-3006-8 hosted connector address is on developers and home; no page uses /
   if (bad.length) throw new Error("/mcp/claude still on: " + bad.join(", "));
 });
 
+T("XLS-11638 developers and home give the Claude Code first-run steps", async () => {
+  const next = /Restart Claude Code, then ask it about a spreadsheet/;
+  for (const f of ["developers/index.html", "index.html"]) {
+    must(read(f), next, f + " restart then ask");
+    must(read(f), /plugin:xlsx-for-ai:spreadsheets/, f + " names the /mcp server");
+    mustNot(read(f), /no extra step/, f + " no 'no extra step'");
+  }
+  must(read("developers/index.html"), /do not appear until you sign in/, "developers says tools are hidden before sign-in");
+  must(read("developers/index.html"), /id="claude-code-npm"/, "developers npm route steps");
+});
+
 T("C3-15 page-walk script does not register a production account unless told to", async () => {
   const src = read("scripts/dod-page-walk.mjs");
   const guard = src.indexOf('"--register-prod-key"');
